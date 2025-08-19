@@ -1,1 +1,54 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>管理者ログイン | WaJuホームページ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-50 to-purple-100 min-h-screen flex items-center justify-center font-sans">
+  <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">管理者ログイン</h2>
+    <div class="space-y-4">
+      <div>
+        <label for="admin_id" class="block text-sm font-medium text-gray-700">管理者ID</label>
+        <input type="text" id="admin_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">パスワード</label>
+        <input type="password" id="password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+      </div>
+      <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition">ログイン</button>
+    </div>
+    <p id="message" class="mt-4 text-center text-sm text-red-500 hidden">ログイン情報が正しくありません</p>
+  </div>
+
+  <script>
+    const supabase = window.supabase.createClient(
+      'https://wajullc9041-ui.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhanVsbGM5MDQxLXVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTMyNDEyNTYsImV4cCI6MjAzODgxNzI1Nn0.dCkfjBfnI5ObpU_4-VYAwfZm9A6owIRnTwFdykH-bAo'
+    );
+
+    async function login() {
+      const admin_id = document.getElementById("admin_id").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const { data, error } = await supabase
+        .from("admin_config")
+        .select("*")
+        .eq("admin_id", admin_id)
+        .eq("password", password)
+        .single();
+
+      if (data) {
+        localStorage.setItem("waju_admin_auth", "true");
+        window.location.href = "admin-top.html";
+      } else {
+        document.getElementById("message").classList.remove("hidden");
+      }
+    }
+  </script>
+</body>
+</html>
+
