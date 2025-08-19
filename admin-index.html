@@ -1,14 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>管理者ログイン | WaJu</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #dfe9f3, #ffffff);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -16,43 +15,43 @@
       margin: 0;
     }
     .login-container {
-      background: white;
+      background: #fff;
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       width: 100%;
       max-width: 400px;
-      box-sizing: border-box;
+      text-align: center;
     }
     h2 {
-      text-align: center;
       margin-bottom: 1.5rem;
-      color: #334e68;
+      color: #333;
     }
-    input[type="text"], input[type="password"] {
+    input[type="text"],
+    input[type="password"] {
       width: 100%;
       padding: 0.75rem;
       margin-bottom: 1rem;
       border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
+      border-radius: 8px;
+      font-size: 1rem;
     }
     button {
       width: 100%;
       padding: 0.75rem;
-      background: #2f80ed;
-      color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 1rem;
       cursor: pointer;
-      font-weight: bold;
+      transition: background-color 0.3s;
     }
     button:hover {
-      background: #1366d6;
+      background-color: #45a049;
     }
     .error {
       color: red;
-      text-align: center;
       margin-top: 1rem;
     }
   </style>
@@ -60,54 +59,55 @@
 <body>
   <div class="login-container">
     <h2>管理者ログイン</h2>
-    <input type="text" id="adminId" placeholder="ID" autocomplete="off" />
-    <input type="password" id="adminPassword" placeholder="パスワード" autocomplete="off" />
-    <button onclick="login()">ログイン</button>
-    <div class="error" id="error"></div>
+    <input type="text" id="admin_id" placeholder="管理者ID">
+    <input type="password" id="admin_password" placeholder="パスワード">
+    <button id="login-button">ログイン</button>
+    <div class="error" id="error-message"></div>
   </div>
 
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-    const supabaseUrl = 'https://wajullc9041-ui.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // anonキー（必要に応じて差し替え）
+    const supabaseUrl = 'https://udcrfwejohzmhfojnwha.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkY3Jmd2Vqb2h6bWhmb2pud2hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5ODk1NzgsImV4cCI6MjA2MTU2NTU3OH0.dqy_L8iPlbUDoozkha4yjar4ADvinxGc0a6ygSuBLQI';
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    async function login() {
-      const id = document.getElementById('adminId').value.trim();
-      const password = document.getElementById('adminPassword').value.trim();
-      const errorDiv = document.getElementById('error');
-      errorDiv.textContent = '';
+    document.getElementById('login-button').addEventListener('click', async () => {
+      const adminId = document.getElementById('admin_id').value.trim();
+      const adminPassword = document.getElementById('admin_password').value.trim();
+      const errorMessage = document.getElementById('error-message');
+      errorMessage.textContent = "";
 
-      if (!id || !password) {
-        errorDiv.textContent = 'IDとパスワードを入力してください。';
+      if (!adminId || !adminPassword) {
+        errorMessage.textContent = "IDとパスワードを入力してください。";
         return;
       }
 
       const { data, error } = await supabase
         .from('admins')
         .select('*')
-        .eq('id', id)
+        .eq('admin_id', adminId)
         .single();
 
       if (error || !data) {
-        errorDiv.textContent = 'IDまたはパスワードが正しくありません。';
+        errorMessage.textContent = "IDが正しくありません。";
         return;
       }
 
       const encoder = new TextEncoder();
-      const dataBuffer = encoder.encode(password);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+      const dataBuf = encoder.encode(adminPassword);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuf);
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-      if (hashHex === data.password) {
-        localStorage.setItem('wajuhp_admin_auth', 'true');
-        window.location.href = 'admin-top.html';
-      } else {
-        errorDiv.textContent = 'IDまたはパスワードが正しくありません。';
+      if (hashHex !== data.hashed_password) {
+        errorMessage.textContent = "パスワードが正しくありません。";
+        return;
       }
-    }
+
+      localStorage.setItem("waju_admin_auth", "true");
+      window.location.href = "admin-top.html";
+    });
   </script>
 </body>
 </html>
