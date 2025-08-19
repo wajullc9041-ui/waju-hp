@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>管理者ダッシュボード</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+    aside {
+      width: 240px;
+      background: #1f2937;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 10px;
+    }
+    aside h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    aside button {
+      background: none;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-radius: 5px;
+      margin-bottom: 5px;
+    }
+    aside button:hover {
+      background: #374151;
+    }
+    main {
+      flex-grow: 1;
+      padding: 30px;
+      background: #f9fafb;
+      overflow-y: auto;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <aside>
+    <h2>管理メニュー</h2>
+    <button onclick="loadPage('admin-menu.html')">① 管理メニュー管理</button>
+    <button onclick="loadPage('admin-pages.html')">② サイトページ管理</button>
+    <button onclick="loadPage('admin-editor.html')">③ サイトページ編集</button>
+    <button onclick="loadPage('admin-blogs.html')">④ ブログ一覧</button>
+    <button onclick="loadPage('admin-blog-edit.html')">⑤ ブログ追加・編集</button>
+    <button onclick="loadPage('admin-contact.html')">⑥ お問い合わせ管理</button>
+    <button onclick="loadPage('admin-analytics.html')">⑦ アクセス解析</button>
+    <button onclick="loadPage('admin-assets.html')">⑧ アセット管理</button>
+    <button onclick="loadPage('admin-settings.html')">⑨ 設定管理</button>
+    <button onclick="loadPage('admin-password.html')">⑩ パスワード変更</button>
+  </aside>
+  <main>
+    <div id="main-content">ここに管理ページの内容が表示されます</div>
+  </main>
+
+  <script type="module">
+    // Supabase認証チェック
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    const supabase = createClient("https://YOUR_PROJECT_ID.supabase.co", "YOUR_ANON_KEY");
+
+    const adminAuth = localStorage.getItem("waju_admin_auth");
+    if (!adminAuth) {
+      window.location.href = "admin-index.html";
+    }
+
+    async function verifyAdmin() {
+      const { data, error } = await supabase
+        .from("admins")
+        .select("*")
+        .eq("id", adminAuth)
+        .single();
+      if (error || !data) {
+        localStorage.removeItem("waju_admin_auth");
+        window.location.href = "admin-index.html";
+      }
+    }
+    verifyAdmin();
+
+    // ページ読み込み
+    async function loadPage(url) {
+      const response = await fetch(url);
+      const html = await response.text();
+      document.getElementById("main-content").innerHTML = html;
+    }
+  </script>
+</body>
+</html>
 
