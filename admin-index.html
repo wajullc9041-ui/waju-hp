@@ -4,51 +4,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>管理者ログイン | WaJuホームページ</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+  <title>管理者ログイン | WaJu</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #334e68;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background: #2f80ed;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #1366d6;
+    }
+    .error {
+      color: red;
+      text-align: center;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-r from-blue-50 to-purple-100 min-h-screen flex items-center justify-center font-sans">
-  <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">管理者ログイン</h2>
-    <div class="space-y-4">
-      <div>
-        <label for="admin_id" class="block text-sm font-medium text-gray-700">管理者ID</label>
-        <input type="text" id="admin_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
-      </div>
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-700">パスワード</label>
-        <input type="password" id="password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
-      </div>
-      <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition">ログイン</button>
-    </div>
-    <p id="message" class="mt-4 text-center text-sm text-red-500 hidden">ログイン情報が正しくありません</p>
+<body>
+  <div class="login-container">
+    <h2>管理者ログイン</h2>
+    <input type="text" id="adminId" placeholder="ID" autocomplete="off" />
+    <input type="password" id="adminPassword" placeholder="パスワード" autocomplete="off" />
+    <button onclick="login()">ログイン</button>
+    <div class="error" id="error"></div>
   </div>
 
-  <script>
-    const supabase = window.supabase.createClient(
-      'https://wajullc9041-ui.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhanVsbGM5MDQxLXVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTMyNDEyNTYsImV4cCI6MjAzODgxNzI1Nn0.dCkfjBfnI5ObpU_4-VYAwfZm9A6owIRnTwFdykH-bAo'
-    );
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://wajullc9041-ui.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // anonキー（必要に応じて差し替え）
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
     async function login() {
-      const admin_id = document.getElementById("admin_id").value.trim();
-      const password = document.getElementById("password").value.trim();
+      const id = document.getElementById('adminId').value.trim();
+      const password = document.getElementById('adminPassword').value.trim();
+      const errorDiv = document.getElementById('error');
+      errorDiv.textContent = '';
+
+      if (!id || !password) {
+        errorDiv.textContent = 'IDとパスワードを入力してください。';
+        return;
+      }
+
       const { data, error } = await supabase
-        .from("admin_config")
-        .select("*")
-        .eq("admin_id", admin_id)
-        .eq("password", password)
+        .from('admins')
+        .select('*')
+        .eq('id', id)
         .single();
 
-      if (data) {
-        localStorage.setItem("waju_admin_auth", "true");
-        window.location.href = "admin-top.html";
+      if (error || !data) {
+        errorDiv.textContent = 'IDまたはパスワードが正しくありません。';
+        return;
+      }
+
+      const encoder = new TextEncoder();
+      const dataBuffer = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+      if (hashHex === data.password) {
+        localStorage.setItem('wajuhp_admin_auth', 'true');
+        window.location.href = 'admin-top.html';
       } else {
-        document.getElementById("message").classList.remove("hidden");
+        errorDiv.textContent = 'IDまたはパスワードが正しくありません。';
       }
     }
   </script>
 </body>
 </html>
-
