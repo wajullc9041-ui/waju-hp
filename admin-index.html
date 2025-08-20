@@ -1,13 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>管理者ログイン | WaJu管理画面</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>管理者ログイン</title>
   <style>
     body {
-      font-family: "Helvetica Neue", sans-serif;
-      background: #f4f7f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #667eea, #764ba2);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -15,43 +16,37 @@
       margin: 0;
     }
     .login-container {
-      background: white;
-      padding: 2rem 3rem;
+      background: #ffffff;
+      padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      width: 300px;
     }
     h2 {
       text-align: center;
-      margin-bottom: 1.5rem;
-      color: #333;
+      color: #333333;
     }
-    input {
+    input[type="email"],
+    input[type="password"] {
       width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
     }
     button {
       width: 100%;
-      background-color: #007bff;
+      padding: 0.8rem;
+      background-color: #667eea;
       color: white;
-      padding: 0.75rem;
-      font-size: 1rem;
       border: none;
       border-radius: 6px;
+      font-size: 1rem;
       cursor: pointer;
     }
     button:hover {
-      background-color: #0056b3;
-    }
-    .error {
-      color: red;
-      margin-top: 1rem;
-      text-align: center;
+      background-color: #556cd6;
     }
   </style>
 </head>
@@ -61,43 +56,29 @@
     <input type="email" id="email" placeholder="メールアドレス" required />
     <input type="password" id="password" placeholder="パスワード" required />
     <button onclick="login()">ログイン</button>
-    <div class="error" id="error"></div>
   </div>
 
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-    const supabaseUrl = 'https://udcrfwejohzmhfojnwha.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkY3Jmd2Vqb2h6bWhmb2pud2hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5ODk1NzgsImV4cCI6MjA2MTU2NTU3OH0.dqy_L8iPlbUDoozkha4yjar4ADvinxGc0a6ygSuBLQI';
-    const supabase = createClient(supabaseUrl, supabaseKey);
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = supabase.createClient(
+      'https://udcrfwejohzmhfojnwha.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkY3Jmd2Vqb2h6bWhmb2pud2hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5ODk1NzgsImV4cCI6MjA2MTU2NTU3OH0.dqy_L8iPlbUDoozkha4yjar4ADvinxGc0a6ygSuBLQI'
+    );
 
     async function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const errorDiv = document.getElementById("error");
-      errorDiv.textContent = "";
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
 
-      const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
-      if (signInError) {
-        errorDiv.textContent = "ログインに失敗しました: " + signInError.message;
-        return;
+      if (error) {
+        alert('ログインに失敗しました：' + error.message);
+      } else {
+        window.location.href = 'admin-top.html';
       }
-
-      // ログイン成功 → 管理者かチェック
-      const { data: appData, error: appError } = await supabase
-        .from("applications")
-        .select("is_admin")
-        .eq("email", email)
-        .single();
-
-      if (appError || !appData || !appData.is_admin) {
-        errorDiv.textContent = "管理者として登録されていません。";
-        return;
-      }
-
-      // 成功 → トップへ遷移
-      window.location.href = "admin-top.html";
     }
   </script>
 </body>
