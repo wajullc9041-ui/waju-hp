@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>管理者ログイン | WaJu</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>管理者ログイン | WaJu管理画面</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #dfe9f3, #ffffff);
+      font-family: "Helvetica Neue", sans-serif;
+      background: #f4f7f9;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -15,102 +15,90 @@
       margin: 0;
     }
     .login-container {
-      background: #fff;
-      padding: 2rem;
+      background: white;
+      padding: 2rem 3rem;
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       width: 100%;
       max-width: 400px;
-      text-align: center;
     }
     h2 {
+      text-align: center;
       margin-bottom: 1.5rem;
       color: #333;
     }
-    input[type="text"],
-    input[type="password"] {
+    input {
       width: 100%;
       padding: 0.75rem;
       margin-bottom: 1rem;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 6px;
       font-size: 1rem;
     }
     button {
       width: 100%;
-      padding: 0.75rem;
-      border: none;
-      border-radius: 8px;
-      background-color: #4CAF50;
+      background-color: #007bff;
       color: white;
+      padding: 0.75rem;
       font-size: 1rem;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.3s;
     }
     button:hover {
-      background-color: #45a049;
+      background-color: #0056b3;
     }
     .error {
       color: red;
       margin-top: 1rem;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="login-container">
     <h2>管理者ログイン</h2>
-    <input type="text" id="admin_id" placeholder="管理者ID">
-    <input type="password" id="admin_password" placeholder="パスワード">
-    <button id="login-button">ログイン</button>
-    <div class="error" id="error-message"></div>
+    <input type="email" id="email" placeholder="メールアドレス" required />
+    <input type="password" id="password" placeholder="パスワード" required />
+    <button onclick="login()">ログイン</button>
+    <div class="error" id="error"></div>
   </div>
 
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-    const supabaseUrl = 'https://htnmjsqgoapvuanrsuma.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA';
-    
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    const supabaseUrl = 'https://udcrfwejohzmhfojnwha.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkY3Jmd2Vqb2h6bWhmb2pud2hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5ODk1NzgsImV4cCI6MjA2MTU2NTU3OH0.dqy_L8iPlbUDoozkha4yjar4ADvinxGc0a6ygSuBLQI';
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
+    async function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorDiv = document.getElementById("error");
+      errorDiv.textContent = "";
 
+      const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
 
-    document.getElementById('login-button').addEventListener('click', async () => {
-      const adminId = document.getElementById('admin_id').value.trim();
-      const adminPassword = document.getElementById('admin_password').value.trim();
-      const errorMessage = document.getElementById('error-message');
-      errorMessage.textContent = "";
-
-      if (!adminId || !adminPassword) {
-        errorMessage.textContent = "IDとパスワードを入力してください。";
+      if (signInError) {
+        errorDiv.textContent = "ログインに失敗しました: " + signInError.message;
         return;
       }
 
-      const { data, error } = await supabase
-        .from('admins')
-        .select('*')
-        .eq('admin_id', adminId)
+      // ログイン成功 → 管理者かチェック
+      const { data: appData, error: appError } = await supabase
+        .from("applications")
+        .select("is_admin")
+        .eq("email", email)
         .single();
 
-      if (error || !data) {
-        errorMessage.textContent = "IDが正しくありません。";
+      if (appError || !appData || !appData.is_admin) {
+        errorDiv.textContent = "管理者として登録されていません。";
         return;
       }
 
-      const encoder = new TextEncoder();
-      const dataBuf = encoder.encode(adminPassword);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuf);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-      if (hashHex !== data.hashed_password) {
-        errorMessage.textContent = "パスワードが正しくありません。";
-        return;
-      }
-
-      localStorage.setItem("waju_admin_auth", "true");
+      // 成功 → トップへ遷移
       window.location.href = "admin-top.html";
-    });
+    }
   </script>
 </body>
 </html>
