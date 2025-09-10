@@ -48,7 +48,7 @@
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
     const supabaseUrl = 'https://htnmjsqgoapvuanrsuma.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz...';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA';
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const form = document.getElementById("menu-form");
@@ -69,11 +69,11 @@
       data.forEach(row => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${row.title}</td>
-          <td>${row.filename}</td>
-          <td>${row.sort_order}</td>
-          <td>${row.is_active ? "✅" : "<span class='inactive'>❌</span>"}</td>
-          <td><button onclick="deleteMenu(${row.id})">削除</button></td>
+          <td>\${row.title}</td>
+          <td>\${row.filename}</td>
+          <td>\${row.sort_order}</td>
+          <td>\${row.is_active ? "✅" : "<span class='inactive'>❌</span>"}</td>
+          <td><button onclick="deleteMenu(\${row.id})">削除</button></td>
         `;
         tableBody.appendChild(tr);
       });
@@ -91,7 +91,9 @@
       const title = document.getElementById("title").value.trim();
       const filename = document.getElementById("filename").value.trim();
       const sort_order = parseInt(document.getElementById("sort_order").value);
-      const { error } = await supabase.from("admin_menus").insert([{ title, filename, sort_order }]);
+      const { error } = await supabase.from("admin_menus").insert([{
+        title, filename, sort_order
+      }]);
       if (error) alert("追加エラー: " + error.message);
       else {
         form.reset();
