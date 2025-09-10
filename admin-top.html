@@ -1,53 +1,90 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>管理者ページ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>管理者ダッシュボード</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
       margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #eef2f3, #8e9eab);
-      color: #333;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      height: 100vh;
     }
     header {
       background-color: #1f2937;
       color: white;
-      padding: 1rem 2rem;
+      padding: 0.5rem 1rem;
       text-align: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+    aside {
+      background-color: #f4f4f4;
+      width: 220px;
+      padding-top: 3rem;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+    aside button {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      background: none;
+      text-align: left;
+      cursor: pointer;
+      font-size: 1rem;
+      border-bottom: 1px solid #ddd;
+    }
+    aside button:hover {
+      background-color: #e0e0e0;
     }
     main {
-      padding: 2rem;
+      flex-grow: 1;
+      padding: 4rem 2rem 2rem 2rem;
+      overflow-y: auto;
     }
   </style>
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
     const supabaseUrl = 'https://htnmjsqgoapvuanrsuma.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz...';
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const loadContent = async (page) => {
+      const res = await fetch(page);
+      const html = await res.text();
+      document.getElementById("main-content").innerHTML = html;
+    };
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        console.log("未ログイン状態。ログインページにリダイレクト");
         window.location.href = "admin-index.html";
-      } else {
-        console.log("ログイン済みユーザー:", session.user.email);
-        document.getElementById("admin-content").textContent =
-          session.user.email + " としてログイン中です";
+        return;
       }
+
+      document.getElementById("menu-admin").addEventListener("click", () => {
+        loadContent("admin-menu.html");
+      });
+
+      // 初期表示
+      loadContent("admin-menu.html");
     });
   </script>
 </head>
 <body>
-  <header>
-    <h1>管理者ダッシュボード</h1>
-  </header>
-  <main>
-    <p id="admin-content">セッションを確認中...</p>
+  <header>管理者ダッシュボード</header>
+  <aside>
+    <button id="menu-admin">① 管理メニュー管理</button>
+  </aside>
+  <main id="main-content">
+    <!-- メニュー選択によりここが切り替わる -->
   </main>
 </body>
 </html>
