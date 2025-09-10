@@ -1,55 +1,128 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>管理メニュー管理</title>
   <style>
-    body { font-family: sans-serif; margin: 0; }
-    h1 { font-size: 1.5em; margin-bottom: 0.5em; }
-    form { margin-bottom: 1em; padding: 1em; }
-    label { display: block; margin-top: 0.5em; }
-    input[type="text"], input[type="number"] { width: 300px; padding: 4px; }
-    button { margin-top: 1em; padding: 6px 12px; }
-    table { border-collapse: collapse; margin: 1em; width: calc(100% - 2em); max-width: 800px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+    .header {
+      background-color: #1e293b;
+      color: white;
+      padding: 10px 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .container {
+      display: flex;
+    }
+    .menu {
+      width: 220px;
+      background-color: #f8fafc;
+      padding: 20px;
+      border-right: 1px solid #ccc;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+    .menu-item {
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-bottom: 5px;
+    }
+    .menu-item:hover {
+      background-color: #e2e8f0;
+    }
+    .main {
+      flex-grow: 1;
+      padding: 30px;
+    }
+    input[type="text"], input[type="number"] {
+      padding: 5px;
+      width: 300px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 6px 12px;
+      margin-top: 5px;
+    }
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
   </style>
 </head>
 <body>
-  <h1>管理メニュー管理</h1>
-  <form id="menu-form">
-    <label>表示名：<input type="text" id="title" required></label>
-    <label>リンク先HTML：<input type="text" id="filename" required></label>
-    <label>順番（数字）：<input type="number" id="sort_order" required></label>
-    <label>公開状態：<input type="checkbox" id="is_active"></label>
-    <button type="submit">追加</button>
-  </form>
-
-  <table id="menu-table">
-    <thead>
-      <tr><th>表示名</th><th>HTML</th><th>順番</th><th>公開</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
+  <div class="header">管理者ダッシュボード</div>
+  <div class="container">
+    <div class="menu" id="menu"></div>
+    <div class="main">
+      <h2>管理メニュー管理</h2>
+      <div>
+        <div>表示名：<br/><input type="text" id="title" /></div>
+        <div>リンク先HTML：<br/><input type="text" id="filename" /></div>
+        <div>順番（数字）：<br/><input type="number" id="sort_order" /></div>
+        <div><label><input type="checkbox" id="is_active" /> 公開状態</label></div>
+        <button onclick="addMenu()">追加</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>表示名</th><th>HTML</th><th>順番</th><th>公開</th></tr>
+        </thead>
+        <tbody id="menuList"></tbody>
+      </table>
+    </div>
+  </div>
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
     const supabase = createClient(
-      "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz...
+      "https://wajullc9041-ui.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhanVsbGM5MDQxLXVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDYyMTY3NzcsImV4cCI6MjAyMTc5Mjc3N30.Rb9cMZlBlEtMQUItDABGNN_lUzmLqDxvKjOEoYxGRVw"
     );
 
-    const form = document.getElementById("menu-form");
-    const tableBody = document.querySelector("#menu-table tbody");
+    async function loadMenus() {
+      const { data, error } = await supabase
+        .from("admin_menus")
+        .select("*")
+        .order("sort_order", { ascending: true });
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const { data: userData } = await supabase.auth.getUser();
-      const user = userData?.user;
-      if (!user) {
-        alert("ログインが必要です");
+      const menuList = document.getElementById("menuList");
+      menuList.innerHTML = "";
+
+      if (error) {
+        console.error("読み込みエラー:", error);
         return;
       }
 
+      data.forEach(menu => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${menu.title}</td>
+          <td>${menu.filename}</td>
+          <td>${menu.sort_order}</td>
+          <td>${menu.is_active ? "〇" : ""}</td>
+        `;
+        menuList.appendChild(row);
+      });
+    }
+
+    async function addMenu() {
       const title = document.getElementById("title").value;
       const filename = document.getElementById("filename").value;
       const sort_order = parseInt(document.getElementById("sort_order").value);
@@ -58,41 +131,34 @@
       const { error } = await supabase.from("admin_menus").insert([
         { title, filename, sort_order, is_active }
       ]);
+
       if (error) {
-        alert("追加に失敗しました: " + error.message);
+        alert("追加失敗：" + error.message);
       } else {
-        form.reset();
         loadMenus();
       }
-    });
+    }
 
-    async function loadMenus() {
-      const { data: userData } = await supabase.auth.getUser();
-      const user = userData?.user;
-      if (!user) {
-        alert("ログインが必要です");
-        return;
-      }
+    async function loadSideMenu() {
+      const { data } = await supabase
+        .from("admin_menus")
+        .select("*")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true });
 
-      const { data, error } = await supabase.from("admin_menus").select("*").order("sort_order", { ascending: true });
-      if (error) {
-        tableBody.innerHTML = "<tr><td colspan='4'>メニューの読み込みに失敗しました</td></tr>";
-        return;
-      }
-
-      tableBody.innerHTML = "";
-      data.forEach((menu) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${menu.title}</td>
-          <td>${menu.filename}</td>
-          <td>${menu.sort_order}</td>
-          <td>${menu.is_active ? "✅" : "❌"}</td>
-        `;
-        tableBody.appendChild(row);
+      const menuDiv = document.getElementById("menu");
+      data.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "menu-item";
+        div.textContent = item.title;
+        div.onclick = () => {
+          location.href = item.filename;
+        };
+        menuDiv.appendChild(div);
       });
     }
 
+    loadSideMenu();
     loadMenus();
   </script>
 </body>
