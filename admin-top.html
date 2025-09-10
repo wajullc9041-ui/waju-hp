@@ -22,6 +22,7 @@
       position: fixed;
       top: 0;
       left: 0;
+      z-index: 1000;
     }
     aside {
       background-color: #f4f4f4;
@@ -49,12 +50,19 @@
       overflow-y: auto;
     }
   </style>
+</head>
+<body>
+  <header>管理者ダッシュボード</header>
+  <aside id="menu-area">
+    <!-- メニューが動的に挿入される -->
+  </aside>
+  <main id="main-content">
+    <!-- メニュー選択によりここが切り替わる -->
+  </main>
+
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-    const supabaseUrl = 'https://htnmjsqgoapvuanrsuma.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz...';
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabase = createClient("https://htnmjsqgoapvuanrsuma.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA");
 
     const loadContent = async (page) => {
       const res = await fetch(page);
@@ -62,29 +70,41 @@
       document.getElementById("main-content").innerHTML = html;
     };
 
-    document.addEventListener("DOMContentLoaded", async () => {
+    async function init() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         window.location.href = "admin-index.html";
         return;
       }
 
-      document.getElementById("menu-admin").addEventListener("click", () => {
-        loadContent("admin-menu.html");
+      const { data, error } = await supabase
+        .from("admin_menus")
+        .select("*")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true });
+
+      if (error) {
+        document.getElementById("menu-area").innerHTML = "<p>メニューの読み込みに失敗しました</p>";
+        return;
+      }
+
+      const menuArea = document.getElementById("menu-area");
+      menuArea.innerHTML = ""; // クリア
+
+      data.forEach(item => {
+        const btn = document.createElement("button");
+        btn.textContent = item.title;
+        btn.onclick = () => loadContent(item.filename);
+        menuArea.appendChild(btn);
       });
 
-      // 初期表示
-      loadContent("admin-menu.html");
-    });
+      // 初期表示（最初のメニュー）
+      if (data.length > 0) {
+        loadContent(data[0].filename);
+      }
+    }
+
+    init();
   </script>
-</head>
-<body>
-  <header>管理者ダッシュボード</header>
-  <aside>
-    <button id="menu-admin">① 管理メニュー管理</button>
-  </aside>
-  <main id="main-content">
-    <!-- メニュー選択によりここが切り替わる -->
-  </main>
 </body>
 </html>
