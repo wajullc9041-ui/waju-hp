@@ -1,22 +1,25 @@
+
 <div class="content-container">
   <h2>管理メニュー管理</h2>
-  <form id="menuForm">
-    <div class="form-group">
+  <form id="menuForm" class="form-grid">
+    <div class="form-row">
       <label for="title">表示名：</label>
       <input type="text" id="title" required>
     </div>
-    <div class="form-group">
+    <div class="form-row">
       <label for="filename">リンク先HTML：</label>
       <input type="text" id="filename" required>
     </div>
-    <div class="form-group">
+    <div class="form-row">
       <label for="sort_order">順番（数字）：</label>
       <input type="number" id="sort_order" required>
     </div>
-    <div class="form-group checkbox-group">
+    <div class="form-row">
       <label><input type="checkbox" id="is_active"> 公開状態</label>
     </div>
-    <button type="submit">追加</button>
+    <div class="form-row">
+      <button type="submit">追加</button>
+    </div>
   </form>
 
   <table id="menuTable">
@@ -33,7 +36,7 @@
 </div>
 
 <script type="module">
-  import {{ createClient }} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
   const supabaseUrl = 'https://viihcgkjzzhkdiwdzdex.supabase.co'
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpaWhjZ2tqenpoa2Rpd2R6ZGV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTIxMzUwNDksImV4cCI6MjAyNzAxMTA0OX0.0jjcgZ_EH7Ek8MBwCvgtatg1-lDFpNuFRHh14iPYjJU'
   const supabase = createClient(supabaseUrl, supabaseKey)
@@ -42,13 +45,10 @@
   const form = document.getElementById('menuForm')
 
   async function fetchMenus() {
-    const {{ data, error }} = await supabase
-      .from('admin_menus')
-      .select('*')
-      .order('sort_order')
-
+    console.log('🔄 メニュー一覧を取得中...')
+    const { data, error } = await supabase.from('admin_menus').select('*').order('sort_order')
     if (error) {
-      console.error('取得エラー:', error)
+      console.error('❌ データ取得エラー:', error)
       return
     }
 
@@ -56,10 +56,10 @@
     data.forEach(menu => {
       const row = document.createElement('tr')
       row.innerHTML = `
-        <td>\${menu.title}</td>
-        <td>\${menu.filename}</td>
-        <td>\${menu.sort_order}</td>
-        <td>\${menu.is_active ? '✔' : ''}</td>
+        <td>${menu.title}</td>
+        <td>${menu.filename}</td>
+        <td>${menu.sort_order}</td>
+        <td>${menu.is_active ? '✔' : ''}</td>
       `
       tableBody.appendChild(row)
     })
@@ -67,15 +67,21 @@
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault()
-    const title = document.getElementById('title').value
-    const filename = document.getElementById('filename').value
+    const title = document.getElementById('title').value.trim()
+    const filename = document.getElementById('filename').value.trim()
     const sort_order = Number(document.getElementById('sort_order').value)
     const is_active = document.getElementById('is_active').checked
 
-    const {{ error }} = await supabase.from('admin_menus').insert([{{ title, filename, sort_order, is_active }}])
+    if (!title || !filename || isNaN(sort_order)) {
+      alert('すべての項目を正しく入力してください。')
+      return
+    }
+
+    const { error } = await supabase.from('admin_menus').insert([{ title, filename, sort_order, is_active }])
     if (error) {
       alert('追加失敗: ' + error.message)
     } else {
+      alert('追加しました')
       form.reset()
       await fetchMenus()
     }
@@ -85,14 +91,50 @@
 </script>
 
 <style>
-  .content-container { padding: 20px; }
-  .form-group { margin-bottom: 10px; display: flex; align-items: center; }
-  .form-group label {{ width: 120px; display: inline-block; }}
-  .form-group input {{ flex: 1; padding: 6px; }}
-  .checkbox-group label {{ display: inline-flex; align-items: center; gap: 6px; }}
-  button {{ padding: 8px 16px; background: #2a7ae2; color: white; border: none; border-radius: 4px; cursor: pointer; }}
-  button:hover {{ background: #1d5bbf; }}
-  table {{ margin-top: 20px; width: 100%; border-collapse: collapse; }}
-  th, td {{ padding: 8px 12px; border: 1px solid #ccc; text-align: left; }}
-  th {{ background: #f4f4f4; }}
+  .content-container {
+    padding: 20px;
+    max-width: 800px;
+  }
+  .form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .form-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .form-row label {
+    width: 140px;
+    font-weight: bold;
+  }
+  input[type="text"], input[type="number"] {
+    flex: 1;
+    padding: 6px;
+  }
+  button {
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
 </style>
