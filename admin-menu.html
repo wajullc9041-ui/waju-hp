@@ -1,105 +1,97 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>管理メニュー管理</title>
   <style>
-    body { font-family: Arial, sans-serif; }
-    h2 { margin-top: 0; }
-    form, table { margin-top: 1rem; width: 100%; max-width: 600px; }
-    input[type="text"], input[type="number"] {
-      width: 100%; padding: 0.5rem; margin: 0.3rem 0;
-      box-sizing: border-box;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      margin-top: 0.5rem;
-    }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
-    th { background-color: #f4f4f4; }
-    .inactive { color: #aaa; }
+    body { font-family: sans-serif; margin: 1em; }
+    h1 { font-size: 1.5em; margin-bottom: 0.5em; }
+    form { margin-bottom: 1em; }
+    label { display: block; margin-top: 0.5em; }
+    input[type="text"], input[type="number"] { width: 300px; padding: 4px; }
+    button { margin-top: 1em; padding: 6px 12px; }
+    table { border-collapse: collapse; margin-top: 1em; width: 100%; max-width: 800px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
   </style>
 </head>
 <body>
-  <h2>管理メニュー管理</h2>
-
+  <h1>管理メニュー管理</h1>
   <form id="menu-form">
-    <label>メニュー名（title）<input type="text" id="title" required /></label>
-    <label>ファイル名（filename）<input type="text" id="filename" required /></label>
-    <label>表示順（sort_order）<input type="number" id="sort_order" required /></label>
-    <button type="submit">メニューを追加</button>
+    <label>表示名：<input type="text" id="name" required></label>
+    <label>リンク先HTML：<input type="text" id="html" required></label>
+    <label>順番（数字）：<input type="number" id="order" required></label>
+    <label>公開状態：<input type="checkbox" id="is_public"></label>
+    <button type="submit">追加</button>
   </form>
 
   <table id="menu-table">
     <thead>
-      <tr>
-        <th>タイトル</th>
-        <th>ファイル名</th>
-        <th>順番</th>
-        <th>公開</th>
-        <th>操作</th>
-      </tr>
+      <tr><th>表示名</th><th>HTML</th><th>順番</th><th>公開</th></tr>
     </thead>
     <tbody></tbody>
   </table>
 
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-    const supabaseUrl = 'https://htnmjsqgoapvuanrsuma.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA';
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    const supabase = createClient(
+      "https://htnmjsqgoapvuanrsuma.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+    );
 
     const form = document.getElementById("menu-form");
     const tableBody = document.querySelector("#menu-table tbody");
 
-    async function loadMenus() {
-      const { data, error } = await supabase
-        .from("admin_menus")
-        .select("*")
-        .order("sort_order", { ascending: true });
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const { data: userData } = await supabase.auth.getUser();
+      const user = userData?.user;
+      if (!user) {
+        alert("ログインが必要です");
+        return;
+      }
 
+      const name = document.getElementById("name").value;
+      const html = document.getElementById("html").value;
+      const order = parseInt(document.getElementById("order").value);
+      const is_public = document.getElementById("is_public").checked;
+
+      const { error } = await supabase.from("admin_menus").insert([
+        { name, html, order, is_public }
+      ]);
       if (error) {
-        alert("読み込みエラー: " + error.message);
+        alert("追加に失敗しました: " + error.message);
+      } else {
+        form.reset();
+        loadMenus();
+      }
+    });
+
+    async function loadMenus() {
+      const { data: userData } = await supabase.auth.getUser();
+      const user = userData?.user;
+      if (!user) {
+        alert("ログインが必要です");
+        return;
+      }
+
+      const { data, error } = await supabase.from("admin_menus").select("*").order("order", { ascending: true });
+      if (error) {
+        tableBody.innerHTML = "<tr><td colspan='4'>メニューの読み込みに失敗しました</td></tr>";
         return;
       }
 
       tableBody.innerHTML = "";
-      data.forEach(row => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>\${row.title}</td>
-          <td>\${row.filename}</td>
-          <td>\${row.sort_order}</td>
-          <td>\${row.is_active ? "✅" : "<span class='inactive'>❌</span>"}</td>
-          <td><button onclick="deleteMenu(\${row.id})">削除</button></td>
+      data.forEach((menu) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${menu.name}</td>
+          <td>${menu.html}</td>
+          <td>${menu.order}</td>
+          <td>${menu.is_public ? "✅" : "❌"}</td>
         `;
-        tableBody.appendChild(tr);
+        tableBody.appendChild(row);
       });
     }
-
-    window.deleteMenu = async (id) => {
-      if (!confirm("本当に削除しますか？")) return;
-      const { error } = await supabase.from("admin_menus").delete().eq("id", id);
-      if (error) alert("削除エラー: " + error.message);
-      else loadMenus();
-    };
-
-    form.onsubmit = async (e) => {
-      e.preventDefault();
-      const title = document.getElementById("title").value.trim();
-      const filename = document.getElementById("filename").value.trim();
-      const sort_order = parseInt(document.getElementById("sort_order").value);
-      const { error } = await supabase.from("admin_menus").insert([{
-        title, filename, sort_order
-      }]);
-      if (error) alert("追加エラー: " + error.message);
-      else {
-        form.reset();
-        loadMenus();
-      }
-    };
 
     loadMenus();
   </script>
