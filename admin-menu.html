@@ -1,4 +1,3 @@
-
 <div class="content-container">
   <h2>管理メニュー管理</h2>
   <form id="menuForm">
@@ -42,10 +41,11 @@
   const tableBody = document.querySelector('#menuTable tbody')
   const form = document.getElementById('menuForm')
 
-  async function fetchMenus() {
+  async function fetchMenus(org_id) {
     const { data, error } = await supabase
       .from('admin_menus')
       .select('*')
+      .eq('org_id', org_id)
       .order('sort_order')
 
     if (error) {
@@ -66,31 +66,63 @@
     })
   }
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault()
-    const title = document.getElementById('title').value
-    const filename = document.getElementById('filename').value
-    const sort_order = Number(document.getElementById('sort_order').value)
-    const is_active = document.getElementById('is_active').checked
-
-    const { error } = await supabase.from('admin_menus').insert([{ title, filename, sort_order, is_active }])
-    if (error) {
-      alert('追加失敗: ' + error.message)
-    } else {
-      form.reset()
-      await fetchMenus()
+  async function initialize() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      alert("未ログインです")
+      window.location.href = "index.html"
+      return
     }
-  })
+    const org_id = user.email
+    await fetchMenus(org_id)
 
-  fetchMenus()
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const title = document.getElementById('title').value
+      const filename = document.getElementById('filename').value
+      const sort_order = Number(document.getElementById('sort_order').value)
+      const is_active = document.getElementById('is_active').checked
+
+      const { error } = await supabase.from('admin_menus').insert([
+        { title, filename, sort_order, is_active, org_id }
+      ])
+      if (error) {
+        alert('追加失敗: ' + error.message)
+      } else {
+        form.reset()
+        await fetchMenus(org_id)
+      }
+    })
+  }
+
+  initialize()
 </script>
 
 <style>
   .content-container {
     padding: 20px;
+    font-family: sans-serif;
   }
   form div {
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  input[type="text"],
+  input[type="number"] {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  button {
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
   }
   table {
     margin-top: 20px;
@@ -98,11 +130,12 @@
     border-collapse: collapse;
   }
   th, td {
-    padding: 8px 12px;
+    padding: 10px 14px;
     border: 1px solid #ccc;
     text-align: left;
   }
   th {
-    background: #f4f4f4;
+    background-color: #f8f9fa;
+    font-weight: bold;
   }
 </style>
