@@ -4,23 +4,23 @@
   <meta charset="UTF-8">
   <title>管理メニュー管理</title>
   <style>
-    body { font-family: sans-serif; margin: 1em; }
+    body { font-family: sans-serif; margin: 0; }
     h1 { font-size: 1.5em; margin-bottom: 0.5em; }
-    form { margin-bottom: 1em; }
+    form { margin-bottom: 1em; padding: 1em; }
     label { display: block; margin-top: 0.5em; }
     input[type="text"], input[type="number"] { width: 300px; padding: 4px; }
     button { margin-top: 1em; padding: 6px 12px; }
-    table { border-collapse: collapse; margin-top: 1em; width: 100%; max-width: 800px; }
+    table { border-collapse: collapse; margin: 1em; width: calc(100% - 2em); max-width: 800px; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
   </style>
 </head>
 <body>
   <h1>管理メニュー管理</h1>
   <form id="menu-form">
-    <label>表示名：<input type="text" id="name" required></label>
-    <label>リンク先HTML：<input type="text" id="html" required></label>
-    <label>順番（数字）：<input type="number" id="order" required></label>
-    <label>公開状態：<input type="checkbox" id="is_public"></label>
+    <label>表示名：<input type="text" id="title" required></label>
+    <label>リンク先HTML：<input type="text" id="filename" required></label>
+    <label>順番（数字）：<input type="number" id="sort_order" required></label>
+    <label>公開状態：<input type="checkbox" id="is_active"></label>
     <button type="submit">追加</button>
   </form>
 
@@ -35,7 +35,7 @@
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
     const supabase = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz...
     );
 
     const form = document.getElementById("menu-form");
@@ -50,13 +50,13 @@
         return;
       }
 
-      const name = document.getElementById("name").value;
-      const html = document.getElementById("html").value;
-      const order = parseInt(document.getElementById("order").value);
-      const is_public = document.getElementById("is_public").checked;
+      const title = document.getElementById("title").value;
+      const filename = document.getElementById("filename").value;
+      const sort_order = parseInt(document.getElementById("sort_order").value);
+      const is_active = document.getElementById("is_active").checked;
 
       const { error } = await supabase.from("admin_menus").insert([
-        { name, html, order, is_public }
+        { title, filename, sort_order, is_active }
       ]);
       if (error) {
         alert("追加に失敗しました: " + error.message);
@@ -74,7 +74,7 @@
         return;
       }
 
-      const { data, error } = await supabase.from("admin_menus").select("*").order("order", { ascending: true });
+      const { data, error } = await supabase.from("admin_menus").select("*").order("sort_order", { ascending: true });
       if (error) {
         tableBody.innerHTML = "<tr><td colspan='4'>メニューの読み込みに失敗しました</td></tr>";
         return;
@@ -84,10 +84,10 @@
       data.forEach((menu) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td>${menu.name}</td>
-          <td>${menu.html}</td>
-          <td>${menu.order}</td>
-          <td>${menu.is_public ? "✅" : "❌"}</td>
+          <td>${menu.title}</td>
+          <td>${menu.filename}</td>
+          <td>${menu.sort_order}</td>
+          <td>${menu.is_active ? "✅" : "❌"}</td>
         `;
         tableBody.appendChild(row);
       });
