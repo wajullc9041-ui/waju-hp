@@ -1,10 +1,105 @@
-<section>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>管理メニュー管理</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    h2 { margin-top: 0; }
+    form, table { margin-top: 1rem; width: 100%; max-width: 600px; }
+    input[type="text"], input[type="number"] {
+      width: 100%; padding: 0.5rem; margin: 0.3rem 0;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin-top: 0.5rem;
+    }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    th { background-color: #f4f4f4; }
+    .inactive { color: #aaa; }
+  </style>
+</head>
+<body>
   <h2>管理メニュー管理</h2>
-  <p>この画面では、管理者用の左メニューに表示される項目を編集できます。</p>
-  <ul>
-    <li>メニューの追加</li>
-    <li>メニューの並び替え</li>
-    <li>メニューの削除</li>
-  </ul>
-  <p>※ この機能の実装は今後追加予定です。</p>
-</section>
+
+  <form id="menu-form">
+    <label>メニュー名（title）<input type="text" id="title" required /></label>
+    <label>ファイル名（filename）<input type="text" id="filename" required /></label>
+    <label>表示順（sort_order）<input type="number" id="sort_order" required /></label>
+    <button type="submit">メニューを追加</button>
+  </form>
+
+  <table id="menu-table">
+    <thead>
+      <tr>
+        <th>タイトル</th>
+        <th>ファイル名</th>
+        <th>順番</th>
+        <th>公開</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://htnmjsqgoapvuanrsuma.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz...';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const form = document.getElementById("menu-form");
+    const tableBody = document.querySelector("#menu-table tbody");
+
+    async function loadMenus() {
+      const { data, error } = await supabase
+        .from("admin_menus")
+        .select("*")
+        .order("sort_order", { ascending: true });
+
+      if (error) {
+        alert("読み込みエラー: " + error.message);
+        return;
+      }
+
+      tableBody.innerHTML = "";
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${row.title}</td>
+          <td>${row.filename}</td>
+          <td>${row.sort_order}</td>
+          <td>${row.is_active ? "✅" : "<span class='inactive'>❌</span>"}</td>
+          <td><button onclick="deleteMenu(${row.id})">削除</button></td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    window.deleteMenu = async (id) => {
+      if (!confirm("本当に削除しますか？")) return;
+      const { error } = await supabase.from("admin_menus").delete().eq("id", id);
+      if (error) alert("削除エラー: " + error.message);
+      else loadMenus();
+    };
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const title = document.getElementById("title").value.trim();
+      const filename = document.getElementById("filename").value.trim();
+      const sort_order = parseInt(document.getElementById("sort_order").value);
+      const { error } = await supabase.from("admin_menus").insert([{ title, filename, sort_order }]);
+      if (error) alert("追加エラー: " + error.message);
+      else {
+        form.reset();
+        loadMenus();
+      }
+    };
+
+    loadMenus();
+  </script>
+</body>
+</html>
