@@ -1,236 +1,220 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8" />
-  <title>ヘッダーメニュー管理</title>
-  <style>
-    body { font-family: "Segoe UI", sans-serif; background:#f3f4f6; margin:0; padding:20px; }
-    h2 { color:#1f2937; margin-bottom:1rem; }
-    .form-group { margin-bottom:10px; }
-    input[type=text] {
-      padding:6px; width:100%; border:1px solid #ccc; border-radius:4px;
+<h2>ヘッダーメニュー管理</h2>
+
+<div class="form-group">
+  <label for="menu_title">表示名</label>
+  <input type="text" id="menu_title" />
+</div>
+<div class="form-group">
+  <label for="menu_url">リンク先URL</label>
+  <input type="text" id="menu_url" />
+</div>
+<div class="form-group">
+  <label for="menu_icon">アイコンclass（任意）</label>
+  <input type="text" id="menu_icon" placeholder="例: fa-solid fa-home" />
+</div>
+<div class="form-group">
+  <label><input type="checkbox" id="menu_active" /> 公開状態</label>
+</div>
+
+<button id="addBtn">追加</button>
+<button id="updateBtn" style="display:none;">更新</button>
+<button id="cancelBtn" style="display:none;">キャンセル</button>
+
+<table id="menuTable">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>表示名</th>
+      <th>URL</th>
+      <th>アイコンclass</th>
+      <th>順番</th>
+      <th>公開</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<div id="toast-container"></div>
+
+<style>
+  .form-group { margin-bottom:10px; }
+  input[type=text] { padding:6px; width:100%; border:1px solid #ccc; border-radius:4px; }
+  label { font-weight:500; display:block; margin-bottom:4px; }
+  button { margin-right:5px; padding:6px 12px; border:none; border-radius:4px; cursor:pointer; }
+  #addBtn { background:#2563eb; color:#fff; }
+  #updateBtn { background:#10b981; color:#fff; }
+  #cancelBtn { background:#6b7280; color:#fff; }
+  .deleteBtn { background:#ef4444; color:#fff; }
+  .editBtn { background:#3b82f6; color:#fff; margin-right:4px; }
+  table { width:100%; border-collapse:collapse; margin-top:20px; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+  th, td { border:1px solid #e5e7eb; padding:8px; text-align:center; }
+  th { background:#f9fafb; }
+  tr:hover { background:#f3f4f6; }
+  tbody tr { cursor:move; }
+  #toast-container { position:fixed; top:1rem; right:1rem; z-index:9999; }
+  .toast { margin-bottom:10px; padding:10px 16px; border-radius:4px; color:#fff; font-weight:500; box-shadow:0 2px 6px rgba(0,0,0,0.2); animation: fadeInOut 3s forwards; }
+  .toast.success { background:#10b981; }
+  .toast.error { background:#ef4444; }
+  @keyframes fadeInOut {
+    0% { opacity:0; transform:translateY(-10px); }
+    10% { opacity:1; transform:translateY(0); }
+    90% { opacity:1; }
+    100% { opacity:0; transform:translateY(-10px); }
+  }
+</style>
+
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+  const supabase = createClient(
+    "https://htnmjsqgoapvuanrsuma.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+  );
+
+  let editingId = null;
+
+  function showToast(msg, type="success") {
+    const t=document.createElement("div");
+    t.className="toast "+type; t.textContent=msg;
+    document.getElementById("toast-container").appendChild(t);
+    setTimeout(()=>t.remove(),3000);
+  }
+
+  async function fetchMenus() {
+    const { data, error } = await supabase
+      .from("public_menus")
+      .select("*")
+      .order("sort_order",{ascending:true});
+    if(error){console.error(error); showToast("読み込み失敗","error"); return;}
+    const tbody=document.querySelector("#menuTable tbody");
+    tbody.innerHTML="";
+    data.forEach(row=>{
+      const tr=document.createElement("tr");
+      tr.draggable=true; tr.dataset.id=row.id;
+      tr.innerHTML=`
+        <td>${row.id}</td>
+        <td>${row.title||""}</td>
+        <td>${row.url||""}</td>
+        <td>${row.icon_class||""}</td>
+        <td>${row.sort_order}</td>
+        <td>${row.is_active?"✓":""}</td>
+        <td>
+          <button class="editBtn" data-id="${row.id}">編集</button>
+          <button class="deleteBtn" data-id="${row.id}">削除</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+    document.querySelectorAll(".editBtn").forEach(btn=>{
+      btn.onclick=()=>startEdit(Number(btn.dataset.id));
+    });
+    document.querySelectorAll(".deleteBtn").forEach(btn=>{
+      btn.onclick=()=>deleteMenu(Number(btn.dataset.id));
+    });
+    enableDragAndDrop();
+  }
+
+  async function addMenu(){
+    const title=document.getElementById("menu_title").value.trim();
+    const url=document.getElementById("menu_url").value.trim();
+    const icon=document.getElementById("menu_icon").value.trim();
+    const active=document.getElementById("menu_active").checked;
+    const { error }=await supabase.from("public_menus").insert([{title,url,icon_class:icon,is_active:active}]);
+    if(error){console.error(error); showToast("追加失敗","error"); return;}
+    resetForm(); fetchMenus(); showToast("追加しました");
+  }
+
+  function startEdit(id){ editingId=id;
+    document.getElementById("addBtn").style.display="none";
+    document.getElementById("updateBtn").style.display="inline-block";
+    document.getElementById("cancelBtn").style.display="inline-block";
+    fillForm(id);
+  }
+
+  async function fillForm(id){
+    const {data,error}=await supabase.from("public_menus").select("*").eq("id",id).single();
+    if(error){console.error(error); showToast("読込失敗","error"); return;}
+    if(data){
+      document.getElementById("menu_title").value=data.title||"";
+      document.getElementById("menu_url").value=data.url||"";
+      document.getElementById("menu_icon").value=data.icon_class||"";
+      document.getElementById("menu_active").checked=data.is_active;
     }
-    label { font-weight:500; display:block; margin-bottom:4px; }
-    button {
-      margin-right:5px; padding:6px 12px; border:none; border-radius:4px; cursor:pointer;
+  }
+
+  async function updateMenu(){
+    if(!editingId)return;
+    const title=document.getElementById("menu_title").value.trim();
+    const url=document.getElementById("menu_url").value.trim();
+    const icon=document.getElementById("menu_icon").value.trim();
+    const active=document.getElementById("menu_active").checked;
+    const {error}=await supabase.from("public_menus")
+      .update({title,url,icon_class:icon,is_active:active})
+      .eq("id",editingId);
+    if(error){console.error(error); showToast("更新失敗","error"); return;}
+    resetForm(); fetchMenus(); showToast("更新しました");
+  }
+
+  async function deleteMenu(id){
+    if(!confirm("削除してよろしいですか？"))return;
+    const {error}=await supabase.from("public_menus").delete().eq("id",id);
+    if(error){console.error(error); showToast("削除失敗","error"); return;}
+    fetchMenus(); showToast("削除しました");
+  }
+
+  function resetForm(){
+    editingId=null;
+    document.getElementById("menu_title").value="";
+    document.getElementById("menu_url").value="";
+    document.getElementById("menu_icon").value="";
+    document.getElementById("menu_active").checked=false;
+    document.getElementById("addBtn").style.display="inline-block";
+    document.getElementById("updateBtn").style.display="none";
+    document.getElementById("cancelBtn").style.display="none";
+  }
+
+  function enableDragAndDrop(){
+    const tbody=document.querySelector("#menuTable tbody");
+    let dragEl=null;
+    tbody.querySelectorAll("tr").forEach(tr=>{
+      tr.ondragstart=e=>{dragEl=tr; e.dataTransfer.effectAllowed="move";}
+      tr.ondragover=e=>{
+        e.preventDefault();
+        const rect=tr.getBoundingClientRect();
+        const offset=e.clientY-rect.top-rect.height/2;
+        tr.style.borderTop=offset<0?"2px solid #3b82f6":"";
+        tr.style.borderBottom=offset>0?"2px solid #3b82f6":"";
+      };
+      tr.ondragleave=()=>{tr.style.borderTop=""; tr.style.borderBottom="";};
+      tr.ondrop=async e=>{
+        e.preventDefault();
+        tr.style.borderTop=""; tr.style.borderBottom="";
+        if(dragEl&&dragEl!==tr){
+          const after=e.clientY>tr.getBoundingClientRect().top+tr.offsetHeight/2;
+          tbody.insertBefore(dragEl,after?tr.nextSibling:tr);
+          await saveNewOrder();
+        }
+        dragEl=null;
+      };
+    });
+  }
+
+  async function saveNewOrder(){
+    const rows=[...document.querySelectorAll("#menuTable tbody tr")];
+    for(let i=0;i<rows.length;i++){
+      const id=Number(rows[i].dataset.id);
+      const newOrder=i+1;
+      const current=Number(rows[i].children[4].textContent);
+      if(current===newOrder)continue;
+      const {error}=await supabase.from("public_menus").update({sort_order:newOrder}).eq("id",id);
+      if(error){console.error(error);}
+      else rows[i].children[4].textContent=newOrder;
     }
-    #addBtn { background:#2563eb; color:#fff; }
-    #updateBtn { background:#10b981; color:#fff; display:none; }
-    #cancelBtn { background:#6b7280; color:#fff; display:none; }
-    .deleteBtn { background:#ef4444; color:#fff; }
-    .editBtn { background:#3b82f6; color:#fff; margin-right:4px; }
-    table { width:100%; border-collapse:collapse; margin-top:20px; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
-    th, td { border:1px solid #e5e7eb; padding:8px; text-align:center; }
-    th { background:#f9fafb; }
-    tr:hover { background:#f3f4f6; }
-    tbody tr { cursor:move; }
-    #toast-container { position:fixed; top:1rem; right:1rem; z-index:9999; }
-    .toast { margin-bottom:10px; padding:10px 16px; border-radius:4px; color:#fff; font-weight:500;
-      box-shadow:0 2px 6px rgba(0,0,0,0.2); animation: fadeInOut 3s forwards; }
-    .toast.success { background:#10b981; }
-    .toast.error { background:#ef4444; }
-    @keyframes fadeInOut {
-      0% { opacity:0; transform:translateY(-10px); }
-      10% { opacity:1; transform:translateY(0); }
-      90% { opacity:1; }
-      100% { opacity:0; transform:translateY(-10px); }
-    }
-  </style>
-</head>
-<body>
-  <h2>ヘッダーメニュー管理</h2>
+    showToast("順番を更新しました");
+  }
 
-  <div class="form-group">
-    <label for="menu_title">表示名</label>
-    <input type="text" id="menu_title" />
-  </div>
-  <div class="form-group">
-    <label for="menu_url">リンク先URL</label>
-    <input type="text" id="menu_url" />
-  </div>
-  <div class="form-group">
-    <label for="menu_icon">アイコンclass（任意）</label>
-    <input type="text" id="menu_icon" placeholder="例: fa-solid fa-home" />
-  </div>
-  <div class="form-group">
-    <label><input type="checkbox" id="menu_active" /> 公開状態</label>
-  </div>
+  document.getElementById("addBtn").onclick=addMenu;
+  document.getElementById("updateBtn").onclick=updateMenu;
+  document.getElementById("cancelBtn").onclick=resetForm;
 
-  <button id="addBtn">追加</button>
-  <button id="updateBtn">更新</button>
-  <button id="cancelBtn">キャンセル</button>
-
-  <table id="menuTable">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>表示名</th>
-        <th>URL</th>
-        <th>アイコンclass</th>
-        <th>順番</th>
-        <th>公開</th>
-        <th>操作</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <div id="toast-container"></div>
-
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-    const supabase = createClient(
-      "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-    );
-
-    let editingId = null;
-
-    function showToast(msg, type="success") {
-      const t=document.createElement("div");
-      t.className="toast "+type; t.textContent=msg;
-      document.getElementById("toast-container").appendChild(t);
-      setTimeout(()=>t.remove(),3000);
-    }
-
-    async function fetchMenus() {
-      const { data, error } = await supabase
-        .from("public_menus")
-        .select("*")
-        .order("sort_order",{ascending:true});
-      if(error){console.error(error); showToast("読み込み失敗","error"); return;}
-      const tbody=document.querySelector("#menuTable tbody");
-      tbody.innerHTML="";
-      data.forEach(row=>{
-        const tr=document.createElement("tr");
-        tr.draggable=true; tr.dataset.id=row.id;
-        tr.innerHTML=`
-          <td>${row.id}</td>
-          <td>${row.title||""}</td>
-          <td>${row.url||""}</td>
-          <td>${row.icon_class||""}</td>
-          <td>${row.sort_order}</td>
-          <td>${row.is_active?"✓":""}</td>
-          <td>
-            <button class="editBtn" data-id="${row.id}">編集</button>
-            <button class="deleteBtn" data-id="${row.id}">削除</button>
-          </td>`;
-        tbody.appendChild(tr);
-      });
-      document.querySelectorAll(".editBtn").forEach(btn=>{
-        btn.onclick=()=>startEdit(Number(btn.dataset.id));
-      });
-      document.querySelectorAll(".deleteBtn").forEach(btn=>{
-        btn.onclick=()=>deleteMenu(Number(btn.dataset.id));
-      });
-      enableDragAndDrop();
-    }
-
-    async function addMenu(){
-      const title=document.getElementById("menu_title").value.trim();
-      const url=document.getElementById("menu_url").value.trim();
-      const icon=document.getElementById("menu_icon").value.trim();
-      const active=document.getElementById("menu_active").checked;
-      const { error }=await supabase.from("public_menus").insert([{title,url,icon_class:icon,is_active:active}]);
-      if(error){console.error(error); showToast("追加失敗","error"); return;}
-      resetForm(); fetchMenus(); showToast("追加しました");
-    }
-
-    function startEdit(id){ editingId=id;
-      document.getElementById("addBtn").style.display="none";
-      document.getElementById("updateBtn").style.display="inline-block";
-      document.getElementById("cancelBtn").style.display="inline-block";
-      fillForm(id);
-    }
-
-    async function fillForm(id){
-      const {data,error}=await supabase.from("public_menus").select("*").eq("id",id).single();
-      if(error){console.error(error); showToast("読込失敗","error"); return;}
-      if(data){
-        document.getElementById("menu_title").value=data.title||"";
-        document.getElementById("menu_url").value=data.url||"";
-        document.getElementById("menu_icon").value=data.icon_class||"";
-        document.getElementById("menu_active").checked=data.is_active;
-      }
-    }
-
-    async function updateMenu(){
-      if(!editingId)return;
-      const title=document.getElementById("menu_title").value.trim();
-      const url=document.getElementById("menu_url").value.trim();
-      const icon=document.getElementById("menu_icon").value.trim();
-      const active=document.getElementById("menu_active").checked;
-      const {error}=await supabase.from("public_menus")
-        .update({title,url,icon_class:icon,is_active:active})
-        .eq("id",editingId);
-      if(error){console.error(error); showToast("更新失敗","error"); return;}
-      resetForm(); fetchMenus(); showToast("更新しました");
-    }
-
-    async function deleteMenu(id){
-      if(!confirm("削除してよろしいですか？"))return;
-      const {error}=await supabase.from("public_menus").delete().eq("id",id);
-      if(error){console.error(error); showToast("削除失敗","error"); return;}
-      fetchMenus(); showToast("削除しました");
-    }
-
-    function resetForm(){
-      editingId=null;
-      document.getElementById("menu_title").value="";
-      document.getElementById("menu_url").value="";
-      document.getElementById("menu_icon").value="";
-      document.getElementById("menu_active").checked=false;
-      document.getElementById("addBtn").style.display="inline-block";
-      document.getElementById("updateBtn").style.display="none";
-      document.getElementById("cancelBtn").style.display="none";
-    }
-
-    function enableDragAndDrop(){
-      const tbody=document.querySelector("#menuTable tbody");
-      let dragEl=null;
-      tbody.querySelectorAll("tr").forEach(tr=>{
-        tr.ondragstart=e=>{dragEl=tr; e.dataTransfer.effectAllowed="move";}
-        tr.ondragover=e=>{
-          e.preventDefault();
-          const rect=tr.getBoundingClientRect();
-          const offset=e.clientY-rect.top-rect.height/2;
-          tr.style.borderTop=offset<0?"2px solid #3b82f6":"";
-          tr.style.borderBottom=offset>0?"2px solid #3b82f6":"";
-        };
-        tr.ondragleave=()=>{tr.style.borderTop=""; tr.style.borderBottom="";};
-        tr.ondrop=async e=>{
-          e.preventDefault();
-          tr.style.borderTop=""; tr.style.borderBottom="";
-          if(dragEl&&dragEl!==tr){
-            const after=e.clientY>tr.getBoundingClientRect().top+tr.offsetHeight/2;
-            tbody.insertBefore(dragEl,after?tr.nextSibling:tr);
-            await saveNewOrder();
-          }
-          dragEl=null;
-        };
-      });
-    }
-
-    async function saveNewOrder(){
-      const rows=[...document.querySelectorAll("#menuTable tbody tr")];
-      for(let i=0;i<rows.length;i++){
-        const id=Number(rows[i].dataset.id);
-        const newOrder=i+1;
-        const current=Number(rows[i].children[4].textContent);
-        if(current===newOrder)continue;
-        const {error}=await supabase.from("public_menus").update({sort_order:newOrder}).eq("id",id);
-        if(error){console.error(error);}
-        else rows[i].children[4].textContent=newOrder;
-      }
-      showToast("順番を更新しました");
-    }
-
-    document.getElementById("addBtn").onclick=addMenu;
-    document.getElementById("updateBtn").onclick=updateMenu;
-    document.getElementById("cancelBtn").onclick=resetForm;
-
-    fetchMenus();
-  </script>
-</body>
-</html>
-
+  fetchMenus();
+</script>
