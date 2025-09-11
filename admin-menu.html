@@ -21,7 +21,7 @@
 
   <table id="menuTable">
     <thead>
-      <tr><th>ID</th><th>表示名</th><th>HTML</th><th>順番</th><th>公開</th><th>操作</th></tr>
+      <tr><th style="width:60px;">ID</th><th>表示名</th><th>HTML</th><th style="width:80px;">順番</th><th style="width:80px;">公開</th><th style="width:140px;">操作</th></tr>
     </thead>
     <tbody></tbody>
   </table>
@@ -75,12 +75,16 @@
     border: 1px solid #e5e7eb;
     padding: 8px;
     text-align: center;
+    user-select: none;
   }
   th {
     background-color: #f9fafb;
   }
   tr:hover {
     background-color: #f3f4f6;
+  }
+  tbody tr {
+    cursor: move;
   }
   /* トースト通知 */
   #toast-container {
@@ -140,7 +144,7 @@
     data.forEach(row => {
       const tr = document.createElement("tr");
       tr.draggable = true;
-      tr.dataset.id = row.id;
+      tr.dataset.id = String(row.id); // 明示的に文字列化
       tr.innerHTML = `
         <td>${row.id}</td>
         <td>${row.title}</td>
@@ -155,10 +159,10 @@
     });
 
     document.querySelectorAll(".editBtn").forEach(btn => {
-      btn.addEventListener("click", () => startEdit(btn.dataset.id));
+      btn.addEventListener("click", () => startEdit(Number(btn.dataset.id)));
     });
     document.querySelectorAll(".deleteBtn").forEach(btn => {
-      btn.addEventListener("click", () => deleteMenu(btn.dataset.id));
+      btn.addEventListener("click", () => deleteMenu(Number(btn.dataset.id)));
     });
 
     enableDragAndDrop();
@@ -191,7 +195,8 @@
   }
 
   async function fillForm(id) {
-    const { data } = await supabase.from("admin_menus").select("*").eq("id", id).single();
+    const { data, error } = await supabase.from("admin_menus").select("*").eq("id", id).single();
+    if (error) { console.error(error); showToast("読込に失敗しました","error"); return; }
     if (data) {
       document.getElementById("menu_title").value = data.title;
       document.getElementById("menu_filename").value = data.filename;
@@ -201,7 +206,7 @@
   }
 
   async function updateMenu() {
-    if (!editingId) return;
+    if (editingId == null) return;
     const title = document.getElementById("menu_title").value.trim();
     const filename = document.getElementById("menu_filename").value.trim();
     const order = parseInt(document.getElementById("menu_order").value.trim(), 10);
@@ -209,7 +214,7 @@
     const { error } = await supabase
       .from("admin_menus")
       .update({ title, filename, sort_order: order, is_active: active })
-      .eq("id", editingId);
+      .eq("id", Number(editingId));
     if (error) { console.error(error); showToast("更新に失敗しました","error"); return; }
     resetForm();
     fetchMenus();
@@ -218,7 +223,7 @@
 
   async function deleteMenu(id) {
     if (!confirm("削除してよろしいですか？")) return;
-    const { error } = await supabase.from("admin_menus").delete().eq("id", id);
+    const { error } = await supabase.from("admin_menus").delete().eq("id", Number(id));
     if (error) { console.error(error); showToast("削除に失敗しました","error"); return; }
     fetchMenus();
     showToast("削除しました","success");
@@ -235,7 +240,7 @@
     document.getElementById("cancelBtn").style.display = "none";
   }
 
-  // 並べ替え機能
+  // 並べ替え機能（差分更新＆エラーハンドリング強化）
   function enableDragAndDrop() {
     const tbody = document.querySelector("#menuTable tbody");
     let dragEl = null;
@@ -266,19 +271,45 @@
         tr.style.borderTop = "";
         tr.style.borderBottom = "";
         if (dragEl && dragEl !== tr) {
-          tbody.insertBefore(dragEl, e.clientY < tr.getBoundingClientRect().top + tr.offsetHeight/2 ? tr : tr.nextSibling);
-          // 並べ替え後の順番をDBに保存
-          const rows = Array.from(tbody.querySelectorAll("tr"));
-          for (let i=0; i<rows.length; i++) {
-            const id = rows[i].dataset.id;
-            await supabase.from("admin_menus").update({ sort_order: i+1 }).eq("id", id);
-          }
-          fetchMenus();
-          showToast("順番を更新しました","success");
+          // DOM順を入れ替え
+          const afterHalf = e.clientY > tr.getBoundingClientRect().top + tr.offsetHeight/2;
+          tbody.insertBefore(dragEl, afterHalf ? tr.nextSibling : tr);
+          // 保存
+          await saveNewOrder();
         }
         dragEl = null;
       });
     });
+  }
+
+  async function saveNewOrder() {
+    const tbody = document.querySelector("#menuTable tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    let errors = [];
+    for (let i=0; i<rows.length; i++) {
+      const id = Number(rows[i].dataset.id);
+      const newOrder = i + 1;
+      const currentOrder = Number(rows[i].children[3].textContent);
+      if (currentOrder === newOrder) continue; // 差分のみ更新
+      const { error } = await supabase
+        .from("admin_menus")
+        .update({ sort_order: newOrder })
+        .eq("id", id);
+      if (error) {
+        console.error("sort update error:", {id, error});
+        errors.push(error);
+      } else {
+        // テーブル表示の順番セルも即時更新
+        rows[i].children[3].textContent = String(newOrder);
+      }
+    }
+    if (errors.length) {
+      showToast("順番の保存でエラーが発生しました","error");
+    } else {
+      showToast("順番を更新しました","success");
+    }
+    // DBの確定順を反映
+    fetchMenus();
   }
 
   document.getElementById("addBtn").addEventListener("click", addMenu);
