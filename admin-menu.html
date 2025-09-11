@@ -1,26 +1,27 @@
-
 <div class="container">
   <h2>管理メニュー管理</h2>
   <div class="form-group">
-    <label for="menu_name">表示名：</label>
-    <input type="text" id="menu_name" />
+    <label for="menu_title">表示名：</label>
+    <input type="text" id="menu_title" />
   </div>
   <div class="form-group">
-    <label for="menu_html">リンク先HTML：</label>
-    <input type="text" id="menu_html" />
+    <label for="menu_filename">リンク先HTML：</label>
+    <input type="text" id="menu_filename" />
   </div>
   <div class="form-group">
     <label for="menu_order">順番（数字）：</label>
     <input type="number" id="menu_order" />
   </div>
   <div class="form-group">
-    <label><input type="checkbox" id="menu_publish" /> 公開状態</label>
+    <label><input type="checkbox" id="menu_active" /> 公開状態</label>
   </div>
   <button id="addBtn">追加</button>
+  <button id="updateBtn" style="display:none;">更新</button>
+  <button id="cancelBtn" style="display:none;">キャンセル</button>
 
   <table id="menuTable">
     <thead>
-      <tr><th>表示名</th><th>HTML</th><th>順番</th><th>公開</th></tr>
+      <tr><th>ID</th><th>表示名</th><th>HTML</th><th>順番</th><th>公開</th><th>操作</th></tr>
     </thead>
     <tbody></tbody>
   </table>
@@ -29,11 +30,34 @@
 <style>
   .container {
     padding: 20px;
-    font-family: sans-serif;
+    font-family: "Segoe UI", sans-serif;
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  h2 {
+    margin-bottom: 1rem;
   }
   .form-group {
     margin-bottom: 10px;
   }
+  input[type=text], input[type=number] {
+    padding: 6px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  button {
+    margin-right: 5px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  #addBtn { background-color: #2563eb; color: white; }
+  #updateBtn { background-color: #10b981; color: white; }
+  #cancelBtn { background-color: #6b7280; color: white; }
+  .deleteBtn { background-color: #ef4444; color: white; }
   table {
     margin-top: 20px;
     border-collapse: collapse;
@@ -42,21 +66,30 @@
   th, td {
     border: 1px solid #ddd;
     padding: 8px;
+    text-align: center;
   }
   th {
-    background-color: #f0f0f0;
+    background-color: #f9fafb;
+  }
+  tr:hover {
+    background-color: #f3f4f6;
   }
 </style>
 
 <script type="module">
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+  const supabase = createClient(
+    "https://htnmjsqgoapvuanrsuma.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+  );
 
-  const supabaseUrl = 'https://htnmjsqgoapvuanrsuma.supabase.co';
-  const supabaseKey = 'https://htnmjsqgoapvuanrsuma.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA';
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  let editingId = null;
 
-  const fetchMenus = async () => {
-    const { data, error } = await supabase.from('admin_menu').select('*').order('order', { ascending: true });
+  async function fetchMenus() {
+    const { data, error } = await supabase
+      .from('admin_menus')
+      .select('*')
+      .order('sort_order', { ascending: true });
     if (error) {
       console.error(error);
       return;
@@ -66,39 +99,98 @@
     data.forEach(row => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${row.name}</td>
-        <td>${row.html}</td>
-        <td>${row.order}</td>
-        <td>${row.publish ? "✓" : ""}</td>`;
+        <td>${row.id}</td>
+        <td>${row.title}</td>
+        <td>${row.filename}</td>
+        <td>${row.sort_order}</td>
+        <td>${row.is_active ? "✓" : ""}</td>
+        <td>
+          <button class="editBtn" data-id="${row.id}">編集</button>
+          <button class="deleteBtn" data-id="${row.id}">削除</button>
+        </td>`;
       tbody.appendChild(tr);
     });
-  };
 
-  document.getElementById("addBtn").addEventListener("click", async () => {
-    const name = document.getElementById("menu_name").value.trim();
-    const html = document.getElementById("menu_html").value.trim();
+    document.querySelectorAll(".editBtn").forEach(btn => {
+      btn.addEventListener("click", () => startEdit(btn.dataset.id));
+    });
+    document.querySelectorAll(".deleteBtn").forEach(btn => {
+      btn.addEventListener("click", () => deleteMenu(btn.dataset.id));
+    });
+  }
+
+  async function addMenu() {
+    const title = document.getElementById("menu_title").value.trim();
+    const filename = document.getElementById("menu_filename").value.trim();
     const order = parseInt(document.getElementById("menu_order").value.trim(), 10);
-    const publish = document.getElementById("menu_publish").checked;
-
-    if (!name || !html || isNaN(order)) {
-      alert("すべての必須項目を入力してください");
+    const active = document.getElementById("menu_active").checked;
+    if (!title || !filename || isNaN(order)) {
+      alert("必須項目を入力してください");
       return;
     }
-
-    const { error } = await supabase.from("admin_menu").insert([{ name, html, order, publish }]);
-    if (error) {
-      alert("追加に失敗しました");
-      console.error(error);
-      return;
-    }
-
-    // フォームリセットと再取得
-    document.getElementById("menu_name").value = "";
-    document.getElementById("menu_html").value = "";
-    document.getElementById("menu_order").value = "";
-    document.getElementById("menu_publish").checked = false;
+    const { error } = await supabase.from("admin_menus").insert([
+      { title, filename, sort_order: order, is_active: active }
+    ]);
+    if (error) { console.error(error); alert("追加に失敗しました"); return; }
+    resetForm();
     fetchMenus();
-  });
+  }
+
+  function startEdit(id) {
+    editingId = id;
+    document.getElementById("addBtn").style.display = "none";
+    document.getElementById("updateBtn").style.display = "inline-block";
+    document.getElementById("cancelBtn").style.display = "inline-block";
+
+    fillForm(id);
+  }
+
+  async function fillForm(id) {
+    const { data } = await supabase.from("admin_menus").select("*").eq("id", id).single();
+    if (data) {
+      document.getElementById("menu_title").value = data.title;
+      document.getElementById("menu_filename").value = data.filename;
+      document.getElementById("menu_order").value = data.sort_order;
+      document.getElementById("menu_active").checked = data.is_active;
+    }
+  }
+
+  async function updateMenu() {
+    if (!editingId) return;
+    const title = document.getElementById("menu_title").value.trim();
+    const filename = document.getElementById("menu_filename").value.trim();
+    const order = parseInt(document.getElementById("menu_order").value.trim(), 10);
+    const active = document.getElementById("menu_active").checked;
+    const { error } = await supabase
+      .from("admin_menus")
+      .update({ title, filename, sort_order: order, is_active: active })
+      .eq("id", editingId);
+    if (error) { console.error(error); alert("更新に失敗しました"); return; }
+    resetForm();
+    fetchMenus();
+  }
+
+  async function deleteMenu(id) {
+    if (!confirm("削除してよろしいですか？")) return;
+    const { error } = await supabase.from("admin_menus").delete().eq("id", id);
+    if (error) { console.error(error); alert("削除に失敗しました"); return; }
+    fetchMenus();
+  }
+
+  function resetForm() {
+    editingId = null;
+    document.getElementById("menu_title").value = "";
+    document.getElementById("menu_filename").value = "";
+    document.getElementById("menu_order").value = "";
+    document.getElementById("menu_active").checked = false;
+    document.getElementById("addBtn").style.display = "inline-block";
+    document.getElementById("updateBtn").style.display = "none";
+    document.getElementById("cancelBtn").style.display = "none";
+  }
+
+  document.getElementById("addBtn").addEventListener("click", addMenu);
+  document.getElementById("updateBtn").addEventListener("click", updateMenu);
+  document.getElementById("cancelBtn").addEventListener("click", resetForm);
 
   fetchMenus();
 </script>
