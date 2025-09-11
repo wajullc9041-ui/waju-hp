@@ -1,131 +1,104 @@
-<div class="content-container">
+
+<div class="container">
   <h2>管理メニュー管理</h2>
-  <form id="menuForm">
-    <div class="form-group">
-      <label>表示名：</label>
-      <input type="text" id="title" required>
-    </div>
-    <div class="form-group">
-      <label>リンク先HTML：</label>
-      <input type="text" id="filename" required>
-    </div>
-    <div class="form-group">
-      <label>順番（数字）：</label>
-      <input type="number" id="sort_order" required>
-    </div>
-    <div class="form-group">
-      <label><input type="checkbox" id="is_active"> 公開状態</label>
-    </div>
-    <button type="submit">追加</button>
-  </form>
+  <div class="form-group">
+    <label for="menu_name">表示名：</label>
+    <input type="text" id="menu_name" />
+  </div>
+  <div class="form-group">
+    <label for="menu_html">リンク先HTML：</label>
+    <input type="text" id="menu_html" />
+  </div>
+  <div class="form-group">
+    <label for="menu_order">順番（数字）：</label>
+    <input type="number" id="menu_order" />
+  </div>
+  <div class="form-group">
+    <label><input type="checkbox" id="menu_publish" /> 公開状態</label>
+  </div>
+  <button id="addBtn">追加</button>
 
   <table id="menuTable">
     <thead>
-      <tr>
-        <th>表示名</th>
-        <th>HTML</th>
-        <th>順番</th>
-        <th>公開</th>
-      </tr>
+      <tr><th>表示名</th><th>HTML</th><th>順番</th><th>公開</th></tr>
     </thead>
     <tbody></tbody>
   </table>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script>
-  const supabase = supabase.createClient(
-    'https://htnmjsqgoapvuanrsuma.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA'
-  );
-
-  const tableBody = document.querySelector('#menuTable tbody');
-  const form = document.getElementById('menuForm');
-
-  async function fetchMenus() {
-    const { data, error } = await supabase
-      .from('admin_menus')
-      .select('*')
-      .order('sort_order');
-
-    if (error) {
-      console.error('取得エラー:', error);
-      return;
-    }
-
-    tableBody.innerHTML = '';
-    data.forEach(menu => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${menu.title}</td>
-        <td>${menu.filename}</td>
-        <td>${menu.sort_order}</td>
-        <td>${menu.is_active ? '✔' : ''}</td>
-      `;
-      tableBody.appendChild(row);
-    });
-  }
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const title = document.getElementById('title').value;
-    const filename = document.getElementById('filename').value;
-    const sort_order = Number(document.getElementById('sort_order').value);
-    const is_active = document.getElementById('is_active').checked;
-
-    const { error } = await supabase.from('admin_menus').insert([{ title, filename, sort_order, is_active }]);
-    if (error) {
-      alert('追加失敗: ' + error.message);
-    } else {
-      form.reset();
-      await fetchMenus();
-    }
-  });
-
-  fetchMenus();
-</script>
-
 <style>
-  .content-container {
+  .container {
     padding: 20px;
-    font-family: "Segoe UI", sans-serif;
+    font-family: sans-serif;
   }
   .form-group {
     margin-bottom: 10px;
   }
-  label {
-    display: inline-block;
-    width: 120px;
-    font-weight: bold;
-  }
-  input[type="text"],
-  input[type="number"] {
-    padding: 5px;
-    width: 200px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  button[type="submit"] {
-    margin-top: 10px;
-    padding: 6px 16px;
-    background-color: #4f46e5;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
   table {
     margin-top: 20px;
-    width: 100%;
     border-collapse: collapse;
-    font-size: 0.95rem;
+    width: 100%;
   }
   th, td {
-    padding: 8px 12px;
     border: 1px solid #ddd;
-    text-align: left;
+    padding: 8px;
   }
   th {
     background-color: #f0f0f0;
   }
 </style>
+
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+  const supabaseUrl = 'https://htnmjsqgoapvuanrsuma.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA';
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  const fetchMenus = async () => {
+    const { data, error } = await supabase.from('admin_menu').select('*').order('order', { ascending: true });
+    if (error) {
+      console.error(error);
+      return;
+    }
+    const tbody = document.querySelector("#menuTable tbody");
+    tbody.innerHTML = "";
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.name}</td>
+        <td>${row.html}</td>
+        <td>${row.order}</td>
+        <td>${row.publish ? "✓" : ""}</td>`;
+      tbody.appendChild(tr);
+    });
+  };
+
+  document.getElementById("addBtn").addEventListener("click", async () => {
+    const name = document.getElementById("menu_name").value.trim();
+    const html = document.getElementById("menu_html").value.trim();
+    const order = parseInt(document.getElementById("menu_order").value.trim(), 10);
+    const publish = document.getElementById("menu_publish").checked;
+
+    if (!name || !html || isNaN(order)) {
+      alert("すべての必須項目を入力してください");
+      return;
+    }
+
+    const { error } = await supabase.from("admin_menu").insert([{ name, html, order, publish }]);
+    if (error) {
+      alert("追加に失敗しました");
+      console.error(error);
+      return;
+    }
+
+    // フォームリセットと再取得
+    document.getElementById("menu_name").value = "";
+    document.getElementById("menu_html").value = "";
+    document.getElementById("menu_order").value = "";
+    document.getElementById("menu_publish").checked = false;
+    fetchMenus();
+  });
+
+  fetchMenus();
+</script>
