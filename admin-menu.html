@@ -1,27 +1,26 @@
-
-<!-- 管理メニュー管理 -->
-<div class="container mt-4">
+<div class="content-container">
   <h2>管理メニュー管理</h2>
-  <div class="form-group">
-    <label for="displayName">表示名：</label>
-    <input type="text" id="displayName" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label for="htmlLink">リンク先HTML：</label>
-    <input type="text" id="htmlLink" class="form-control" />
-  </div>
-  <div class="form-group">
-    <label for="order">順番（数字）：</label>
-    <input type="number" id="order" class="form-control" />
-  </div>
-  <div class="form-group form-check">
-    <input type="checkbox" id="isPublished" class="form-check-input" />
-    <label class="form-check-label" for="isPublished">公開状態</label>
-  </div>
-  <button id="addButton" class="btn btn-primary">追加</button>
+  <form id="menuForm">
+    <div class="form-group">
+      <label>表示名：</label>
+      <input type="text" id="title" required>
+    </div>
+    <div class="form-group">
+      <label>リンク先HTML：</label>
+      <input type="text" id="filename" required>
+    </div>
+    <div class="form-group">
+      <label>順番（数字）：</label>
+      <input type="number" id="sort_order" required>
+    </div>
+    <div class="form-group">
+      <label><input type="checkbox" id="is_active"> 公開状態</label>
+    </div>
+    <button type="submit">追加</button>
+  </form>
 
-  <table class="table mt-4">
-    <thead class="thead-light">
+  <table id="menuTable">
+    <thead>
       <tr>
         <th>表示名</th>
         <th>HTML</th>
@@ -29,71 +28,104 @@
         <th>公開</th>
       </tr>
     </thead>
-    <tbody id="menuTableBody"></tbody>
+    <tbody></tbody>
   </table>
 </div>
 
-<script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+  const supabase = supabase.createClient(
+    'https://htnmjsqgoapvuanrsuma.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA'
+  );
 
-  const supabaseUrl = 'https://htnmjsqgoapvuanrsuma.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA';
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const tableBody = document.querySelector('#menuTable tbody');
+  const form = document.getElementById('menuForm');
 
-  document.addEventListener('DOMContentLoaded', async () => {
-    const tableBody = document.getElementById("menuTableBody");
+  async function fetchMenus() {
+    const { data, error } = await supabase
+      .from('admin_menus')
+      .select('*')
+      .order('sort_order');
 
-    async function loadMenus() {
-      const { data, error } = await supabase
-        .from('admin_menu')
-        .select('*')
-        .order('sort_order', { ascending: true });
-
-      tableBody.innerHTML = '';
-      if (error) {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td colspan="4">読み込みエラー: ${error.message}</td>`;
-        tableBody.appendChild(row);
-        return;
-      }
-
-      data.forEach((item) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${item.label}</td>
-          <td>${item.html}</td>
-          <td>${item.sort_order}</td>
-          <td>${item.is_published ? '✓' : ''}</td>
-        `;
-        tableBody.appendChild(row);
-      });
+    if (error) {
+      console.error('取得エラー:', error);
+      return;
     }
 
-    document.getElementById('addButton').addEventListener('click', async () => {
-      const label = document.getElementById('displayName').value.trim();
-      const html = document.getElementById('htmlLink').value.trim();
-      const sort_order = parseInt(document.getElementById('order').value, 10);
-      const is_published = document.getElementById('isPublished').checked;
-
-      if (!label || !html || isNaN(sort_order)) {
-        alert("全項目を正しく入力してください");
-        return;
-      }
-
-      const { error } = await supabase.from('admin_menu').insert([{ label, html, sort_order, is_published }]);
-      if (error) {
-        alert("追加に失敗しました: " + error.message);
-        return;
-      }
-
-      document.getElementById('displayName').value = '';
-      document.getElementById('htmlLink').value = '';
-      document.getElementById('order').value = '';
-      document.getElementById('isPublished').checked = false;
-
-      await loadMenus();
+    tableBody.innerHTML = '';
+    data.forEach(menu => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${menu.title}</td>
+        <td>${menu.filename}</td>
+        <td>${menu.sort_order}</td>
+        <td>${menu.is_active ? '✔' : ''}</td>
+      `;
+      tableBody.appendChild(row);
     });
+  }
 
-    await loadMenus();
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const title = document.getElementById('title').value;
+    const filename = document.getElementById('filename').value;
+    const sort_order = Number(document.getElementById('sort_order').value);
+    const is_active = document.getElementById('is_active').checked;
+
+    const { error } = await supabase.from('admin_menus').insert([{ title, filename, sort_order, is_active }]);
+    if (error) {
+      alert('追加失敗: ' + error.message);
+    } else {
+      form.reset();
+      await fetchMenus();
+    }
   });
+
+  fetchMenus();
 </script>
+
+<style>
+  .content-container {
+    padding: 20px;
+    font-family: "Segoe UI", sans-serif;
+  }
+  .form-group {
+    margin-bottom: 10px;
+  }
+  label {
+    display: inline-block;
+    width: 120px;
+    font-weight: bold;
+  }
+  input[type="text"],
+  input[type="number"] {
+    padding: 5px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  button[type="submit"] {
+    margin-top: 10px;
+    padding: 6px 16px;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+  th, td {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  th {
+    background-color: #f0f0f0;
+  }
+</style>
