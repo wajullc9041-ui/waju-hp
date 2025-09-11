@@ -1,4 +1,7 @@
-<!-- ===== 管理：ヘッダー＆フッター設定 + メニュー管理 (hf_settings対応) ===== -->
+<!-- ===== 管理：ヘッダー＆フッター統合管理（フラグメント） =====
+親の admin-top.html に読み込むことを想定（<html> は含めていません）
+必要テーブル: settings, public_menus
+-->
 
 <div id="hf-admin-root">
   <h2>ヘッダー & フッター 管理</h2>
@@ -15,20 +18,38 @@
 
     <!-- ===== ヘッダー：編集パネル ===== -->
     <div class="edit-grid">
-      <div class="field"><label>会社名</label><input type="text" id="company_name" /></div>
-      <div class="field"><label>ロゴURL</label><input type="text" id="logo_url" /></div>
-      <div class="field"><label>ロゴ高さ(px)</label><input type="number" id="logo_height" /></div>
-      <div class="field"><label>ロゴ位置</label><select id="logo_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-      <div class="field"><label>会社名位置</label><select id="company_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-      <div class="field"><label>ナビ位置</label><select id="nav_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-      <div class="field"><label>背景色</label><input type="color" id="header_bg_color" /></div>
-      <div class="field"><label>背景グラデーション</label><input type="text" id="header_bg_gradient" placeholder="linear-gradient(...)" /></div>
-      <div class="field"><label>文字色</label><input type="color" id="header_text_color" /></div>
-      <div class="field"><label>フォント</label><input type="text" id="header_font_family" placeholder="Noto Sans JP, sans-serif" /></div>
-      <div class="field"><label>文字サイズ(px)</label><input type="number" id="header_font_size" /></div>
-      <div class="field"><label>文字太さ</label><select id="header_font_weight"><option>normal</option><option>bold</option></select></div>
-      <div class="field"><label>リンク間隔(px)</label><input type="number" id="header_link_spacing" /></div>
-      <div class="field col2"><label>パディング</label><input type="text" id="header_padding" /></div>
+      <div class="field">
+        <label>会社名</label>
+        <input type="text" id="company_name" placeholder="合同会社WaJu" />
+      </div>
+      <div class="field">
+        <label>ロゴ画像URL</label>
+        <input type="text" id="logo_url" placeholder="https://.../logo.png" />
+      </div>
+      <div class="field">
+        <label>ロゴ高さ(px)</label>
+        <input type="number" id="logo_height_px" min="16" max="200" step="1" />
+      </div>
+      <div class="field">
+        <label>背景色</label>
+        <input type="color" id="header_bg_color" />
+      </div>
+      <div class="field">
+        <label>文字色</label>
+        <input type="color" id="header_text_color" />
+      </div>
+      <div class="field">
+        <label>フォントサイズ(px)</label>
+        <input type="number" id="header_font_size_px" min="10" max="40" step="1" />
+      </div>
+      <div class="field">
+        <label>メニュー間隔(px)</label>
+        <input type="number" id="header_gap_px" min="0" max="80" step="1" />
+      </div>
+      <div class="field col2">
+        <label>パディング（例: 12px 16px）</label>
+        <input type="text" id="header_padding" placeholder="12px 16px" />
+      </div>
     </div>
   </section>
 
@@ -44,78 +65,402 @@
 
     <!-- ===== フッター：編集パネル ===== -->
     <div class="edit-grid">
-      <div class="field"><label>コピーライト</label><input type="text" id="footer_text" /></div>
-      <div class="field"><label>配置</label><select id="footer_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-      <div class="field"><label>背景色</label><input type="color" id="footer_bg_color" /></div>
-      <div class="field"><label>背景グラデーション</label><input type="text" id="footer_bg_gradient" /></div>
-      <div class="field"><label>文字色</label><input type="color" id="footer_text_color" /></div>
-      <div class="field"><label>フォント</label><input type="text" id="footer_font_family" /></div>
-      <div class="field"><label>文字サイズ(px)</label><input type="number" id="footer_font_size" /></div>
-      <div class="field"><label>文字太さ</label><select id="footer_font_weight"><option>normal</option><option>bold</option></select></div>
-      <div class="field"><label>リンク間隔(px)</label><input type="number" id="footer_link_spacing" /></div>
-      <div class="field"><label>固定表示</label><input type="checkbox" id="footer_fixed" /></div>
-      <div class="field col2"><label>パディング</label><input type="text" id="footer_padding" /></div>
+      <div class="field">
+        <label>コピーライト</label>
+        <input type="text" id="footer_text" placeholder="© WaJu LLC" />
+      </div>
+      <div class="field">
+        <label>背景色</label>
+        <input type="color" id="footer_bg_color" />
+      </div>
+      <div class="field">
+        <label>文字色</label>
+        <input type="color" id="footer_text_color" />
+      </div>
+      <div class="field">
+        <label>フォントサイズ(px)</label>
+        <input type="number" id="footer_font_size_px" min="10" max="36" step="1" />
+      </div>
+      <div class="field">
+        <label>リンク間隔(px)</label>
+        <input type="number" id="footer_gap_px" min="0" max="60" step="1" />
+      </div>
+      <div class="field">
+        <label>固定表示</label>
+        <label class="switch">
+          <input type="checkbox" id="footer_fixed">
+          <span></span>
+        </label>
+      </div>
+      <div class="field col2">
+        <label>パディング（例: 16px）</label>
+        <input type="text" id="footer_padding" placeholder="16px" />
+      </div>
     </div>
   </section>
 
   <!-- ================= メニュー管理 ================= -->
   <section class="panel">
     <div class="panel-head">
-      <h3>メニュー管理</h3>
+      <h3>メニュー管理（ヘッダー/フッター共通順）</h3>
+      <div class="actions">
+        <button id="refreshBtn" class="btn">再読み込み</button>
+      </div>
     </div>
-    <table id="menuTable"><thead><tr><th>ID</th><th>タイトル</th><th>URL</th><th>Header</th><th>Footer</th></tr></thead><tbody></tbody></table>
+
+    <div class="form-grid">
+      <div class="field"><label>表示名</label><input id="menu_title" type="text"></div>
+      <div class="field"><label>リンク先URL</label><input id="menu_url" type="text" placeholder="/about.html"></div>
+      <div class="field"><label>アイコンclass（任意）</label><input id="menu_icon" type="text" placeholder="fa-solid fa-home"></div>
+      <div class="checks">
+        <label><input type="checkbox" id="menu_active"> 公開</label>
+        <label><input type="checkbox" id="menu_show_header"> ヘッダーに表示</label>
+        <label><input type="checkbox" id="menu_show_footer"> フッターに表示</label>
+      </div>
+    </div>
+
+    <div class="btns">
+      <button id="addBtn" class="btn primary">追加</button>
+      <button id="updateBtn" class="btn success" style="display:none;">更新</button>
+      <button id="cancelBtn" class="btn muted" style="display:none;">キャンセル</button>
+    </div>
+
+    <table id="menuTable">
+      <thead><tr>
+        <th>ID</th><th>表示名</th><th>URL</th><th>アイコン</th>
+        <th>順番</th><th>公開</th><th>Header</th><th>Footer</th><th>操作</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
   </section>
+
+  <div id="toast-container"></div>
 </div>
 
+<style>
+  #hf-admin-root * { box-sizing: border-box; }
+  #hf-admin-root h2 { margin: 8px 0 16px; font-size: 20px; color:#111827; }
+  #hf-admin-root h3 { margin: 0; font-size: 16px; color:#111827; }
+  #hf-admin-root .panel { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:14px; margin:14px 0; box-shadow:0 1px 2px rgba(0,0,0,.04); }
+  #hf-admin-root .panel-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  #hf-admin-root .actions { display:flex; gap:8px; }
+  #hf-admin-root .preview-surface { border:1px dashed #cbd5e1; border-radius:10px; overflow:hidden; background:#fff; }
+  #hf-admin-root .edit-grid { display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:10px; margin-top:12px; }
+  #hf-admin-root .edit-grid .col2 { grid-column: span 2 / span 2; }
+  #hf-admin-root .field { display:flex; flex-direction:column; gap:6px; }
+  #hf-admin-root input[type="text"], #hf-admin-root input[type="number"] { padding:8px; border:1px solid #d1d5db; border-radius:6px; }
+  #hf-admin-root .switch { position:relative; display:inline-block; width:42px; height:24px; }
+  #hf-admin-root .switch input { display:none; }
+  #hf-admin-root .switch span { position:absolute; inset:0; background:#d1d5db; border-radius:999px; transition:.2s; }
+  #hf-admin-root .switch span::after{ content:""; position:absolute; width:18px; height:18px; top:3px; left:3px; background:#fff; border-radius:999px; transition:.2s; }
+  #hf-admin-root .switch input:checked + span { background:#10b981; }
+  #hf-admin-root .switch input:checked + span::after { transform: translateX(18px); }
+  #hf-admin-root .form-grid { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:10px; margin:8px 0; }
+  #hf-admin-root .checks { display:flex; align-items:center; gap:12px; }
+  #hf-admin-root .btns { display:flex; gap:8px; margin:8px 0 12px; }
+  #hf-admin-root .btn { padding:8px 12px; border:none; border-radius:6px; background:#e5e7eb; cursor:pointer; }
+  #hf-admin-root .btn.primary { background:#2563eb; color:#fff; }
+  #hf-admin-root .btn.success { background:#10b981; color:#fff; }
+  #hf-admin-root .btn.muted { background:#6b7280; color:#fff; }
+  #hf-admin-root .btn.warn { background:#ef4444; color:#fff; }
+  #hf-admin-root table { width:100%; border-collapse:collapse; }
+  #hf-admin-root th, #hf-admin-root td { border:1px solid #e5e7eb; padding:8px; text-align:center; }
+  #hf-admin-root thead th { background:#f9fafb; }
+  #hf-admin-root tbody tr { cursor:move; }
+  /* 本番と同じ構造のプレビュー用CSS変数 */
+  #hf-admin-root .site-header, #hf-admin-root .site-footer { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+  #hf-admin-root .site-header { display:flex; align-items:center; justify-content:space-between; padding: var(--header-padding, 12px 16px); color: var(--header-text, #fff); background: var(--header-bg, #1f2937); }
+  #hf-admin-root .site-header .brand { display:flex; align-items:center; gap:12px; }
+  #hf-admin-root .site-header .brand img { height: var(--logo-height, 40px); object-fit: contain; }
+  #hf-admin-root .site-header nav ul { list-style:none; display:flex; gap: var(--header-gap, 16px); margin:0; padding:0; }
+  #hf-admin-root .site-header nav a { color: var(--header-text, #fff); text-decoration:none; font-size: var(--header-font-size, 16px); }
+  #hf-admin-root .site-header nav a:hover { text-decoration: underline; }
+  #hf-admin-root .site-footer { padding: var(--footer-padding, 16px); color: var(--footer-text, #fff); background: var(--footer-bg, #111827); display:flex; flex-direction:column; gap: var(--footer-gap, 8px); }
+  #hf-admin-root .site-footer .links { display:flex; flex-wrap:wrap; gap:12px; }
+  #hf-admin-root .site-footer a { color: var(--footer-text, #fff); text-decoration:none; font-size: var(--footer-font-size, 14px); }
+  #hf-admin-root .site-footer a:hover { text-decoration: underline; }
+  #hf-admin-root .site-footer .copy { opacity:.85; font-size:12px; }
+  #hf-admin-root #toast-container { position:fixed; top:1rem; right:1rem; z-index:9999; }
+  #hf-admin-root .toast { margin-bottom:10px; padding:10px 16px; border-radius:6px; color:#fff; font-weight:500; box-shadow:0 2px 6px rgba(0,0,0,.2); animation: fadeInOut 3s forwards; }
+  #hf-admin-root .toast.success { background:#10b981; } #hf-admin-root .toast.error { background:#ef4444; }
+  @keyframes fadeInOut { 0%{opacity:0;transform:translateY(-8px)} 10%{opacity:1;transform:none} 90%{opacity:1} 100%{opacity:0;transform:translateY(-8px)} }
+</style>
+
 <script type="module">
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-const supabase = createClient("https://htnmjsqgoapvuanrsuma.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA");
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+  const supabase = createClient(
+    "https://htnmjsqgoapvuanrsuma.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+  );
 
-async function loadSettings(area){
-  let {data,error}=await supabase.from("hf_settings").select("*").eq("area",area).single();
-  if(error && error.code==="PGRST116"){ // not found
-    await supabase.from("hf_settings").insert({area});
-    ({data}=await supabase.from("hf_settings").select("*").eq("area",area).single());
+  // ============ ユーティリティ ============
+  const $ = (q)=>document.querySelector(q);
+  const $$ = (q)=>document.querySelectorAll(q);
+  const toast = (m,t="success")=>{ const n=document.createElement("div"); n.className="toast "+t; n.textContent=m; $("#toast-container").appendChild(n); setTimeout(()=>n.remove(),3000); };
+
+  // 設定物を保持（1行想定）
+  let settingsRow = null;
+  let editingId = null;
+
+  // ============ CSS変数適用 ============
+  function applyThemeVars(root, s){
+    root.style.setProperty("--header-bg", s?.header_bg_color ?? "#1f2937");
+    root.style.setProperty("--header-text", s?.header_text_color ?? "#ffffff");
+    root.style.setProperty("--header-gap", ((s?.header_gap_px??16))+"px");
+    root.style.setProperty("--header-font-size", ((s?.header_font_size_px??16))+"px");
+    root.style.setProperty("--header-padding", s?.header_padding ?? "12px 16px");
+    root.style.setProperty("--logo-height", ((s?.logo_height_px??40))+"px");
+
+    root.style.setProperty("--footer-bg", s?.footer_bg_color ?? "#111827");
+    root.style.setProperty("--footer-text", s?.footer_text_color ?? "#ffffff");
+    root.style.setProperty("--footer-gap", ((s?.footer_gap_px??8))+"px");
+    root.style.setProperty("--footer-font-size", ((s?.footer_font_size_px??14))+"px");
+    root.style.setProperty("--footer-padding", s?.footer_padding ?? "16px");
   }
-  return data;
-}
-async function saveSettings(area,values){
-  await supabase.from("hf_settings").upsert({...values,area});
-}
 
-document.getElementById("saveHeaderBtn").onclick=async()=>{
-  const values={
-    company_name:document.getElementById("company_name").value,
-    logo_url:document.getElementById("logo_url").value,
-    logo_height:+document.getElementById("logo_height").value,
-    logo_alignment:document.getElementById("logo_alignment").value,
-    company_alignment:document.getElementById("company_alignment").value,
-    nav_alignment:document.getElementById("nav_alignment").value,
-    bg_color:document.getElementById("header_bg_color").value,
-    bg_gradient:document.getElementById("header_bg_gradient").value,
-    text_color:document.getElementById("header_text_color").value,
-    font_family:document.getElementById("header_font_family").value,
-    font_size:+document.getElementById("header_font_size").value,
-    font_weight:document.getElementById("header_font_weight").value,
-    link_spacing:+document.getElementById("header_link_spacing").value,
-    padding:document.getElementById("header_padding").value
-  };
-  await saveSettings("header",values);
-};
-document.getElementById("saveFooterBtn").onclick=async()=>{
-  const values={
-    footer_text:document.getElementById("footer_text").value,
-    footer_alignment:document.getElementById("footer_alignment").value,
-    bg_color:document.getElementById("footer_bg_color").value,
-    bg_gradient:document.getElementById("footer_bg_gradient").value,
-    text_color:document.getElementById("footer_text_color").value,
-    font_family:document.getElementById("footer_font_family").value,
-    font_size:+document.getElementById("footer_font_size").value,
-    font_weight:document.getElementById("footer_font_weight").value,
-    link_spacing:+document.getElementById("footer_link_spacing").value,
-    footer_fixed:document.getElementById("footer_fixed").checked,
-    padding:document.getElementById("footer_padding").value
-  };
-  await saveSettings("footer",values);
-};
+  // ============ プレビュー描画 ============
+  function renderHeader(target, menus, s){
+    target.innerHTML = "";
+    const wrap = document.createElement("div"); wrap.className="site-header";
+
+    const brand = document.createElement("div"); brand.className="brand";
+    if(s?.logo_url){ const img=document.createElement("img"); img.src=s.logo_url; img.alt="logo"; brand.appendChild(img); }
+    const nm=document.createElement("span"); nm.textContent = s?.company_name || "Company"; brand.appendChild(nm);
+
+    const nav=document.createElement("nav"); const ul=document.createElement("ul");
+    (menus||[]).filter(m=>m.is_active && m.show_in_header).forEach(m=>{
+      const li=document.createElement("li");
+      li.innerHTML = `<a href="${m.url}">${m.icon_class? `<i class="${m.icon_class}"></i> `:""}${m.title??""}</a>`;
+      ul.appendChild(li);
+    });
+    nav.appendChild(ul);
+    wrap.appendChild(brand); wrap.appendChild(nav);
+    target.appendChild(wrap);
+  }
+
+  function renderFooter(target, menus, s){
+    target.innerHTML = "";
+    const wrap=document.createElement("div"); wrap.className="site-footer";
+    const links=document.createElement("div"); links.className="links";
+    (menus||[]).filter(m=>m.is_active && m.show_in_footer).forEach(m=>{
+      const a=document.createElement("a"); a.href=m.url; a.innerHTML = `${m.icon_class? `<i class="${m.icon_class}"></i> `:""}${m.title??""}`;
+      links.appendChild(a);
+    });
+    const copy=document.createElement("div"); copy.className="copy"; copy.textContent = s?.footer_text || "© WaJu LLC";
+    wrap.appendChild(links); wrap.appendChild(copy);
+    target.appendChild(wrap);
+  }
+
+  async function refreshPreviews(){
+    const { data:menus } = await supabase.from("public_menus").select("*").eq("is_active", true).order("sort_order", {ascending:true});
+    applyThemeVars(document.querySelector("#hf-admin-root"), settingsRow || {});
+    renderHeader($("#headerPreview"), menus||[], settingsRow||{});
+    renderFooter($("#footerPreview"), menus||[], settingsRow||{});
+  }
+
+  // ============ settings フォーム同期 ============
+  function fillSettingsForm(s){
+    $("#company_name").value = s?.company_name || "";
+    $("#logo_url").value = s?.logo_url || "";
+    $("#logo_height_px").value = s?.logo_height_px ?? 40;
+
+    $("#header_bg_color").value = s?.header_bg_color || "#1f2937";
+    $("#header_text_color").value = s?.header_text_color || "#ffffff";
+    $("#header_font_size_px").value = s?.header_font_size_px ?? 16;
+    $("#header_gap_px").value = s?.header_gap_px ?? 16;
+    $("#header_padding").value = s?.header_padding || "12px 16px";
+
+    $("#footer_text").value = s?.footer_text || "© WaJu LLC";
+    $("#footer_bg_color").value = s?.footer_bg_color || "#111827";
+    $("#footer_text_color").value = s?.footer_text_color || "#ffffff";
+    $("#footer_font_size_px").value = s?.footer_font_size_px ?? 14;
+    $("#footer_gap_px").value = s?.footer_gap_px ?? 8;
+    $("#footer_padding").value = s?.footer_padding || "16px";
+    $("#footer_fixed").checked = !!s?.footer_fixed;
+  }
+
+  function readSettingsFromForm(){
+    return {
+      company_name: $("#company_name").value.trim() || null,
+      logo_url: $("#logo_url").value.trim() || null,
+      logo_height_px: Number($("#logo_height_px").value)||40,
+      header_bg_color: $("#header_bg_color").value,
+      header_text_color: $("#header_text_color").value,
+      header_font_size_px: Number($("#header_font_size_px").value)||16,
+      header_gap_px: Number($("#header_gap_px").value)||16,
+      header_padding: $("#header_padding").value.trim() || "12px 16px",
+      footer_text: $("#footer_text").value.trim() || "© WaJu LLC",
+      footer_bg_color: $("#footer_bg_color").value,
+      footer_text_color: $("#footer_text_color").value,
+      footer_font_size_px: Number($("#footer_font_size_px").value)||14,
+      footer_gap_px: Number($("#footer_gap_px").value)||8,
+      footer_padding: $("#footer_padding").value.trim() || "16px",
+      footer_fixed: $("#footer_fixed").checked
+    };
+  }
+
+  // 入力 → 即時プレビュー反映
+  ["input","change"].forEach(ev=>{
+    $$("#hf-admin-root .edit-grid input").forEach(el=>{
+      el.addEventListener(ev, ()=>{
+        const tmp = { ...(settingsRow||{}), ...readSettingsFromForm() };
+        applyThemeVars(document.querySelector("#hf-admin-root"), tmp);
+        // 再描画しなくても色は反映、ただし会社名/ロゴは更新して見せたいので軽く描画
+        refreshPreviews(); // コストは小さいので簡便に
+      });
+    });
+  });
+
+  // ============ settings 読み込み ============
+  async function loadSettings(){
+    const { data, error } = await supabase.from("settings").select("*").order("id",{ascending:true}).limit(1);
+    if(error){ console.error(error); toast("設定の読み込み失敗","error"); return; }
+    settingsRow = data?.[0] || null;
+    fillSettingsForm(settingsRow||{});
+    await refreshPreviews();
+  }
+
+  // ============ settings 保存（ヘッダー/フッター共通） ============
+  async function saveSettings(part){ // part: "header" | "footer"
+    const payload = readSettingsFromForm();
+    if(settingsRow?.id){
+      const { error } = await supabase.from("settings").update(payload).eq("id", settingsRow.id);
+      if(error){ console.error(error); toast("設定の保存に失敗","error"); return; }
+    }else{
+      const { data, error } = await supabase.from("settings").insert([payload]).select().single();
+      if(error){ console.error(error); toast("設定の新規保存に失敗","error"); return; }
+      settingsRow = data;
+    }
+    toast(part==="header" ? "ヘッダー設定を保存しました" : "フッター設定を保存しました");
+    await loadSettings();
+  }
+
+  $("#saveHeaderBtn").onclick = ()=>saveSettings("header");
+  $("#saveFooterBtn").onclick = ()=>saveSettings("footer");
+
+  // ============ メニュー CRUD ============
+  async function fetchMenus(){
+    const { data, error } = await supabase.from("public_menus").select("*").order("sort_order",{ascending:true});
+    if(error){ console.error(error); toast("メニュー読み込み失敗","error"); return; }
+    const tbody=$("#menuTable tbody"); tbody.innerHTML="";
+    (data||[]).forEach(row=>{
+      const tr=document.createElement("tr"); tr.draggable=true; tr.dataset.id=row.id;
+      tr.innerHTML=`
+        <td>${row.id}</td>
+        <td>${row.title||""}</td>
+        <td>${row.url||""}</td>
+        <td>${row.icon_class||""}</td>
+        <td>${row.sort_order??""}</td>
+        <td>${row.is_active?"✓":""}</td>
+        <td>${row.show_in_header?"✓":""}</td>
+        <td>${row.show_in_footer?"✓":""}</td>
+        <td>
+          <button class="btn edit" data-id="${row.id}">編集</button>
+          <button class="btn warn" data-id="${row.id}">削除</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+    $$("#menuTable .btn.edit").forEach(b=>b.onclick=()=>startEdit(Number(b.dataset.id)));
+    $$("#menuTable .btn.warn").forEach(b=>b.onclick=()=>deleteMenu(Number(b.dataset.id)));
+    enableDnD();
+    await refreshPreviews();
+  }
+
+  function readMenuForm(){
+    return {
+      title: $("#menu_title").value.trim(),
+      url: $("#menu_url").value.trim(),
+      icon_class: $("#menu_icon").value.trim() || null,
+      is_active: $("#menu_active").checked,
+      show_in_header: $("#menu_show_header").checked,
+      show_in_footer: $("#menu_show_footer").checked
+    };
+  }
+
+  function resetMenuForm(){
+    editingId=null;
+    $("#menu_title").value=""; $("#menu_url").value=""; $("#menu_icon").value="";
+    $("#menu_active").checked=false; $("#menu_show_header").checked=false; $("#menu_show_footer").checked=false;
+    $("#addBtn").style.display="inline-block"; $("#updateBtn").style.display="none"; $("#cancelBtn").style.display="none";
+  }
+
+  async function addMenu(){
+    const rec=readMenuForm();
+    if(!rec.title || !rec.url){ toast("表示名とURLは必須です","error"); return; }
+    const { error } = await supabase.from("public_menus").insert([rec]);
+    if(error){ console.error(error); toast("追加失敗","error"); return; }
+    resetMenuForm(); await fetchMenus(); toast("追加しました");
+  }
+
+  async function startEdit(id){
+    editingId=id;
+    $("#addBtn").style.display="none"; $("#updateBtn").style.display="inline-block"; $("#cancelBtn").style.display="inline-block";
+    const { data, error } = await supabase.from("public_menus").select("*").eq("id", id).single();
+    if(error){ console.error(error); toast("読込失敗","error"); return; }
+    $("#menu_title").value=data.title||""; $("#menu_url").value=data.url||""; $("#menu_icon").value=data.icon_class||"";
+    $("#menu_active").checked=!!data.is_active; $("#menu_show_header").checked=!!data.show_in_header; $("#menu_show_footer").checked=!!data.show_in_footer;
+  }
+
+  async function updateMenu(){
+    if(!editingId) return;
+    const rec=readMenuForm();
+    const { error } = await supabase.from("public_menus").update(rec).eq("id", editingId);
+    if(error){ console.error(error); toast("更新失敗","error"); return; }
+    resetMenuForm(); await fetchMenus(); toast("更新しました");
+  }
+
+  async function deleteMenu(id){
+    if(!confirm("削除してよろしいですか？")) return;
+    const { error } = await supabase.from("public_menus").delete().eq("id", id);
+    if(error){ console.error(error); toast("削除失敗","error"); return; }
+    await fetchMenus(); toast("削除しました");
+  }
+
+  // 並べ替え
+  function enableDnD(){
+    const tbody=$("#menuTable tbody");
+    let dragEl=null;
+    tbody.querySelectorAll("tr").forEach(tr=>{
+      tr.ondragstart=e=>{dragEl=tr; e.dataTransfer.effectAllowed="move";};
+      tr.ondragover=e=>{
+        e.preventDefault();
+        const rect=tr.getBoundingClientRect();
+        const after=(e.clientY-rect.top)>rect.height/2;
+        tr.style.borderTop=after?"":"2px solid #3b82f6";
+        tr.style.borderBottom=after?"2px solid #3b82f6":"";
+      };
+      tr.ondragleave=()=>{tr.style.borderTop=""; tr.style.borderBottom="";};
+      tr.ondrop=async e=>{
+        e.preventDefault(); tr.style.borderTop=""; tr.style.borderBottom="";
+        if(dragEl && dragEl!==tr){
+          const after=e.clientY>tr.getBoundingClientRect().top+tr.offsetHeight/2;
+          tbody.insertBefore(dragEl, after? tr.nextSibling: tr);
+          await saveOrder();
+        }
+        dragEl=null;
+      };
+    });
+  }
+
+  async function saveOrder(){
+    const rows=[...$("#menuTable tbody").querySelectorAll("tr")];
+    for(let i=0;i<rows.length;i++){
+      const id=Number(rows[i].dataset.id), newOrder=i+1;
+      const cur=Number(rows[i].children[4].textContent||"0");
+      if(cur===newOrder) continue;
+      const { error } = await supabase.from("public_menus").update({sort_order:newOrder}).eq("id", id);
+      if(!error) rows[i].children[4].textContent=String(newOrder);
+    }
+    toast("順番を更新しました"); await refreshPreviews();
+  }
+
+  // イベント
+  $("#addBtn").onclick=addMenu;
+  $("#updateBtn").onclick=updateMenu;
+  $("#cancelBtn").onclick=resetMenuForm;
+  $("#refreshBtn").onclick=()=>{ loadSettings(); fetchMenus(); };
+
+  // 初期化
+  await loadSettings();
+  await fetchMenus();
 </script>
