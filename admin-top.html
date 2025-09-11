@@ -29,11 +29,12 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     aside {
-      background-color: #ffffff;
+      background: #1f2937;
       width: 240px;
       padding-top: 3.5rem;
-      border-right: 1px solid #e5e7eb;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+      border-right: 1px solid #111827;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+      color: #fff;
     }
     aside button {
       display: block;
@@ -44,11 +45,12 @@
       text-align: left;
       cursor: pointer;
       font-size: 1rem;
-      border-bottom: 1px solid #f3f4f6;
+      color: #fff;
+      border-bottom: 1px solid #374151;
       transition: background-color 0.2s;
     }
     aside button:hover {
-      background-color: #f9fafb;
+      background-color: #4b5563;
     }
     main {
       flex-grow: 1;
@@ -79,10 +81,27 @@
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
     );
 
+    // innerHTML後にscriptを再実行させる関数
+    function executeScripts(container) {
+      const scripts = container.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.type) newScript.type = oldScript.type;
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+      });
+    }
+
     const loadContent = async (page) => {
       const res = await fetch(page);
       const html = await res.text();
-      document.getElementById("main-content").innerHTML = html;
+      const container = document.getElementById("main-content");
+      container.innerHTML = html;
+      executeScripts(container);
     };
 
     async function init() {
