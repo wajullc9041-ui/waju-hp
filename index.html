@@ -2,9 +2,50 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Page</title>
+  <title>合同会社WaJu 公式サイト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { margin:0; font-family: "Segoe UI", sans-serif; }
+    header { background:#1f2937; color:white; padding:1rem; }
+    nav ul { list-style:none; display:flex; gap:1rem; margin:0; padding:0; }
+    nav a { color:white; text-decoration:none; }
+    nav a:hover { text-decoration:underline; }
+    main { padding:2rem; min-height:60vh; background:#f9fafb; }
+    section { margin-bottom:2rem; padding:1rem; background:white; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+    footer { background:#111827; color:white; padding:1rem; text-align:center; }
+  </style>
 </head>
 <body>
-  <p>テストページ：page.html</p>
+  <header id="site-header">
+    <h1>合同会社WaJu</h1>
+    <nav>
+      <ul id="nav-menu">
+        <!-- メニュー（Supabaseからfetch予定） -->
+      </ul>
+    </nav>
+  </header>
+
+  <main id="site-main">
+    <!-- セクション（Supabaseからfetch予定） -->
+    <section>
+      <h2>ダミーセクション</h2>
+      <p>ここにSupabaseから取得したコンテンツが表示されます。</p>
+    </section>
+  </main>
+
+  <footer id="site-footer">
+    <p>© 2025 合同会社WaJu</p>
+  </footer>
+
+  <script>
+    // ★ ここで Supabase からデータをfetchして描画する予定
+    // 今はダミーデータで動作を確認
+    const navMenu = document.getElementById("nav-menu");
+    ["会社概要","事業内容","求人情報","ブログ","お問い合わせ"].forEach(item=>{
+      const li=document.createElement("li");
+      li.innerHTML=`<a href="#">${item}</a>`;
+      navMenu.appendChild(li);
+    });
+  </script>
 </body>
 </html>
