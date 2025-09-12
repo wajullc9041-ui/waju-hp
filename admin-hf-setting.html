@@ -1,1 +1,170 @@
+<!-- ===== 管理：ヘッダー・フッター設定ページ ===== -->
+<div id="hf-admin-root">
+  <h2>ヘッダー & フッター設定</h2>
+
+  <!-- Header Settings -->
+  <div class="card">
+    <div class="panel-head">
+      <h3>ヘッダー設定</h3>
+      <button id="saveHeaderBtn" class="btn primary">保存</button>
+    </div>
+    <div id="headerPreview" class="preview-surface"></div>
+    <div class="form-grid" id="headerForm">
+      <div class="field"><label>会社名</label><input type="text" id="h_company_name"></div>
+      <div class="field"><label>ロゴURL</label><input type="text" id="h_logo_url"></div>
+      <div class="field"><label>ロゴ高さ(px)</label><input type="number" id="h_logo_height"></div>
+      <div class="field"><label>ロゴ位置</label><select id="h_logo_position"><option>left</option><option>center</option><option>right</option></select></div>
+      <div class="field"><label>会社名位置</label><select id="h_company_position"><option>left</option><option>center</option><option>right</option></select></div>
+      <div class="field"><label>ナビ位置</label><select id="h_nav_position"><option>left</option><option>center</option><option>right</option></select></div>
+      <div class="field"><label>背景色</label><input type="color" id="h_header_bg_color"></div>
+      <div class="field"><label>背景グラデーション</label><input type="text" id="h_header_bg_gradient"></div>
+      <div class="field"><label>文字色</label><input type="color" id="h_header_text_color"></div>
+      <div class="field"><label>フォント</label><input type="text" id="h_header_font"></div>
+      <div class="field"><label>文字サイズ(px)</label><input type="number" id="h_header_font_size"></div>
+      <div class="field"><label>文字太さ</label><select id="h_header_font_weight"><option>normal</option><option>bold</option></select></div>
+      <div class="field"><label>リンク間隔(px)</label><input type="number" id="h_header_spacing"></div>
+      <div class="field"><label>パディング</label><input type="text" id="h_header_padding"></div>
+    </div>
+  </div>
+
+  <!-- Footer Settings -->
+  <div class="card">
+    <div class="panel-head">
+      <h3>フッター設定</h3>
+      <button id="saveFooterBtn" class="btn primary">保存</button>
+    </div>
+    <div id="footerPreview" class="preview-surface"></div>
+    <div class="form-grid" id="footerForm">
+      <div class="field"><label>コピーライト</label><input type="text" id="f_footer_text"></div>
+      <div class="field"><label>配置</label><select id="f_footer_position"><option>left</option><option>center</option><option>right</option></select></div>
+      <div class="field"><label>背景色</label><input type="color" id="f_footer_bg_color"></div>
+      <div class="field"><label>背景グラデーション</label><input type="text" id="f_footer_bg_gradient"></div>
+      <div class="field"><label>文字色</label><input type="color" id="f_footer_text_color"></div>
+      <div class="field"><label>フォント</label><input type="text" id="f_footer_font"></div>
+      <div class="field"><label>文字サイズ(px)</label><input type="number" id="f_footer_font_size"></div>
+      <div class="field"><label>文字太さ</label><select id="f_footer_font_weight"><option>normal</option><option>bold</option></select></div>
+      <div class="field"><label>リンク間隔(px)</label><input type="number" id="f_footer_spacing"></div>
+      <div class="field"><label>固定表示</label><input type="checkbox" id="f_footer_fixed"></div>
+      <div class="field"><label>パディング</label><input type="text" id="f_footer_padding"></div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+</div>
+
+<style>
+  #hf-admin-root * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+  #hf-admin-root h2 { margin: 12px 0 16px; font-size: 22px; font-weight:600; color:#1f2937; }
+  .card { background:#fff; border-radius:12px; padding:16px; margin-bottom:20px;
+          box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+  .panel-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .panel-head h3 { font-size:18px; font-weight:600; }
+  .btn { padding:8px 14px; border:none; border-radius:6px; font-size:14px; font-weight:500; cursor:pointer;
+         transition:background 0.2s, transform 0.1s; }
+  .btn:hover { transform:translateY(-1px); }
+  .btn.primary { background:#2563eb; color:#fff; }
+  .preview-surface { border:2px dashed #cbd5e1; padding:20px; min-height:70px; border-radius:12px; background:#f8fafc; margin-bottom:16px; }
+  .form-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+  .field { display:flex; flex-direction:column; }
+  .field label { font-size:14px; font-weight:500; color:#374151; margin-bottom:4px; }
+  input,select { padding:8px 10px; border:1px solid #d1d5db; border-radius:6px; font-size:14px; }
+  #toast-container { position:fixed; top:1rem; right:1rem; z-index:9999; }
+  .toast { margin-bottom:10px; padding:12px 18px; border-radius:8px; color:#fff; font-weight:500;
+           box-shadow:0 3px 6px rgba(0,0,0,.2); animation: fadeInOut 3s forwards; }
+  .toast.success { background:#10b981; } .toast.error { background:#ef4444; }
+  @keyframes fadeInOut { 0%{opacity:0;transform:translateY(-8px)} 10%{opacity:1;transform:none} 90%{opacity:1} 100%{opacity:0;transform:translateY(-8px)} }
+  .hfbar { display:flex; align-items:center; gap:16px; justify-content:space-between; }
+  .hfbar nav { display:flex; gap:var(--gap,16px); flex-wrap:wrap; }
+</style>
+
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+  const supabase = createClient(
+    "https://htnmjsqgoapvuanrsuma.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+  );
+
+  const $ = (q)=>document.querySelector(q);
+  const $$ = (q)=>document.querySelectorAll(q);
+  const toast = (m,t="success")=>{ const n=document.createElement("div"); n.className="toast "+t; n.textContent=m; $("#toast-container").appendChild(n); setTimeout(()=>n.remove(),3000); };
+
+  let menus = [];
+
+  async function fetchMenus(){
+    const { data, error } = await supabase.from("public_menus").select("*").order("sort_order",{ascending:true});
+    if(error){ console.error(error); toast("メニュー読み込み失敗","error"); return []; }
+    return data||[];
+  }
+
+  async function loadSettings(area){
+    const { data, error } = await supabase.from("hf_settings").select("*").eq("area",area).single();
+    if(error){ console.error(error); toast(area+"読込失敗","error"); return {}; }
+    return data||{};
+  }
+
+  async function saveSettings(area,values){
+    const { error } = await supabase.from("hf_settings").update(values).eq("area",area);
+    if(error){ console.error(error); toast("保存失敗","error"); return; }
+    toast("保存しました","success");
+  }
+
+  function collect(prefix,formId){
+    const vals={};
+    $$("#"+formId+" input, #"+formId+" select").forEach(el=>{
+      const id = el.id.replace(prefix+"_","");
+      vals[id] = (el.type==="checkbox"?el.checked:el.value);
+    });
+    return vals;
+  }
+
+  function applyForm(prefix,formId,data){
+    $$("#"+formId+" input, #"+formId+" select").forEach(el=>{
+      const id = el.id.replace(prefix+"_","");
+      if(el.type==="checkbox"){ el.checked=!!data[id]; }
+      else if(data[id]!==undefined && data[id]!==null){ el.value=data[id]; }
+    });
+  }
+
+  function renderHeader(d){
+    const links = menus.filter(m=>m.is_active && m.show_in_header).map(m=>`<a href="${m.url}">${m.title}</a>`).join("");
+    const bg = d.header_bg_gradient || d.header_bg_color || "#0f172a";
+    return `<div class="hfbar" style="background:${bg};color:${d.header_text_color||"#fff"};font-family:${d.header_font||"sans-serif"};font-size:${d.header_font_size||16}px;font-weight:${d.header_font_weight||"normal"};padding:${d.header_padding||"8px 16px"};--gap:${d.header_spacing||16}px;">
+      <div style="text-align:${d.logo_position||"left"}">${d.logo_url?`<img src="${d.logo_url}" style="height:${d.logo_height||40}px;">`:""}</div>
+      <div style="text-align:${d.company_position||"center"}">${d.company_name||""}</div>
+      <nav style="justify-content:${d.nav_position||"right"}">${links}</nav>
+    </div>`;
+  }
+
+  function renderFooter(d){
+    const links = menus.filter(m=>m.is_active && m.show_in_footer).map(m=>`<a href="${m.url}">${m.title}</a>`).join("");
+    const bg = d.footer_bg_gradient || d.footer_bg_color || "#0f172a";
+    const fixed = d.footer_fixed? "position:sticky;bottom:0;":" ";
+    return `<div class="hfbar" style="background:${bg};color:${d.footer_text_color||"#fff"};font-family:${d.footer_font||"sans-serif"};font-size:${d.footer_font_size||14}px;font-weight:${d.footer_font_weight||"normal"};padding:${d.footer_padding||"8px 16px"};--gap:${d.footer_spacing||12}px;${fixed}">
+      <div style="text-align:${d.footer_position||"center"}">${d.footer_text||""}</div>
+      <nav>${links}</nav>
+    </div>`;
+  }
+
+  async function init(){
+    menus = await fetchMenus();
+    const headerData = await loadSettings("header");
+    const footerData = await loadSettings("footer");
+    applyForm("h","headerForm",headerData);
+    applyForm("f","footerForm",footerData);
+    $("#headerPreview").innerHTML = renderHeader(headerData);
+    $("#footerPreview").innerHTML = renderFooter(footerData);
+
+    $$("#headerForm input, #headerForm select").forEach(el=>el.addEventListener("input",()=>{
+      $("#headerPreview").innerHTML = renderHeader(collect("h","headerForm"));
+    }));
+    $$("#footerForm input, #footerForm select").forEach(el=>el.addEventListener("input",()=>{
+      $("#footerPreview").innerHTML = renderFooter(collect("f","footerForm"));
+    }));
+
+    $("#saveHeaderBtn").onclick=async()=>{ await saveSettings("header",collect("h","headerForm")); };
+    $("#saveFooterBtn").onclick=async()=>{ await saveSettings("footer",collect("f","footerForm")); };
+  }
+
+  init();
+</script>
 
