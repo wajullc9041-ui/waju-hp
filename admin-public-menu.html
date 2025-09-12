@@ -25,7 +25,7 @@
       <div class="field"><label>背景グラデーション</label><input id="bg_gradient" placeholder="linear-gradient(...)" /></div>
       <div class="field"><label>文字色</label><input type="color" id="text_color" /></div>
       <div class="field"><label>フォント</label><input id="font_family" placeholder="Noto Sans JP" /></div>
-      <div class="field"><label>文字サイズ(px)</label><input type="number" id="font_size" /></div>
+      <div class="field"><label>文字サイズ</label><input type="number" id="font_size" /></div>
       <div class="field"><label>文字太さ</label>
         <select id="font_weight"><option>normal</option><option>bold</option></select>
       </div>
@@ -47,16 +47,16 @@
         <select id="footer_alignment"><option>left</option><option>center</option><option>right</option></select>
       </div>
       <div class="field"><label>背景色</label><input type="color" id="bg_color_footer" /></div>
-      <div class="field"><label>背景グラデーション</label><input id="bg_gradient_footer" placeholder="linear-gradient(...)" /></div>
+      <div class="field"><label>背景グラデーション</label><input id="bg_gradient_footer" /></div>
       <div class="field"><label>文字色</label><input type="color" id="text_color_footer" /></div>
       <div class="field"><label>フォント</label><input id="font_family_footer" /></div>
-      <div class="field"><label>文字サイズ(px)</label><input type="number" id="font_size_footer" /></div>
+      <div class="field"><label>文字サイズ</label><input type="number" id="font_size_footer" /></div>
       <div class="field"><label>文字太さ</label>
         <select id="font_weight_footer"><option>normal</option><option>bold</option></select>
       </div>
       <div class="field"><label>リンク間隔(px)</label><input type="number" id="link_spacing_footer" /></div>
       <div class="field"><label>固定表示</label><input type="checkbox" id="footer_fixed" /></div>
-      <div class="field"><label>パディング</label><input id="padding_footer" placeholder="8px 16px" /></div>
+      <div class="field"><label>パディング</label><input id="padding_footer" /></div>
     </div>
   </section>
 
@@ -77,178 +77,78 @@ const supabase = createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
 );
 
-// -------- ユーティリティ
-const H_KEYS = ["company_name","logo_url","logo_height","logo_alignment","company_alignment","nav_alignment","bg_color","bg_gradient","text_color","font_family","font_size","font_weight","link_spacing","padding"];
-const F_KEYS = ["footer_text","footer_alignment","bg_color","bg_gradient","text_color","font_family","font_size","font_weight","link_spacing","footer_fixed","padding"];
-
-const DEFAULT_HEADER = {
-  area:"header", company_name:"", logo_url:"", logo_height:48,
-  logo_alignment:"left", company_alignment:"left", nav_alignment:"right",
-  bg_color:"#111827", bg_gradient:"", text_color:"#ffffff",
-  font_family:"Noto Sans JP", font_size:16, font_weight:"normal",
-  link_spacing:16, padding:"8px 16px"
-};
-const DEFAULT_FOOTER = {
-  area:"footer", footer_text:"© WaJu LLC", footer_alignment:"center",
-  bg_color:"#111827", bg_gradient:"", text_color:"#ffffff",
-  font_family:"Noto Sans JP", font_size:14, font_weight:"normal",
-  link_spacing:12, footer_fixed:false, padding:"8px 16px"
-};
-
-function safe(val, fallback){ return (val===null || val===undefined || val==="") ? fallback : val; }
-
-// -------- DB I/O（406対策：maybeSingle）
 async function loadSettings(area){
-  let { data, error } = await supabase.from("hf_settings").select("*").eq("area", area).maybeSingle();
-  if (error) { console.error("loadSettings error:", error); }
-  if (!data) {
-    const seed = (area==="header") ? DEFAULT_HEADER : DEFAULT_FOOTER;
-    const { error: insErr } = await supabase.from("hf_settings").upsert(seed, { onConflict:"area" });
-    if (insErr) { console.error("seed upsert error:", insErr); }
-    ({ data } = await supabase.from("hf_settings").select("*").eq("area", area).maybeSingle());
+  let {data,error}=await supabase.from("hf_settings").select("*").eq("area",area).single();
+  if(error && error.code==="PGRST116"){
+    await supabase.from("hf_settings").insert({area});
+    ({data}=await supabase.from("hf_settings").select("*").eq("area",area).single());
   }
   return data;
 }
-async function saveSettings(area, values){
-  const payload = { ...values, area };
-  const { error } = await supabase.from("hf_settings").upsert(payload, { onConflict:"area" });
-  if (error) { console.error("saveSettings error:", error); }
+async function saveSettings(area,values){
+  await supabase.from("hf_settings").upsert({...values,area});
 }
 
-// -------- プレビュー
 function renderHeader(d){
-  if(!d) return;
-  const html = `
-  <header style="
-    background:${d.bg_gradient||d.bg_color};
-    color:${d.text_color}; font-family:${d.font_family};
-    font-size:${d.font_size}px; font-weight:${d.font_weight};
-    padding:${d.padding}; display:flex; gap:16px; align-items:center; justify-content:space-between;">
-    <div style="flex:1; text-align:${d.logo_alignment};">
-      ${d.logo_url ? `<img src="${d.logo_url}" style="height:${safe(d.logo_height,48)}px">` : ""}
-    </div>
-    <div style="flex:1; text-align:${d.company_alignment};">${d.company_name||""}</div>
-    <nav style="flex:1; text-align:${d.nav_alignment}; display:flex; gap:${safe(d.link_spacing,16)}px; justify-content:${d.nav_alignment};">
-      <span>メニュー</span><span>メニュー</span><span>メニュー</span>
-    </nav>
+  const el=document.getElementById("headerPreview");
+  el.innerHTML=`<header style="background:${d.bg_gradient||d.bg_color};color:${d.text_color};font-family:${d.font_family};font-size:${d.font_size}px;font-weight:${d.font_weight};padding:${d.padding};display:flex;justify-content:space-between;align-items:center;">
+    <div style="text-align:${d.logo_alignment};"><img src="${d.logo_url||''}" style="height:${d.logo_height}px"></div>
+    <div style="text-align:${d.company_alignment};">${d.company_name||''}</div>
+    <nav style="text-align:${d.nav_alignment};gap:${d.link_spacing}px;">メニュー</nav>
   </header>`;
-  document.getElementById("headerPreview").innerHTML = html;
 }
 function renderFooter(d){
-  if(!d) return;
-  const html = `
-  <footer style="
-    background:${d.bg_gradient||d.bg_color};
-    color:${d.text_color}; font-family:${d.font_family};
-    font-size:${d.font_size}px; font-weight:${d.font_weight};
-    padding:${d.padding}; text-align:${d.footer_alignment}; ${d.footer_fixed?'position:sticky;bottom:0;':''}">
-    ${d.footer_text||""}
+  const el=document.getElementById("footerPreview");
+  el.innerHTML=`<footer style="background:${d.bg_gradient||d.bg_color};color:${d.text_color};font-family:${d.font_family};font-size:${d.font_size}px;font-weight:${d.font_weight};padding:${d.padding};text-align:${d.footer_alignment};">
+    ${d.footer_text||''}
   </footer>`;
-  document.getElementById("footerPreview").innerHTML = html;
 }
 
-// -------- フォーム <-> データ
-function fillHeaderForm(d){
-  company_name.value = d.company_name ?? "";
-  logo_url.value = d.logo_url ?? "";
-  logo_height.value = d.logo_height ?? 48;
-  logo_alignment.value = d.logo_alignment ?? "left";
-  company_alignment.value = d.company_alignment ?? "left";
-  nav_alignment.value = d.nav_alignment ?? "right";
-  bg_color.value = d.bg_color ?? "#111827";
-  bg_gradient.value = d.bg_gradient ?? "";
-  text_color.value = d.text_color ?? "#ffffff";
-  font_family.value = d.font_family ?? "Noto Sans JP";
-  font_size.value = d.font_size ?? 16;
-  font_weight.value = d.font_weight ?? "normal";
-  link_spacing.value = d.link_spacing ?? 16;
-  padding.value = d.padding ?? "8px 16px";
-}
-function getHeaderValues(){
-  return {
-    company_name: company_name.value.trim(),
-    logo_url: logo_url.value.trim(),
-    logo_height: +logo_height.value || 48,
-    logo_alignment: logo_alignment.value,
-    company_alignment: company_alignment.value,
-    nav_alignment: nav_alignment.value,
-    bg_color: bg_color.value || "#111827",
-    bg_gradient: bg_gradient.value.trim(),
-    text_color: text_color.value || "#ffffff",
-    font_family: font_family.value.trim() || "Noto Sans JP",
-    font_size: +font_size.value || 16,
-    font_weight: font_weight.value || "normal",
-    link_spacing: +link_spacing.value || 16,
-    padding: padding.value.trim() || "8px 16px"
-  };
-}
-function fillFooterForm(d){
-  footer_text.value = d.footer_text ?? "";
-  footer_alignment.value = d.footer_alignment ?? "center";
-  bg_color_footer.value = d.bg_color ?? "#111827";
-  bg_gradient_footer.value = d.bg_gradient ?? "";
-  text_color_footer.value = d.text_color ?? "#ffffff";
-  font_family_footer.value = d.font_family ?? "Noto Sans JP";
-  font_size_footer.value = d.font_size ?? 14;
-  font_weight_footer.value = d.font_weight ?? "normal";
-  link_spacing_footer.value = d.link_spacing ?? 12;
-  footer_fixed.checked = !!d.footer_fixed;
-  padding_footer.value = d.padding ?? "8px 16px";
-}
-function getFooterValues(){
-  return {
-    footer_text: footer_text.value.trim(),
-    footer_alignment: footer_alignment.value,
-    bg_color: bg_color_footer.value || "#111827",
-    bg_gradient: bg_gradient_footer.value.trim(),
-    text_color: text_color_footer.value || "#ffffff",
-    font_family: font_family_footer.value.trim() || "Noto Sans JP",
-    font_size: +font_size_footer.value || 14,
-    font_weight: font_weight_footer.value || "normal",
-    link_spacing: +link_spacing_footer.value || 12,
-    footer_fixed: !!footer_fixed.checked,
-    padding: padding_footer.value.trim() || "8px 16px"
-  };
-}
-
-// -------- 初期化
 async function init(){
-  // 設定ロード
-  const header = await loadSettings("header");
-  const footer = await loadSettings("footer");
-
-  fillHeaderForm(header);  renderHeader(header);
-  fillFooterForm(footer);  renderFooter(footer);
-
+  const header=await loadSettings("header"); renderHeader(header);
+  const footer=await loadSettings("footer"); renderFooter(footer);
   // メニュー読込
-  const { data: menus, error: mErr } = await supabase.from("public_menus").select("*").order("sort_order");
-  if (mErr) console.error("menu load error:", mErr);
-  const tbody = document.querySelector("#menuTable tbody");
-  tbody.innerHTML = (menus||[]).map(m=>`<tr>
-    <td>${m.id}</td><td>${m.title}</td><td>${m.url}</td>
-    <td>${m.show_header}</td><td>${m.show_footer}</td>
-  </tr>`).join("");
-
-  // 入力→プレビュー即時反映
-  [...H_KEYS.map(id=>document.getElementById(id))].forEach(el=>{
-    el && el.addEventListener("input", ()=>renderHeader(getHeaderValues()));
-  });
-  [...["footer_text","footer_alignment","bg_color_footer","bg_gradient_footer","text_color_footer","font_family_footer","font_size_footer","font_weight_footer","link_spacing_footer","footer_fixed","padding_footer"]
-    .map(id=>document.getElementById(id))].forEach(el=>{
-      el && el.addEventListener(el.type==="checkbox"?"change":"input", ()=>renderFooter(getFooterValues()));
-    });
-
-  // 保存
-  document.getElementById("saveHeaderBtn").onclick = async ()=>{
-    const values = getHeaderValues();
-    await saveSettings("header", values);
-    renderHeader(values);
-  };
-  document.getElementById("saveFooterBtn").onclick = async ()=>{
-    const values = getFooterValues();
-    await saveSettings("footer", values);
-    renderFooter(values);
-  };
+  let {data:menus}=await supabase.from("public_menus").select("*").order("sort_order");
+  const tbody=document.querySelector("#menuTable tbody");
+  tbody.innerHTML=(menus||[]).map(m=>`<tr><td>${m.id}</td><td>${m.title}</td><td>${m.url}</td><td>${m.show_header}</td><td>${m.show_footer}</td></tr>`).join("");
 }
 init();
+
+document.getElementById("saveHeaderBtn").onclick=async()=>{
+  const values={
+    company_name:company_name.value,
+    logo_url:logo_url.value,
+    logo_height:+logo_height.value,
+    logo_alignment:logo_alignment.value,
+    company_alignment:company_alignment.value,
+    nav_alignment:nav_alignment.value,
+    bg_color:bg_color.value,
+    bg_gradient:bg_gradient.value,
+    text_color:text_color.value,
+    font_family:font_family.value,
+    font_size:+font_size.value,
+    font_weight:font_weight.value,
+    link_spacing:+link_spacing.value,
+    padding:padding.value
+  };
+  await saveSettings("header",values);
+  renderHeader(values);
+};
+document.getElementById("saveFooterBtn").onclick=async()=>{
+  const values={
+    footer_text:footer_text.value,
+    footer_alignment:footer_alignment.value,
+    bg_color:bg_color_footer.value,
+    bg_gradient:bg_gradient_footer.value,
+    text_color:text_color_footer.value,
+    font_family:font_family_footer.value,
+    font_size:+font_size_footer.value,
+    font_weight:font_weight_footer.value,
+    link_spacing:+link_spacing_footer.value,
+    footer_fixed:footer_fixed.checked,
+    padding:padding_footer.value
+  };
+  await saveSettings("footer",values);
+  renderFooter(values);
+};
 </script>
