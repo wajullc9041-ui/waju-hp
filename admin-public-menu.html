@@ -1,25 +1,3 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>ヘッダー＆フッター + メニュー管理</title>
-  <style>
-    body { font-family: sans-serif; background:#f4f4f4; margin:0; padding:20px; }
-    h2,h3 { margin:0; padding:0; }
-    .panel { background:#fff; margin:20px 0; padding:20px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,.1); }
-    .panel-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-    .preview-surface { border:1px solid #ccc; padding:20px; margin:10px 0; min-height:60px; }
-    .edit-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
-    .field { display:flex; flex-direction:column; }
-    .field label { font-size:12px; margin-bottom:4px; }
-    .btn { padding:6px 12px; cursor:pointer; border:none; border-radius:4px; }
-    .btn.primary { background:#007bff; color:#fff; }
-    table { width:100%; border-collapse:collapse; margin-top:10px; }
-    th,td { border:1px solid #ddd; padding:8px; text-align:left; }
-    th { background:#f0f0f0; }
-  </style>
-</head>
-<body>
 <div id="hf-admin-root">
   <h2>ヘッダー & フッター 管理</h2>
 
@@ -37,14 +15,14 @@
       <div class="field"><label>ロゴ位置</label><select id="logo_alignment"><option>left</option><option>center</option><option>right</option></select></div>
       <div class="field"><label>会社名位置</label><select id="company_alignment"><option>left</option><option>center</option><option>right</option></select></div>
       <div class="field"><label>ナビ位置</label><select id="nav_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-      <div class="field"><label>背景色</label><input type="color" id="header_bg_color" /></div>
-      <div class="field"><label>背景グラデーション</label><input id="header_bg_gradient" placeholder="linear-gradient(...)" /></div>
-      <div class="field"><label>文字色</label><input type="color" id="header_text_color" /></div>
-      <div class="field"><label>フォント</label><input id="header_font_family" placeholder="Noto Sans JP" /></div>
-      <div class="field"><label>文字サイズ</label><input type="number" id="header_font_size" /></div>
-      <div class="field"><label>文字太さ</label><select id="header_font_weight"><option>normal</option><option>bold</option></select></div>
-      <div class="field"><label>リンク間隔</label><input type="number" id="header_link_spacing" /></div>
-      <div class="field"><label>パディング</label><input id="header_padding" /></div>
+      <div class="field"><label>背景色</label><input type="color" id="bg_color" /></div>
+      <div class="field"><label>背景グラデーション</label><input id="bg_gradient" placeholder="linear-gradient(...)" /></div>
+      <div class="field"><label>文字色</label><input type="color" id="text_color" /></div>
+      <div class="field"><label>フォント</label><input id="font_family" placeholder="Noto Sans JP" /></div>
+      <div class="field"><label>文字サイズ</label><input type="number" id="font_size" /></div>
+      <div class="field"><label>文字太さ</label><select id="font_weight"><option>normal</option><option>bold</option></select></div>
+      <div class="field"><label>リンク間隔</label><input type="number" id="link_spacing" /></div>
+      <div class="field"><label>パディング</label><input id="padding" /></div>
     </div>
   </section>
 
@@ -58,15 +36,15 @@
     <div class="edit-grid">
       <div class="field"><label>コピーライト</label><input id="footer_text" /></div>
       <div class="field"><label>配置</label><select id="footer_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-      <div class="field"><label>背景色</label><input type="color" id="footer_bg_color" /></div>
-      <div class="field"><label>背景グラデーション</label><input id="footer_bg_gradient" /></div>
-      <div class="field"><label>文字色</label><input type="color" id="footer_text_color" /></div>
-      <div class="field"><label>フォント</label><input id="footer_font_family" /></div>
-      <div class="field"><label>文字サイズ</label><input type="number" id="footer_font_size" /></div>
-      <div class="field"><label>文字太さ</label><select id="footer_font_weight"><option>normal</option><option>bold</option></select></div>
-      <div class="field"><label>リンク間隔</label><input type="number" id="footer_link_spacing" /></div>
+      <div class="field"><label>背景色</label><input type="color" id="bg_color_footer" /></div>
+      <div class="field"><label>背景グラデーション</label><input id="bg_gradient_footer" /></div>
+      <div class="field"><label>文字色</label><input type="color" id="text_color_footer" /></div>
+      <div class="field"><label>フォント</label><input id="font_family_footer" /></div>
+      <div class="field"><label>文字サイズ</label><input type="number" id="font_size_footer" /></div>
+      <div class="field"><label>文字太さ</label><select id="font_weight_footer"><option>normal</option><option>bold</option></select></div>
+      <div class="field"><label>リンク間隔</label><input type="number" id="link_spacing_footer" /></div>
       <div class="field"><label>固定表示</label><input type="checkbox" id="footer_fixed" /></div>
-      <div class="field"><label>パディング</label><input id="footer_padding" /></div>
+      <div class="field"><label>パディング</label><input id="padding_footer" /></div>
     </div>
   </section>
 
@@ -94,15 +72,15 @@ async function saveSettings(area,values){
 }
 function renderHeader(data){
   const el=document.getElementById("headerPreview");
-  el.innerHTML=`<header style="background:${data.header_bg_gradient||data.header_bg_color};color:${data.header_text_color};font-family:${data.header_font_family};font-size:${data.header_font_size}px;font-weight:${data.header_font_weight};padding:${data.header_padding};display:flex;justify-content:space-between;align-items:center;">
+  el.innerHTML=`<header style="background:${data.bg_gradient||data.bg_color};color:${data.text_color};font-family:${data.font_family};font-size:${data.font_size}px;font-weight:${data.font_weight};padding:${data.padding};display:flex;justify-content:space-between;align-items:center;">
     <div style="text-align:${data.logo_alignment};"><img src="${data.logo_url||''}" style="height:${data.logo_height}px"></div>
     <div style="text-align:${data.company_alignment};">${data.company_name||''}</div>
-    <nav style="text-align:${data.nav_alignment};gap:${data.header_link_spacing}px;">メニュー</nav>
+    <nav style="text-align:${data.nav_alignment};gap:${data.link_spacing}px;">メニュー</nav>
   </header>`;
 }
 function renderFooter(data){
   const el=document.getElementById("footerPreview");
-  el.innerHTML=`<footer style="background:${data.footer_bg_gradient||data.footer_bg_color};color:${data.footer_text_color};font-family:${data.footer_font_family};font-size:${data.footer_font_size}px;font-weight:${data.footer_font_weight};padding:${data.footer_padding};text-align:${data.footer_alignment};">
+  el.innerHTML=`<footer style="background:${data.bg_gradient||data.bg_color};color:${data.text_color};font-family:${data.font_family};font-size:${data.font_size}px;font-weight:${data.font_weight};padding:${data.padding};text-align:${data.footer_alignment};">
     ${data.footer_text||''}
   </footer>`;
 }
@@ -113,7 +91,7 @@ async function init(){
   // メニュー読込
   let {data:menus}=await supabase.from("public_menus").select("*").order("sort_order");
   const tbody=document.querySelector("#menuTable tbody");
-  tbody.innerHTML=menus.map(m=>`<tr><td>${m.id}</td><td>${m.title}</td><td>${m.url}</td><td>${m.show_in_header}</td><td>${m.show_in_footer}</td></tr>`).join("");
+  tbody.innerHTML=menus.map(m=>`<tr><td>${m.id}</td><td>${m.title}</td><td>${m.url}</td><td>${m.show_header}</td><td>${m.show_footer}</td></tr>`).join("");
 }
 init();
 
@@ -125,14 +103,14 @@ document.getElementById("saveHeaderBtn").onclick=async()=>{
     logo_alignment:logo_alignment.value,
     company_alignment:company_alignment.value,
     nav_alignment:nav_alignment.value,
-    header_bg_color:header_bg_color.value,
-    header_bg_gradient:header_bg_gradient.value,
-    header_text_color:header_text_color.value,
-    header_font_family:header_font_family.value,
-    header_font_size:+header_font_size.value,
-    header_font_weight:header_font_weight.value,
-    header_link_spacing:+header_link_spacing.value,
-    header_padding:header_padding.value
+    bg_color:bg_color.value,
+    bg_gradient:bg_gradient.value,
+    text_color:text_color.value,
+    font_family:font_family.value,
+    font_size:+font_size.value,
+    font_weight:font_weight.value,
+    link_spacing:+link_spacing.value,
+    padding:padding.value
   };
   await saveSettings("header",values);
   renderHeader(values);
@@ -141,19 +119,17 @@ document.getElementById("saveFooterBtn").onclick=async()=>{
   const values={
     footer_text:footer_text.value,
     footer_alignment:footer_alignment.value,
-    footer_bg_color:footer_bg_color.value,
-    footer_bg_gradient:footer_bg_gradient.value,
-    footer_text_color:footer_text_color.value,
-    footer_font_family:footer_font_family.value,
-    footer_font_size:+footer_font_size.value,
-    footer_font_weight:footer_font_weight.value,
-    footer_link_spacing:+footer_link_spacing.value,
+    bg_color:bg_color_footer.value,
+    bg_gradient:bg_gradient_footer.value,
+    text_color:text_color_footer.value,
+    font_family:font_family_footer.value,
+    font_size:+font_size_footer.value,
+    font_weight:font_weight_footer.value,
+    link_spacing:+link_spacing_footer.value,
     footer_fixed:footer_fixed.checked,
-    footer_padding:footer_padding.value
+    padding:padding_footer.value
   };
   await saveSettings("footer",values);
   renderFooter(values);
 };
 </script>
-</body>
-</html>
