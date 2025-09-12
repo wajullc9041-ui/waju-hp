@@ -1,61 +1,83 @@
-<!-- admin-hf-integrated (hf_settings対応 最小修正版) -->
+<!-- admin-hf-integrated (hf_settings対応 + CSS復活版) -->
 
 <div id="hf-admin-root">
   <h2>ヘッダー & フッター 管理</h2>
 
   <!-- ヘッダー設定 -->
   <section class="panel">
-    <h3>ヘッダー設定</h3>
+    <div class="panel-head">
+      <h3>ヘッダー設定</h3>
+      <button type="button" id="saveHeaderBtn" class="btn primary">保存</button>
+    </div>
     <div id="headerPreview" class="preview-surface"></div>
-    <form id="headerForm">
-      <label>会社名<input type="text" id="h_company_name"></label>
-      <label>ロゴURL<input type="text" id="h_logo_url"></label>
-      <label>ロゴ高さ(px)<input type="number" id="h_logo_height"></label>
-      <label>ロゴ位置<select id="h_logo_alignment"><option>left</option><option>center</option><option>right</option></select></label>
-      <label>会社名位置<select id="h_company_alignment"><option>left</option><option>center</option><option>right</option></select></label>
-      <label>ナビ位置<select id="h_nav_alignment"><option>left</option><option>center</option><option>right</option></select></label>
-      <label>背景色<input type="color" id="h_bg_color"></label>
-      <label>背景グラデーション<input type="text" id="h_bg_gradient"></label>
-      <label>文字色<input type="color" id="h_text_color"></label>
-      <label>フォント<input type="text" id="h_font_family"></label>
-      <label>文字サイズ(px)<input type="number" id="h_font_size"></label>
-      <label>文字太さ<select id="h_font_weight"><option>normal</option><option>bold</option></select></label>
-      <label>リンク間隔(px)<input type="number" id="h_link_spacing"></label>
-      <label>パディング<input type="text" id="h_padding"></label>
-      <button type="button" id="saveHeaderBtn">保存</button>
-    </form>
+    <div class="edit-grid" id="headerForm">
+      <div class="field"><label>会社名</label><input type="text" id="h_company_name"></div>
+      <div class="field"><label>ロゴURL</label><input type="text" id="h_logo_url"></div>
+      <div class="field"><label>ロゴ高さ(px)</label><input type="number" id="h_logo_height"></div>
+      <div class="field"><label>ロゴ位置</label><select id="h_logo_alignment"><option>left</option><option>center</option><option>right</option></select></div>
+      <div class="field"><label>会社名位置</label><select id="h_company_alignment"><option>left</option><option>center</option><option>right</option></select></div>
+      <div class="field"><label>ナビ位置</label><select id="h_nav_alignment"><option>left</option><option>center</option><option>right</option></select></div>
+      <div class="field"><label>背景色</label><input type="color" id="h_bg_color"></div>
+      <div class="field"><label>背景グラデーション</label><input type="text" id="h_bg_gradient"></div>
+      <div class="field"><label>文字色</label><input type="color" id="h_text_color"></div>
+      <div class="field"><label>フォント</label><input type="text" id="h_font_family"></div>
+      <div class="field"><label>文字サイズ(px)</label><input type="number" id="h_font_size"></div>
+      <div class="field"><label>文字太さ</label><select id="h_font_weight"><option>normal</option><option>bold</option></select></div>
+      <div class="field"><label>リンク間隔(px)</label><input type="number" id="h_link_spacing"></div>
+      <div class="field"><label>パディング</label><input type="text" id="h_padding"></div>
+    </div>
   </section>
 
   <!-- フッター設定 -->
   <section class="panel">
-    <h3>フッター設定</h3>
+    <div class="panel-head">
+      <h3>フッター設定</h3>
+      <button type="button" id="saveFooterBtn" class="btn primary">保存</button>
+    </div>
     <div id="footerPreview" class="preview-surface"></div>
-    <form id="footerForm">
-      <label>コピーライト<input type="text" id="f_footer_text"></label>
-      <label>配置<select id="f_footer_alignment"><option>left</option><option>center</option><option>right</option></select></label>
-      <label>背景色<input type="color" id="f_bg_color"></label>
-      <label>背景グラデーション<input type="text" id="f_bg_gradient"></label>
-      <label>文字色<input type="color" id="f_text_color"></label>
-      <label>フォント<input type="text" id="f_font_family"></label>
-      <label>文字サイズ(px)<input type="number" id="f_font_size"></label>
-      <label>文字太さ<select id="f_font_weight"><option>normal</option><option>bold</option></select></label>
-      <label>リンク間隔(px)<input type="number" id="f_link_spacing"></label>
-      <label>固定表示<input type="checkbox" id="f_footer_fixed"></label>
-      <label>パディング<input type="text" id="f_padding"></label>
-      <button type="button" id="saveFooterBtn">保存</button>
-    </form>
+    <div class="edit-grid" id="footerForm">
+      <div class="field"><label>コピーライト</label><input type="text" id="f_footer_text"></div>
+      <div class="field"><label>配置</label><select id="f_footer_alignment"><option>left</option><option>center</option><option>right</option></select></div>
+      <div class="field"><label>背景色</label><input type="color" id="f_bg_color"></div>
+      <div class="field"><label>背景グラデーション</label><input type="text" id="f_bg_gradient"></div>
+      <div class="field"><label>文字色</label><input type="color" id="f_text_color"></div>
+      <div class="field"><label>フォント</label><input type="text" id="f_font_family"></div>
+      <div class="field"><label>文字サイズ(px)</label><input type="number" id="f_font_size"></div>
+      <div class="field"><label>文字太さ</label><select id="f_font_weight"><option>normal</option><option>bold</option></select></div>
+      <div class="field"><label>リンク間隔(px)</label><input type="number" id="f_link_spacing"></div>
+      <div class="field"><label>固定表示</label><input type="checkbox" id="f_footer_fixed"></div>
+      <div class="field"><label>パディング</label><input type="text" id="f_padding"></div>
+    </div>
   </section>
 
-  <!-- メニュー管理 (修正前のまま) -->
+  <!-- メニュー管理 -->
   <section class="panel">
-    <h3>メニュー管理</h3>
-    <button id="addMenuBtn">新規追加</button>
+    <div class="panel-head">
+      <h3>メニュー管理</h3>
+      <button id="addMenuBtn" class="btn">新規追加</button>
+    </div>
     <table id="menuTable">
       <thead><tr><th>ID</th><th>タイトル</th><th>URL</th><th>順序</th><th>Header</th><th>Footer</th><th>公開</th><th></th></tr></thead>
       <tbody></tbody>
     </table>
   </section>
 </div>
+
+<style>
+  .panel { background:#fff; margin:20px 0; padding:24px; border-radius:14px; box-shadow:0 6px 16px rgba(0,0,0,.08); }
+  .panel-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+  .panel-head h3 { font-size:18px; font-weight:600; }
+  .btn { padding:8px 14px; border:none; border-radius:8px; cursor:pointer; font-weight:600; }
+  .btn.primary { background:#2563eb; color:#fff; }
+  .preview-surface { border:2px dashed #cbd5e1; padding:20px; min-height:70px; border-radius:12px; background:#f8fafc; margin-bottom:16px; }
+  .edit-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+  .field { display:flex; flex-direction:column; }
+  .field label { font-size:13px; margin-bottom:6px; font-weight:500; }
+  input,select { padding:6px 8px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px; }
+  table { width:100%; border-collapse:collapse; margin-top:10px; }
+  th,td { border-bottom:1px solid #e5e7eb; padding:8px; font-size:14px; }
+  th { background:#f1f5f9; text-align:left; font-weight:600; }
+</style>
 
 <script>
 (async function(){
@@ -78,8 +100,8 @@
   function fillForm(prefix,data){
     for(const k in data){const el=document.getElementById(prefix+"_"+k);if(el){if(el.type==="checkbox"){el.checked=!!data[k];}else{el.value=data[k]??"";}}}
   }
-  function getValues(prefix,form){
-    const vals={};form.querySelectorAll("input,select").forEach(el=>{const id=el.id.replace(prefix+"_","");vals[id]=(el.type==="checkbox"?el.checked:el.value);});return vals;
+  function getValues(prefix,container){
+    const vals={};container.querySelectorAll("input,select").forEach(el=>{const id=el.id.replace(prefix+"_","");vals[id]=(el.type==="checkbox"?el.checked:el.value);});return vals;
   }
 
   const menus=(await db.from("public_menus").select("*")).data||[];
@@ -89,7 +111,6 @@
   document.getElementById("saveHeaderBtn").onclick=()=>saveArea("header",getValues("h",document.getElementById("headerForm")));
   document.getElementById("saveFooterBtn").onclick=()=>saveArea("footer",getValues("f",document.getElementById("footerForm")));
 
-  // メニュー管理部分は修正前のまま簡略（詳細ロジック省略）
   async function fetchMenus(){let {data}=await db.from("public_menus").select("*").order("sort_order");return data||[];}
   function renderMenusTable(rows){const tb=document.querySelector("#menuTable tbody");tb.innerHTML=rows.map(m=>`<tr><td>${m.id}</td><td><input value="${m.title||""}"></td><td><input value="${m.url||""}"></td><td><input type="number" value="${m.sort_order||0}"></td><td><input type="checkbox" ${m.show_header?"checked":""}></td><td><input type="checkbox" ${m.show_footer?"checked":""}></td><td><input type="checkbox" ${m.is_active?"checked":""}></td><td><button>保存</button></td></tr>`).join("");}
   renderMenusTable(await fetchMenus());
