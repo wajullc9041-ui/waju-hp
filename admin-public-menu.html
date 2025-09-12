@@ -1,230 +1,180 @@
-<!-- admin-hf-integrated (hf_settings対応 + プレビュー連動 + メニューCRUD + トースト) -->
+<!-- ===== 管理：メニュー管理ページ ===== -->
+<div id="menu-admin-root">
+  <h2>メニュー管理</h2>
 
-<div id="hf-admin-root">
-  <h2>ヘッダー & フッター 管理</h2>
+  <div class="form-grid">
+    <div class="field"><label>表示名</label><input id="menu_title" type="text"></div>
+    <div class="field"><label>リンク先URL</label><input id="menu_url" type="text" placeholder="/about.html"></div>
+    <div class="field"><label>アイコンclass（任意）</label><input id="menu_icon" type="text" placeholder="fa-solid fa-home"></div>
+    <div class="checks">
+      <label><input type="checkbox" id="menu_active"> 公開</label>
+      <label><input type="checkbox" id="menu_show_header"> ヘッダーに表示</label>
+      <label><input type="checkbox" id="menu_show_footer"> フッターに表示</label>
+    </div>
+  </div>
 
-  <!-- ヘッダー設定 -->
-  <section class="panel">
-    <div class="panel-head">
-      <h3>ヘッダー設定</h3>
-      <button type="button" id="saveHeaderBtn" class="btn primary">保存</button>
-    </div>
-    <div id="headerPreview" class="preview-surface"></div>
-    <div class="edit-grid" id="headerForm">
-      <div class="field"><label>会社名</label><input type="text" id="h_company_name" placeholder="例：合同会社WaJu"></div>
-      <div class="field"><label>ロゴURL</label><input type="text" id="h_logo_url" placeholder="https://.../logo.png"></div>
-      <div class="field"><label>ロゴ高さ(px)</label><input type="number" id="h_logo_height" value="48"></div>
-      <div class="field"><label>ロゴ位置</label><select id="h_logo_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-      <div class="field"><label>会社名位置</label><select id="h_company_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-      <div class="field"><label>ナビ位置</label><select id="h_nav_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-      <div class="field"><label>背景色</label><input type="color" id="h_bg_color" value="#0f172a"></div>
-      <div class="field"><label>背景グラデーション</label><input type="text" id="h_bg_gradient" placeholder="linear-gradient(...)"></div>
-      <div class="field"><label>文字色</label><input type="color" id="h_text_color" value="#ffffff"></div>
-      <div class="field"><label>フォント</label><input type="text" id="h_font_family" value="Noto Sans JP"></div>
-      <div class="field"><label>文字サイズ(px)</label><input type="number" id="h_font_size" value="16"></div>
-      <div class="field"><label>文字太さ</label><select id="h_font_weight"><option>normal</option><option>bold</option></select></div>
-      <div class="field"><label>リンク間隔(px)</label><input type="number" id="h_link_spacing" value="16"></div>
-      <div class="field"><label>パディング</label><input type="text" id="h_padding" value="8px 16px"></div>
-    </div>
-  </section>
+  <div class="btns">
+    <button id="addBtn" class="btn primary">追加</button>
+    <button id="updateBtn" class="btn success" style="display:none;">更新</button>
+    <button id="cancelBtn" class="btn muted" style="display:none;">キャンセル</button>
+  </div>
 
-  <!-- フッター設定 -->
-  <section class="panel">
-    <div class="panel-head">
-      <h3>フッター設定</h3>
-      <button type="button" id="saveFooterBtn" class="btn primary">保存</button>
-    </div>
-    <div id="footerPreview" class="preview-surface"></div>
-    <div class="edit-grid" id="footerForm">
-      <div class="field"><label>コピーライト</label><input type="text" id="f_footer_text" value="Copyright © WaJu LLC"></div>
-      <div class="field"><label>配置</label><select id="f_footer_alignment"><option>left</option><option selected>center</option><option>right</option></select></div>
-      <div class="field"><label>背景色</label><input type="color" id="f_bg_color" value="#0f172a"></div>
-      <div class="field"><label>背景グラデーション</label><input type="text" id="f_bg_gradient" placeholder="linear-gradient(...)"></div>
-      <div class="field"><label>文字色</label><input type="color" id="f_text_color" value="#ffffff"></div>
-      <div class="field"><label>フォント</label><input type="text" id="f_font_family" value="Noto Sans JP"></div>
-      <div class="field"><label>文字サイズ(px)</label><input type="number" id="f_font_size" value="14"></div>
-      <div class="field"><label>文字太さ</label><select id="f_font_weight"><option>normal</option><option>bold</option></select></div>
-      <div class="field"><label>リンク間隔(px)</label><input type="number" id="f_link_spacing" value="12"></div>
-      <div class="field"><label>固定表示</label><input type="checkbox" id="f_footer_fixed"></div>
-      <div class="field"><label>パディング</label><input type="text" id="f_padding" value="8px 16px"></div>
-    </div>
-  </section>
+  <table id="menuTable">
+    <thead><tr>
+      <th>ID</th><th>表示名</th><th>URL</th><th>アイコン</th>
+      <th>順番</th><th>公開</th><th>Header</th><th>Footer</th><th>操作</th>
+    </tr></thead>
+    <tbody></tbody>
+  </table>
 
-  <!-- メニュー管理 -->
-  <section class="panel">
-    <div class="panel-head">
-      <h3>メニュー管理</h3>
-      <button id="addMenuBtn" class="btn">新規追加</button>
-    </div>
-    <table id="menuTable">
-      <thead><tr><th>ID</th><th>タイトル</th><th>URL</th><th>順序</th><th>Header</th><th>Footer</th><th>公開</th><th></th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </section>
+  <div id="toast-container"></div>
 </div>
 
-<div id="toast-container"></div>
-
 <style>
-  .panel { background:#fff; margin:20px 0; padding:24px; border-radius:14px; box-shadow:0 6px 16px rgba(0,0,0,.08); }
-  .panel-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
-  .panel-head h3 { font-size:18px; font-weight:600; }
-  .btn { padding:8px 14px; border:none; border-radius:8px; cursor:pointer; font-weight:600; }
-  .btn.primary { background:#2563eb; color:#fff; }
-  .preview-surface { border:2px dashed #cbd5e1; padding:20px; min-height:70px; border-radius:12px; background:#f8fafc; margin-bottom:16px; }
-  .edit-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
-  .field { display:flex; flex-direction:column; }
-  .field label { font-size:13px; margin-bottom:6px; font-weight:500; }
-  input,select { padding:6px 8px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px; }
-  table { width:100%; border-collapse:collapse; margin-top:10px; }
-  th,td { border-bottom:1px solid #e5e7eb; padding:8px; font-size:14px; }
-  th { background:#f1f5f9; text-align:left; font-weight:600; }
-  #toast-container { position:fixed; right:16px; bottom:16px; display:flex; flex-direction:column; gap:8px; z-index:9999; }
-  .toast { background:#111827; color:#fff; padding:10px 12px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.18); }
-  .toast.ok { background:#065f46; }
-  .toast.err { background:#7f1d1d; }
-  .hfbar { display:flex; align-items:center; gap:16px; }
-  .hfbar .spacer { flex:1; }
-  .hfbar nav { display:flex; gap:var(--gap,16px); flex-wrap:wrap; }
+  #menu-admin-root * { box-sizing: border-box; }
+  #menu-admin-root h2 { margin: 8px 0 16px; font-size: 20px; color:#111827; }
+  #menu-admin-root .form-grid { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:10px; margin:8px 0; }
+  #menu-admin-root .checks { display:flex; align-items:center; gap:12px; }
+  #menu-admin-root .btns { display:flex; gap:8px; margin:8px 0 12px; }
+  #menu-admin-root .btn { padding:8px 12px; border:none; border-radius:6px; background:#e5e7eb; cursor:pointer; }
+  #menu-admin-root .btn.primary { background:#2563eb; color:#fff; }
+  #menu-admin-root .btn.success { background:#10b981; color:#fff; }
+  #menu-admin-root .btn.muted { background:#6b7280; color:#fff; }
+  #menu-admin-root .btn.warn { background:#ef4444; color:#fff; }
+  #menu-admin-root table { width:100%; border-collapse:collapse; }
+  #menu-admin-root th, #menu-admin-root td { border:1px solid #e5e7eb; padding:8px; text-align:center; }
+  #menu-admin-root thead th { background:#f9fafb; }
+  #menu-admin-root tbody tr { cursor:move; }
+  #menu-admin-root #toast-container { position:fixed; top:1rem; right:1rem; z-index:9999; }
+  #menu-admin-root .toast { margin-bottom:10px; padding:10px 16px; border-radius:6px; color:#fff; font-weight:500; box-shadow:0 2px 6px rgba(0,0,0,.2); animation: fadeInOut 3s forwards; }
+  #menu-admin-root .toast.success { background:#10b981; } #menu-admin-root .toast.error { background:#ef4444; }
+  @keyframes fadeInOut { 0%{opacity:0;transform:translateY(-8px)} 10%{opacity:1;transform:none} 90%{opacity:1} 100%{opacity:0;transform:translateY(-8px)} }
 </style>
 
-<script>
-(async function(){
-  const SUPABASE_URL="https://htnmjsqgoapvuanrsuma.supabase.co";
-  const SUPABASE_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA";
-  if(!window.supabase){await new Promise(res=>{const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";s.onload=res;document.head.appendChild(s);});}
-  const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON,{auth:{storageKey:"wajuhf-admin"}});
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+  const supabase = createClient(
+    "https://htnmjsqgoapvuanrsuma.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+  );
 
-  const $ = (sel,root=document)=>root.querySelector(sel);
-  const $$ = (sel,root=document)=>[...root.querySelectorAll(sel)];
-  function toast(msg,type="ok"){const w=$("#toast-container");const e=document.createElement("div");e.className="toast "+type;e.textContent=msg;w.appendChild(e);setTimeout(()=>{e.style.opacity="0";setTimeout(()=>e.remove(),300)},1800);}
+  const $ = (q)=>document.querySelector(q);
+  const $$ = (q)=>document.querySelectorAll(q);
+  const toast = (m,t="success")=>{ const n=document.createElement("div"); n.className="toast "+t; n.textContent=m; $("#toast-container").appendChild(n); setTimeout(()=>n.remove(),3000); };
 
-  // ---- hf_settings I/O ----
-  async function loadArea(area){
-    const {data,error} = await db.from("hf_settings").select("*").eq("area",area).maybeSingle();
-    if(error){console.error(error);toast("読み込み失敗","err");return null;}
-    if(!data){const {data:ins} = await db.from("hf_settings").insert({area}).select().single();return ins;}
-    return data;
-  }
-  async function saveArea(area,values){
-    const {data} = await db.from("hf_settings").select("*").eq("area",area).maybeSingle();
-    if(data){await db.from("hf_settings").update(values).eq("id",data.id);}else{await db.from("hf_settings").insert({...values,area});}
-    toast("保存しました","ok");
-  }
+  let editingId = null;
 
-  // ---- Menus CRUD ----
   async function fetchMenus(){
-    const {data} = await db.from("public_menus").select("*").order("sort_order");
-    return data||[];
-  }
-  function renderMenusTable(rows){
-    const tb=$("#menuTable tbody");
-    tb.innerHTML = rows.map(m=>`<tr data-id="${m.id??""}">
-      <td>${m.id??""}</td>
-      <td><input class="m_title" value="${m.title??""}"></td>
-      <td><input class="m_url" value="${m.url??""}"></td>
-      <td><input class="m_sort" type="number" value="${m.sort_order??0}"></td>
-      <td><input class="m_sh" type="checkbox" ${m.show_header?"checked":""}></td>
-      <td><input class="m_sf" type="checkbox" ${m.show_footer?"checked":""}></td>
-      <td><input class="m_active" type="checkbox" ${m.is_active?"checked":""}></td>
-      <td><button class="row-save btn">保存</button> <button class="row-del btn">削除</button></td>
-    </tr>`).join("");
-  }
-  async function addMenuRow(){
-    await db.from("public_menus").insert({title:"新規メニュー",url:"#",sort_order:999,is_active:true,show_header:true,show_footer:false});
-    renderMenusTable(await fetchMenus());
-    toast("メニューを追加しました","ok");
-    refreshPreview(); // 追加直後もプレビュー反映
+    const { data, error } = await supabase.from("public_menus").select("*").order("sort_order",{ascending:true});
+    if(error){ console.error(error); toast("メニュー読み込み失敗","error"); return; }
+    const tbody=$("#menuTable tbody"); tbody.innerHTML="";
+    (data||[]).forEach(row=>{
+      const tr=document.createElement("tr"); tr.draggable=true; tr.dataset.id=row.id;
+      tr.innerHTML=`
+        <td>${row.id}</td>
+        <td>${row.title||""}</td>
+        <td>${row.url||""}</td>
+        <td>${row.icon_class||""}</td>
+        <td>${row.sort_order??""}</td>
+        <td>${row.is_active?"✓":""}</td>
+        <td>${row.show_in_header?"✓":""}</td>
+        <td>${row.show_in_footer?"✓":""}</td>
+        <td>
+          <button class="btn edit" data-id="${row.id}">編集</button>
+          <button class="btn warn" data-id="${row.id}">削除</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+    $$("#menuTable .btn.edit").forEach(b=>b.onclick=()=>startEdit(Number(b.dataset.id)));
+    $$("#menuTable .btn.warn").forEach(b=>b.onclick=()=>deleteMenu(Number(b.dataset.id)));
+    enableDnD();
   }
 
-  $("#addMenuBtn").addEventListener("click", addMenuRow);
-  $("#menuTable").addEventListener("click", async (e)=>{
-    const tr = e.target.closest("tr");
-    if(!tr) return;
-    const id = tr.dataset.id;
-    if(e.target.classList.contains("row-save")){
-      const payload = {
-        title: $(".m_title",tr).value,
-        url: $(".m_url",tr).value,
-        sort_order: +$(".m_sort",tr).value,
-        show_header: $(".m_sh",tr).checked,
-        show_footer: $(".m_sf",tr).checked,
-        is_active: $(".m_active",tr).checked
+  function readMenuForm(){
+    return {
+      title: $("#menu_title").value.trim(),
+      url: $("#menu_url").value.trim(),
+      icon_class: $("#menu_icon").value.trim() || null,
+      is_active: $("#menu_active").checked,
+      show_in_header: $("#menu_show_header").checked,
+      show_in_footer: $("#menu_show_footer").checked
+    };
+  }
+
+  function resetMenuForm(){
+    editingId=null;
+    $("#menu_title").value=""; $("#menu_url").value=""; $("#menu_icon").value="";
+    $("#menu_active").checked=false; $("#menu_show_header").checked=false; $("#menu_show_footer").checked=false;
+    $("#addBtn").style.display="inline-block"; $("#updateBtn").style.display="none"; $("#cancelBtn").style.display="none";
+  }
+
+  async function addMenu(){
+    const rec=readMenuForm();
+    if(!rec.title || !rec.url){ toast("表示名とURLは必須です","error"); return; }
+    const { error } = await supabase.from("public_menus").insert([rec]);
+    if(error){ console.error(error); toast("追加失敗","error"); return; }
+    resetMenuForm(); await fetchMenus(); toast("追加しました");
+  }
+
+  async function startEdit(id){
+    editingId=id;
+    $("#addBtn").style.display="none"; $("#updateBtn").style.display="inline-block"; $("#cancelBtn").style.display="inline-block";
+    const { data, error } = await supabase.from("public_menus").select("*").eq("id", id).single();
+    if(error){ console.error(error); toast("読込失敗","error"); return; }
+    $("#menu_title").value=data.title||""; $("#menu_url").value=data.url||""; $("#menu_icon").value=data.icon_class||"";
+    $("#menu_active").checked=!!data.is_active; $("#menu_show_header").checked=!!data.show_in_header; $("#menu_show_footer").checked=!!data.show_in_footer;
+  }
+
+  async function updateMenu(){
+    if(!editingId) return;
+    const rec=readMenuForm();
+    const { error } = await supabase.from("public_menus").update(rec).eq("id", editingId);
+    if(error){ console.error(error); toast("更新失敗","error"); return; }
+    resetMenuForm(); await fetchMenus(); toast("更新しました");
+  }
+
+  async function deleteMenu(id){
+    if(!confirm("削除してよろしいですか？")) return;
+    const { error } = await supabase.from("public_menus").delete().eq("id", id);
+    if(error){ console.error(error); toast("削除失敗","error"); return; }
+    await fetchMenus(); toast("削除しました");
+  }
+
+  function enableDnD(){
+    const tbody=$("#menuTable tbody");
+    let dragEl=null;
+    tbody.querySelectorAll("tr").forEach(tr=>{
+      tr.ondragstart=e=>{dragEl=tr; e.dataTransfer.effectAllowed="move";};
+      tr.ondragover=e=>{e.preventDefault(); const rect=tr.getBoundingClientRect(); const after=(e.clientY-rect.top)>rect.height/2;
+        tr.style.borderTop=after?"":"2px solid #3b82f6"; tr.style.borderBottom=after?"2px solid #3b82f6":"";};
+      tr.ondragleave=()=>{tr.style.borderTop=""; tr.style.borderBottom="";};
+      tr.ondrop=async e=>{
+        e.preventDefault(); tr.style.borderTop=""; tr.style.borderBottom="";
+        if(dragEl && dragEl!==tr){
+          const after=e.clientY>tr.getBoundingClientRect().top+tr.offsetHeight/2;
+          tbody.insertBefore(dragEl, after? tr.nextSibling: tr);
+          await saveOrder();
+        }
+        dragEl=null;
       };
-      if(id) await db.from("public_menus").update(payload).eq("id",id);
-      toast("更新しました","ok");
-      refreshPreview();
-    } else if(e.target.classList.contains("row-del")){
-      if(id){ await db.from("public_menus").delete().eq("id",id); toast("削除しました","ok"); }
-      tr.remove();
-      refreshPreview();
+    });
+  }
+
+  async function saveOrder(){
+    const rows=[...$("#menuTable tbody").querySelectorAll("tr")];
+    for(let i=0;i<rows.length;i++){
+      const id=Number(rows[i].dataset.id), newOrder=i+1;
+      const cur=Number(rows[i].children[4].textContent||"0");
+      if(cur===newOrder) continue;
+      const { error } = await supabase.from("public_menus").update({sort_order:newOrder}).eq("id", id);
+      if(!error) rows[i].children[4].textContent=String(newOrder);
     }
-  });
-
-  // ---- Preview ----
-  function collect(prefix){
-    const v={};
-    $$("#"+(prefix==="h"?"headerForm":"footerForm")+" input, #"+(prefix==="h"?"headerForm":"footerForm")+" select").forEach(el=>{
-      const id = el.id.replace(prefix+"_","");
-      v[id] = (el.type==="checkbox" ? el.checked : el.value);
-    });
-    return v;
-  }
-  function headerHTML(d, menus){
-    const links = menus.filter(m=>m.is_active && m.show_header).sort((a,b)=>a.sort_order-b.sort_order).map(m=>`<a href="${m.url}">${m.title}</a>`).join("");
-    const bg = d.bg_gradient || d.bg_color || "#0f172a";
-    const jc = d.nav_alignment==="left"?"flex-start":(d.nav_alignment==="center"?"center":"flex-end");
-    const logo = d.logo_url? `<img src="${d.logo_url}" style="height:${d.logo_height||48}px;display:block;">` : "";
-    return `<div class="hfbar" style="background:${bg};color:${d.text_color||"#fff"};font-family:${d.font_family||"Noto Sans JP"};font-size:${d.font_size||16}px;font-weight:${d.font_weight||"normal"};padding:${d.padding||"8px 16px"};--gap:${(d.link_spacing||16)}px;">
-      <div style="flex:1;text-align:${d.logo_alignment||"left"}">${logo}</div>
-      <div style="flex:1;text-align:${d.company_alignment||"left"}">${d.company_name||""}</div>
-      <nav style="flex:2;justify-content:${jc}">${links}</nav>
-    </div>`;
-  }
-  function footerHTML(d, menus){
-    const links = menus.filter(m=>m.is_active && m.show_footer).sort((a,b)=>a.sort_order-b.sort_order).map(m=>`<a href="${m.url}">${m.title}</a>`).join("");
-    const bg = d.bg_gradient || d.bg_color || "#0f172a";
-    const fixed = d.footer_fixed ? "position:sticky;bottom:0;" : "";
-    return `<div class="hfbar" style="background:${bg};color:${d.text_color||"#fff"};font-family:${d.font_family||"Noto Sans JP"};font-size:${d.font_size||14}px;font-weight:${d.font_weight||"normal"};padding:${d.padding||"8px 16px"};${fixed};--gap:${(d.link_spacing||12)}px;">
-      <div style="flex:1;text-align:${d.footer_alignment||"center"}">${d.footer_text||""}</div>
-      <nav style="flex:2;justify-content:center">${links}</nav>
-    </div>`;
+    toast("順番を更新しました");
   }
 
-  let headerRow = await loadArea("header");
-  let footerRow = await loadArea("footer");
-  let menus = await fetchMenus();
+  $("#addBtn").onclick=addMenu;
+  $("#updateBtn").onclick=updateMenu;
+  $("#cancelBtn").onclick=resetMenuForm;
 
-  function applyToForm(prefix, row){
-    const form = prefix==="h" ? $("#headerForm") : $("#footerForm");
-    $$("#"+form.id+" input, #"+form.id+" select").forEach(el=>{
-      const key = el.id.replace(prefix+"_","");
-      if(el.type==="checkbox"){ el.checked = !!row[key]; }
-      else if(row[key]!==undefined && row[key]!==null){ el.value = row[key]; }
-    });
-  }
-  function refreshPreview(){
-    // 収集して都度再描画
-    const h = collect("h");
-    const f = collect("f");
-    $("#headerPreview").innerHTML = headerHTML(h, menus);
-    $("#footerPreview").innerHTML = footerHTML(f, menus);
-  }
-
-  applyToForm("h", headerRow||{});
-  applyToForm("f", footerRow||{});
-  refreshPreview();
-
-  // 入力→即プレビュー
-  $$("#headerForm input, #headerForm select").forEach(el=>el.addEventListener("input", refreshPreview));
-  $$("#footerForm input, #footerForm select").forEach(el=>el.addEventListener("input", refreshPreview));
-
-  // 保存
-  $("#saveHeaderBtn").addEventListener("click", async ()=>{
-    await saveArea("header", collect("h"));
-  });
-  $("#saveFooterBtn").addEventListener("click", async ()=>{
-    await saveArea("footer", collect("f"));
-  });
-})();
+  await fetchMenus();
 </script>
