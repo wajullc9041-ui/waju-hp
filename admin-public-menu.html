@@ -1,53 +1,70 @@
-<!-- ===== 管理：メニュー管理ページ ===== -->
+<!-- ===== 管理：メニュー管理ページ (スタイリッシュ完全版) ===== -->
 <div id="menu-admin-root">
   <h2>メニュー管理</h2>
 
-  <div class="form-grid">
-    <div class="field"><label>表示名</label><input id="menu_title" type="text"></div>
-    <div class="field"><label>リンク先URL</label><input id="menu_url" type="text" placeholder="/about.html"></div>
-    <div class="field"><label>アイコンclass（任意）</label><input id="menu_icon" type="text" placeholder="fa-solid fa-home"></div>
+  <div class="card form-card">
+    <div class="form-grid">
+      <div class="field"><label>表示名</label><input id="menu_title" type="text"></div>
+      <div class="field"><label>リンク先URL</label><input id="menu_url" type="text" placeholder="/about.html"></div>
+      <div class="field"><label>アイコンclass（任意）</label><input id="menu_icon" type="text" placeholder="fa-solid fa-home"></div>
+    </div>
     <div class="checks">
       <label><input type="checkbox" id="menu_active"> 公開</label>
       <label><input type="checkbox" id="menu_show_header"> ヘッダーに表示</label>
       <label><input type="checkbox" id="menu_show_footer"> フッターに表示</label>
     </div>
+    <div class="btns">
+      <button id="addBtn" class="btn primary">追加</button>
+      <button id="updateBtn" class="btn success" style="display:none;">更新</button>
+      <button id="cancelBtn" class="btn muted" style="display:none;">キャンセル</button>
+    </div>
   </div>
 
-  <div class="btns">
-    <button id="addBtn" class="btn primary">追加</button>
-    <button id="updateBtn" class="btn success" style="display:none;">更新</button>
-    <button id="cancelBtn" class="btn muted" style="display:none;">キャンセル</button>
+  <div class="card">
+    <table id="menuTable">
+      <thead><tr>
+        <th>ID</th><th>表示名</th><th>URL</th><th>アイコン</th>
+        <th>順番</th><th>公開</th><th>Header</th><th>Footer</th><th>操作</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
   </div>
-
-  <table id="menuTable">
-    <thead><tr>
-      <th>ID</th><th>表示名</th><th>URL</th><th>アイコン</th>
-      <th>順番</th><th>公開</th><th>Header</th><th>Footer</th><th>操作</th>
-    </tr></thead>
-    <tbody></tbody>
-  </table>
 
   <div id="toast-container"></div>
 </div>
 
 <style>
-  #menu-admin-root * { box-sizing: border-box; }
-  #menu-admin-root h2 { margin: 8px 0 16px; font-size: 20px; color:#111827; }
-  #menu-admin-root .form-grid { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:10px; margin:8px 0; }
-  #menu-admin-root .checks { display:flex; align-items:center; gap:12px; }
-  #menu-admin-root .btns { display:flex; gap:8px; margin:8px 0 12px; }
-  #menu-admin-root .btn { padding:8px 12px; border:none; border-radius:6px; background:#e5e7eb; cursor:pointer; }
-  #menu-admin-root .btn.primary { background:#2563eb; color:#fff; }
-  #menu-admin-root .btn.success { background:#10b981; color:#fff; }
-  #menu-admin-root .btn.muted { background:#6b7280; color:#fff; }
-  #menu-admin-root .btn.warn { background:#ef4444; color:#fff; }
-  #menu-admin-root table { width:100%; border-collapse:collapse; }
-  #menu-admin-root th, #menu-admin-root td { border:1px solid #e5e7eb; padding:8px; text-align:center; }
-  #menu-admin-root thead th { background:#f9fafb; }
-  #menu-admin-root tbody tr { cursor:move; }
-  #menu-admin-root #toast-container { position:fixed; top:1rem; right:1rem; z-index:9999; }
-  #menu-admin-root .toast { margin-bottom:10px; padding:10px 16px; border-radius:6px; color:#fff; font-weight:500; box-shadow:0 2px 6px rgba(0,0,0,.2); animation: fadeInOut 3s forwards; }
-  #menu-admin-root .toast.success { background:#10b981; } #menu-admin-root .toast.error { background:#ef4444; }
+  #menu-admin-root * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+  #menu-admin-root h2 { margin: 12px 0 16px; font-size: 22px; font-weight:600; color:#1f2937; }
+
+  .card { background:#fff; border-radius:12px; padding:16px; margin-bottom:20px;
+          box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+
+  .form-card .form-grid { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:12px; }
+  .form-card label { font-size:14px; font-weight:500; color:#374151; margin-bottom:4px; display:block; }
+  .form-card input[type="text"] { width:100%; padding:8px 10px; border:1px solid #d1d5db; border-radius:6px; }
+
+  .checks { display:flex; gap:16px; margin-bottom:12px; font-size:14px; color:#374151; }
+
+  .btns { display:flex; gap:8px; }
+  .btn { padding:8px 14px; border:none; border-radius:6px; font-size:14px; font-weight:500; cursor:pointer;
+         transition:background 0.2s, transform 0.1s; }
+  .btn:hover { transform:translateY(-1px); }
+  .btn.primary { background:#2563eb; color:#fff; }
+  .btn.success { background:#10b981; color:#fff; }
+  .btn.muted { background:#6b7280; color:#fff; }
+  .btn.warn { background:#ef4444; color:#fff; }
+
+  table { width:100%; border-collapse:separate; border-spacing:0; border-radius:8px; overflow:hidden; }
+  th, td { padding:10px; border-bottom:1px solid #e5e7eb; text-align:center; font-size:14px; }
+  thead th { background:#f9fafb; font-weight:600; color:#374151; }
+  tbody tr:hover { background:#f3f4f6; }
+  tbody tr:last-child td { border-bottom:none; }
+
+  #toast-container { position:fixed; top:1rem; right:1rem; z-index:9999; }
+  .toast { margin-bottom:10px; padding:12px 18px; border-radius:8px; color:#fff; font-weight:500; 
+           box-shadow:0 3px 6px rgba(0,0,0,.2); animation: fadeInOut 3s forwards; }
+  .toast.success { background:#10b981; } .toast.error { background:#ef4444; }
   @keyframes fadeInOut { 0%{opacity:0;transform:translateY(-8px)} 10%{opacity:1;transform:none} 90%{opacity:1} 100%{opacity:0;transform:translateY(-8px)} }
 </style>
 
