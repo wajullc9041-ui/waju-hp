@@ -270,22 +270,36 @@
       const title = menu?.title || "ページ";
       const href = (menu?.href||"").trim();
       const isRelative = href && !/^https?:\/\//i.test(href);
+    
       if(isRelative){
         try{
           const res = await fetch(href, {cache:"no-store"});
           if(res.ok){
             const html = await res.text();
-            container.innerHTML = html;
+            const temp = document.createElement("div");
+            temp.innerHTML = html;
+            // 各ページの <main id="content"> を探す
+            const newContent = temp.querySelector("#content");
+            if(newContent){
+              container.innerHTML = newContent.innerHTML;
+            } else {
+              container.innerHTML = html; // fallback
+            }
             return;
           }
-        }catch(err){ /* fallthrough */ }
+        }catch(err){
+          console.error("ページ読み込み失敗:", err);
+        }
       }
+    
+      // fallback（従来のダミー表示）
       container.innerHTML = `
         <div class="dummy">
           <h2>${title}</h2>
           <p>ここに「${title}」のコンテンツを表示します（コンテンツ編集と連携予定）。</p>
         </div>`;
     }
+
 
     function adjustOffsets(ftr){
       const wrap = $("#site-footer").firstElementChild;
