@@ -1,16 +1,15 @@
 <style>
   body { font-family: 'Segoe UI', sans-serif; background:#f7f9fc; margin:0; padding:20px; }
   h1 { font-size:20px; margin-bottom:20px; color:#1e293b; }
-  .wrap { max-width:1400px; margin:auto; }
-  .cards { display:flex; gap:20px; }
-  .card { flex:1; background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.1); padding:20px; }
+  .wrap { max-width:1200px; margin:auto; }
+  .card { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.1); padding:20px; margin-bottom:30px; }
   .panel-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
   .panel-head h2 { font-size:16px; margin:0; color:#0f172a; }
   .btn { padding:6px 12px; border:none; border-radius:6px; cursor:pointer; }
   .btn.primary { background:#2563eb; color:#fff; }
   .btn.small { font-size:12px; padding:2px 6px; margin-left:6px; }
-  .groups { display:grid; gap:15px; }
-  fieldset.group { border:1px solid #e2e8f0; border-radius:8px; padding:10px; }
+  .groups { display:flex; gap:15px; flex-wrap:wrap; }
+  fieldset.group { flex:1; min-width:240px; border:1px solid #e2e8f0; border-radius:8px; padding:10px; }
   legend { font-size:13px; padding:0 6px; color:#334155; }
   .field { display:flex; align-items:center; justify-content:space-between; margin:6px 0; }
   .field label { flex:0 0 40%; font-size:13px; color:#475569; }
@@ -29,102 +28,99 @@
 
 <div class="wrap" id="app">
   <h1>ヘッダー & フッター設定</h1>
-  <div class="cards">
 
-    <!-- ヘッダー設定 -->
-    <section class="card">
-      <div class="panel-head">
-        <h2>ヘッダー設定</h2>
-        <div class="actions">
-          <label class="inline">行レイアウト
-            <select id="header_layout_mode">
-              <option value="row">1行（横並び）</option>
-              <option value="column">2行（縦並び）</option>
-            </select>
-          </label>
-          <button id="saveHeader" class="btn primary">保存</button>
+  <!-- ヘッダー設定 -->
+  <section class="card">
+    <div class="panel-head">
+      <h2>ヘッダー設定</h2>
+      <div class="actions">
+        <label class="inline">行レイアウト
+          <select id="header_layout_mode">
+            <option value="row">1行（横並び）</option>
+            <option value="column">2行（縦並び）</option>
+          </select>
+        </label>
+        <button id="saveHeader" class="btn primary">保存</button>
+      </div>
+    </div>
+    <div id="headerPreview" class="preview"></div>
+    <div class="groups">
+      <!-- ロゴ -->
+      <fieldset class="group"><legend>ロゴ</legend>
+        <div class="field"><label>URL</label><input id="logo_url" type="text"></div>
+        <div class="field"><label>高さ(px)</label><input id="logo_height" type="number"></div>
+        <div class="field"><label>位置</label><select id="logo_alignment"><option>left</option><option>center</option><option>right</option></select></div>
+      </fieldset>
+      <!-- 社名 -->
+      <fieldset class="group"><legend>社名</legend>
+        <div class="field"><label>会社名</label><input id="company_name" type="text"></div>
+        <div class="field"><label>位置</label><select id="company_alignment"><option>left</option><option>center</option><option>right</option></select></div>
+        <div class="field"><label>色</label><input id="company_color" type="color"></div>
+        <div class="field"><label>太さ</label><select id="company_weight"><option>normal</option><option>bold</option></select></div>
+      </fieldset>
+      <!-- ナビ -->
+      <fieldset class="group"><legend>ナビ</legend>
+        <div class="field"><label>位置</label><select id="nav_alignment"><option>left</option><option>center</option><option>right</option></select></div>
+        <div class="field"><label>色</label><input id="nav_color" type="color"></div>
+        <div class="field"><label>太さ</label><select id="nav_weight"><option>normal</option><option>bold</option></select></div>
+      </fieldset>
+      <!-- 全体 -->
+      <fieldset class="group"><legend>全体</legend>
+        <div class="field"><label>フォントサイズ(px)</label><input id="font_size_header" type="number"></div>
+        <div class="field"><label>ヘッダー高さ(px)</label><input id="bar_height_header" type="number"></div>
+        <div class="field"><label>パディング</label><input id="padding_header" type="text"></div>
+        <div class="field"><label>リンク間隔</label><input id="link_spacing_header" type="number"></div>
+        <div class="field"><label>背景色</label><input id="bg_color_header" type="color"></div>
+        <div class="field"><label>背景グラデーション</label>
+          <input id="bg_gradient_header" type="text"><button id="grad_reset_header" class="btn small">リセット</button>
         </div>
-      </div>
-      <div id="headerPreview" class="preview"></div>
-      <div class="groups">
-        <!-- ロゴ -->
-        <fieldset class="group"><legend>ロゴ</legend>
-          <div class="field"><label>URL</label><input id="logo_url" type="text"></div>
-          <div class="field"><label>高さ(px)</label><input id="logo_height" type="number"></div>
-          <div class="field"><label>位置</label><select id="logo_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-        </fieldset>
-        <!-- 社名 -->
-        <fieldset class="group"><legend>社名</legend>
-          <div class="field"><label>会社名</label><input id="company_name" type="text"></div>
-          <div class="field"><label>位置</label><select id="company_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-          <div class="field"><label>色</label><input id="company_color" type="color"></div>
-          <div class="field"><label>太さ</label><select id="company_weight"><option>normal</option><option>bold</option></select></div>
-        </fieldset>
-        <!-- ナビ -->
-        <fieldset class="group"><legend>ナビ</legend>
-          <div class="field"><label>位置</label><select id="nav_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-          <div class="field"><label>色</label><input id="nav_color" type="color"></div>
-          <div class="field"><label>太さ</label><select id="nav_weight"><option>normal</option><option>bold</option></select></div>
-        </fieldset>
-        <!-- 全体 -->
-        <fieldset class="group"><legend>全体</legend>
-          <div class="field"><label>フォントサイズ(px)</label><input id="font_size_header" type="number"></div>
-          <div class="field"><label>ヘッダー高さ(px)</label><input id="bar_height_header" type="number"></div>
-          <div class="field"><label>パディング</label><input id="padding_header" type="text"></div>
-          <div class="field"><label>リンク間隔</label><input id="link_spacing_header" type="number"></div>
-          <div class="field"><label>背景色</label><input id="bg_color_header" type="color"></div>
-          <div class="field"><label>背景グラデーション</label>
-            <input id="bg_gradient_header" type="text"><button id="grad_reset_header" class="btn small">リセット</button>
-          </div>
-        </fieldset>
-      </div>
-    </section>
+      </fieldset>
+    </div>
+  </section>
 
-    <!-- フッター設定 -->
-    <section class="card">
-      <div class="panel-head">
-        <h2>フッター設定</h2>
-        <div class="actions">
-          <label class="inline">行レイアウト
-            <select id="footer_layout_mode">
-              <option value="row">横並び</option>
-              <option value="nav-top">コピー上／ナビ下</option>
-              <option value="nav-bottom">ナビ上／コピー下</option>
-            </select>
-          </label>
-          <button id="saveFooter" class="btn primary">保存</button>
+  <!-- フッター設定 -->
+  <section class="card">
+    <div class="panel-head">
+      <h2>フッター設定</h2>
+      <div class="actions">
+        <label class="inline">行レイアウト
+          <select id="footer_layout_mode">
+            <option value="row">横並び</option>
+            <option value="nav-top">コピー上／ナビ下</option>
+            <option value="nav-bottom">ナビ上／コピー下</option>
+          </select>
+        </label>
+        <button id="saveFooter" class="btn primary">保存</button>
+      </div>
+    </div>
+    <div id="footerPreview" class="preview"></div>
+    <div class="groups">
+      <!-- コピーライト -->
+      <fieldset class="group"><legend>コピーライト</legend>
+        <div class="field"><label>テキスト</label><input id="footer_text" type="text"></div>
+        <div class="field"><label>位置</label><select id="footer_alignment"><option>left</option><option>center</option><option>right</option></select></div>
+        <div class="field"><label>色</label><input id="footer_color" type="color"></div>
+      </fieldset>
+      <!-- ナビ -->
+      <fieldset class="group"><legend>ナビ</legend>
+        <div class="field"><label>位置</label><select id="nav_alignment_footer"><option>left</option><option>center</option><option>right</option></select></div>
+        <div class="field"><label>色</label><input id="nav_color_footer" type="color"></div>
+        <div class="field"><label>太さ</label><select id="nav_weight_footer"><option>normal</option><option>bold</option></select></div>
+        <div class="field"><label>固定表示</label><input id="footer_fixed" type="checkbox"></div>
+      </fieldset>
+      <!-- 全体 -->
+      <fieldset class="group"><legend>全体</legend>
+        <div class="field"><label>フォントサイズ(px)</label><input id="font_size_footer" type="number"></div>
+        <div class="field"><label>フッター高さ(px)</label><input id="bar_height_footer" type="number"></div>
+        <div class="field"><label>パディング</label><input id="padding_footer" type="text"></div>
+        <div class="field"><label>リンク間隔</label><input id="link_spacing_footer" type="number"></div>
+        <div class="field"><label>背景色</label><input id="bg_color_footer" type="color"></div>
+        <div class="field"><label>背景グラデーション</label>
+          <input id="bg_gradient_footer" type="text"><button id="grad_reset_footer" class="btn small">リセット</button>
         </div>
-      </div>
-      <div id="footerPreview" class="preview"></div>
-      <div class="groups">
-        <!-- コピーライト -->
-        <fieldset class="group"><legend>コピーライト</legend>
-          <div class="field"><label>テキスト</label><input id="footer_text" type="text"></div>
-          <div class="field"><label>位置</label><select id="footer_alignment"><option>left</option><option>center</option><option>right</option></select></div>
-          <div class="field"><label>色</label><input id="footer_color" type="color"></div>
-        </fieldset>
-        <!-- ナビ -->
-        <fieldset class="group"><legend>ナビ</legend>
-          <div class="field"><label>位置</label><select id="nav_alignment_footer"><option>left</option><option>center</option><option>right</option></select></div>
-          <div class="field"><label>色</label><input id="nav_color_footer" type="color"></div>
-          <div class="field"><label>太さ</label><select id="nav_weight_footer"><option>normal</option><option>bold</option></select></div>
-          <div class="field"><label>固定表示</label><input id="footer_fixed" type="checkbox"></div>
-        </fieldset>
-        <!-- 全体 -->
-        <fieldset class="group"><legend>全体</legend>
-          <div class="field"><label>フォントサイズ(px)</label><input id="font_size_footer" type="number"></div>
-          <div class="field"><label>フッター高さ(px)</label><input id="bar_height_footer" type="number"></div>
-          <div class="field"><label>パディング</label><input id="padding_footer" type="text"></div>
-          <div class="field"><label>リンク間隔</label><input id="link_spacing_footer" type="number"></div>
-          <div class="field"><label>背景色</label><input id="bg_color_footer" type="color"></div>
-          <div class="field"><label>背景グラデーション</label>
-            <input id="bg_gradient_footer" type="text"><button id="grad_reset_footer" class="btn small">リセット</button>
-          </div>
-        </fieldset>
-      </div>
-    </section>
-
-  </div>
+      </fieldset>
+    </div>
+  </section>
 
   <div id="toast"></div>
 </div>
@@ -137,24 +133,27 @@
   const $=(q,r=document)=>r.querySelector(q);
   const toast=(msg,ok=true)=>{const n=document.createElement("div");n.className="toast "+(ok?"ok":"err");n.textContent=msg;$("#toast").appendChild(n);setTimeout(()=>n.remove(),2200)};
 
+  let menus=[];
+  const toJustify=p=>p==="left"?"flex-start":p==="right"?"flex-end":"center";
+
+  async function loadMenus(){const {data,error}=await supabase.from("public_menus").select("*").order("sort_order");if(error){toast("メニュー読み込み失敗",false);return[]}return data||[]}
   async function loadRow(area){const {data,error}=await supabase.from("hf_settings").select("*").eq("area",area).single();if(error)return{};return data||{}}
   async function saveRow(area,payload){const {error}=await supabase.from("hf_settings").update(payload).eq("area",area);if(error){toast("保存失敗",false);return}toast("保存しました")}
 
-  const toJustify=p=>p==="left"?"flex-start":p==="right"?"flex-end":"center";
-
   function headerHTML(d){
+    const items=menus.filter(m=>m.is_active&&m.show_in_header).map(m=>`<span>${m.title}</span>`).join("");
     const bg=d.bg_gradient||d.bg_color||"#0f172a";
     const name=`<div class="brand" style="color:${d.company_color};font-weight:${d.company_weight};justify-content:${toJustify(d.company_alignment)}">
-      ${d.logo_url?`<img src="${d.logo_url}" style="height:${d.logo_height}px">`:""}
-      <span>${d.company_name||""}</span></div>`;
-    const nav=`<div class="nav" style="color:${d.nav_color};font-weight:${d.nav_weight};justify-content:${toJustify(d.nav_alignment)}"><span>メニュー1</span><span>メニュー2</span></div>`;
+      ${d.logo_url?`<img src="${d.logo_url}" style="height:${d.logo_height}px">`:""}<span>${d.company_name||""}</span></div>`;
+    const nav=`<div class="nav" style="color:${d.nav_color};font-weight:${d.nav_weight};justify-content:${toJustify(d.nav_alignment)}">${items}</div>`;
     const inner=d.layout_mode==="column"?`${name}${nav}`:`<div style="flex:1">${name}</div>${nav}`;
     return `<div class="hfbar ${d.layout_mode}" style="background:${bg};font-size:${d.font_size}px;height:${d.bar_height}px;padding:${d.padding};--gap:${d.link_spacing}px">${inner}</div>`;
   }
 
   function footerHTML(d){
+    const items=menus.filter(m=>m.is_active&&m.show_in_footer).map(m=>`<span>${m.title}</span>`).join("");
     const bg=d.bg_gradient||d.bg_color||"#0f172a";
-    const nav=`<div class="nav" style="color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};justify-content:${toJustify(d.nav_alignment_footer)}"><span>リンク1</span><span>リンク2</span></div>`;
+    const nav=`<div class="nav" style="color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};justify-content:${toJustify(d.nav_alignment_footer)}">${items}</div>`;
     const copy=`<div class="copy" style="color:${d.footer_color};justify-content:${toJustify(d.footer_alignment)}">${d.footer_text||""}</div>`;
     let inner="";
     if(d.layout_mode==="row") inner=`${copy}${nav}`;
@@ -169,7 +168,7 @@
     nav_alignment:$("#nav_alignment").value,nav_color:$("#nav_color").value,nav_weight:$("#nav_weight").value,
     font_size:Number($("#font_size_header").value),bar_height:Number($("#bar_height_header").value),padding:$("#padding_header").value,link_spacing:Number($("#link_spacing_header").value),
     bg_color:$("#bg_color_header").value,bg_gradient:$("#bg_gradient_header").value,layout_mode:$("#header_layout_mode").value}}
-  function setHeader(r){$("#logo_url").value=r.logo_url||"";$("#logo_height").value=r.logo_height||48;$("#logo_alignment").value=r.logo_alignment||"left";$("#company_name").value=r.company_name||"";$("#company_alignment").value=r.company_alignment||"left";$("#company_color").value=r.company_color||"#000000";$("#company_weight").value=r.company_weight||"normal";$("#nav_alignment").value=r.nav_alignment||"right";$("#nav_color").value=r.nav_color||"#000000";$("#nav_weight").value=r.nav_weight||"normal";$("#font_size_header").value=r.font_size||14;$("#bar_height_header").value=r.bar_height||60;$("#padding_header").value=r.padding||"8px";$("#link_spacing_header").value=r.link_spacing||16;$("#bg_color_header").value=r.bg_color||"#ffffff";$("#bg_gradient_header").value=r.bg_gradient||"";$("#header_layout_mode").value=r.layout_mode||"row";$("#headerPreview").innerHTML=headerHTML(r)}
+  function setHeader(r){$("#logo_url").value=r.logo_url||"";$("#logo_height").value=r.logo_height||48;$("#logo_alignment").value=r.logo_alignment||"left";$("#company_name").value=r.company_name||"";$("#company_alignment").value=r.company_alignment||"left";$("#company_color").value=r.company_color||"#000000";$("#company_weight").value=r.company_weight||"normal";$("#nav_alignment").value=r.nav_alignment||"right";$("#nav_color").value=r.nav_color||"#000000";$("#nav_weight").value=r.nav_weight||"normal";$("#...
 
   function getFooter(){return{
     footer_text:$("#footer_text").value,footer_alignment:$("#footer_alignment").value,footer_color:$("#footer_color").value,
@@ -177,9 +176,10 @@
     footer_fixed:$("#footer_fixed").checked,
     font_size:Number($("#font_size_footer").value),bar_height:Number($("#bar_height_footer").value),padding:$("#padding_footer").value,link_spacing:Number($("#link_spacing_footer").value),
     bg_color:$("#bg_color_footer").value,bg_gradient:$("#bg_gradient_footer").value,layout_mode:$("#footer_layout_mode").value}}
-  function setFooter(r){$("#footer_text").value=r.footer_text||"";$("#footer_alignment").value=r.footer_alignment||"center";$("#footer_color").value=r.footer_color||"#000000";$("#nav_alignment_footer").value=r.nav_alignment_footer||"center";$("#nav_color_footer").value=r.nav_color_footer||"#000000";$("#nav_weight_footer").value=r.nav_weight_footer||"normal";$("#footer_fixed").checked=!!r.footer_fixed;$("#font_size_footer").value=r.font_size||14;$("#bar_height_footer").value=r.bar_height||60;$("#padding_footer").value=r.padding||"8px";$("#link_spacing_footer").value=r.link_spacing||16;$("#bg_color_footer").value=r.bg_color||"#ffffff";$("#bg_gradient_footer").value=r.bg_gradient||"";$("#footer_layout_mode").value=r.layout_mode||"row";$("#footerPreview").innerHTML=footerHTML(r)}
+  function setFooter(r){$("#footer_text").value=r.footer_text||"";$("#footer_alignment").value=r.footer_alignment||"center";$("#footer_color").value=r.footer_color||"#000000";$("#nav_alignment_footer").value=r.nav_alignment_footer||"center";$("#nav_color_footer").value=r.nav_color_footer||"#000000";$("#nav_weight_footer").value=r.nav_weight_footer||"normal";$("#footer_fixed").checked=!!r.footer_fixed;$("#font_size_footer").value=r.font_size||14;$("#bar_height_footer").value=r.bar_height||60;$("#padding_f...
 
   (async()=>{
+    menus=await loadMenus();
     const header=await loadRow("header");setHeader(header);
     const footer=await loadRow("footer");setFooter(footer);
     $("#saveHeader").onclick=()=>saveRow("header",getHeader());
