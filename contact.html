@@ -1,211 +1,248 @@
-<div id="contact-page" class="contact-wrapper">
-  <div class="contact-card">
-    <h2>お問い合わせ</h2>
-    <form id="contact-form">
-      <div class="form-group">
-        <label for="name">お名前<span class="required">*</span></label>
-        <input type="text" id="name" name="name" required />
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お問い合わせ｜合同会社WaJu 公式HP</title>
+  <meta name="description" content="合同会社WaJuへのお問い合わせページです。サービス導入の相談、業務提携、取材・メディア依頼などはこちらからご連絡ください。">
+  <meta property="og:title" content="お問い合わせ｜合同会社WaJu">
+  <meta property="og:description" content="合同会社WaJuへのお問い合わせページです。サービス導入の相談、業務提携、取材・メディア依頼などはこちらからご連絡ください。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourdomain/contact.html">
+  <meta property="og:image" content="https://yourdomain/assets/ogp.png">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <!-- ▼ヘッダー（indexと同じ構造） -->
+  <header id="site-header">
+    <div class="logo-area">
+      <a href="/index.html">合同会社WaJu</a>
+    </div>
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="/index.html">トップ</a></li>
+        <li><a href="/about.html">会社概要</a></li>
+        <li><a href="/service.html">事業内容</a></li>
+        <li><a href="/blog.html">ブログ</a></li>
+        <li><a href="/contact.html" class="active">お問い合わせ</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ▼メイン -->
+  <main id="content">
+    <div class="contact-wrapper">
+      <div class="contact-card">
+        <h2>お問い合わせ</h2>
+        <form id="contact-form">
+          <div class="form-group">
+            <label for="name">お名前<span class="required">*</span></label>
+            <input type="text" id="name" name="name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="organization">所属</label>
+            <input type="text" id="organization" name="organization" />
+          </div>
+
+          <div class="form-group">
+            <label for="email">メール</label>
+            <input type="email" id="email" name="email" />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">電話番号</label>
+            <input type="tel" id="phone" name="phone" />
+          </div>
+
+          <div class="form-group">
+            <label for="category">お問い合わせ種別<span class="required">*</span></label>
+            <select id="category" name="category" required>
+              <option value="">選択してください</option>
+              <option value="サービス導入相談">サービス導入相談</option>
+              <option value="業務提携・連携・協業">業務提携・連携・協業</option>
+              <option value="取材・メディア">取材・メディア</option>
+              <option value="その他">その他</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="subject">件名<span class="required">*</span></label>
+            <input type="text" id="subject" name="subject" maxlength="100" required />
+          </div>
+
+          <div class="form-group">
+            <label for="message">本文<span class="required">*</span></label>
+            <textarea id="message" name="message" rows="6" maxlength="4000" required></textarea>
+          </div>
+
+          <div class="form-check">
+            <input type="checkbox" id="agree" name="agree" required />
+            <label for="agree">
+              <a href="/privacypolicy.html" target="_blank">プライバシーポリシー</a>に同意します
+            </label>
+          </div>
+
+          <!-- honeypot -->
+          <input type="text" id="hp_field" name="hp_field" style="display:none" tabindex="-1" autocomplete="off" />
+
+          <button type="submit" class="btn-submit">送信する</button>
+          <p id="form-message" class="form-message"></p>
+        </form>
       </div>
+    </div>
+  </main>
 
-      <div class="form-group">
-        <label for="organization">所属</label>
-        <input type="text" id="organization" name="organization" />
-      </div>
+  <!-- ▼フッター（indexと同じ構造） -->
+  <footer id="site-footer">
+    <p>© 2025 合同会社WaJu</p>
+  </footer>
 
-      <div class="form-group">
-        <label for="email">メール</label>
-        <input type="email" id="email" name="email" />
-      </div>
+  <!-- ▼フォーム専用スタイル -->
+  <style>
+    .contact-wrapper {
+      display: flex;
+      justify-content: center;
+      padding: 40px 15px;
+    }
+    .contact-card {
+      width: 100%;
+      max-width: 600px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .contact-card h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 1.6rem;
+    }
+    .form-group {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #444;
+    }
+    input, select, textarea {
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #3f72af;
+      outline: none;
+    }
+    .required {
+      color: #e63946;
+      margin-left: 4px;
+    }
+    .form-check {
+      margin: 12px 0 20px;
+      font-size: 0.95rem;
+    }
+    .form-check label a {
+      color: #3f72af;
+      text-decoration: underline;
+    }
+    .btn-submit {
+      width: 100%;
+      background: #3f72af;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover {
+      background: #345a91;
+    }
+    .form-message {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+  </style>
 
-      <div class="form-group">
-        <label for="phone">電話番号</label>
-        <input type="tel" id="phone" name="phone" />
-      </div>
+  <!-- ▼フォーム処理 -->
+  <script type="module">
+  import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-      <div class="form-group">
-        <label for="category">お問い合わせ種別<span class="required">*</span></label>
-        <select id="category" name="category" required>
-          <option value="">選択してください</option>
-          <option value="サービス導入相談">サービス導入相談</option>
-          <option value="業務提携・連携・協業">業務提携・連携・協業</option>
-          <option value="取材・メディア">取材・メディア</option>
-          <option value="その他">その他</option>
-        </select>
-      </div>
+  const supabaseUrl = "https://htnmjsqgoapvuanrsuma.supabase.co";
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA";
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
-      <div class="form-group">
-        <label for="subject">件名<span class="required">*</span></label>
-        <input type="text" id="subject" name="subject" maxlength="100" required />
-      </div>
+  const form = document.getElementById("contact-form");
+  const messageBox = document.getElementById("form-message");
 
-      <div class="form-group">
-        <label for="message">本文<span class="required">*</span></label>
-        <textarea id="message" name="message" rows="6" maxlength="4000" required></textarea>
-      </div>
+  let pageLoadTime = Date.now();
 
-      <div class="form-check">
-        <input type="checkbox" id="agree" name="agree" required />
-        <label for="agree">
-          <a href="/privacypolicy.html" target="_blank">プライバシーポリシー</a>に同意します
-        </label>
-      </div>
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    messageBox.textContent = "";
 
-      <!-- honeypot -->
-      <input type="text" id="hp_field" name="hp_field" style="display:none" tabindex="-1" autocomplete="off" />
-
-      <button type="submit" class="btn-submit">送信する</button>
-      <p id="form-message" class="form-message"></p>
-    </form>
-  </div>
-</div>
-
-<style>
-.contact-wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 40px 15px;
-}
-.contact-card {
-  width: 100%;
-  max-width: 600px;
-  background: #fff;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-.contact-card h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 1.6rem;
-}
-.form-group {
-  margin-bottom: 18px;
-  display: flex;
-  flex-direction: column;
-}
-label {
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: #444;
-}
-input, select, textarea {
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border 0.2s;
-}
-input:focus, select:focus, textarea:focus {
-  border-color: #3f72af;
-  outline: none;
-}
-.required {
-  color: #e63946;
-  margin-left: 4px;
-}
-.form-check {
-  margin: 12px 0 20px;
-  font-size: 0.95rem;
-}
-.form-check label a {
-  color: #3f72af;
-  text-decoration: underline;
-}
-.btn-submit {
-  width: 100%;
-  background: #3f72af;
-  color: #fff;
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.btn-submit:hover {
-  background: #345a91;
-}
-.form-message {
-  text-align: center;
-  margin-top: 15px;
-  font-weight: 600;
-}
-</style>
-
-<script type="module">
-import { createClient } from "https://esm.sh/@supabase/supabase-js";
-
-const supabaseUrl = "https://htnmjsqgoapvuanrsuma.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA";
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-const form = document.getElementById("contact-form");
-const messageBox = document.getElementById("form-message");
-
-// スパム対策
-let pageLoadTime = Date.now();
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  messageBox.textContent = "";
-
-  // honeypot
-  if (document.getElementById("hp_field").value !== "") {
-    messageBox.textContent = "送信に失敗しました。";
-    return;
-  }
-
-  // 3秒未満制限
-  if (Date.now() - pageLoadTime < 3000) {
-    messageBox.textContent = "送信まで少し待ってください。";
-    return;
-  }
-
-  // 60秒制限
-  if (localStorage.getItem("lastContactSubmit")) {
-    const last = parseInt(localStorage.getItem("lastContactSubmit"), 10);
-    if (Date.now() - last < 60000) {
-      messageBox.textContent = "短時間での連続送信はできません。";
+    if (document.getElementById("hp_field").value !== "") {
+      messageBox.textContent = "送信に失敗しました。";
       return;
     }
-  }
 
-  const data = {
-    name: form.name.value,
-    organization: form.organization.value,
-    email: form.email.value,
-    phone: form.phone.value,
-    category: form.category.value,
-    subject: form.subject.value,
-    message: form.message.value,
-    agree: form.agree.checked,
-    meta_user_agent: navigator.userAgent,
-    meta_path: location.pathname
-  };
+    if (Date.now() - pageLoadTime < 3000) {
+      messageBox.textContent = "送信まで少し待ってください。";
+      return;
+    }
 
-  const { error } = await supabase.from("contact_messages").insert([data]);
-  if (error) {
-    messageBox.textContent = "送信に失敗しました。";
-    console.error(error);
-    return;
-  }
+    if (localStorage.getItem("lastContactSubmit")) {
+      const last = parseInt(localStorage.getItem("lastContactSubmit"), 10);
+      if (Date.now() - last < 60000) {
+        messageBox.textContent = "短時間での連続送信はできません。";
+        return;
+      }
+    }
 
-  localStorage.setItem("lastContactSubmit", Date.now().toString());
-  form.reset();
-  messageBox.textContent = "送信完了しました";
-  messageBox.style.color = "#3f72af";
+    const data = {
+      name: form.name.value,
+      organization: form.organization.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      category: form.category.value,
+      subject: form.subject.value,
+      message: form.message.value,
+      agree: form.agree.checked,
+      meta_user_agent: navigator.userAgent,
+      meta_path: location.pathname
+    };
 
-  // Edge Function 呼び出し（通知メール）
-  try {
-    await fetch("/functions/v1/contact-notify", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-  } catch (e) {
-    console.warn("通知メール送信失敗:", e);
-  }
-});
-</script>
+    const { error } = await supabase.from("contact_messages").insert([data]);
+    if (error) {
+      messageBox.textContent = "送信に失敗しました。";
+      console.error(error);
+      return;
+    }
 
+    localStorage.setItem("lastContactSubmit", Date.now().toString());
+    form.reset();
+    messageBox.textContent = "送信完了しました";
+    messageBox.style.color = "#3f72af";
+
+    try {
+      await fetch("/functions/v1/contact-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+    } catch (e) {
+      console.warn("通知メール送信失敗:", e);
+    }
+  });
+  </script>
+</body>
+</html>
