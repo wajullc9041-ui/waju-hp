@@ -5,9 +5,8 @@
   <title>合同会社WaJu 公式サイト</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* ===== Base (keep simple) ===== */
-    :root { color-scheme: light; }
-    html, body { margin:0; padding:0; }
+    /* ===== Base ===== */
+    html, body { margin:0; padding:0; min-height:100%; }
     body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; }
     main#site-main { padding:2rem 1.25rem; min-height:60vh; background:#f9fafb; }
     section { margin-bottom:2rem; padding:1rem; background:#fff; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
@@ -24,11 +23,18 @@
     .hf-brand img { height:auto; max-height:inherit; }
     .hf-nav { display:flex; gap:var(--gap,16px); flex-wrap:wrap; width:100%; }
     .hf-nav a { color:inherit; text-decoration:none; border-radius:6px; padding:0 2px; }
-    /* 以前: .hf-copy { font-size:12px; } を削除（バー/個別サイズで制御） */
     .hf-copy { display:flex; width:100%; }
 
-    @media (max-width: 640px) {
+    /* Mobile nav */
+    .mobile-toggle { display:none; background:transparent; border:1px solid rgba(255,255,255,.5); border-radius:8px; padding:6px 8px; color:inherit; }
+    .nav-mobile { display:none; flex-direction:column; gap:10px; padding:10px 0; width:100%; }
+    .nav-mobile a { padding:6px 2px; }
+
+    @media (max-width: 768px) {
       .hfbar.hf-row { flex-wrap:wrap; }
+      .nav-desktop { display:none !important; }
+      .mobile-toggle { display:block; margin-left:auto; }
+      .nav-mobile.open { display:flex; }
     }
   </style>
 </head>
@@ -65,14 +71,13 @@
     const safeBarHeight = (v, fallback) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? n : fallback; };
     const num = (v, f) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? n : f; };
 
-    // ---- Builders (per-element font-sizes) ----
+    // ---- Builders (per-element font-sizes + per-area font-family) ----
     function headerHTML(d, menus) {
       const items = (menus || [])
         .filter(m => m.is_active && m.show_in_header)
         .map(m => `<a href="${m.href || '#'}">${m.title}</a>`)
         .join("");
 
-      // 新: 社名とナビで別フォントサイズ
       const companyFs = num(d.header_company_size, num(d.font_size, 14));
       const navFs     = num(d.header_nav_size,     num(d.font_size, 14));
 
@@ -85,17 +90,20 @@
         <div class="hf-brand">${brandInner}</div>
       </div>`;
 
-      const nav = `<nav class="hf-nav" style="color:${d.nav_color};font-weight:${d.nav_weight};justify-content:${toJustify(d.nav_alignment)};font-size:${navFs}px">${items}</nav>`;
-      const navWrap = `<div class="slot nav" style="justify-content:${toJustify(d.nav_alignment)}">${nav}</div>`;
+      const navDesktop = `<nav class="hf-nav nav-desktop" style="color:${d.nav_color};font-weight:${d.nav_weight};justify-content:${toJustify(d.nav_alignment)};font-size:${navFs}px">${items}</nav>`;
+      const navMobile  = `<div class="nav-mobile" id="nav-mobile" style="color:${d.nav_color};font-weight:${d.nav_weight};font-size:${navFs}px">${items}</div>`;
+      const toggleBtn  = `<button class="mobile-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-mobile">メニュー</button>`;
+      const navWrap = `<div class="slot nav" style="justify-content:${toJustify(d.nav_alignment)}">${navDesktop}${toggleBtn}${navMobile}</div>`;
 
       const cls = d.layout_mode === "column" ? "hfbar hf-column" : "hfbar hf-row";
-      // バー自体の font-size は意味を薄める（後方互換用に残すが要素で上書き）
       const barFs = num(d.font_size, 14);
       const h  = safeBarHeight(d.bar_height, 60);
       const pad = d.padding || "8px 12px";
       const gap = num(d.link_spacing, 16);
+      const fixed = d.header_fixed ? `position:fixed;top:0;left:0;right:0;z-index:30;` : ``;
+      const ff = d.header_font_family ? `font-family:${d.header_font_family};` : ``;
 
-      return `<div class="${cls}" style="background:${bgOf(d)};font-size:${barFs}px;height:${h}px;padding:${pad};--gap:${gap}px">
+      return `<div class="${cls}" style="${fixed}${ff}background:${bgOf(d)};font-size:${barFs}px;height:${h}px;padding:${pad};--gap:${gap}px">
         ${brandWrap}${navWrap}
       </div>`;
     }
@@ -106,7 +114,6 @@
         .map(m => `<a href="${m.href || '#'}">${m.title}</a>`)
         .join("");
 
-      // 新: コピーライトとナビで別フォントサイズ
       const copyFs = num(d.footer_copy_size, num(d.font_size, 14));
       const navFs  = num(d.footer_nav_size,  num(d.font_size, 14));
 
@@ -119,13 +126,14 @@
       else inner = `${copy}${nav}`;
 
       const cls = d.layout_mode === "row" ? "hfbar hf-row" : "hfbar hf-column";
-      const barFs = num(d.font_size, 14); // 後方互換
+      const barFs = num(d.font_size, 14);
       const h  = safeBarHeight(d.bar_height, 60);
       const pad = d.padding || "8px 12px";
       const gap = num(d.link_spacing, 16);
-      const sticky = d.footer_fixed ? "position:sticky;bottom:0;z-index:10;" : "";
+      const fixed = d.footer_fixed ? `position:fixed;left:0;right:0;bottom:0;z-index:20;` : ``;
+      const ff = d.footer_font_family ? `font-family:${d.footer_font_family};` : ``;
 
-      return `<div class="${cls}" style="${sticky}background:${bgOf(d)};font-size:${barFs}px;height:${h}px;padding:${pad};--gap:${gap}px">
+      return `<div class="${cls}" style="${fixed}${ff}background:${bgOf(d)};font-size:${barFs}px;height:${h}px;padding:${pad};--gap:${gap}px">
         ${inner}
       </div>`;
     }
@@ -160,18 +168,33 @@
       document.querySelector("#site-header").innerHTML = headerHTML(header, menus);
       document.querySelector("#site-footer").innerHTML = footerHTML(footer, menus);
 
-      // Sticky footer のとき本文が隠れないように下余白を確保
+      // Fixed header / footer のときだけ本文の上下に余白を加える（重なり防止）
+      if (header && header.header_fixed) {
+        const ht = safeBarHeight(header.bar_height, 60);
+        document.body.style.paddingTop = `${ht}px`;
+      } else {
+        document.body.style.paddingTop = "";
+      }
       if (footer && footer.footer_fixed) {
-        const h = safeBarHeight(footer.bar_height, 60);
-        document.body.style.paddingBottom = `${h}px`;
+        const hb = safeBarHeight(footer.bar_height, 60);
+        document.body.style.paddingBottom = `${hb}px`;
+      } else {
+        document.body.style.paddingBottom = "";
+      }
+
+      // Mobile hamburger
+      const toggle = document.getElementById("nav-toggle");
+      const mobile = document.getElementById("nav-mobile");
+      if (toggle && mobile) {
+        toggle.addEventListener("click", () => {
+          const open = mobile.classList.toggle("open");
+          toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        });
       }
     })();
 
-    // ---- Page editor hook（将来のページ編集を反映するための入口） ----
-    // 1) 関数で置換
+    // ---- Page editor hook ----
     window.updateMain = (html) => { document.getElementById("site-main").innerHTML = html; };
-
-    // 2) カスタムイベントでも置換可
     window.addEventListener("page:update", (ev) => {
       if (ev?.detail?.html != null) {
         document.getElementById("site-main").innerHTML = ev.detail.html;
