@@ -1,4 +1,4 @@
-<!-- admin-hf-setting 完全版（フォント＆固定ヘッダー対応・背景色優先FIX） -->
+<!-- admin-hf-setting 完全版（フォント＆固定ヘッダー対応・背景優先/レイアウトFIX） -->
 <style>
   #hf-app{box-sizing:border-box;width:100%;margin:0;padding:16px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a}
   #hf-app h1{font-size:20px;margin:0 0 16px}
@@ -9,12 +9,12 @@
   #hf-app .btn.primary{background:#2563eb;color:#fff}
   #hf-app .btn.small{font-size:12px;padding:2px 8px;margin-left:8px}
   #hf-app .groups{display:flex;gap:12px;flex-wrap:wrap}
-  #hf-app fieldset.group{flex:1;min-width:280px;border:1px solid #e2e8f0;border-radius:10px;padding:10px}
+  #hf-app fieldset.group{flex:1 1 320px;min-width:300px;border:1px solid #e2e8f0;border-radius:10px;padding:10px}
   #hf-app legend{font-size:12px;padding:0 6px;color:#334155}
-  #hf-app .field{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0}
-  #hf-app .field label{flex:0 0 42%;font-size:12px;color:#475569}
-  #hf-app .field input,#hf-app .field select{flex:1;max-width:100%;box-sizing:border-box;padding:6px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px}
-  #hf-app .hint{font-size:11px;color:#64748b;margin-top:4px}
+  #hf-app .field{display:flex;align-items:center;justify-content:flex-start;gap:8px;margin:6px 0;flex-wrap:wrap}
+  #hf-app .field label{flex:1 1 38%;font-size:12px;color:#475569;min-width:140px}
+  #hf-app .field input,#hf-app .field select{flex:1 1 60%;max-width:100%;box-sizing:border-box;padding:6px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px}
+  #hf-app .field .hint{flex-basis:100%;font-size:11px;color:#64748b;margin:4px 0 0}
   #hf-app .preview{border:1px dashed #cbd5e1;border-radius:10px;padding:12px;margin-bottom:12px;background:#f8fafc}
   #hf-app .hfbar{display:flex;align-items:center;gap:var(--gap,16px);border-radius:8px}
   #hf-app .hfbar.hf-row{justify-content:flex-start}
@@ -76,7 +76,11 @@
       </fieldset>
 
       <fieldset class="group"><legend>全体</legend>
-        <div class="field"><label>フォントファミリー</label><input id="header_font_family" type="text" placeholder='"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif'><div class="hint">第一候補 + フォールバック（末尾は <code>sans-serif</code> 推奨）。</div></div>
+        <div class="field">
+          <label>フォントファミリー</label>
+          <input id="header_font_family" type="text" placeholder='"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif'>
+          <div class="hint">第一候補 + フォールバック（末尾は <code>sans-serif</code> 推奨）。</div>
+        </div>
         <div class="field"><label>ヘッダー高さ(px)</label><input id="bar_height_header" type="number" min="0" step="1" placeholder="60"></div>
         <div class="field"><label>パディング</label><input id="padding_header" type="text" placeholder="8px 12px"></div>
         <div class="field"><label>リンク間隔</label><input id="link_spacing_header" type="number" min="0" step="1" placeholder="16"></div>
@@ -132,7 +136,11 @@
       </fieldset>
 
       <fieldset class="group"><legend>全体</legend>
-        <div class="field"><label>フォントファミリー</label><input id="footer_font_family" type="text" placeholder='"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif'><div class="hint">第一候補 + フォールバック。末尾は <code>sans-serif</code> 推奨。</div></div>
+        <div class="field">
+          <label>フォントファミリー</label>
+          <input id="footer_font_family" type="text" placeholder='"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif'>
+          <div class="hint">第一候補 + フォールバック。末尾は <code>sans-serif</code> 推奨。</div>
+        </div>
         <div class="field"><label>フッター高さ(px)</label><input id="bar_height_footer" type="number" min="0" step="1" placeholder="60"></div>
         <div class="field"><label>パディング</label><input id="padding_footer" type="text" placeholder="8px 12px"></div>
         <div class="field"><label>リンク間隔</label><input id="link_spacing_footer" type="number" min="0" step="1" placeholder="16"></div>
@@ -155,7 +163,7 @@
 
   <div class="card" style="background:#f8fafc">
     <strong>フォント指定のヒント</strong>
-    <div class="hint">「フォントA, フォントB, sans-serif」のように、左から順に使えるものが適用されます。A/Bが無い端末では最後の <code>sans-serif</code>（ゴシック系汎用）になります。</div>
+    <div class="hint">「フォントA, フォントB, sans-serif」の順で適用。A/Bが無ければ最後の <code>sans-serif</code>（ゴシック系）になります。</div>
   </div>
 
   <div id="toast"></div>
@@ -193,6 +201,10 @@
     return `${s}, sans-serif`;
   };
 
+  // --- UI state: which background wins (color vs gradient) ---
+  let headerPreferColor = false;
+  let footerPreferColor = false;
+
   // --- Data loaders ---
   let menus = [];
   async function loadMenus(){
@@ -214,10 +226,12 @@
   // --- Preview builders ---
   function headerHTML(d){
     const items = menus.filter(m=>m.is_active && m.show_in_header).map(m=>`<a href="${m.href||'#'}">${m.title}</a>`).join("");
-    const bg = (d.bg_gradient && d.bg_gradient.trim()) ? d.bg_gradient : (d.bg_color || "#0f172a");
+    const hasGrad = !!(d.bg_gradient && d.bg_gradient.trim());
+    const useColor = headerPreferColor || !hasGrad;
+    const bg = useColor ? (d.bg_color || "#0f172a") : d.bg_gradient;
     const companyFs = num(d.header_company_size, 18);
     const navFs = num(d.header_nav_size, 14);
-    const fixed = d.header_fixed ? "position:sticky;top:0;z-index:5;" : ""; /* プレビューはstickyで雰囲気のみ */
+    const fixed = d.header_fixed ? "position:sticky;top:0;z-index:5;" : "";
     const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
 
     const brand = `
@@ -237,7 +251,9 @@
 
   function footerHTML(d){
     const items = menus.filter(m=>m.is_active && m.show_in_footer).map(m=>`<a href="${m.href||'#'}">${m.title}</a>`).join("");
-    const bg = (d.bg_gradient && d.bg_gradient.trim()) ? d.bg_gradient : (d.bg_color || "#0f172a");
+    const hasGrad = !!(d.bg_gradient && d.bg_gradient.trim());
+    const useColor = footerPreferColor || !hasGrad;
+    const bg = useColor ? (d.bg_color || "#0f172a") : d.bg_gradient;
     const copyFs = num(d.footer_copy_size, 14);
     const navFs = num(d.footer_nav_size, 14);
     const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
@@ -371,14 +387,12 @@
       el.addEventListener("change", updateFooter);
     });
 
-    // make color selection override gradient automatically (so color always wins when picked)
-    $("#bg_color_header").addEventListener("input", () => { $("#bg_gradient_header").value=""; updateHeader(); });
-    $("#bg_color_footer").addEventListener("input", () => { $("#bg_gradient_footer").value=""; updateFooter(); });
-
-    // gradient buttons
-    $("#grad_apply_header").addEventListener("click", () => { $("#bg_gradient_header").value = linear($("#grad_dir_header").value, $("#grad_start_header").value, $("#grad_end_header").value); updateHeader(); });
-    $("#grad_reset_header").addEventListener("click", () => { $("#bg_gradient_header").value = ""; updateHeader(); });
-    $("#grad_apply_footer").addEventListener("click", () => { $("#bg_gradient_footer").value = linear($("#grad_dir_footer").value, $("#grad_start_footer").value, $("#grad_end_footer").value); updateFooter(); });
-    $("#grad_reset_footer").addEventListener("click", () => { $("#bg_gradient_footer").value = ""; updateFooter(); });
+    // background precedence handling
+    $("#bg_color_header").addEventListener("input", () => { headerPreferColor = true; updateHeader(); });
+    $("#bg_color_footer").addEventListener("input", () => { footerPreferColor = true; updateFooter(); });
+    $("#grad_apply_header").addEventListener("click", () => { headerPreferColor = false; $("#bg_gradient_header").value = linear($("#grad_dir_header").value, $("#grad_start_header").value, $("#grad_end_header").value); updateHeader(); });
+    $("#grad_reset_header").addEventListener("click", () => { headerPreferColor = true; $("#bg_gradient_header").value = ""; updateHeader(); });
+    $("#grad_apply_footer").addEventListener("click", () => { footerPreferColor = false; $("#bg_gradient_footer").value = linear($("#grad_dir_footer").value, $("#grad_start_footer").value, $("#grad_end_footer").value); updateFooter(); });
+    $("#grad_reset_footer").addEventListener("click", () => { footerPreferColor = true; $("#bg_gradient_footer").value = ""; updateFooter(); });
   })();
 </script>
