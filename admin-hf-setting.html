@@ -1,40 +1,69 @@
-<!-- admin-hf-setting 完全版（背景が効かない問題を !important と二段指定で強制適用） -->
+<!-- 管理: ヘッダー＆フッター設定（完全版・背景強制適用／UIはみ出し防止／幅コンパクト） -->
+<!-- ここからそのまま body に貼り付けて使えます（<html>や<head>は不要） -->
+
 <style>
-  #hf-app{box-sizing:border-box;width:100%;margin:0;padding:16px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a}
-  #hf-app h1{font-size:20px;margin:0 0 16px}
-  #hf-app .card{background:#fff;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);padding:16px;margin:0 0 16px}
-  #hf-app .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
-  #hf-app .panel-head h2{font-size:16px;margin:0}
-  #hf-app .btn{padding:6px 12px;border:none;border-radius:8px;cursor:pointer;font-size:13px}
-  #hf-app .btn.primary{background:#2563eb;color:#fff}
-  #hf-app .btn.small{font-size:12px;padding:2px 8px;margin-left:8px}
-  #hf-app .groups{display:flex;gap:12px;flex-wrap:wrap}
-  #hf-app fieldset.group{flex:1 1 320px;min-width:300px;border:1px solid #e2e8f0;border-radius:10px;padding:10px}
-  #hf-app legend{font-size:12px;padding:0 6px;color:#334155}
-  #hf-app .field{display:flex;align-items:center;justify-content:flex-start;gap:8px;margin:6px 0;flex-wrap:wrap}
-  #hf-app .field label{flex:1 1 38%;font-size:12px;color:#475569;min-width:140px}
-  #hf-app .field input,#hf-app .field select{flex:1 1 60%;max-width:100%;box-sizing:border-box;padding:6px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px}
-  #hf-app .field .hint{flex-basis:100%;font-size:11px;color:#64748b;margin:4px 0 0}
-  #hf-app .preview{border:1px dashed #cbd5e1;border-radius:10px;padding:12px;margin-bottom:12px;background:#f8fafc}
-  #hf-app .hfbar{display:flex;align-items:center;gap:var(--gap,16px);border-radius:8px}
-  #hf-app .hfbar.hf-row{justify-content:flex-start}
-  #hf-app .hfbar.hf-column{flex-direction:column;align-items:stretch}
-  #hf-app .slot{display:flex;align-items:center}
-  #hf-app .slot.brand{flex:0 0 auto}
-  #hf-app .slot.nav{flex:1 1 auto}
-  #hf-app .hf-brand{display:flex;align-items:center;gap:8px}
-  #hf-app .hf-brand img{height:auto;max-height:inherit}
-  #hf-app .hf-nav{display:flex;gap:var(--gap,16px);flex-wrap:wrap;width:100%}
-  #hf-app .hf-copy{display:flex;width:100%}
-  #hf-app #toast{position:fixed;top:16px;right:16px;z-index:1000}
-  #hf-app .toast{background:#2563eb;color:#fff;padding:8px 12px;border-radius:10px;margin-top:10px;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.2);opacity:.97}
-  #hf-app .toast.err{background:#dc2626}
+  /* --- 全体レイアウト（上部メニューを圧迫しない）--- */
+  #hf-app {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1120px;   /* ここで横幅を制限して中央寄せ */
+    margin: 16px auto;
+    padding: 16px;
+    font-family: system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;
+    color: #0f172a;
+  }
+  #hf-app h1{font-size: 20px; margin: 0 0 16px}
+
+  .card{
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    padding: 16px;
+    margin: 0 0 16px;
+  }
+  .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+  .panel-head h2{font-size:16px;margin:0}
+
+  .btn{padding:6px 12px;border:none;border-radius:8px;cursor:pointer;font-size:13px}
+  .btn.primary{background:#2563eb;color:#fff}
+  .btn.ghost{background:#f1f5f9;color:#0f172a}
+  .btn.small{font-size:12px;padding:2px 8px;margin-left:8px}
+
+  .preview{border:1px dashed #cbd5e1;border-radius:10px;padding:12px;margin-bottom:12px;background:#f8fafc}
+
+  /* 操作カード（ロゴ／社名／ナビ…）を横並びに。幅が足りない環境では自動で折り返す */
+  .groups{display:flex;gap:12px;flex-wrap:wrap}
+  fieldset.group{flex:1 1 320px;min-width:300px;border:1px solid #e2e8f0;border-radius:10px;padding:10px}
+  legend{font-size:12px;padding:0 6px;color:#334155}
+
+  /* ラベル左／入力右のまま、狭いときは折り返してはみ出しを防止 */
+  .field{display:flex;align-items:center;justify-content:flex-start;gap:8px;margin:6px 0;flex-wrap:wrap}
+  .field label{flex:1 1 38%;font-size:12px;color:#475569;min-width:140px}
+  .field input,.field select{flex:1 1 60%;max-width:100%;box-sizing:border-box;padding:6px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px}
+  .field .hint{flex-basis:100%;font-size:11px;color:#64748b;margin:4px 0 0}
+
+  /* プレビューの構造 */
+  .hfbar{display:flex;align-items:center;gap:var(--gap,16px);border-radius:8px}
+  .hfbar.hf-row{justify-content:flex-start}
+  .hfbar.hf-column{flex-direction:column;align-items:stretch}
+  .slot{display:flex;align-items:center}
+  .slot.brand{flex:0 0 auto}
+  .slot.nav{flex:1 1 auto}
+  .hf-brand{display:flex;align-items:center;gap:8px}
+  .hf-brand img{height:auto;max-height:inherit}
+  .hf-nav{display:flex;gap:var(--gap,16px);flex-wrap:wrap;width:100%}
+  .hf-copy{display:flex;width:100%}
+
+  /* トースト */
+  #toast{position:fixed;top:16px;right:16px;z-index:1000}
+  .toast{background:#2563eb;color:#fff;padding:8px 12px;border-radius:10px;margin-top:10px;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.2);opacity:.97}
+  .toast.err{background:#dc2626}
 </style>
 
 <div id="hf-app">
   <h1>ヘッダー & フッター設定</h1>
 
-  <!-- Header -->
+  <!-- ===== ヘッダー設定 ===== -->
   <section class="card" id="section-header">
     <div class="panel-head">
       <h2>ヘッダー設定</h2>
@@ -51,6 +80,7 @@
         <button id="saveHeader" class="btn primary" type="button">保存</button>
       </div>
     </div>
+
     <div id="headerPreview" class="preview"></div>
 
     <div class="groups">
@@ -82,7 +112,7 @@
           <div class="hint">第一候補 + フォールバック（末尾は <code>sans-serif</code> 推奨）。</div>
         </div>
         <div class="field"><label>ヘッダー高さ(px)</label><input id="bar_height_header" type="number" min="0" step="1" placeholder="60"></div>
-        <div class="field"><label>パディング</label><input id="padding_header" type="text" placeholder="8px 12px"></></div>
+        <div class="field"><label>パディング</label><input id="padding_header" type="text" placeholder="8px 12px"></div>
         <div class="field"><label>リンク間隔</label><input id="link_spacing_header" type="number" min="0" step="1" placeholder="16"></div>
         <div class="field"><label>背景色</label><input id="bg_color_header" type="color"></div>
         <div class="field"><label>グラデーション</label><input id="bg_gradient_header" type="text" placeholder="linear-gradient(to right,#000,#333)" readonly></div>
@@ -101,7 +131,7 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ===== フッター設定 ===== -->
   <section class="card" id="section-footer">
     <div class="panel-head">
       <h2>フッター設定</h2>
@@ -116,11 +146,12 @@
         <button id="saveFooter" class="btn primary" type="button">保存</button>
       </div>
     </div>
+
     <div id="footerPreview" class="preview"></div>
 
     <div class="groups">
       <fieldset class="group"><legend>コピーライト</legend>
-        <div class="field"><label>テキスト</label><input id="footer_text" type="text" placeholder="© 2025 Company"></div>
+        <div class="field"><label>テキスト</label><input id="footer_text" type="text" placeholder="© 2025 WaJu LLC"></div>
         <div class="field"><label>位置</label><select id="footer_alignment"><option>left</option><option>center</option><option>right</option></select></div>
         <div class="field"><label>文字色</label><input id="footer_color" type="color"></div>
         <div class="field"><label>太さ</label><select id="footer_weight"><option value="normal">normal</option><option value="bold">bold</option></select></div>
@@ -163,14 +194,14 @@
 
   <div class="card" style="background:#f8fafc">
     <strong>フォント指定のヒント</strong>
-    <div class="hint">「フォントA, フォントB, sans-serif」の順で適用。A/Bが無ければ最後の <code>sans-serif</code>（ゴシック系）になります。</div>
+    <div class="hint">「フォントA, フォントB, sans-serif」の順で指定。A/Bが無ければ最後の <code>sans-serif</code>（ゴシック系）が使われます。</div>
   </div>
 
   <div id="toast"></div>
 </div>
 
 <script type="module">
-  // Supabase client (singleton)
+  /* ===== Supabase クライアント（シングルトン） ===== */
   let supabase;
   if (!window.__supabase) {
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
@@ -181,55 +212,86 @@
   }
   supabase = window.__supabase;
 
-  const $ = (q, r=document) => r.querySelector(q);
-  const $$ = (q, r=document) => [...r.querySelectorAll(q)];
+  /* ===== ユーティリティ ===== */
+  const $ = (q, r=document)=> r.querySelector(q);
+  const $$ = (q, r=document)=> [...r.querySelectorAll(q)];
   const toast = (m, ok=true)=>{const n=document.createElement('div');n.className='toast '+(ok?'':'err');n.textContent=m;(document.querySelector('#toast')||document.body).appendChild(n);setTimeout(()=>n.remove(),2200);};
-  const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
-  const linear = (dir,a,b) => (!a||!b) ? "" : `linear-gradient(${dir}, ${a}, ${b})`;
-  const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
+  const toJustify = p => p==='left' ? 'flex-start' : p==='right' ? 'flex-end' : 'center';
+  const num = (v, f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
   const withFallback = s => !s ? "" : (/\b(sans-serif|serif|monospace)\b/i.test(s) ? s : `${s}, sans-serif`);
+  const linear = (dir,a,b) => (!a||!b) ? "" : `linear-gradient(${dir}, ${a}, ${b})`;
 
-  let menus = [];
-  async function loadMenus(){ const {data,error}=await supabase.from('public_menus').select('*').order('sort_order',{ascending:true}); if(error){console.error(error);toast('メニュー読み込み失敗',false);return[]} return data||[] }
-  async function loadRow(area){ const {data,error}=await supabase.from('hf_settings').select('*').eq('area',area).single(); if(error){console.warn('hf_settings load error',area,error);return{}} return data||{} }
-  async function saveRow(area,payload){ const {error}=await supabase.from('hf_settings').update(payload).eq('area',area); if(error){console.error(error);toast('保存失敗',false);return} toast('保存しました',true) }
-
-  function computeBgParts(d, defColor){
-    // returns {bgColor, bgImage} and guarantees at least bgColor is set
-    if (d.bg_gradient && d.bg_gradient.trim()){
-      return { bgColor: defColor, bgImage: d.bg_gradient };
+  /* 背景は「色＋画像」を二段で指定して確実に反映（!important で外部CSSに負けない） */
+  function computeBgParts(row, defColor){
+    if (row.bg_gradient && row.bg_gradient.trim()){
+      return { bgColor: defColor, bgImage: row.bg_gradient };        // グラデ優先
     }
-    const col = (d.bg_color && d.bg_color.trim()) ? d.bg_color : defColor;
-    return { bgColor: col, bgImage: "none" };
+    const col = (row.bg_color && row.bg_color.trim()) ? row.bg_color : defColor;
+    return { bgColor: col, bgImage: 'none' };                         // 色のみ
   }
 
+  /* ===== データ取得 ===== */
+  let menus = [];
+  async function loadMenus(){
+    const { data, error } = await supabase.from('public_menus').select('*').order('sort_order',{ascending:true});
+    if (error){ console.error(error); toast('メニュー読み込み失敗', false); return []; }
+    return data || [];
+  }
+  async function loadRow(area){
+    const { data, error } = await supabase.from('hf_settings').select('*').eq('area', area).single();
+    if (error){ console.warn('hf_settings load error', area, error); return {}; }
+    return data || {};
+  }
+  async function saveRow(area, payload){
+    const { error } = await supabase.from('hf_settings').update(payload).eq('area', area);
+    if (error){ console.error(error); toast('保存失敗', false); return; }
+    toast('保存しました', true);
+  }
+
+  /* ===== プレビューHTML ===== */
   function headerHTML(d){
     const items = menus.filter(m=>m.is_active && m.show_in_header).map(m=>`<a href="${m.href||'#'}">${m.title}</a>`).join("");
-    const { bgColor, bgImage } = computeBgParts(d, "#0f172a");
-    const companyFs = num(d.header_company_size, 18);
-    const navFs = num(d.header_nav_size, 14);
-    const fixed = d.header_fixed ? "position:sticky;top:0;z-index:5;" : "";
-    const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
-    const brand = `<div class="hf-brand">${d.logo_url?`<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}<span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${companyFs}px">${d.company_name||""}</span></div>`;
-    const brandWrap = `<div class="slot brand" style="justify-content:${toJustify(d.company_alignment)}">${brand}</div>`;
-    const nav = `<nav class="hf-nav" style="color:${d.nav_color};font-weight:${d.nav_weight};justify-content:${toJustify(d.nav_alignment)};font-size:${navFs}px">${items}</nav>`;
-    const navWrap = `<div class="slot nav" style="justify-content:${toJustify(d.nav_alignment)}">${nav}</div>`;
-    const cls = d.layout_mode==="column"?"hfbar hf-column":"hfbar hf-row";
-    return `<div class="${cls}" style="${fixed}${ff}background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;height:${num(d.bar_height,60)}px;padding:${d.padding||'8px 12px'};--gap:${num(d.link_spacing,16)}px">${brandWrap}${navWrap}</div>`;
-  }
-  function footerHTML(d){
-    const items = menus.filter(m=>m.is_active && m.show_in_footer).map(m=>`<a href="${m.href||'#'}">${m.title}</a>`).join("");
-    const { bgColor, bgImage } = computeBgParts(d, "#0f172a");
-    const copyFs = num(d.footer_copy_size, 14);
-    const navFs = num(d.footer_nav_size, 14);
-    const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
-    const nav = `<nav class="hf-nav" style="color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};justify-content:${toJustify(d.nav_alignment_footer)};font-size:${navFs}px">${items}</nav>`;
-    const copy = `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${copyFs}px">${d.footer_text||""}</div>`;
-    const inner = d.layout_mode==="row" ? `${copy}${nav}` : (d.layout_mode==="nav-top"?`${nav}${copy}`:`${copy}${nav}`);
-    const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
-    return `<div class="${cls}" style="${ff}background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;height:${num(d.bar_height,60)}px;padding:${d.padding||'8px 12px'};--gap:${num(d.link_spacing,16)}px">${inner}</div>`;
+    const { bgColor, bgImage } = computeBgParts(d, '#0f172a');
+    const cls = d.layout_mode==='column' ? 'hfbar hf-column' : 'hfbar hf-row';
+    const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : '';
+    const brand = \`
+      <div class="hf-brand">
+        \${d.logo_url ? \`<img src="\${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:\${num(d.logo_height||d.bar_height,60)}px">\` : ""}
+        <span style="color:\${d.company_color};font-weight:\${d.company_weight};font-size:\${num(d.header_company_size,18)}px">\${d.company_name||""}</span>
+      </div>\`;
+    const nav = \`<nav class="hf-nav" style="color:\${d.nav_color};font-weight:\${d.nav_weight};justify-content:\${toJustify(d.nav_alignment)};font-size:\${num(d.header_nav_size,14)}px">\${items}</nav>\`;
+
+    return \`<div class="\${cls}" style="\${ff}
+              background-color:\${bgColor} !important;
+              background-image:\${bgImage==='none'?'none':bgImage} !important;
+              height:\${num(d.bar_height,60)}px;
+              padding:\${d.padding||'8px 12px'};
+              --gap:\${num(d.link_spacing,16)}px">
+              <div class="slot brand" style="justify-content:\${toJustify(d.company_alignment)}">\${brand}</div>
+              <div class="slot nav" style="justify-content:\${toJustify(d.nav_alignment)}">\${nav}</div>
+            </div>\`;
   }
 
+  function footerHTML(d){
+    const items = menus.filter(m=>m.is_active && m.show_in_footer).map(m=>`<a href="${m.href||'#'}">${m.title}</a>`).join("");
+    const { bgColor, bgImage } = computeBgParts(d, '#0f172a');
+    const cls = d.layout_mode==='row' ? 'hfbar hf-row' : 'hfbar hf-column';
+    const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : '';
+    const nav = \`<nav class="hf-nav" style="color:\${d.nav_color_footer};font-weight:\${d.nav_weight_footer};justify-content:\${toJustify(d.nav_alignment_footer)};font-size:\${num(d.footer_nav_size,14)}px">\${items}</nav>\`;
+    const copy = \`<div class="hf-copy" style="color:\${d.footer_color};font-weight:\${d.footer_weight||'normal'};justify-content:\${toJustify(d.footer_alignment)};font-size:\${num(d.footer_copy_size,14)}px">\${d.footer_text||""}</div>\`;
+    const inner = d.layout_mode==='row' ? \`\${copy}\${nav}\` : (d.layout_mode==='nav-top' ? \`\${nav}\${copy}\` : \`\${copy}\${nav}\`);
+
+    return \`<div class="\${cls}" style="\${ff}
+              background-color:\${bgColor} !important;
+              background-image:\${bgImage==='none'?'none':bgImage} !important;
+              height:\${num(d.bar_height,60)}px;
+              padding:\${d.padding||'8px 12px'};
+              --gap:\${num(d.link_spacing,16)}px">
+              \${inner}
+            </div>\`;
+  }
+
+  /* ===== 値の入出力 ===== */
   function getHeader(){ return {
     logo_url: $("#logo_url").value,
     logo_height: Number($("#logo_height").value),
@@ -253,6 +315,7 @@
     header_font_family: $("#header_font_family").value,
     area: "header"
   };}
+
   function setHeader(r){
     $("#logo_url").value = r.logo_url || "";
     $("#logo_height").value = r.logo_height ?? 48;
@@ -297,6 +360,7 @@
     footer_font_family: $("#footer_font_family").value,
     area: "footer"
   };}
+
   function setFooter(r){
     $("#footer_text").value = r.footer_text || "";
     $("#footer_alignment").value = r.footer_alignment || "center";
@@ -321,6 +385,7 @@
   function updateHeader(){ $("#headerPreview").innerHTML = headerHTML(getHeader()); }
   function updateFooter(){ $("#footerPreview").innerHTML = footerHTML(getFooter()); }
 
+  /* ===== 初期化 ===== */
   (async () => {
     menus = await loadMenus();
     const header = await loadRow("header");
@@ -331,11 +396,11 @@
     $("#saveHeader").onclick = async () => { const d=getHeader(); updateHeader(); await saveRow("header", d); };
     $("#saveFooter").onclick = async () => { const d=getFooter(); updateFooter(); await saveRow("footer", d); };
 
-    // live preview
-    $$("#section-header input, #section-header select").forEach(el => { el.addEventListener("input", updateHeader); el.addEventListener("change", updateHeader); });
-    $$("#section-footer input, #section-footer select").forEach(el => { el.addEventListener("input", updateFooter); el.addEventListener("change", updateFooter); });
+    // ライブプレビュー
+    $$("#section-header input, #section-header select").forEach(el=>{ el.addEventListener("input", updateHeader); el.addEventListener("change", updateHeader); });
+    $$("#section-footer input, #section-footer select").forEach(el=>{ el.addEventListener("input", updateFooter); el.addEventListener("change", updateFooter); });
 
-    // 色を触ったらグラデを空にして確実に色を反映
+    // 「色を触ったらグラデを空」にして、色の反映を分かりやすく
     $("#bg_color_header").addEventListener("input", ()=>{ $("#bg_gradient_header").value=""; updateHeader(); });
     $("#bg_color_footer").addEventListener("input", ()=>{ $("#bg_gradient_footer").value=""; updateFooter(); });
 
