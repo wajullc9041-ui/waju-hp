@@ -5,14 +5,13 @@
   <title>合同会社WaJu 公式サイト</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* ===== Base (keep simple) ===== */
-    :root { color-scheme: light; }
+    /* ===== Base ===== */
     html, body { margin:0; padding:0; }
     body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; }
     main#site-main { padding:2rem 1.25rem; min-height:60vh; background:#f9fafb; }
-    section { margin-bottom:2rem; padding:1rem; background:#fff; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+    .section { margin-bottom:2rem; padding:1rem; background:#fff; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
 
-    /* ===== Header/Footer visual (scoped) ===== */
+    /* ===== Header/Footer (scoped) ===== */
     #site-header, #site-footer { isolation:isolate; }
     .hfbar { display:flex; align-items:center; gap:var(--gap,16px); border-radius:0; }
     .hfbar.hf-row { justify-content:flex-start; }
@@ -24,7 +23,10 @@
     .hf-brand img { height:auto; max-height:inherit; }
     .hf-nav { display:flex; gap:var(--gap,16px); flex-wrap:wrap; width:100%; }
     .hf-nav a { color:inherit; text-decoration:none; border-radius:6px; padding:0 2px; }
-    .hf-copy { font-size:12px; display:flex; width:100%; }
+    /* .hf-copy base font-size is intentionally not fixed; inline style controls it */
+
+    /* Active nav highlight (optional) */
+    .hf-nav a.active { text-decoration:underline; }
 
     @media (max-width: 640px) {
       .hfbar.hf-row { flex-wrap:wrap; }
@@ -34,14 +36,12 @@
 <body>
   <!-- Mount points -->
   <header id="site-header"></header>
-
   <main id="site-main">
-    <section>
-      <h2>ダミーセクション</h2>
-      <p>ここにページ編集の内容が反映されます（フック用意済み）。</p>
-    </section>
+    <div class="section">
+      <h2>読み込み中...</h2>
+      <p>ナビをクリックすると、このエリアが切り替わります。</p>
+    </div>
   </main>
-
   <footer id="site-footer"></footer>
 
   <script type="module">
@@ -62,25 +62,33 @@
     const isUrl = (s) => /^(https?:\/\/|\/)/.test(s || "");
     const bgOf = (d) => (d.bg_gradient && d.bg_gradient.trim()) ? d.bg_gradient : (d.bg_color || "#0f172a");
     const safeBarHeight = (v, fallback) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? n : fallback; };
+    const sameOrigin = (href) => {
+      try { const u = new URL(href, location.origin); return u.origin === location.origin; } catch { return false; }
+    };
+    const pathToSlug = (pathname) => {
+      if (!pathname || pathname === "/") return "home";
+      const seg = pathname.replace(/^\//,"").split("/")[0];
+      return seg || "home";
+    };
 
-    // ---- Builders (same logic as admin preview) ----
+    // ---- Builders (admin preview logic aligned) ----
     function headerHTML(d, menus) {
       const items = (menus || [])
         .filter(m => m.is_active && m.show_in_header)
-        .map(m => `<a href="${m.href || '#'}">${m.title}</a>`)
+        .map(m => `<a href="\${m.href || '#'}">\${m.title}</a>`)
         .join("");
 
       const brandInner = `
-        ${isUrl(d.logo_url) ? `<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${safeBarHeight(d.logo_height || d.bar_height, 60)}px">` : ""}
-        <span style="color:${d.company_color};font-weight:${d.company_weight}">${d.company_name || ""}</span>
+        \${isUrl(d.logo_url) ? `<img src="\${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:\${safeBarHeight(d.logo_height || d.bar_height, 60)}px">` : ""}
+        <span style="color:\${d.company_color};font-weight:\${d.company_weight}">\${d.company_name || ""}</span>
       `;
 
-      const brandWrap = `<div class="slot brand" style="justify-content:${toJustify(d.company_alignment)}">
-        <div class="hf-brand">${brandInner}</div>
+      const brandWrap = `<div class="slot brand" style="justify-content:\${toJustify(d.company_alignment)}">
+        <div class="hf-brand">\${brandInner}</div>
       </div>`;
 
-      const nav = `<nav class="hf-nav" style="color:${d.nav_color};font-weight:${d.nav_weight};justify-content:${toJustify(d.nav_alignment)}">${items}</nav>`;
-      const navWrap = `<div class="slot nav" style="justify-content:${toJustify(d.nav_alignment)}">${nav}</div>`;
+      const nav = `<nav class="hf-nav" style="color:\${d.nav_color};font-weight:\${d.nav_weight};justify-content:\${toJustify(d.nav_alignment)}">\${items}</nav>`;
+      const navWrap = `<div class="slot nav" style="justify-content:\${toJustify(d.nav_alignment)}">\${nav}</div>`;
 
       const cls = d.layout_mode === "column" ? "hfbar hf-column" : "hfbar hf-row";
       const fs = Number(d.font_size) || 14;
@@ -88,24 +96,25 @@
       const pad = d.padding || "8px 12px";
       const gap = Number(d.link_spacing) || 16;
 
-      return `<div class="${cls}" style="background:${bgOf(d)};font-size:${fs}px;height:${h}px;padding:${pad};--gap:${gap}px">
-        ${brandWrap}${navWrap}
+      return `<div class="\${cls}" style="background:\${bgOf(d)};font-size:\${fs}px;height:\${h}px;padding:\${pad};--gap:\${gap}px">
+        \${brandWrap}\${navWrap}
       </div>`;
     }
 
     function footerHTML(d, menus) {
       const items = (menus || [])
         .filter(m => m.is_active && m.show_in_footer)
-        .map(m => `<a href="${m.href || '#'}">${m.title}</a>`)
+        .map(m => `<a href="\${m.href || '#'}">\${m.title}</a>`)
         .join("");
 
-      const nav = `<nav class="hf-nav" style="color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};justify-content:${toJustify(d.nav_alignment_footer)}">${items}</nav>`;
-      const copy = `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight || 'normal'};justify-content:${toJustify(d.footer_alignment)}">${d.footer_text || ""}</div>`;
+      const nav = `<nav class="hf-nav" style="color:\${d.nav_color_footer};font-weight:\${d.nav_weight_footer};justify-content:\${toJustify(d.nav_alignment_footer)}">\${items}</nav>`;
+      const copyFs = Number(d.footer_copy_size) || Number(d.font_size) || 14;
+      const copy = `<div class="hf-copy" style="color:\${d.footer_color};font-weight:\${d.footer_weight || 'normal'};justify-content:\${toJustify(d.footer_alignment)};font-size:\${copyFs}px">\${d.footer_text || ""}</div>`;
 
       let inner = "";
-      if (d.layout_mode === "row") inner = `${copy}${nav}`;
-      else if (d.layout_mode === "nav-top") inner = `${nav}${copy}`;
-      else inner = `${copy}${nav}`;
+      if (d.layout_mode === "row") inner = `\${copy}\${nav}`;
+      else if (d.layout_mode === "nav-top") inner = `\${nav}\${copy}`;
+      else inner = `\${copy}\${nav}`;
 
       const cls = d.layout_mode === "row" ? "hfbar hf-row" : "hfbar hf-column";
       const fs = Number(d.font_size) || 14;
@@ -114,29 +123,85 @@
       const gap = Number(d.link_spacing) || 16;
       const sticky = d.footer_fixed ? "position:sticky;bottom:0;z-index:10;" : "";
 
-      return `<div class="${cls}" style="${sticky}background:${bgOf(d)};font-size:${fs}px;height:${h}px;padding:${pad};--gap:${gap}px">
-        ${inner}
+      return `<div class="\${cls}" style="\${sticky}background:\${bgOf(d)};font-size:\${fs}px;height:\${h}px;padding:\${pad};--gap:\${gap}px">
+        \${inner}
       </div>`;
     }
 
     // ---- Data loaders ----
     async function loadMenus() {
-      const { data, error } = await supabase
-        .from("public_menus")
-        .select("*")
-        .order("sort_order", { ascending: true });
+      const { data, error } = await supabase.from("public_menus").select("*").order("sort_order", { ascending: true });
       if (error) { console.warn("menus error:", error); return []; }
       return data || [];
     }
-
     async function loadHF(area) {
-      const { data, error } = await supabase
-        .from("hf_settings")
-        .select("*")
-        .eq("area", area)
-        .single();
+      const { data, error } = await supabase.from("hf_settings").select("*").eq("area", area).single();
       if (error) { console.warn("hf_settings error:", area, error); return {}; }
       return data || {};
+    }
+
+    // ---- Content loader (index main area) ----
+    async function fetchFromSupabase(slug) {
+      try {
+        const { data, error } = await supabase
+          .from("public_pages")
+          .select("html, is_active")
+          .eq("slug", slug)
+          .single();
+        if (!error && data && data.is_active && data.html) return data.html;
+      } catch (e) { /* tableなし等は無視 */ }
+      return null;
+    }
+
+    async function fetchFromStatic(slug) {
+      try {
+        const res = await fetch(`/pages/\${slug}.html`, { cache: "no-cache" });
+        if (res.ok) return await res.text();
+      } catch (e) {}
+      return null;
+    }
+
+    async function loadPage(slug) {
+      let html = await fetchFromSupabase(slug);
+      if (!html) html = await fetchFromStatic(slug);
+      if (!html) {
+        html = `<div class="section"><h2>\${slug}</h2><p>このページは準備中です。</p></div>`;
+      }
+      $("#site-main").innerHTML = html;
+      highlightActive(slug);
+    }
+
+    function highlightActive(slug) {
+      document.querySelectorAll(".hf-nav a").forEach(a => {
+        try {
+          const u = new URL(a.href, location.origin);
+          const s = pathToSlug(u.pathname);
+          a.classList.toggle("active", s === slug);
+        } catch {}
+      });
+    }
+
+    function navigateTo(href) {
+      const url = new URL(href, location.origin);
+      const slug = pathToSlug(url.pathname);
+      history.pushState({ slug }, "", url.pathname);
+      loadPage(slug);
+    }
+
+    function bindNavDelegation() {
+      ["#site-header", "#site-footer"].forEach(sel => {
+        document.querySelector(sel).addEventListener("click", (e) => {
+          const a = e.target.closest("a");
+          if (!a) return;
+          if (!sameOrigin(a.href)) return; // 外部は通常遷移
+          e.preventDefault();
+          navigateTo(a.href);
+        });
+      });
+      window.addEventListener("popstate", (e) => {
+        const slug = e.state?.slug || pathToSlug(location.pathname);
+        loadPage(slug);
+      });
     }
 
     // ---- Mount ----
@@ -146,26 +211,20 @@
         loadHF("header"),
         loadHF("footer")
       ]);
-      document.querySelector("#site-header").innerHTML = headerHTML(header, menus);
-      document.querySelector("#site-footer").innerHTML = footerHTML(footer, menus);
+      $("#site-header").innerHTML = headerHTML(header, menus);
+      $("#site-footer").innerHTML = footerHTML(footer, menus);
+      bindNavDelegation();
 
-      // Sticky footer のとき本文が隠れないように下余白を確保
+      // 初期表示（URLのpathに応じて読み込み）
+      const initial = pathToSlug(location.pathname);
+      await loadPage(initial);
+
+      // Sticky footer のとき本文が隠れないように下余白を確保（FIX: クォート誤り）
       if (footer && footer.footer_fixed) {
         const h = safeBarHeight(footer.bar_height, 60);
         document.body.style.paddingBottom = `${h}px`;
       }
     })();
-
-    // ---- Page editor hook（将来のページ編集を反映するための入口） ----
-    // 1) 関数で置換
-    window.updateMain = (html) => { document.getElementById("site-main").innerHTML = html; };
-
-    // 2) カスタムイベントでも置換可
-    window.addEventListener("page:update", (ev) => {
-      if (ev?.detail?.html != null) {
-        document.getElementById("site-main").innerHTML = ev.detail.html;
-      }
-    });
   </script>
 </body>
 </html>
