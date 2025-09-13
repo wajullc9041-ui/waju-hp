@@ -1,4 +1,4 @@
-<!-- admin-hf-setting 完全版（背景が消えない・UI整形FIX） -->
+<!-- admin-hf-setting 完全版（背景が効かない問題を !important と二段指定で強制適用） -->
 <style>
   #hf-app{box-sizing:border-box;width:100%;margin:0;padding:16px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a}
   #hf-app h1{font-size:20px;margin:0 0 16px}
@@ -82,7 +82,7 @@
           <div class="hint">第一候補 + フォールバック（末尾は <code>sans-serif</code> 推奨）。</div>
         </div>
         <div class="field"><label>ヘッダー高さ(px)</label><input id="bar_height_header" type="number" min="0" step="1" placeholder="60"></div>
-        <div class="field"><label>パディング</label><input id="padding_header" type="text" placeholder="8px 12px"></div>
+        <div class="field"><label>パディング</label><input id="padding_header" type="text" placeholder="8px 12px"></></div>
         <div class="field"><label>リンク間隔</label><input id="link_spacing_header" type="number" min="0" step="1" placeholder="16"></div>
         <div class="field"><label>背景色</label><input id="bg_color_header" type="color"></div>
         <div class="field"><label>グラデーション</label><input id="bg_gradient_header" type="text" placeholder="linear-gradient(to right,#000,#333)" readonly></div>
@@ -194,11 +194,18 @@
   async function loadRow(area){ const {data,error}=await supabase.from('hf_settings').select('*').eq('area',area).single(); if(error){console.warn('hf_settings load error',area,error);return{}} return data||{} }
   async function saveRow(area,payload){ const {error}=await supabase.from('hf_settings').update(payload).eq('area',area); if(error){console.error(error);toast('保存失敗',false);return} toast('保存しました',true) }
 
-  function computeBg(d, def){ return (d.bg_gradient && d.bg_gradient.trim()) ? d.bg_gradient : (d.bg_color && d.bg_color.trim() ? d.bg_color : def); }
+  function computeBgParts(d, defColor){
+    // returns {bgColor, bgImage} and guarantees at least bgColor is set
+    if (d.bg_gradient && d.bg_gradient.trim()){
+      return { bgColor: defColor, bgImage: d.bg_gradient };
+    }
+    const col = (d.bg_color && d.bg_color.trim()) ? d.bg_color : defColor;
+    return { bgColor: col, bgImage: "none" };
+  }
 
   function headerHTML(d){
     const items = menus.filter(m=>m.is_active && m.show_in_header).map(m=>`<a href="${m.href||'#'}">${m.title}</a>`).join("");
-    const bg = computeBg(d, "#0f172a");
+    const { bgColor, bgImage } = computeBgParts(d, "#0f172a");
     const companyFs = num(d.header_company_size, 18);
     const navFs = num(d.header_nav_size, 14);
     const fixed = d.header_fixed ? "position:sticky;top:0;z-index:5;" : "";
@@ -208,19 +215,19 @@
     const nav = `<nav class="hf-nav" style="color:${d.nav_color};font-weight:${d.nav_weight};justify-content:${toJustify(d.nav_alignment)};font-size:${navFs}px">${items}</nav>`;
     const navWrap = `<div class="slot nav" style="justify-content:${toJustify(d.nav_alignment)}">${nav}</div>`;
     const cls = d.layout_mode==="column"?"hfbar hf-column":"hfbar hf-row";
-    return `<div class="${cls}" style="${fixed}${ff}background:${bg};height:${num(d.bar_height,60)}px;padding:${d.padding||'8px 12px'};--gap:${num(d.link_spacing,16)}px">${brandWrap}${navWrap}</div>`;
+    return `<div class="${cls}" style="${fixed}${ff}background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;height:${num(d.bar_height,60)}px;padding:${d.padding||'8px 12px'};--gap:${num(d.link_spacing,16)}px">${brandWrap}${navWrap}</div>`;
   }
   function footerHTML(d){
     const items = menus.filter(m=>m.is_active && m.show_in_footer).map(m=>`<a href="${m.href||'#'}">${m.title}</a>`).join("");
-    const bg = computeBg(d, "#0f172a");
+    const { bgColor, bgImage } = computeBgParts(d, "#0f172a");
     const copyFs = num(d.footer_copy_size, 14);
     const navFs = num(d.footer_nav_size, 14);
     const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
     const nav = `<nav class="hf-nav" style="color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};justify-content:${toJustify(d.nav_alignment_footer)};font-size:${navFs}px">${items}</nav>`;
     const copy = `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${copyFs}px">${d.footer_text||""}</div>`;
-    let inner = d.layout_mode==="row" ? `${copy}${nav}` : (d.layout_mode==="nav-top"?`${nav}${copy}`:`${copy}${nav}`);
+    const inner = d.layout_mode==="row" ? `${copy}${nav}` : (d.layout_mode==="nav-top"?`${nav}${copy}`:`${copy}${nav}`);
     const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
-    return `<div class="${cls}" style="${ff}background:${bg};height:${num(d.bar_height,60)}px;padding:${d.padding||'8px 12px'};--gap:${num(d.link_spacing,16)}px">${inner}</div>`;
+    return `<div class="${cls}" style="${ff}background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;height:${num(d.bar_height,60)}px;padding:${d.padding||'8px 12px'};--gap:${num(d.link_spacing,16)}px">${inner}</div>`;
   }
 
   function getHeader(){ return {
@@ -328,7 +335,7 @@
     $$("#section-header input, #section-header select").forEach(el => { el.addEventListener("input", updateHeader); el.addEventListener("change", updateHeader); });
     $$("#section-footer input, #section-footer select").forEach(el => { el.addEventListener("input", updateFooter); el.addEventListener("change", updateFooter); });
 
-    // 選んだ色を優先したい時は色を触ったタイミングでグラデを空にする（分かりやすい運用）
+    // 色を触ったらグラデを空にして確実に色を反映
     $("#bg_color_header").addEventListener("input", ()=>{ $("#bg_gradient_header").value=""; updateHeader(); });
     $("#bg_color_footer").addEventListener("input", ()=>{ $("#bg_gradient_footer").value=""; updateFooter(); });
 
