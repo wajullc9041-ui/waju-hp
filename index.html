@@ -24,7 +24,8 @@
     .hf-copy{display:flex;width:100%}
     .dummy{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin:16px auto}
     /* Mobile nav trigger */
-    .hamburger{display:none;appearance:none;border:none;background:transparent;cursor:pointer;padding:8px;border-radius:10px}
+    .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+    .hamburger:hover{background:#fff}
     .hamburger:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
     .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
     /* Drawer */
@@ -110,7 +111,6 @@
       buildDrawer(allMenus, ftr||{});
       adjustOffsets(ftr||{});
       window.addEventListener('resize', ()=>adjustOffsets(ftr||{}));
-      // 初回コンテンツ
       const first = (allMenus.find(m=>m.is_active && m.show_in_footer) || allMenus[0]);
       if(first){ await loadMainFromMenu(first); }
     }
@@ -160,10 +160,13 @@
           await loadMainFromMenu(m || {title:a.textContent, href:a.getAttribute("href")});
         });
       }
-      // ハンバーガー
+      // ハンバーガー（トグル）
       const btn = $("#hamburger");
       if(btn){
-        btn.addEventListener("click", ()=> openDrawer());
+        btn.addEventListener("click", ()=> {
+          const open = $("#mobile-drawer").getAttribute("aria-hidden")==="false";
+          if(open) closeDrawer(); else openDrawer();
+        });
       }
     }
 
@@ -237,7 +240,6 @@
       d.setAttribute("aria-hidden","false");
       $("#hamburger")?.setAttribute("aria-expanded","true");
       document.body.style.overflow="hidden";
-      // focus
       setTimeout(()=> $("#drawer-nav a")?.focus(), 30);
     }
     function closeDrawer(){
@@ -248,13 +250,11 @@
       $("#hamburger")?.focus();
     }
 
-    /* Content loader (hook-ready) */
+    /* Content loader */
     async function loadMainFromMenu(menu){
       const container = $("#content-container");
       const title = menu?.title || "ページ";
       const href = (menu?.href||"").trim();
-
-      // 同一オリジンの相対HTMLなら fetch して差し替え
       const isRelative = href && !/^https?:\/\//i.test(href);
       if(isRelative){
         try{
@@ -266,7 +266,6 @@
           }
         }catch(err){ /* fallthrough */ }
       }
-      // フック（将来：DB or APIからリッチ本文を取得して差し替え）
       container.innerHTML = `
         <div class="dummy">
           <h2>${title}</h2>
