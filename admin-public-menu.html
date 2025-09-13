@@ -1,128 +1,225 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>公開メニュー管理</title>
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <style>
-    body { font-family: sans-serif; margin: 20px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background: #f5f5f5; }
-    .toast { padding: 10px; margin-top: 10px; border-radius: 5px; }
-    .toast.success { background: #d4edda; color: #155724; }
-    .toast.error { background: #f8d7da; color: #721c24; }
-  </style>
-</head>
-<body>
-  <h1>公開メニュー管理</h1>
+<!-- ===== 管理：メニュー管理ページ (スタイリッシュ完全版) ===== -->
+<div id="menu-admin-root">
+  <h2>メニュー管理</h2>
 
-  <form id="menuForm">
-    <label>表示名: <input type="text" id="title"></label>
-    <label>URL: <input type="text" id="url" placeholder="/about.html"></label>
-    <label>ヘッダー表示: <input type="checkbox" id="show_in_header" checked></label>
-    <label>フッター表示: <input type="checkbox" id="show_in_footer"></label>
-    <button type="button" onclick="addMenu()">追加</button>
-  </form>
+  <div class="card form-card">
+    <div class="form-grid">
+      <div class="field"><label>表示名</label><input id="menu_title" type="text"></div>
+      <div class="field"><label>リンク先URL</label><input id="menu_url" type="text" placeholder="/about.html"></div>
+      <div class="field"><label>アイコンclass（任意）</label><input id="menu_icon" type="text" placeholder="fa-solid fa-home"></div>
+    </div>
+    <div class="checks">
+      <label><input type="checkbox" id="menu_active"> 公開</label>
+      <label><input type="checkbox" id="menu_show_header"> ヘッダーに表示</label>
+      <label><input type="checkbox" id="menu_show_footer"> フッターに表示</label>
+    </div>
+    <div class="btns">
+      <button id="addBtn" class="btn primary">追加</button>
+      <button id="updateBtn" class="btn success" style="display:none;">更新</button>
+      <button id="cancelBtn" class="btn muted" style="display:none;">キャンセル</button>
+    </div>
+  </div>
 
-  <div id="toast"></div>
+  <div class="card">
+    <table id="menuTable">
+      <thead><tr>
+        <th>ID</th><th>表示名</th><th>URL</th><th>アイコン</th>
+        <th>順番</th><th>公開</th><th>Header</th><th>Footer</th><th>操作</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-  <table id="menuTable">
-    <thead>
-      <tr>
-        <th>ID</th><th>表示名</th><th>URL</th><th>ヘッダー</th><th>フッター</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div id="toast-container"></div>
+</div>
 
-<script>
-const supabaseUrl = "https://htnmjsqgoapvuanrsuma.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA";
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+<style>
+  #menu-admin-root * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+  #menu-admin-root h2 { margin: 12px 0 16px; font-size: 22px; font-weight:600; color:#1f2937; }
 
-function toast(msg, type="success") {
-  const el = document.getElementById("toast");
-  el.innerHTML = `<div class="toast ${type}">${msg}</div>`;
-  setTimeout(()=>{ el.innerHTML=""; }, 3000);
-}
+  .card { background:#fff; border-radius:12px; padding:16px; margin-bottom:20px;
+          box-shadow:0 2px 8px rgba(0,0,0,0.05); }
 
-function readMenuForm(){
-  return {
-    title: document.getElementById("title").value.trim(),
-    url: document.getElementById("url").value.trim(),
-    show_in_header: document.getElementById("show_in_header").checked,
-    show_in_footer: document.getElementById("show_in_footer").checked
-  };
-}
+  .form-card .form-grid { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:12px; }
+  .form-card label { font-size:14px; font-weight:500; color:#374151; margin-bottom:4px; display:block; }
+  .form-card input[type="text"] { width:100%; padding:8px 10px; border:1px solid #d1d5db; border-radius:6px; }
 
-function resetMenuForm(){
-  document.getElementById("title").value = "";
-  document.getElementById("url").value = "";
-  document.getElementById("show_in_header").checked = true;
-  document.getElementById("show_in_footer").checked = false;
-}
+  .checks { display:flex; gap:16px; margin-bottom:12px; font-size:14px; color:#374151; }
 
-async function fetchMenus(){
-  const { data, error } = await supabase.from("public_menus").select("*").order("id");
-  if(error){
-    console.error(error);
-    toast("読み込み失敗","error");
-    return;
-  }
-  const tbody = document.querySelector("#menuTable tbody");
-  tbody.innerHTML = "";
-  data.forEach(row=>{
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${row.id}</td>
-      <td>${row.title}</td>
-      <td>${row.url}</td>
-      <td>${row.show_in_header ? "✔" : ""}</td>
-      <td>${row.show_in_footer ? "✔" : ""}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
+  .btns { display:flex; gap:8px; }
+  .btn { padding:8px 14px; border:none; border-radius:6px; font-size:14px; font-weight:500; cursor:pointer;
+         transition:background 0.2s, transform 0.1s; }
+  .btn:hover { transform:translateY(-1px); }
+  .btn.primary { background:#2563eb; color:#fff; }
+  .btn.success { background:#10b981; color:#fff; }
+  .btn.muted { background:#6b7280; color:#fff; }
+  .btn.warn { background:#ef4444; color:#fff; }
 
-async function addMenu(){
-  const rec = readMenuForm();
-  if(!rec.title || !rec.url){
-    toast("表示名とURLは必須です","error");
-    return;
-  }
+  table { width:100%; border-collapse:separate; border-spacing:0; border-radius:8px; overflow:hidden; }
+  th, td { padding:10px; border-bottom:1px solid #e5e7eb; text-align:center; font-size:14px; }
+  thead th { background:#f9fafb; font-weight:600; color:#374151; }
+  tbody tr:hover { background:#f3f4f6; }
+  tbody tr:last-child td { border-bottom:none; }
 
-  // public_menus に追加
-  const { data, error } = await supabase.from("public_menus").insert([rec]).select().single();
-  if(error){
-    console.error(error);
-    toast("追加失敗","error");
-    return;
-  }
+  #toast-container { position:fixed; top:1rem; right:1rem; z-index:9999; }
+  .toast { margin-bottom:10px; padding:12px 18px; border-radius:8px; color:#fff; font-weight:500; 
+           box-shadow:0 3px 6px rgba(0,0,0,.2); animation: fadeInOut 3s forwards; }
+  .toast.success { background:#10b981; } .toast.error { background:#ef4444; }
+  @keyframes fadeInOut { 0%{opacity:0;transform:translateY(-8px)} 10%{opacity:1;transform:none} 90%{opacity:1} 100%{opacity:0;transform:translateY(-8px)} }
+</style>
 
-  // URLから slug を生成（例: "/about.html" → "about"）
-  let slug = rec.url.replace(/^\//,"").replace(/\.html$/,"");
-  if(!slug) slug = "page-" + data.id; // 念のためfallback
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+  const supabase = createClient(
+    "https://htnmjsqgoapvuanrsuma.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+  );
 
-  // pages にも初期レコードを追加
-  const { error: pageErr } = await supabase.from("pages").insert([{
-    slug: slug,
-    title: rec.title,
-    content: `<h1>${rec.title}</h1><p>ここに本文を入力してください。</p>`,
-    updated_at: new Date().toISOString()
-  }]);
+  const $ = (q)=>document.querySelector(q);
+  const $$ = (q)=>document.querySelectorAll(q);
+  const toast = (m,t="success")=>{ const n=document.createElement("div"); n.className="toast "+t; n.textContent=m; $("#toast-container").appendChild(n); setTimeout(()=>n.remove(),3000); };
 
-  if(pageErr){
-    console.error(pageErr);
-    toast("ページ作成に失敗","error");
+  let editingId = null;
+
+  async function fetchMenus(){
+    const { data, error } = await supabase.from("public_menus").select("*").order("sort_order",{ascending:true});
+    if(error){ console.error(error); toast("メニュー読み込み失敗","error"); return; }
+    const tbody=$("#menuTable tbody"); tbody.innerHTML="";
+    (data||[]).forEach(row=>{
+      const tr=document.createElement("tr"); tr.draggable=true; tr.dataset.id=row.id;
+      tr.innerHTML=`
+        <td>${row.id}</td>
+        <td>${row.title||""}</td>
+        <td>${row.url||""}</td>
+        <td>${row.icon_class||""}</td>
+        <td>${row.sort_order??""}</td>
+        <td>${row.is_active?"✓":""}</td>
+        <td>${row.show_in_header?"✓":""}</td>
+        <td>${row.show_in_footer?"✓":""}</td>
+        <td>
+          <button class="btn edit" data-id="${row.id}">編集</button>
+          <button class="btn warn" data-id="${row.id}">削除</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+    $$("#menuTable .btn.edit").forEach(b=>b.onclick=()=>startEdit(Number(b.dataset.id)));
+    $$("#menuTable .btn.warn").forEach(b=>b.onclick=()=>deleteMenu(Number(b.dataset.id)));
+    enableDnD();
   }
 
-  resetMenuForm();
+  function readMenuForm(){
+    return {
+      title: $("#menu_title").value.trim(),
+      url: $("#menu_url").value.trim(),
+      icon_class: $("#menu_icon").value.trim() || null,
+      is_active: $("#menu_active").checked,
+      show_in_header: $("#menu_show_header").checked,
+      show_in_footer: $("#menu_show_footer").checked
+    };
+  }
+
+  function resetMenuForm(){
+    editingId=null;
+    $("#menu_title").value=""; $("#menu_url").value=""; $("#menu_icon").value="";
+    $("#menu_active").checked=false; $("#menu_show_header").checked=false; $("#menu_show_footer").checked=false;
+    $("#addBtn").style.display="inline-block"; $("#updateBtn").style.display="none"; $("#cancelBtn").style.display="none";
+  }
+
+  // URL から slug を生成（/about.html → about ／ / → index）
+  function toSlug(url){
+    if(!url) return "";
+    let s = url.trim();
+    // 相対・絶対どちらでもOKにする
+    try { const u = new URL(s, location.origin); s = u.pathname; } catch(e){}
+    s = s.replace(/^\//,"").replace(/\.html?$/,"").replace(/\/$/,"");
+    if(s==="") s="index";
+    return s;
+  }
+
+  async function addMenu(){
+    const rec=readMenuForm();
+    if(!rec.title || !rec.url){ toast("表示名とURLは必須です","error"); return; }
+    // public_menus に追加（挿入行を取得）
+    const { data: inserted, error } = await supabase.from("public_menus").insert([rec]).select().single();
+    if(error){ console.error(error); toast("追加失敗","error"); return; }
+
+    // pages にも初期レコードをUpsert（slug重複は無視）
+    const slug = toSlug(rec.url) || ("page-"+inserted.id);
+    const { error: pageErr } = await supabase
+      .from("pages")
+      .upsert([{
+        slug,
+        title: rec.title,
+        content: `<h1>${rec.title}</h1><p>ここに本文を入力してください。</p>`,
+        updated_at: new Date().toISOString()
+      }], { onConflict: "slug", ignoreDuplicates: true });
+
+    if(pageErr){ console.error(pageErr); toast("ページ作成に失敗","error"); }
+
+    resetMenuForm();
+    await fetchMenus();
+    toast("追加しました");
+  }
+
+  async function startEdit(id){
+    editingId=id;
+    $("#addBtn").style.display="none"; $("#updateBtn").style.display="inline-block"; $("#cancelBtn").style.display="inline-block";
+    const { data, error } = await supabase.from("public_menus").select("*").eq("id", id).single();
+    if(error){ console.error(error); toast("読込失敗","error"); return; }
+    $("#menu_title").value=data.title||""; $("#menu_url").value=data.url||""; $("#menu_icon").value=data.icon_class||"";
+    $("#menu_active").checked=!!data.is_active; $("#menu_show_header").checked=!!data.show_in_header; $("#menu_show_footer").checked=!!data.show_in_footer;
+  }
+
+  async function updateMenu(){
+    if(!editingId) return;
+    const rec=readMenuForm();
+    const { error } = await supabase.from("public_menus").update(rec).eq("id", editingId);
+    if(error){ console.error(error); toast("更新失敗","error"); return; }
+    resetMenuForm(); await fetchMenus(); toast("更新しました");
+  }
+
+  async function deleteMenu(id){
+    if(!confirm("削除してよろしいですか？")) return;
+    const { error } = await supabase.from("public_menus").delete().eq("id", id);
+    if(error){ console.error(error); toast("削除失敗","error"); return; }
+    await fetchMenus(); toast("削除しました");
+  }
+
+  function enableDnD(){
+    const tbody=$("#menuTable tbody");
+    let dragEl=null;
+    tbody.querySelectorAll("tr").forEach(tr=>{
+      tr.ondragstart=e=>{dragEl=tr; e.dataTransfer.effectAllowed="move";};
+      tr.ondragover=e=>{e.preventDefault(); const rect=tr.getBoundingClientRect(); const after=(e.clientY-rect.top)>rect.height/2;
+        tr.style.borderTop=after?"":"2px solid #3b82f6"; tr.style.borderBottom=after?"2px solid #3b82f6":"";};
+      tr.ondragleave=()=>{tr.style.borderTop=""; tr.style.borderBottom="";};
+      tr.ondrop=async e=>{
+        e.preventDefault(); tr.style.borderTop=""; tr.style.borderBottom="";
+        if(dragEl && dragEl!==tr){
+          const after=e.clientY>tr.getBoundingClientRect().top+tr.offsetHeight/2;
+          tbody.insertBefore(dragEl, after? tr.nextSibling: tr);
+          await saveOrder();
+        }
+        dragEl=null;
+      };
+    });
+  }
+
+  async function saveOrder(){
+    const rows=[...$("#menuTable tbody").querySelectorAll("tr")];
+    for(let i=0;i<rows.length;i++){
+      const id=Number(rows[i].dataset.id), newOrder=i+1;
+      const cur=Number(rows[i].children[4].textContent||"0");
+      if(cur===newOrder) continue;
+      const { error } = await supabase.from("public_menus").update({sort_order:newOrder}).eq("id", id);
+      if(!error) rows[i].children[4].textContent=String(newOrder);
+    }
+    toast("順番を更新しました");
+  }
+
+  $("#addBtn").onclick=addMenu;
+  $("#updateBtn").onclick=updateMenu;
+  $("#cancelBtn").onclick=resetMenuForm;
+
   await fetchMenus();
-  toast("追加しました");
-}
-
-fetchMenus();
 </script>
-</body>
-</html>
