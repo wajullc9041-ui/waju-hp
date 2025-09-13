@@ -1,4 +1,4 @@
-
+<!-- 管理: ヘッダー＆フッター設定（安全版 v2：位置反映/フッターはプレビュー領域内のみ表示） -->
 <style>
   #hf-app{box-sizing:border-box;width:100%;max-width:1120px;margin:16px auto;padding:16px;
     font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a}
@@ -201,14 +201,20 @@
     const {bgColor,bgImage} = computeBgParts(d, "#0f172a");
     const bar = el("div", d.layout_mode==="column"?"hfbar hf-column":"hfbar hf-row");
     if(d.header_font_family){ bar.style.fontFamily = withFallback(d.header_font_family); }
-    bar.style.backgroundColor = bgColor; bar.style.setProperty("background-color", bgColor, "important");
-    if(bgImage==="none"){ bar.style.setProperty("background-image","none","important"); }
-    else { bar.style.setProperty("background-image", bgImage, "important"); }
+    bar.style.setProperty("background-color", bgColor, "important");
+    bar.style.setProperty("background-image", bgImage==="none"?"none":bgImage, "important");
     bar.style.height = (num(d.bar_height,60)) + "px";
     bar.style.padding = d.padding || "8px 12px";
     bar.style.setProperty("--gap", (num(d.link_spacing,16)) + "px");
 
-    const brandSlot = el("div","slot brand"); brandSlot.style.justifyContent = toJustify(d.company_alignment);
+    const brandSlot = el("div","slot brand");
+    const navSlot = el("div","slot nav");
+
+    // brand alignment by margins (left/center/right)
+    if (d.company_alignment==="left"){ brandSlot.style.marginRight="auto"; brandSlot.style.marginLeft="0"; }
+    else if (d.company_alignment==="center"){ brandSlot.style.margin="0 auto"; }
+    else { brandSlot.style.marginLeft="auto"; brandSlot.style.marginRight="0"; }
+
     const brand = el("div","hf-brand");
     if(d.logo_url){
       const img = new Image();
@@ -226,11 +232,11 @@
     brandSlot.appendChild(brand);
     bar.appendChild(brandSlot);
 
-    const navSlot = el("div","slot nav"); navSlot.style.justifyContent = toJustify(d.nav_alignment);
     const nav = el("nav","hf-nav");
     nav.style.color = d.nav_color || "";
     nav.style.fontWeight = d.nav_weight || "normal";
     nav.style.fontSize = (num(d.header_nav_size,14)) + "px";
+    nav.style.justifyContent = toJustify(d.nav_alignment); // ← nav 内で揃える
     (menus||[]).filter(m=>m.is_active && m.show_in_header).forEach(m=>{
       const a = document.createElement("a"); a.textContent = m.title; a.href = m.href || "#"; nav.appendChild(a);
     });
@@ -244,9 +250,8 @@
     const {bgColor,bgImage} = computeBgParts(d, "#0f172a");
     const bar = el("div", d.layout_mode==="row"?"hfbar hf-row":"hfbar hf-column");
     if(d.footer_font_family){ bar.style.fontFamily = withFallback(d.footer_font_family); }
-    bar.style.backgroundColor = bgColor; bar.style.setProperty("background-color", bgColor, "important");
-    if(bgImage==="none"){ bar.style.setProperty("background-image","none","important"); }
-    else { bar.style.setProperty("background-image", bgImage, "important"); }
+    bar.style.setProperty("background-color", bgColor, "important");
+    bar.style.setProperty("background-image", bgImage==="none"?"none":bgImage, "important");
     bar.style.height = (num(d.bar_height,60)) + "px";
     bar.style.padding = d.padding || "8px 12px";
     bar.style.setProperty("--gap", (num(d.link_spacing,16)) + "px");
@@ -271,7 +276,9 @@
     else if(d.layout_mode==="nav-top"){ bar.appendChild(nav); bar.appendChild(copy); }
     else { bar.appendChild(copy); bar.appendChild(nav); }
 
-    if(d.footer_fixed){ bar.style.position="fixed"; bar.style.left="0"; bar.style.right="0"; bar.style.bottom="0"; }
+    // PREVIEWでは固定にしない（画面全体に効かないように）
+    // if(d.footer_fixed){ ... } ← 無効化
+
     return bar;
   }
 
@@ -385,7 +392,6 @@
     renderHeaderPreview(getHeader(), menus);
     renderFooterPreview(getFooter(), menus);
 
-    // events
     $$("#section-header input, #section-header select").forEach(function(el){
       el.addEventListener("input", function(){ renderHeaderPreview(getHeader(), menus); });
       el.addEventListener("change", function(){ renderHeaderPreview(getHeader(), menus); });
@@ -395,7 +401,6 @@
       el.addEventListener("change", function(){ renderFooterPreview(getFooter(), menus); });
     });
 
-    // color vs gradient
     $("#bg_color_header").addEventListener("input", function(){ $("#bg_gradient_header").value=""; renderHeaderPreview(getHeader(), menus); });
     $("#bg_color_footer").addEventListener("input", function(){ $("#bg_gradient_footer").value=""; renderFooterPreview(getFooter(), menus); });
     $("#grad_apply_header").addEventListener("click", function(){ $("#bg_gradient_header").value = linear($("#grad_dir_header").value,$("#grad_start_header").value,$("#grad_end_header").value); renderHeaderPreview(getHeader(), menus); });
