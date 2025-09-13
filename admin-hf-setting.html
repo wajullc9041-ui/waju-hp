@@ -1,4 +1,4 @@
-<!-- admin-hf-setting 完全版（フォント＆固定ヘッダー対応・背景優先/レイアウトFIX） -->
+<!-- admin-hf-setting 完全版（背景が消えない・UI整形FIX） -->
 <style>
   #hf-app{box-sizing:border-box;width:100%;margin:0;padding:16px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a}
   #hf-app h1{font-size:20px;margin:0 0 16px}
@@ -170,7 +170,7 @@
 </div>
 
 <script type="module">
-  // --- Supabase client (create once) ---
+  // Supabase client (singleton)
   let supabase;
   if (!window.__supabase) {
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
@@ -181,96 +181,48 @@
   }
   supabase = window.__supabase;
 
-  // --- Helpers ---
   const $ = (q, r=document) => r.querySelector(q);
   const $$ = (q, r=document) => [...r.querySelectorAll(q)];
-  const toast = (msg, ok=true) => {
-    const n = document.createElement("div");
-    n.className = "toast " + (ok ? "" : "err");
-    n.textContent = msg;
-    (document.querySelector("#toast") || document.body).appendChild(n);
-    setTimeout(()=>n.remove(), 2200);
-  };
-  const toJustify = p => p==="left" ? "flex-start" : p==="right" ? "flex-end" : "center";
+  const toast = (m, ok=true)=>{const n=document.createElement('div');n.className='toast '+(ok?'':'err');n.textContent=m;(document.querySelector('#toast')||document.body).appendChild(n);setTimeout(()=>n.remove(),2200);};
+  const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
   const linear = (dir,a,b) => (!a||!b) ? "" : `linear-gradient(${dir}, ${a}, ${b})`;
-  const num = (v, f) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? n : f; };
-  const withFallback = (s) => {
-    if(!s) return "";
-    const low = s.toLowerCase();
-    if(low.includes("sans-serif") || low.includes("serif") || low.includes("monospace")) return s;
-    return `${s}, sans-serif`;
-  };
+  const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
+  const withFallback = s => !s ? "" : (/\b(sans-serif|serif|monospace)\b/i.test(s) ? s : `${s}, sans-serif`);
 
-  // --- UI state: which background wins (color vs gradient) ---
-  let headerPreferColor = false;
-  let footerPreferColor = false;
-
-  // --- Data loaders ---
   let menus = [];
-  async function loadMenus(){
-    const { data, error } = await supabase.from("public_menus").select("*").order("sort_order", { ascending:true });
-    if(error){ console.error(error); toast("メニュー読み込み失敗", false); return []; }
-    return data || [];
-  }
-  async function loadRow(area){
-    const { data, error } = await supabase.from("hf_settings").select("*").eq("area", area).single();
-    if(error){ console.warn("hf_settings load error:", area, error); return {}; }
-    return data || {};
-  }
-  async function saveRow(area, payload){
-    const { error } = await supabase.from("hf_settings").update(payload).eq("area", area);
-    if(error){ console.error(error); toast("保存失敗", false); return; }
-    toast("保存しました", true);
-  }
+  async function loadMenus(){ const {data,error}=await supabase.from('public_menus').select('*').order('sort_order',{ascending:true}); if(error){console.error(error);toast('メニュー読み込み失敗',false);return[]} return data||[] }
+  async function loadRow(area){ const {data,error}=await supabase.from('hf_settings').select('*').eq('area',area).single(); if(error){console.warn('hf_settings load error',area,error);return{}} return data||{} }
+  async function saveRow(area,payload){ const {error}=await supabase.from('hf_settings').update(payload).eq('area',area); if(error){console.error(error);toast('保存失敗',false);return} toast('保存しました',true) }
 
-  // --- Preview builders ---
+  function computeBg(d, def){ return (d.bg_gradient && d.bg_gradient.trim()) ? d.bg_gradient : (d.bg_color && d.bg_color.trim() ? d.bg_color : def); }
+
   function headerHTML(d){
     const items = menus.filter(m=>m.is_active && m.show_in_header).map(m=>`<a href="${m.href||'#'}">${m.title}</a>`).join("");
-    const hasGrad = !!(d.bg_gradient && d.bg_gradient.trim());
-    const useColor = headerPreferColor || !hasGrad;
-    const bg = useColor ? (d.bg_color || "#0f172a") : d.bg_gradient;
+    const bg = computeBg(d, "#0f172a");
     const companyFs = num(d.header_company_size, 18);
     const navFs = num(d.header_nav_size, 14);
     const fixed = d.header_fixed ? "position:sticky;top:0;z-index:5;" : "";
     const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
-
-    const brand = `
-      <div class="hf-brand">
-        ${d.logo_url ? `<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${num(d.logo_height || d.bar_height, 60)}px">` : ""}
-        <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${companyFs}px">${d.company_name||""}</span>
-      </div>`;
+    const brand = `<div class="hf-brand">${d.logo_url?`<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}<span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${companyFs}px">${d.company_name||""}</span></div>`;
     const brandWrap = `<div class="slot brand" style="justify-content:${toJustify(d.company_alignment)}">${brand}</div>`;
     const nav = `<nav class="hf-nav" style="color:${d.nav_color};font-weight:${d.nav_weight};justify-content:${toJustify(d.nav_alignment)};font-size:${navFs}px">${items}</nav>`;
     const navWrap = `<div class="slot nav" style="justify-content:${toJustify(d.nav_alignment)}">${nav}</div>`;
-
-    const cls = d.layout_mode === "column" ? "hfbar hf-column" : "hfbar hf-row";
-    return `<div class="${cls}" style="${fixed}${ff}background:${bg};height:${num(d.bar_height,60)}px;padding:${d.padding||'8px 12px'};--gap:${num(d.link_spacing,16)}px">
-      ${brandWrap}${navWrap}
-    </div>`;
+    const cls = d.layout_mode==="column"?"hfbar hf-column":"hfbar hf-row";
+    return `<div class="${cls}" style="${fixed}${ff}background:${bg};height:${num(d.bar_height,60)}px;padding:${d.padding||'8px 12px'};--gap:${num(d.link_spacing,16)}px">${brandWrap}${navWrap}</div>`;
   }
-
   function footerHTML(d){
     const items = menus.filter(m=>m.is_active && m.show_in_footer).map(m=>`<a href="${m.href||'#'}">${m.title}</a>`).join("");
-    const hasGrad = !!(d.bg_gradient && d.bg_gradient.trim());
-    const useColor = footerPreferColor || !hasGrad;
-    const bg = useColor ? (d.bg_color || "#0f172a") : d.bg_gradient;
+    const bg = computeBg(d, "#0f172a");
     const copyFs = num(d.footer_copy_size, 14);
     const navFs = num(d.footer_nav_size, 14);
     const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
-
     const nav = `<nav class="hf-nav" style="color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};justify-content:${toJustify(d.nav_alignment_footer)};font-size:${navFs}px">${items}</nav>`;
     const copy = `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${copyFs}px">${d.footer_text||""}</div>`;
-    let inner = "";
-    if(d.layout_mode === "row") inner = `${copy}${nav}`;
-    else if(d.layout_mode === "nav-top") inner = `${nav}${copy}`;
-    else inner = `${copy}${nav}`;
-    const cls = d.layout_mode === "row" ? "hfbar hf-row" : "hfbar hf-column";
-    return `<div class="${cls}" style="${ff}background:${bg};height:${num(d.bar_height,60)}px;padding:${d.padding||'8px 12px'};--gap:${num(d.link_spacing,16)}px">
-      ${inner}
-    </div>`;
+    let inner = d.layout_mode==="row" ? `${copy}${nav}` : (d.layout_mode==="nav-top"?`${nav}${copy}`:`${copy}${nav}`);
+    const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
+    return `<div class="${cls}" style="${ff}background:${bg};height:${num(d.bar_height,60)}px;padding:${d.padding||'8px 12px'};--gap:${num(d.link_spacing,16)}px">${inner}</div>`;
   }
 
-  // --- Form <-> Object ---
   function getHeader(){ return {
     logo_url: $("#logo_url").value,
     logo_height: Number($("#logo_height").value),
@@ -294,7 +246,6 @@
     header_font_family: $("#header_font_family").value,
     area: "header"
   };}
-
   function setHeader(r){
     $("#logo_url").value = r.logo_url || "";
     $("#logo_height").value = r.logo_height ?? 48;
@@ -339,7 +290,6 @@
     footer_font_family: $("#footer_font_family").value,
     area: "footer"
   };}
-
   function setFooter(r){
     $("#footer_text").value = r.footer_text || "";
     $("#footer_alignment").value = r.footer_alignment || "center";
@@ -361,11 +311,9 @@
     updateFooter();
   }
 
-  // --- Update helpers ---
   function updateHeader(){ $("#headerPreview").innerHTML = headerHTML(getHeader()); }
   function updateFooter(){ $("#footerPreview").innerHTML = footerHTML(getFooter()); }
 
-  // --- Init ---
   (async () => {
     menus = await loadMenus();
     const header = await loadRow("header");
@@ -373,26 +321,21 @@
     setHeader(header);
     setFooter(footer);
 
-    $("#saveHeader").onclick = async () => { const d = getHeader(); updateHeader(); await saveRow("header", d); };
-    $("#saveFooter").onclick = async () => { const d = getFooter(); updateFooter(); await saveRow("footer", d); };
+    $("#saveHeader").onclick = async () => { const d=getHeader(); updateHeader(); await saveRow("header", d); };
+    $("#saveFooter").onclick = async () => { const d=getFooter(); updateFooter(); await saveRow("footer", d); };
 
-    // live preview for header
-    $$("#section-header input, #section-header select").forEach(el => {
-      el.addEventListener("input", updateHeader);
-      el.addEventListener("change", updateHeader);
-    });
-    // live preview for footer
-    $$("#section-footer input, #section-footer select").forEach(el => {
-      el.addEventListener("input", updateFooter);
-      el.addEventListener("change", updateFooter);
-    });
+    // live preview
+    $$("#section-header input, #section-header select").forEach(el => { el.addEventListener("input", updateHeader); el.addEventListener("change", updateHeader); });
+    $$("#section-footer input, #section-footer select").forEach(el => { el.addEventListener("input", updateFooter); el.addEventListener("change", updateFooter); });
 
-    // background precedence handling
-    $("#bg_color_header").addEventListener("input", () => { headerPreferColor = true; updateHeader(); });
-    $("#bg_color_footer").addEventListener("input", () => { footerPreferColor = true; updateFooter(); });
-    $("#grad_apply_header").addEventListener("click", () => { headerPreferColor = false; $("#bg_gradient_header").value = linear($("#grad_dir_header").value, $("#grad_start_header").value, $("#grad_end_header").value); updateHeader(); });
-    $("#grad_reset_header").addEventListener("click", () => { headerPreferColor = true; $("#bg_gradient_header").value = ""; updateHeader(); });
-    $("#grad_apply_footer").addEventListener("click", () => { footerPreferColor = false; $("#bg_gradient_footer").value = linear($("#grad_dir_footer").value, $("#grad_start_footer").value, $("#grad_end_footer").value); updateFooter(); });
-    $("#grad_reset_footer").addEventListener("click", () => { footerPreferColor = true; $("#bg_gradient_footer").value = ""; updateFooter(); });
+    // 選んだ色を優先したい時は色を触ったタイミングでグラデを空にする（分かりやすい運用）
+    $("#bg_color_header").addEventListener("input", ()=>{ $("#bg_gradient_header").value=""; updateHeader(); });
+    $("#bg_color_footer").addEventListener("input", ()=>{ $("#bg_gradient_footer").value=""; updateFooter(); });
+
+    // グラデ生成/リセット
+    $("#grad_apply_header").addEventListener("click", ()=>{ $("#bg_gradient_header").value = linear($("#grad_dir_header").value,$("#grad_start_header").value,$("#grad_end_header").value); updateHeader(); });
+    $("#grad_reset_header").addEventListener("click", ()=>{ $("#bg_gradient_header").value = ""; updateHeader(); });
+    $("#grad_apply_footer").addEventListener("click", ()=>{ $("#bg_gradient_footer").value = linear($("#grad_dir_footer").value,$("#grad_start_footer").value,$("#grad_end_footer").value); updateFooter(); });
+    $("#grad_reset_footer").addEventListener("click", ()=>{ $("#bg_gradient_footer").value = ""; updateFooter(); });
   })();
 </script>
