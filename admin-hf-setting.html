@@ -1,22 +1,21 @@
-<!-- admin-hf-setting 完全版 (v2) -->
-
+<!-- admin-hf-setting 完全版 (per-element font sizes) -->
 <style>
   /* Layout scope */
   #hf-app { box-sizing:border-box; width:100%; margin:0; padding:16px; font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif; color:#0f172a; }
   #hf-app h1 { font-size:20px; margin:0 0 16px 0; }
   #hf-app .card { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,.08); padding:16px; margin:0 0 16px 0; }
-  #hf-app .panel-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  #hf-app .panel-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px; flex-wrap:wrap; }
   #hf-app .panel-head h2 { font-size:16px; margin:0; }
   #hf-app .btn { padding:6px 12px; border:none; border-radius:8px; cursor:pointer; font-size:13px; }
   #hf-app .btn.primary { background:#2563eb; color:#fff; }
   #hf-app .btn.small { font-size:12px; padding:2px 8px; margin-left:8px; }
 
-  /* Grouped controls */
+  /* Grouped controls: 横並びカード */
   #hf-app .groups { display:flex; gap:12px; flex-wrap:wrap; }
-  #hf-app fieldset.group { flex:1; min-width:260px; border:1px solid #e2e8f0; border-radius:10px; padding:10px; }
+  #hf-app fieldset.group { flex:1; min-width:280px; border:1px solid #e2e8f0; border-radius:10px; padding:10px; }
   #hf-app legend { font-size:12px; padding:0 6px; color:#334155; }
   #hf-app .field { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:6px 0; }
-  #hf-app .field label { flex:0 0 38%; font-size:12px; color:#475569; }
+  #hf-app .field label { flex:0 0 42%; font-size:12px; color:#475569; }
   #hf-app .field input, #hf-app .field select { flex:1; max-width:100%; box-sizing:border-box; padding:6px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px; }
 
   /* Preview */
@@ -28,9 +27,10 @@
   #hf-app .slot.brand { flex:0 0 auto; }
   #hf-app .slot.nav { flex:1 1 auto; }
   #hf-app .hf-brand { display:flex; align-items:center; gap:8px; }
-  #hf-app .hf-brand img { max-height:48px; }
+  #hf-app .hf-brand img { height:auto; max-height:inherit; }
   #hf-app .hf-nav { display:flex; gap:var(--gap,16px); flex-wrap:wrap; width:100%; }
-  #hf-app .hf-copy { font-size:12px; display:flex; width:100%; }
+  /* 固定の12pxは撤去。コピーライトのサイズはUI/値で制御 */
+  #hf-app .hf-copy { display:flex; width:100%; }
 
   /* Toast */
   #hf-app #toast { position:fixed; top:16px; right:16px; z-index:1000; }
@@ -69,25 +69,33 @@
         <div class="field"><label>位置</label><select id="company_alignment"><option>left</option><option>center</option><option>right</option></select></div>
         <div class="field"><label>文字色</label><input id="company_color" type="color"></div>
         <div class="field"><label>太さ</label><select id="company_weight"><option>normal</option><option>bold</option></select></div>
+        <div class="field"><label>文字サイズ(px)</label><input id="header_company_size" type="number" min="8" step="1" placeholder="14"></div>
       </fieldset>
 
       <fieldset class="group"><legend>ナビ</legend>
         <div class="field"><label>位置</label><select id="nav_alignment"><option>left</option><option>center</option><option>right</option></select></div>
         <div class="field"><label>文字色</label><input id="nav_color" type="color"></div>
         <div class="field"><label>太さ</label><select id="nav_weight"><option>normal</option><option>bold</option></select></div>
+        <div class="field"><label>文字サイズ(px)</label><input id="header_nav_size" type="number" min="8" step="1" placeholder="14"></div>
       </fieldset>
 
       <fieldset class="group"><legend>全体</legend>
-        <div class="field"><label>フォントサイズ(px)</label><input id="font_size_header" type="number" min="8" step="1" placeholder="14"></div>
         <div class="field"><label>ヘッダー高さ(px)</label><input id="bar_height_header" type="number" min="0" step="1" placeholder="60"></div>
         <div class="field"><label>パディング</label><input id="padding_header" type="text" placeholder="8px 12px"></div>
         <div class="field"><label>リンク間隔</label><input id="link_spacing_header" type="number" min="0" step="1" placeholder="16"></div>
         <div class="field"><label>背景色</label><input id="bg_color_header" type="color"></div>
         <div class="field"><label>グラデーション</label><input id="bg_gradient_header" type="text" placeholder="linear-gradient(to right,#000,#333)" readonly></div>
-        <div class="field"><label>方向</label><select id="grad_dir_header"><option value="to right">→</option><option value="to bottom">↓</option><option value="to left">←</option><option value="to top">↑</option></select></div>
+        <div class="field"><label>方向</label>
+          <select id="grad_dir_header">
+            <option value="to right">→</option><option value="to bottom">↓</option>
+            <option value="to left">←</option><option value="to top">↑</option>
+          </select></div>
         <div class="field"><label>開始色</label><input id="grad_start_header" type="color" value="#000000"></div>
         <div class="field"><label>終了色</label><input id="grad_end_header" type="color" value="#333333"></div>
-        <div class="field"><label>操作</label><div style="display:flex;gap:8px;"><button id="grad_apply_header" class="btn small" type="button">生成</button><button id="grad_reset_header" class="btn small" type="button">リセット</button></div></div>
+        <div class="field"><label>操作</label><div style="display:flex;gap:8px;">
+          <button id="grad_apply_header" class="btn small" type="button">生成</button>
+          <button id="grad_reset_header" class="btn small" type="button">リセット</button>
+        </div></div>
       </fieldset>
     </div>
   </section>
@@ -115,6 +123,7 @@
         <div class="field"><label>位置</label><select id="footer_alignment"><option>left</option><option>center</option><option>right</option></select></div>
         <div class="field"><label>文字色</label><input id="footer_color" type="color"></div>
         <div class="field"><label>太さ</label><select id="footer_weight"><option value="normal">normal</option><option value="bold">bold</option></select></div>
+        <div class="field"><label>文字サイズ(px)</label><input id="footer_copy_size" type="number" min="8" step="1" placeholder="14"></div>
       </fieldset>
 
       <fieldset class="group"><legend>ナビ</legend>
@@ -122,19 +131,26 @@
         <div class="field"><label>文字色</label><input id="nav_color_footer" type="color"></div>
         <div class="field"><label>太さ</label><select id="nav_weight_footer"><option>normal</option><option>bold</option></select></div>
         <div class="field"><label>固定表示</label><input id="footer_fixed" type="checkbox"></div>
+        <div class="field"><label>文字サイズ(px)</label><input id="footer_nav_size" type="number" min="8" step="1" placeholder="14"></div>
       </fieldset>
 
       <fieldset class="group"><legend>全体</legend>
-        <div class="field"><label>フォントサイズ(px)</label><input id="font_size_footer" type="number" min="8" step="1" placeholder="14"></div>
         <div class="field"><label>フッター高さ(px)</label><input id="bar_height_footer" type="number" min="0" step="1" placeholder="60"></div>
         <div class="field"><label>パディング</label><input id="padding_footer" type="text" placeholder="8px 12px"></div>
         <div class="field"><label>リンク間隔</label><input id="link_spacing_footer" type="number" min="0" step="1" placeholder="16"></div>
         <div class="field"><label>背景色</label><input id="bg_color_footer" type="color"></div>
         <div class="field"><label>グラデーション</label><input id="bg_gradient_footer" type="text" placeholder="linear-gradient(to right,#000,#333)" readonly></div>
-        <div class="field"><label>方向</label><select id="grad_dir_footer"><option value="to right">→</option><option value="to bottom">↓</option><option value="to left">←</option><option value="to top">↑</option></select></div>
+        <div class="field"><label>方向</label>
+          <select id="grad_dir_footer">
+            <option value="to right">→</option><option value="to bottom">↓</option>
+            <option value="to left">←</option><option value="to top">↑</option>
+          </select></div>
         <div class="field"><label>開始色</label><input id="grad_start_footer" type="color" value="#000000"></div>
         <div class="field"><label>終了色</label><input id="grad_end_footer" type="color" value="#333333"></div>
-        <div class="field"><label>操作</label><div style="display:flex;gap:8px;"><button id="grad_apply_footer" class="btn small" type="button">生成</button><button id="grad_reset_footer" class="btn small" type="button">リセット</button></div></div>
+        <div class="field"><label>操作</label><div style="display:flex;gap:8px;">
+          <button id="grad_apply_footer" class="btn small" type="button">生成</button>
+          <button id="grad_reset_footer" class="btn small" type="button">リセット</button>
+        </div></div>
       </fieldset>
     </div>
   </section>
@@ -166,6 +182,7 @@
   };
   const toJustify = p => p==="left" ? "flex-start" : p==="right" ? "flex-end" : "center";
   const linear = (dir,a,b) => (!a||!b) ? "" : `linear-gradient(${dir}, ${a}, ${b})`;
+  const num = (v, f) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? n : f; };
 
   // --- Data loaders ---
   let menus = [];
@@ -189,40 +206,39 @@
   function headerHTML(d){
     const items = menus.filter(m=>m.is_active && m.show_in_header).map(m=>`<a href="${m.href||'#'}">${m.title}</a>`).join("");
     const bg = (d.bg_gradient && d.bg_gradient.trim()) ? d.bg_gradient : (d.bg_color || "#0f172a");
+    const companyFs = num(d.header_company_size, 14);
+    const navFs = num(d.header_nav_size, 14);
+
     const brand = `
       <div class="hf-brand">
-        ${d.logo_url ? `<img src="${d.logo_url}" alt="logo" style="height:${Number(d.logo_height)||0}px">` : ""}
-        <span style="color:${d.company_color};font-weight:${d.company_weight}">${d.company_name||""}</span>
+        ${d.logo_url ? `<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${num(d.logo_height || d.bar_height, 60)}px">` : ""}
+        <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${companyFs}px">${d.company_name||""}</span>
       </div>`;
     const brandWrap = `<div class="slot brand" style="justify-content:${toJustify(d.company_alignment)}">${brand}</div>`;
-    const nav = `<nav class="hf-nav" style="color:${d.nav_color};font-weight:${d.nav_weight};justify-content:${toJustify(d.nav_alignment)}">${items}</nav>`;
+    const nav = `<nav class="hf-nav" style="color:${d.nav_color};font-weight:${d.nav_weight};justify-content:${toJustify(d.nav_alignment)};font-size:${navFs}px">${items}</nav>`;
     const navWrap = `<div class="slot nav" style="justify-content:${toJustify(d.nav_alignment)}">${nav}</div>`;
 
-    if(d.layout_mode === "column"){
-      return `<div class="hfbar hf-column" style="background:${bg};font-size:${Number(d.font_size)||14}px;height:${Number(d.bar_height)||60}px;padding:${d.padding||'8px'};--gap:${Number(d.link_spacing)||16}px">
-        ${brandWrap}
-        ${navWrap}
-      </div>`;
-    } else {
-      return `<div class="hfbar hf-row" style="background:${bg};font-size:${Number(d.font_size)||14}px;height:${Number(d.bar_height)||60}px;padding:${d.padding||'8px'};--gap:${Number(d.link_spacing)||16}px">
-        ${brandWrap}
-        ${navWrap}
-      </div>`;
-    }
+    const cls = d.layout_mode === "column" ? "hfbar hf-column" : "hfbar hf-row";
+    return `<div class="${cls}" style="background:${bg};height:${num(d.bar_height,60)}px;padding:${d.padding||'8px'};--gap:${num(d.link_spacing,16)}px">
+      ${d.layout_mode === "column" ? `${brandWrap}${navWrap}` : `${brandWrap}${navWrap}`}
+    </div>`;
   }
 
   function footerHTML(d){
     const items = menus.filter(m=>m.is_active && m.show_in_footer).map(m=>`<a href="${m.href||'#'}">${m.title}</a>`).join("");
     const bg = (d.bg_gradient && d.bg_gradient.trim()) ? d.bg_gradient : (d.bg_color || "#0f172a");
-    const nav = `<nav class="hf-nav" style="color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};justify-content:${toJustify(d.nav_alignment_footer)}">${items}</nav>`;
-    const copy = `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)}">${d.footer_text||""}</div>`;
+    const copyFs = num(d.footer_copy_size, 14);
+    const navFs = num(d.footer_nav_size, 14);
+
+    const nav = `<nav class="hf-nav" style="color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};justify-content:${toJustify(d.nav_alignment_footer)};font-size:${navFs}px">${items}</nav>`;
+    const copy = `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${copyFs}px">${d.footer_text||""}</div>`;
     let inner = "";
     if(d.layout_mode === "row") inner = `${copy}${nav}`;
     else if(d.layout_mode === "nav-top") inner = `${nav}${copy}`;
     else inner = `${copy}${nav}`;
     const cls = d.layout_mode === "row" ? "hfbar hf-row" : "hfbar hf-column";
     const sticky = d.footer_fixed ? "position:sticky;bottom:0;" : "";
-    return `<div class="${cls}" style="${sticky}background:${bg};font-size:${Number(d.font_size)||14}px;height:${Number(d.bar_height)||60}px;padding:${d.padding||'8px'};--gap:${Number(d.link_spacing)||16}px">
+    return `<div class="${cls}" style="${sticky}background:${bg};height:${num(d.bar_height,60)}px;padding:${d.padding||'8px'};--gap:${num(d.link_spacing,16)}px">
       ${inner}
     </div>`;
   }
@@ -236,16 +252,18 @@
     company_alignment: $("#company_alignment").value,
     company_color: $("#company_color").value,
     company_weight: $("#company_weight").value,
+    header_company_size: Number($("#header_company_size").value),
     nav_alignment: $("#nav_alignment").value,
     nav_color: $("#nav_color").value,
     nav_weight: $("#nav_weight").value,
-    font_size: Number($("#font_size_header").value),
+    header_nav_size: Number($("#header_nav_size").value),
     bar_height: Number($("#bar_height_header").value),
     padding: $("#padding_header").value,
     link_spacing: Number($("#link_spacing_header").value),
     bg_color: $("#bg_color_header").value,
     bg_gradient: $("#bg_gradient_header").value,
-    layout_mode: $("#header_layout_mode").value
+    layout_mode: $("#header_layout_mode").value,
+    area: "header"
   };}
 
   function setHeader(r){
@@ -256,10 +274,11 @@
     $("#company_alignment").value = r.company_alignment || "left";
     $("#company_color").value = r.company_color || "#000000";
     $("#company_weight").value = r.company_weight || "normal";
+    $("#header_company_size").value = r.header_company_size ?? 14;
     $("#nav_alignment").value = r.nav_alignment || "right";
     $("#nav_color").value = r.nav_color || "#000000";
     $("#nav_weight").value = r.nav_weight || "normal";
-    $("#font_size_header").value = r.font_size ?? 14;
+    $("#header_nav_size").value = r.header_nav_size ?? 14;
     $("#bar_height_header").value = r.bar_height ?? 60;
     $("#padding_header").value = r.padding || "8px 12px";
     $("#link_spacing_header").value = r.link_spacing ?? 16;
@@ -274,17 +293,19 @@
     footer_alignment: $("#footer_alignment").value,
     footer_color: $("#footer_color").value,
     footer_weight: $("#footer_weight").value,
+    footer_copy_size: Number($("#footer_copy_size").value),
     nav_alignment_footer: $("#nav_alignment_footer").value,
     nav_color_footer: $("#nav_color_footer").value,
     nav_weight_footer: $("#nav_weight_footer").value,
+    footer_nav_size: Number($("#footer_nav_size").value),
     footer_fixed: $("#footer_fixed").checked,
-    font_size: Number($("#font_size_footer").value),
     bar_height: Number($("#bar_height_footer").value),
     padding: $("#padding_footer").value,
     link_spacing: Number($("#link_spacing_footer").value),
     bg_color: $("#bg_color_footer").value,
     bg_gradient: $("#bg_gradient_footer").value,
-    layout_mode: $("#footer_layout_mode").value
+    layout_mode: $("#footer_layout_mode").value,
+    area: "footer"
   };}
 
   function setFooter(r){
@@ -292,11 +313,12 @@
     $("#footer_alignment").value = r.footer_alignment || "center";
     $("#footer_color").value = r.footer_color || "#000000";
     $("#footer_weight").value = r.footer_weight || "normal";
+    $("#footer_copy_size").value = r.footer_copy_size ?? 14;
     $("#nav_alignment_footer").value = r.nav_alignment_footer || "center";
     $("#nav_color_footer").value = r.nav_color_footer || "#000000";
     $("#nav_weight_footer").value = r.nav_weight_footer || "normal";
+    $("#footer_nav_size").value = r.footer_nav_size ?? 14;
     $("#footer_fixed").checked = !!r.footer_fixed;
-    $("#font_size_footer").value = r.font_size ?? 14;
     $("#bar_height_footer").value = r.bar_height ?? 60;
     $("#padding_footer").value = r.padding || "8px 12px";
     $("#link_spacing_footer").value = r.link_spacing ?? 16;
