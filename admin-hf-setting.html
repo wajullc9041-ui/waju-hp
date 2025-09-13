@@ -1,4 +1,4 @@
-<!-- admin-hf-setting 完全版（フォント＆固定ヘッダー対応・FIX版） -->
+<!-- admin-hf-setting 完全版（フォント＆固定ヘッダー対応・背景色優先FIX） -->
 <style>
   #hf-app{box-sizing:border-box;width:100%;margin:0;padding:16px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a}
   #hf-app h1{font-size:20px;margin:0 0 16px}
@@ -76,7 +76,7 @@
       </fieldset>
 
       <fieldset class="group"><legend>全体</legend>
-        <div class="field"><label>フォントファミリー</label><input id="header_font_family" type="text" placeholder='"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif'><div class="hint">第一候補 + フォールバックをカンマ区切りで。末尾は <code>sans-serif</code> 推奨。</div></div>
+        <div class="field"><label>フォントファミリー</label><input id="header_font_family" type="text" placeholder='"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif'><div class="hint">第一候補 + フォールバック（末尾は <code>sans-serif</code> 推奨）。</div></div>
         <div class="field"><label>ヘッダー高さ(px)</label><input id="bar_height_header" type="number" min="0" step="1" placeholder="60"></div>
         <div class="field"><label>パディング</label><input id="padding_header" type="text" placeholder="8px 12px"></div>
         <div class="field"><label>リンク間隔</label><input id="link_spacing_header" type="number" min="0" step="1" placeholder="16"></div>
@@ -155,7 +155,7 @@
 
   <div class="card" style="background:#f8fafc">
     <strong>フォント指定のヒント</strong>
-    <div class="hint">「フォントA, フォントB, sans-serif」のように、左から順に使えるものが適用されます。A/Bが無い端末では最後の <code>sans-serif</code>（≒ゴシック系）が使われます。</div>
+    <div class="hint">「フォントA, フォントB, sans-serif」のように、左から順に使えるものが適用されます。A/Bが無い端末では最後の <code>sans-serif</code>（ゴシック系汎用）になります。</div>
   </div>
 
   <div id="toast"></div>
@@ -300,7 +300,7 @@
     $("#header_layout_mode").value = r.layout_mode || "row";
     $("#header_fixed").checked = !!r.header_fixed;
     $("#header_font_family").value = r.header_font_family || '"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif';
-    $("#headerPreview").innerHTML = headerHTML(r);
+    updateHeader();
   }
 
   function getFooter(){ return {
@@ -342,14 +342,12 @@
     $("#bg_gradient_footer").value = r.bg_gradient || "";
     $("#footer_layout_mode").value = r.layout_mode || "row";
     $("#footer_font_family").value = r.footer_font_family || '"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif';
-    $("#footerPreview").innerHTML = footerHTML(r);
+    updateFooter();
   }
 
-  // --- Gradient UI handlers ---
-  const applyHeaderGradient = () => { $("#bg_gradient_header").value = linear($("#grad_dir_header").value, $("#grad_start_header").value, $("#grad_end_header").value); $("#headerPreview").innerHTML = headerHTML(getHeader()); };
-  const resetHeaderGradient = () => { $("#bg_gradient_header").value = ""; $("#headerPreview").innerHTML = headerHTML(getHeader()); };
-  const applyFooterGradient = () => { $("#bg_gradient_footer").value = linear($("#grad_dir_footer").value, $("#grad_start_footer").value, $("#grad_end_footer").value); $("#footerPreview").innerHTML = footerHTML(getFooter()); };
-  const resetFooterGradient = () => { $("#bg_gradient_footer").value = ""; $("#footerPreview").innerHTML = footerHTML(getFooter()); };
+  // --- Update helpers ---
+  function updateHeader(){ $("#headerPreview").innerHTML = headerHTML(getHeader()); }
+  function updateFooter(){ $("#footerPreview").innerHTML = footerHTML(getFooter()); }
 
   // --- Init ---
   (async () => {
@@ -359,23 +357,28 @@
     setHeader(header);
     setFooter(footer);
 
-    $("#saveHeader").onclick = async () => { const d = getHeader(); setHeader(d); await saveRow("header", d); };
-    $("#saveFooter").onclick = async () => { const d = getFooter(); setFooter(d); await saveRow("footer", d); };
+    $("#saveHeader").onclick = async () => { const d = getHeader(); updateHeader(); await saveRow("header", d); };
+    $("#saveFooter").onclick = async () => { const d = getFooter(); updateFooter(); await saveRow("footer", d); };
 
-    // live preview
+    // live preview for header
     $$("#section-header input, #section-header select").forEach(el => {
-      el.addEventListener("input", () => $("#headerPreview").innerHTML = headerHTML(getHeader()));
-      el.addEventListener("change", () => $("#headerPreview").innerHTML = headerHTML(getHeader()));
+      el.addEventListener("input", updateHeader);
+      el.addEventListener("change", updateHeader);
     });
+    // live preview for footer
     $$("#section-footer input, #section-footer select").forEach(el => {
-      el.addEventListener("input", () => $("#footerPreview").innerHTML = footerHTML(getFooter()));
-      el.addEventListener("change", () => $("#footerPreview").innerHTML = footerHTML(getFooter()));
+      el.addEventListener("input", updateFooter);
+      el.addEventListener("change", updateFooter);
     });
+
+    // make color selection override gradient automatically (so color always wins when picked)
+    $("#bg_color_header").addEventListener("input", () => { $("#bg_gradient_header").value=""; updateHeader(); });
+    $("#bg_color_footer").addEventListener("input", () => { $("#bg_gradient_footer").value=""; updateFooter(); });
 
     // gradient buttons
-    $("#grad_apply_header").addEventListener("click", applyHeaderGradient);
-    $("#grad_reset_header").addEventListener("click", resetHeaderGradient);
-    $("#grad_apply_footer").addEventListener("click", applyFooterGradient);
-    $("#grad_reset_footer").addEventListener("click", resetFooterGradient);
+    $("#grad_apply_header").addEventListener("click", () => { $("#bg_gradient_header").value = linear($("#grad_dir_header").value, $("#grad_start_header").value, $("#grad_end_header").value); updateHeader(); });
+    $("#grad_reset_header").addEventListener("click", () => { $("#bg_gradient_header").value = ""; updateHeader(); });
+    $("#grad_apply_footer").addEventListener("click", () => { $("#bg_gradient_footer").value = linear($("#grad_dir_footer").value, $("#grad_start_footer").value, $("#grad_end_footer").value); updateFooter(); });
+    $("#grad_reset_footer").addEventListener("click", () => { $("#bg_gradient_footer").value = ""; updateFooter(); });
   })();
 </script>
