@@ -1,4 +1,4 @@
-<!-- admin-hf-setting 完全版（フォント＆固定ヘッダー対応・body+scriptのみ） -->
+<!-- admin-hf-setting 完全版（フォント＆固定ヘッダー対応・FIX版） -->
 <style>
   #hf-app{box-sizing:border-box;width:100%;margin:0;padding:16px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a}
   #hf-app h1{font-size:20px;margin:0 0 16px}
@@ -76,7 +76,7 @@
       </fieldset>
 
       <fieldset class="group"><legend>全体</legend>
-        <div class="field"><label>フォントファミリー</label><input id="header_font_family" type="text" placeholder='"Noto Sans JP", Meiryo, sans-serif'><div class="hint">例: "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif</div></div>
+        <div class="field"><label>フォントファミリー</label><input id="header_font_family" type="text" placeholder='"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif'><div class="hint">第一候補 + フォールバックをカンマ区切りで。末尾は <code>sans-serif</code> 推奨。</div></div>
         <div class="field"><label>ヘッダー高さ(px)</label><input id="bar_height_header" type="number" min="0" step="1" placeholder="60"></div>
         <div class="field"><label>パディング</label><input id="padding_header" type="text" placeholder="8px 12px"></div>
         <div class="field"><label>リンク間隔</label><input id="link_spacing_header" type="number" min="0" step="1" placeholder="16"></div>
@@ -132,7 +132,7 @@
       </fieldset>
 
       <fieldset class="group"><legend>全体</legend>
-        <div class="field"><label>フォントファミリー</label><input id="footer_font_family" type="text" placeholder='"Noto Sans JP", Meiryo, sans-serif'><div class="hint">例: "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif</div></div>
+        <div class="field"><label>フォントファミリー</label><input id="footer_font_family" type="text" placeholder='"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif'><div class="hint">第一候補 + フォールバック。末尾は <code>sans-serif</code> 推奨。</div></div>
         <div class="field"><label>フッター高さ(px)</label><input id="bar_height_footer" type="number" min="0" step="1" placeholder="60"></div>
         <div class="field"><label>パディング</label><input id="padding_footer" type="text" placeholder="8px 12px"></div>
         <div class="field"><label>リンク間隔</label><input id="link_spacing_footer" type="number" min="0" step="1" placeholder="16"></div>
@@ -155,8 +155,7 @@
 
   <div class="card" style="background:#f8fafc">
     <strong>フォント指定のヒント</strong>
-    <div class="hint">ここに指定したフォントは、そのフォントが端末に入っているか、ページでWebフォントを読み込んでいる場合に表示されます。未インストールの場合は後ろに書いたフォールバックが使われます。</div>
-    <div class="hint">例：<code>"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif</code></div>
+    <div class="hint">「フォントA, フォントB, sans-serif」のように、左から順に使えるものが適用されます。A/Bが無い端末では最後の <code>sans-serif</code>（≒ゴシック系）が使われます。</div>
   </div>
 
   <div id="toast"></div>
@@ -187,6 +186,12 @@
   const toJustify = p => p==="left" ? "flex-start" : p==="right" ? "flex-end" : "center";
   const linear = (dir,a,b) => (!a||!b) ? "" : `linear-gradient(${dir}, ${a}, ${b})`;
   const num = (v, f) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? n : f; };
+  const withFallback = (s) => {
+    if(!s) return "";
+    const low = s.toLowerCase();
+    if(low.includes("sans-serif") || low.includes("serif") || low.includes("monospace")) return s;
+    return `${s}, sans-serif`;
+  };
 
   // --- Data loaders ---
   let menus = [];
@@ -213,7 +218,7 @@
     const companyFs = num(d.header_company_size, 18);
     const navFs = num(d.header_nav_size, 14);
     const fixed = d.header_fixed ? "position:sticky;top:0;z-index:5;" : ""; /* プレビューはstickyで雰囲気のみ */
-    const ff = d.header_font_family ? `font-family:${d.header_font_family};` : "";
+    const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
 
     const brand = `
       <div class="hf-brand">
@@ -235,7 +240,7 @@
     const bg = (d.bg_gradient && d.bg_gradient.trim()) ? d.bg_gradient : (d.bg_color || "#0f172a");
     const copyFs = num(d.footer_copy_size, 14);
     const navFs = num(d.footer_nav_size, 14);
-    const ff = d.footer_font_family ? `font-family:${d.footer_font_family};` : "";
+    const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
 
     const nav = `<nav class="hf-nav" style="color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};justify-content:${toJustify(d.nav_alignment_footer)};font-size:${navFs}px">${items}</nav>`;
     const copy = `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${copyFs}px">${d.footer_text||""}</div>`;
@@ -261,7 +266,7 @@
     header_company_size: Number($("#header_company_size").value),
     nav_alignment: $("#nav_alignment").value,
     nav_color: $("#nav_color").value,
-    nav_weight: $("#nav_weight").").value,
+    nav_weight: $("#nav_weight").value,
     header_nav_size: Number($("#header_nav_size").value),
     bar_height: Number($("#bar_height_header").value),
     padding: $("#padding_header").value,
@@ -294,7 +299,7 @@
     $("#bg_gradient_header").value = r.bg_gradient || "";
     $("#header_layout_mode").value = r.layout_mode || "row";
     $("#header_fixed").checked = !!r.header_fixed;
-    $("#header_font_family").value = r.header_font_family || '"Noto Sans JP", Meiryo, sans-serif';
+    $("#header_font_family").value = r.header_font_family || '"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif';
     $("#headerPreview").innerHTML = headerHTML(r);
   }
 
@@ -336,7 +341,7 @@
     $("#bg_color_footer").value = r.bg_color || "#0b1e4a";
     $("#bg_gradient_footer").value = r.bg_gradient || "";
     $("#footer_layout_mode").value = r.layout_mode || "row";
-    $("#footer_font_family").value = r.footer_font_family || '"Noto Sans JP", Meiryo, sans-serif';
+    $("#footer_font_family").value = r.footer_font_family || '"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif';
     $("#footerPreview").innerHTML = footerHTML(r);
   }
 
