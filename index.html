@@ -12,7 +12,7 @@
     a{color:inherit;text-decoration:none}
     main{min-height:40vh}
     .container{max-width:var(--container);margin:0 auto;padding:16px}
-    .hfbar{display:flex;align-items:center;gap:var(--gap,16px)}
+    .hfbar{display:flex;align-items:center;gap:var(--gap,16px);width:100%}
     .hfbar.hf-row{justify-content:flex-start}
     .hfbar.hf-column{flex-direction:column;align-items:stretch}
     .hf-brand{display:flex;align-items:center;gap:8px}
@@ -51,9 +51,13 @@
     const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
     const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
     const withFallback = s => !s ? "" : (/\b(sans-serif|serif|monospace)\b/i.test(s) ? s : `${s}, sans-serif`);
-    const bgParts = (row, def) => (row.bg_gradient && row.bg_gradient.trim())
-        ? {bgColor:def, bgImage:row.bg_gradient}
-        : {bgColor:(row.bg_color && row.bg_color.trim())?row.bg_color:def, bgImage:"none"};
+    const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
+    const bgParts = (row, def) => {
+      const grad = stripQuotes(row.bg_gradient||"").trim();
+      if (grad){ return {bgColor:def, bgImage:grad}; }
+      const col = (row.bg_color && row.bg_color.trim()) ? row.bg_color : def;
+      return {bgColor:col, bgImage:"none"};
+    };
 
     async function load(){
       const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
@@ -63,8 +67,8 @@
       ]);
       renderHeader(hdr||{}, menus||[]);
       renderFooter(ftr||{}, menus||[]);
-      adjustOffsets(hdr||{}, ftr||{});
-      window.addEventListener('resize', ()=>adjustOffsets(hdr||{}, ftr||{}));
+      adjustOffsets(ftr||{}); // ヘッダーは sticky なので余白調整不要
+      window.addEventListener('resize', ()=>adjustOffsets(ftr||{}));
     }
 
     function renderHeader(d, menus){
@@ -72,12 +76,15 @@
       const {bgColor,bgImage} = bgParts(d, "#0f172a");
       const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
       const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
+      const padding = d.padding && d.padding.trim() ? d.padding : "8px 12px";
+      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
       $("#site-header").innerHTML = `
         <div class="${cls}" style="${ff}
             --gap:${num(d.link_spacing,16)}px;
+            background:${backgroundShorthand} !important;
             background-color:${bgColor} !important;
             background-image:${bgImage==='none'?'none':bgImage} !important;
-            height:${num(d.bar_height,60)}px; padding:${d.padding||'8px 12px'};">
+            height:${num(d.bar_height,60)}px; padding:${padding};">
           <div class="slot brand" style="${d.company_alignment==='left'?'margin-right:auto':d.company_alignment==='center'?'margin:0 auto':'margin-left:auto'}">
             <div class="hf-brand">
               ${d.logo_url?`<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}
@@ -88,7 +95,10 @@
             <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment)};color:${d.nav_color};font-weight:${d.nav_weight};font-size:${num(d.header_nav_size,14)}px">${items}</nav>
           </div>
         </div>`;
-      if(d.header_fixed){ const el=$("#site-header").firstElementChild; el.style.position="sticky"; el.style.top="0"; el.style.zIndex="5"; }
+      if(d.header_fixed){
+        const el=$("#site-header").firstElementChild;
+        el.style.position="sticky"; el.style.top="0"; el.style.zIndex="5";
+      }
     }
 
     function renderFooter(d, menus){
@@ -96,6 +106,8 @@
       const {bgColor,bgImage} = bgParts(d, "#0f172a");
       const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
       const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
+      const padding = d.padding && d.padding.trim() ? d.padding : "8px 12px";
+      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
       const inner = d.layout_mode==="row"
         ? `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
            <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`
@@ -107,19 +119,24 @@
       $("#site-footer").innerHTML = `
         <div class="${cls}" style="${ff}
             --gap:${num(d.link_spacing,16)}px;
+            background:${backgroundShorthand} !important;
             background-color:${bgColor} !important;
             background-image:${bgImage==='none'?'none':bgImage} !important;
-            height:${num(d.bar_height,60)}px; padding:${d.padding||'8px 12px'};">
+            height:${num(d.bar_height,60)}px; padding:${padding};">
           ${inner}
         </div>`;
-      if(d.footer_fixed){ const el=$("#site-footer").firstElementChild; el.style.position="fixed"; el.style.left="0"; el.style.right="0"; el.style.bottom="0"; }
+      if(d.footer_fixed){
+        const el=$("#site-footer").firstElementChild;
+        el.style.position="fixed"; el.style.left="0"; el.style.right="0"; el.style.bottom="0";
+      }
     }
 
-    function adjustOffsets(hdr, ftr){
-      const header = $("#site-header").firstElementChild;
+    function adjustOffsets(ftr){
       const footer = $("#site-footer").firstElementChild;
-      document.body.style.paddingTop = (hdr && hdr.header_fixed && header) ? header.getBoundingClientRect().height + "px" : "";
-      document.body.style.paddingBottom = (ftr && ftr.footer_fixed && footer) ? footer.getBoundingClientRect().height + "px" : "";
+      // ヘッダーは sticky のままなので top 余白は付けない
+      document.body.style.paddingBottom = (ftr && ftr.footer_fixed && footer)
+        ? footer.getBoundingClientRect().height + "px"
+        : "";
     }
 
     load();
