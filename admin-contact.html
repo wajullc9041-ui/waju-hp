@@ -1,189 +1,211 @@
-<!-- Admin Contact v3: Compact accordion, fixed width -->
-<section id="admin-contact" aria-label="お問い合わせ管理">
-  <style>
-    #admin-contact { font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif; color:#0f172a; }
-    #admin-contact * { box-sizing:border-box; }
-    #admin-contact .card { background:#fff; border:1px solid #e2e8f0; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,.08); }
-    #admin-contact .head { padding:10px 14px; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
-    #admin-contact .filters { display:flex; flex-wrap:wrap; gap:8px; margin:6px 0; }
-    #admin-contact .filters select, #admin-contact .filters input { padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; }
-    #admin-contact .pagination { display:flex; align-items:center; gap:10px; }
-    #admin-contact .pagination select, #admin-contact .pagination button { padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#fff; cursor:pointer; }
-    #admin-contact .tbl { width:100%; border-collapse:collapse; table-layout:fixed; }
-    #admin-contact .tbl th, #admin-contact .tbl td { border-bottom:1px solid #e2e8f0; padding:8px; text-align:left; font-size:13px; vertical-align:top; }
-    #admin-contact .tbl th { background:#f9fafb; font-weight:600; }
-    #admin-contact .row { cursor:pointer; }
-    #admin-contact .row:hover { background:#f3f4f6; }
-    #admin-contact .status { display:inline-block; padding:3px 8px; border-radius:999px; font-size:12px; font-weight:600; }
-    #admin-contact .s-unread { background:#fee2e2; color:#991b1b; }
-    #admin-contact .s-working { background:#fef3c7; color:#92400e; }
-    #admin-contact .s-done { background:#dcfce7; color:#065f46; }
-    #admin-contact .accordion { background:#f9fafb; padding:10px 14px; border-top:1px solid #e2e8f0; }
-    #admin-contact .accordion .controls { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
-    #admin-contact .btn { padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#fff; cursor:pointer; font-size:13px; }
-    #admin-contact .btn.danger { background:#fee2e2; border-color:#fecaca; color:#b91c1c; }
-    #admin-contact .accordion dl { display:grid; grid-template-columns:150px 1fr 150px 1fr; gap:4px 12px; margin:0; }
-    #admin-contact .accordion dt { font-weight:600; font-size:13px; }
-    #admin-contact .accordion dd { margin:0; font-size:13px; white-space:pre-wrap; }
-    #admin-contact .accordion .full { grid-column:1/-1; }
-  </style>
+<div class="dashboard-container">
+  <!-- サイドメニュー -->
+  <aside class="sidebar">
+    <ul>
+      <li>管理メニュー管理</li>
+      <li>ページ構成管理</li>
+      <li>ページ編集</li>
+      <li>ブログ一覧</li>
+      <li>ブログ追加・編集</li>
+      <li>お問い合わせ管理</li>
+      <li>HFメニュー</li>
+      <li>HF設定</li>
+      <li>アクセス解析設定</li>
+      <li>アセット管理</li>
+      <li>設定管理</li>
+    </ul>
+  </aside>
 
-  <div class="card">
-    <div class="head">
-      <div id="ac-count">- 件</div>
-      <div class="filters">
-        <select id="filter-status">
-          <option value="">ステータス(全て)</option>
-          <option value="unread">未読</option>
-          <option value="in_progress">対応中</option>
-          <option value="done">対応済</option>
-        </select>
-        <select id="filter-category">
-          <option value="">種別(全て)</option>
-          <option value="サービス導入相談">サービス導入相談</option>
-          <option value="業務提携・連携・協業">業務提携・連携・協業</option>
-          <option value="取材・メディア">取材・メディア</option>
-          <option value="その他">その他</option>
-        </select>
-        <label><input type="checkbox" id="filter-important"> 重要のみ</label>
-        <input id="filter-search" placeholder="氏名・件名・本文を検索">
+  <!-- メイン部分 -->
+  <main class="main">
+    <div class="card">
+      <div class="filter-bar">
+        <div class="left-controls">
+          <span class="total">2件</span>
+          <select>
+            <option>ステータス(全て)</option>
+            <option>未読</option>
+            <option>対応中</option>
+            <option>対応済</option>
+          </select>
+          <select>
+            <option>種別(全て)</option>
+            <option>その他</option>
+            <option>資料請求</option>
+            <option>サポート</option>
+          </select>
+          <label><input type="checkbox"> 重要のみ</label>
+        </div>
+        <div class="right-controls">
+          <input type="text" placeholder="氏名・件名・本文を検索">
+          <span class="pagination">1-2 / 2</span>
+          <select>
+            <option>20件</option>
+            <option>50件</option>
+            <option>100件</option>
+          </select>
+          <button>前へ</button>
+          <button>次へ</button>
+        </div>
       </div>
-      <div class="pagination">
-        <span id="ac-pageinfo">-</span>
-        <select id="ac-size">
-          <option value="20">20件</option>
-          <option value="50">50件</option>
-          <option value="100">100件</option>
-        </select>
-        <button id="ac-prev">前へ</button>
-        <button id="ac-next">次へ</button>
+
+      <!-- 一覧＋アコーディオン詳細 -->
+      <div class="message-list">
+        <div class="message-item">
+          <div class="summary">
+            <span>2025/9/14 13:16:18</span>
+            <span>大野洋<br><small>合同会社WaJu</small></span>
+            <span>テスト<br><small>その他</small></span>
+            <span>ohno@waju.co.jp</span>
+            <span class="status done">対応済</span>
+            <span class="star">★</span>
+          </div>
+          <div class="details">
+            <div class="actions">
+              <select>
+                <option>未読</option>
+                <option selected>対応済</option>
+                <option>対応中</option>
+              </select>
+              <label><input type="checkbox" checked> 重要</label>
+              <button class="delete">削除</button>
+            </div>
+            <div class="grid">
+              <div><strong>氏名</strong><p>大野洋</p></div>
+              <div><strong>会社・所属</strong><p>合同会社WaJu</p></div>
+              <div><strong>メール</strong><p>ohno@waju.co.jp</p></div>
+              <div><strong>電話</strong><p>08024087044</p></div>
+              <div><strong>種別</strong><p>その他</p></div>
+              <div><strong>件名</strong><p>テスト</p></div>
+              <div class="full"><strong>本文</strong><p>テストメール</p></div>
+              <div class="full"><strong>UA</strong><p>Mozilla/5.0 ...</p></div>
+              <div><strong>Path</strong><p>/contact.html</p></div>
+              <div><strong>ID</strong><p>3ada8ed5-97c5...</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="message-item">
+          <div class="summary">
+            <span>2025/9/14 13:09:22</span>
+            <span>テスト</span>
+            <span>件名テスト<br><small>その他</small></span>
+            <span>test@example.com</span>
+            <span class="status progress">対応中</span>
+            <span class="star">☆</span>
+          </div>
+          <div class="details">
+            <div class="actions">
+              <select>
+                <option selected>対応中</option>
+                <option>未読</option>
+                <option>対応済</option>
+              </select>
+              <label><input type="checkbox"> 重要</label>
+              <button class="delete">削除</button>
+            </div>
+            <div class="grid">
+              <div><strong>氏名</strong><p>テスト</p></div>
+              <div><strong>会社・所属</strong><p>-</p></div>
+              <div><strong>メール</strong><p>test@example.com</p></div>
+              <div><strong>電話</strong><p>-</p></div>
+              <div><strong>種別</strong><p>その他</p></div>
+              <div><strong>件名</strong><p>件名テスト</p></div>
+              <div class="full"><strong>本文</strong><p>テスト本文</p></div>
+              <div class="full"><strong>UA</strong><p>Mozilla/5.0 ...</p></div>
+              <div><strong>Path</strong><p>/contact.html</p></div>
+              <div><strong>ID</strong><p>xxxx-xxxx</p></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <table class="tbl">
-      <thead>
-        <tr><th>日時</th><th>氏名 / 会社</th><th>件名 / 種別</th><th>メール</th><th>状態</th><th>⭐</th></tr>
-      </thead>
-      <tbody id="ac-tbody"><tr><td colspan="6">読込中...</td></tr></tbody>
-    </table>
-  </div>
-</section>
+  </main>
+</div>
 
-<script type="module">
-  const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
-  const supabase = createClient(
-    "https://htnmjsqgoapvuanrsuma.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-  );
-  const statusMap={unread:"未読",in_progress:"対応中",done:"対応済"};
-  const reverseStatusMap={"未読":"unread","対応中":"in_progress","対応済":"done"};
+<style>
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+.sidebar {
+  width: 240px;
+  background: #1e2a38;
+  color: #fff;
+  flex-shrink: 0;
+}
+.main {
+  flex: 1;
+  padding: 20px;
+  background: #f5f6fa;
+  overflow-y: auto;
+}
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.filter-bar select,
+.filter-bar input {
+  margin-right: 8px;
+}
+.message-list {
+  border-top: 1px solid #ddd;
+}
+.message-item {
+  border-bottom: 1px solid #eee;
+}
+.summary {
+  display: grid;
+  grid-template-columns: 160px 160px 160px 200px 120px 40px;
+  align-items: center;
+  padding: 12px;
+  cursor: pointer;
+}
+.details {
+  display: none;
+  background: #fafafa;
+  padding: 12px;
+}
+.message-item.open .details {
+  display: block;
+}
+.actions {
+  margin-bottom: 10px;
+}
+.actions select,
+.actions button {
+  margin-right: 8px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.grid .full {
+  grid-column: span 2;
+}
+.status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+.status.done { background: #d4f8e8; color: #1a7f4c; }
+.status.progress { background: #fff3cd; color: #856404; }
+.status.unread { background: #f8d7da; color: #721c24; }
+.star { cursor: pointer; }
+</style>
 
-  let rows=[],filtered=[],page=1,size=20;
-  const tbody=document.querySelector("#ac-tbody"),count=document.querySelector("#ac-count"),pageinfo=document.querySelector("#ac-pageinfo");
-
-  async function fetchRows(){
-    const { data,error }=await supabase.from("contact_messages").select("*").order("created_at",{ascending:false});
-    if(error){console.error(error);return;}
-    rows=data||[];applyFilter();
-  }
-
-  function applyFilter(){
-    const st=document.querySelector("#filter-status").value;
-    const cat=document.querySelector("#filter-category").value;
-    const imp=document.querySelector("#filter-important").checked;
-    const kw=document.querySelector("#filter-search").value.trim();
-    filtered=rows.filter(r=>
-      (!st||r.status===st)&&
-      (!cat||r.category===cat)&&
-      (!imp||r.is_important)&&
-      (!kw||[r.name,r.organization,r.subject,r.message].join(" ").includes(kw))
-    );
-    page=1;renderList();
-  }
-
-  function paginate(list){const start=(page-1)*size;return list.slice(start,start+size);}
-  function badge(st){if(st==="unread")return'<span class="status s-unread">未読</span>';if(st==="in_progress")return'<span class="status s-working">対応中</span>';return'<span class="status s-done">対応済</span>';}
-
-  function renderList(){
-    const pageRows=paginate(filtered);
-    count.textContent=`${filtered.length}件`;
-    pageinfo.textContent=`${filtered.length===0?0:((page-1)*size+1)}-${Math.min(page*size,filtered.length)} / ${filtered.length}`;
-    if(pageRows.length===0){tbody.innerHTML='<tr><td colspan="6">データなし</td></tr>';return;}
-    tbody.innerHTML=pageRows.map(r=>`
-      <tr class="row" data-id="${r.id}">
-        <td>${new Date(r.created_at).toLocaleString("ja-JP")}</td>
-        <td><div>${r.name||"-"}</div><div class="muted">${r.organization||""}</div></td>
-        <td><div>${r.subject||"-"}</div><div class="muted">${r.category||""}</div></td>
-        <td>${r.email||"-"}</td>
-        <td>${badge(r.status)}</td>
-        <td>${r.is_important?"⭐":""}</td>
-      </tr>
-      <tr class="accordion-row" id="acc-${r.id}" style="display:none;">
-        <td colspan="6">
-          <div class="accordion">
-            <div class="controls">
-              <select class="status-select">
-                <option ${r.status==="unread"?"selected":""}>未読</option>
-                <option ${r.status==="in_progress"?"selected":""}>対応中</option>
-                <option ${r.status==="done"?"selected":""}>対応済</option>
-              </select>
-              <label><input type="checkbox" class="important-check" ${r.is_important?"checked":""}/> ⭐重要</label>
-              <button class="btn danger delete-btn">削除</button>
-            </div>
-            <dl>
-              <dt>氏名</dt><dd>${r.name||"-"}</dd>
-              <dt>会社・所属</dt><dd>${r.organization||"-"}</dd>
-              <dt>メール</dt><dd>${r.email||"-"}</dd>
-              <dt>電話</dt><dd>${r.phone||"-"}</dd>
-              <dt>種別</dt><dd>${r.category||"-"}</dd>
-              <dt>件名</dt><dd>${r.subject||"-"}</dd>
-              <dt class="full">本文</dt><dd class="full">${r.message||""}</dd>
-              <dt>UA</dt><dd>${r.meta_user_agent||""}</dd>
-              <dt>Path</dt><dd>${r.meta_path||""}</dd>
-              <dt>ID</dt><dd>${r.id}</dd>
-            </dl>
-          </div>
-        </td>
-      </tr>`).join("");
-
-    tbody.querySelectorAll(".row").forEach(tr=>{
-      tr.addEventListener("click",()=>{
-        const acc=document.querySelector(`#acc-${tr.dataset.id}`);
-        acc.style.display=acc.style.display==="none"?"table-row":"none";
-      });
-    });
-
-    tbody.querySelectorAll(".status-select").forEach(sel=>{
-      sel.addEventListener("change",async e=>{
-        const tr=e.target.closest(".accordion-row");const id=tr.id.replace("acc-","");
-        const newStatus=reverseStatusMap[e.target.value];
-        await supabase.from("contact_messages").update({status:newStatus}).eq("id",id);
-        const rec=rows.find(r=>r.id===id);if(rec)rec.status=newStatus;renderList();
-      });
-    });
-    tbody.querySelectorAll(".important-check").forEach(chk=>{
-      chk.addEventListener("change",async e=>{
-        const tr=e.target.closest(".accordion-row");const id=tr.id.replace("acc-","");
-        await supabase.from("contact_messages").update({is_important:e.target.checked}).eq("id",id);
-        const rec=rows.find(r=>r.id===id);if(rec)rec.is_important=e.target.checked;renderList();
-      });
-    });
-    tbody.querySelectorAll(".delete-btn").forEach(btn=>{
-      btn.addEventListener("click",async e=>{
-        if(!confirm("削除しますか？"))return;
-        const tr=e.target.closest(".accordion-row");const id=tr.id.replace("acc-","");
-        await supabase.from("contact_messages").delete().eq("id",id);
-        rows=rows.filter(r=>r.id!==id);applyFilter();
-      });
-    });
-  }
-
-  document.querySelector("#ac-size").addEventListener("change",e=>{size=parseInt(e.target.value,10)||20;page=1;renderList();});
-  document.querySelector("#ac-prev").addEventListener("click",()=>{if(page>1){page--;renderList();}});
-  document.querySelector("#ac-next").addEventListener("click",()=>{if(page*size<filtered.length){page++;renderList();}});
-  ["#filter-status","#filter-category","#filter-important","#filter-search"].forEach(sel=>{
-    document.querySelector(sel).addEventListener("input",applyFilter);
-    document.querySelector(sel).addEventListener("change",applyFilter);
+<script>
+document.querySelectorAll('.message-item .summary').forEach(summary => {
+  summary.addEventListener('click', () => {
+    summary.parentElement.classList.toggle('open');
   });
-
-  fetchRows();
+});
 </script>
