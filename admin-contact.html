@@ -1,4 +1,4 @@
-<!-- Admin Contact v3: Compact accordion, fixed width -->
+<!-- Admin Contact with Filters, Accordion, Two-column layout -->
 <section id="admin-contact" aria-label="お問い合わせ管理">
   <style>
     #admin-contact { font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif; color:#0f172a; }
@@ -9,7 +9,7 @@
     #admin-contact .filters select, #admin-contact .filters input { padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; }
     #admin-contact .pagination { display:flex; align-items:center; gap:10px; }
     #admin-contact .pagination select, #admin-contact .pagination button { padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#fff; cursor:pointer; }
-    #admin-contact .tbl { width:100%; border-collapse:collapse; table-layout:fixed; }
+    #admin-contact .tbl { width:100%; border-collapse:collapse; }
     #admin-contact .tbl th, #admin-contact .tbl td { border-bottom:1px solid #e2e8f0; padding:8px; text-align:left; font-size:13px; vertical-align:top; }
     #admin-contact .tbl th { background:#f9fafb; font-weight:600; }
     #admin-contact .row { cursor:pointer; }
@@ -19,12 +19,12 @@
     #admin-contact .s-working { background:#fef3c7; color:#92400e; }
     #admin-contact .s-done { background:#dcfce7; color:#065f46; }
     #admin-contact .accordion { background:#f9fafb; padding:10px 14px; border-top:1px solid #e2e8f0; }
-    #admin-contact .accordion .controls { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
+    #admin-contact .accordion .controls { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
     #admin-contact .btn { padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#fff; cursor:pointer; font-size:13px; }
     #admin-contact .btn.danger { background:#fee2e2; border-color:#fecaca; color:#b91c1c; }
-    #admin-contact .accordion dl { display:grid; grid-template-columns:150px 1fr 150px 1fr; gap:4px 12px; margin:0; }
-    #admin-contact .accordion dt { font-weight:600; font-size:13px; }
-    #admin-contact .accordion dd { margin:0; font-size:13px; white-space:pre-wrap; }
+    #admin-contact .accordion dl { display:grid; grid-template-columns:1fr 1fr; gap:10px 20px; margin:0; }
+    #admin-contact .accordion dt { font-weight:600; }
+    #admin-contact .accordion dd { margin:0; white-space:pre-wrap; }
     #admin-contact .accordion .full { grid-column:1/-1; }
   </style>
 
