@@ -1,7 +1,7 @@
-<!-- Admin Contact: one-page list + detail (scoped to #admin-contact) -->
+<!-- Admin Contact: list + detail with Japanese status mapping -->
 <section id="admin-contact" aria-label="お問い合わせ管理">
   <style>
-    /* ====== Scoped Styles: DO NOT LEAK ====== */
+    /* Scoped Styles */
     #admin-contact { --bg:#0f172a; --card:#ffffff; --muted:#64748b; --line:#e2e8f0; --shadow:0 6px 22px rgba(0,0,0,.08); --radius:14px; --primary:#2563eb; --danger:#dc2626; --warn:#f59e0b; --success:#16a34a; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans JP", sans-serif; color:#0f172a; }
     #admin-contact * { box-sizing: border-box; }
     #admin-contact .wrap { display:grid; grid-template-columns: 1.2fr .8fr; gap:20px; }
@@ -25,20 +25,9 @@
     #admin-contact .s-unread { background:#fee2e2; color:#991b1b; }
     #admin-contact .s-working { background:#fef3c7; color:#92400e; }
     #admin-contact .s-done { background:#dcfce7; color:#065f46; }
-    #admin-contact .pill { display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; font-size:12px; background:#eef2ff; color:#3730a3; }
-    #admin-contact .row .star { font-size:16px; color:#d97706; }
-    #admin-contact .controls { display:flex; gap:8px; flex-wrap:wrap; }
-    #admin-contact .btn { padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:#fff; cursor:pointer; }
-    #admin-contact .btn.primary { background: #2563eb; border-color:#1d4ed8; color:#fff; }
-    #admin-contact .btn.danger { background:#fee2e2; border-color:#fecaca; color:#b91c1c; }
-    #admin-contact .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    #admin-contact .kv { display:grid; grid-template-columns: 140px 1fr; gap:8px; padding:8px 0; border-bottom:1px dashed var(--line); }
-    #admin-contact .kv:last-child { border-bottom:0; }
-    #admin-contact .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12px; }
-    #admin-contact .right { text-align:right; }
     #admin-contact .center { text-align:center; }
-    #admin-contact .pagination { display:flex; gap:8px; justify-content:flex-end; align-items:center; padding:8px 0 0; }
-    #admin-contact .empty { padding:32px; text-align:center; color:var(--muted); }
+    #admin-contact .btn { padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:#fff; cursor:pointer; }
+    #admin-contact .btn.danger { background:#fee2e2; border-color:#fecaca; color:#b91c1c; }
     @media (max-width: 1000px){
       #admin-contact .wrap { grid-template-columns: 1fr; }
     }
@@ -47,253 +36,130 @@
   <div class="toolbar">
     <div class="controls">
       <button class="chip" data-filter="all" aria-pressed="true">すべて</button>
-      <button class="chip" data-filter="未読">未読</button>
-      <button class="chip" data-filter="対応中">対応中</button>
-      <button class="chip" data-filter="対応済">対応済</button>
+      <button class="chip" data-filter="unread">未読</button>
+      <button class="chip" data-filter="in_progress">対応中</button>
+      <button class="chip" data-filter="done">対応済</button>
       <button class="chip" data-filter="important">重要</button>
     </div>
     <div class="search">
       <input id="ac-q" type="search" placeholder="検索（氏名・件名・本文・メール）" />
-      <select id="ac-size">
-        <option value="20">20件</option>
-        <option value="50">50件</option>
-        <option value="100">100件</option>
-      </select>
     </div>
   </div>
 
   <div class="wrap">
-    <!-- List -->
     <div class="card" id="ac-list">
-      <div class="head">
-        <div>お問い合わせ一覧</div>
-        <div class="muted" id="ac-count"></div>
-      </div>
+      <div class="head"><div>お問い合わせ一覧</div><div class="muted" id="ac-count"></div></div>
       <div class="body">
         <table class="tbl">
-          <thead>
-            <tr>
-              <th class="nowrap">日時</th>
-              <th>氏名 / 会社</th>
-              <th>件名 / 種別</th>
-              <th>メール</th>
-              <th class="nowrap">状態</th>
-              <th class="center">⭐</th>
-            </tr>
-          </thead>
-          <tbody id="ac-tbody">
-            <tr><td colspan="6" class="empty">読込中...</td></tr>
-          </tbody>
+          <thead><tr><th>日時</th><th>氏名 / 会社</th><th>件名 / 種別</th><th>メール</th><th>状態</th><th>⭐</th></tr></thead>
+          <tbody id="ac-tbody"><tr><td colspan="6" class="center">読込中...</td></tr></tbody>
         </table>
-        <div class="pagination">
-          <button class="btn" id="ac-prev">前へ</button>
-          <div class="muted" id="ac-pageinfo">-</div>
-          <button class="btn" id="ac-next">次へ</button>
-        </div>
       </div>
     </div>
 
-    <!-- Detail -->
     <div class="card" id="ac-detail">
       <div class="head">
         <div>詳細</div>
         <div class="controls">
           <select id="ac-status">
-            <option value="未読">未読</option>
-            <option value="対応中">対応中</option>
-            <option value="対応済">対応済</option>
+            <option>未読</option>
+            <option>対応中</option>
+            <option>対応済</option>
           </select>
-          <label class="btn"><input type="checkbox" id="ac-important" /> ⭐重要</label>
+          <label><input type="checkbox" id="ac-important" /> ⭐重要</label>
           <button class="btn danger" id="ac-delete">削除</button>
         </div>
       </div>
-      <div class="body" id="ac-detail-body">
-        <div class="empty">左の一覧から選択してください。</div>
-      </div>
+      <div class="body" id="ac-detail-body"><div class="center">左の一覧から選択してください。</div></div>
     </div>
   </div>
 </section>
 
 <script type="module">
-  // ===== Scoped Admin Script =====
-  const root = document.getElementById("admin-contact");
   const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
   const supabase = createClient(
     "https://htnmjsqgoapvuanrsuma.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
   );
 
-  const $ = (sel, r=root) => r.querySelector(sel);
-  const $$ = (sel, r=root) => Array.from(r.querySelectorAll(sel));
+  const statusMap = { unread: "未読", in_progress: "対応中", done: "対応済" };
+  const reverseStatusMap = { "未読":"unread", "対応中":"in_progress", "対応済":"done" };
 
-  // State
+  const tbody = document.querySelector("#ac-tbody");
+  const detailBody = document.querySelector("#ac-detail-body");
   let rows = [];
-  let filtered = [];
-  let page = 1;
-  let size = 20;
   let currentId = null;
-  let currentFilter = "all";
-  let currentQuery = "";
-
-  const tbody = $("#ac-tbody");
-  const count = $("#ac-count");
-  const pageinfo = $("#ac-pageinfo");
-
-  // Fetch
-  async function fetchRows(){
-    tbody.innerHTML = `<tr><td colspan="6" class="empty">読込中...</td></tr>`;
-    const { data, error } = await supabase
-      .from("contact_messages")
-      .select("id, created_at, name, organization, email, phone, category, subject, message, status, is_important, meta_user_agent, meta_path, agree")
-      .order("created_at", { ascending:false });
-    if(error){
-      tbody.innerHTML = `<tr><td colspan="6" class="empty">読み込みに失敗しました。${escapeHtml(error.message)}</td></tr>`;
-      console.error(error);
-      return;
-    }
-    rows = data || [];
-    applyFilter();
-  }
-
-  function applyFilter(){
-    const q = currentQuery.trim();
-    filtered = rows.filter(r => {
-      const byStatus = (currentFilter === "all")
-        ? true
-        : (currentFilter === "important" ? !!r.is_important : r.status === currentFilter);
-      const byQuery = q ? (
-        (r.name && r.name.includes(q)) ||
-        (r.organization && r.organization.includes(q)) ||
-        (r.email && r.email.includes(q)) ||
-        (r.subject && r.subject.includes(q)) ||
-        (r.message && r.message.includes(q))
-      ) : true;
-      return byStatus && byQuery;
-    });
-    page = 1;
-    renderList();
-  }
-
-  function paginate(list){
-    const start = (page-1)*size;
-    const end = start + size;
-    return list.slice(start, end);
-  }
 
   function badge(status){
-    if(status === "未読") return '<span class="status s-unread">未読</span>';
-    if(status === "対応中") return '<span class="status s-working">対応中</span>';
+    if(status === "unread") return '<span class="status s-unread">未読</span>';
+    if(status === "in_progress") return '<span class="status s-working">対応中</span>';
     return '<span class="status s-done">対応済</span>';
   }
 
+  async function fetchRows(){
+    const { data, error } = await supabase.from("contact_messages").select("*").order("created_at",{ascending:false});
+    if(error){ console.error(error); return; }
+    rows = data;
+    renderList();
+  }
+
   function renderList(){
-    const pageRows = paginate(filtered);
-    count.textContent = `${filtered.length}件`;
-    pageinfo.textContent = `${filtered.length===0?0:((page-1)*size+1)} - ${Math.min(page*size, filtered.length)} / ${filtered.length}`;
-
-    if(pageRows.length === 0){
-      tbody.innerHTML = `<tr><td colspan="6" class="empty">データがありません。</td></tr>`;
-      return;
-    }
-
-    tbody.innerHTML = pageRows.map(r => `
+    if(rows.length===0){ tbody.innerHTML=`<tr><td colspan="6" class="center">データなし</td></tr>`; return; }
+    tbody.innerHTML = rows.map(r=>`
       <tr class="row" data-id="${r.id}">
-        <td class="nowrap mono">${new Date(r.created_at).toLocaleString('ja-JP')}</td>
-        <td>
-          <div><strong>${escapeHtml(r.name||"-")}</strong></div>
-          <div class="muted ellipsis">${escapeHtml(r.organization||"-")}</div>
-        </td>
-        <td>
-          <div class="ellipsis"><strong>${escapeHtml(r.subject||"-")}</strong></div>
-          <div class="muted">${escapeHtml(r.category||"-")}</div>
-        </td>
-        <td class="ellipsis">${escapeHtml(r.email||"-")}</td>
-        <td>${badge(r.status||"未読")}</td>
-        <td class="center">${r.is_important ? "⭐" : ""}</td>
-      </tr>
-    `).join("");
-
-    $$("#ac-tbody .row").forEach(tr => tr.addEventListener("click", () => showDetail(tr.getAttribute("data-id"))));
+        <td>${new Date(r.created_at).toLocaleString("ja-JP")}</td>
+        <td>${r.name||"-"}<div class="muted">${r.organization||""}</div></td>
+        <td>${r.subject||"-"}<div class="muted">${r.category||""}</div></td>
+        <td>${r.email||"-"}</td>
+        <td>${badge(r.status)}</td>
+        <td class="center">${r.is_important?"⭐":""}</td>
+      </tr>`).join("");
+    tbody.querySelectorAll(".row").forEach(tr=>tr.addEventListener("click",()=>showDetail(tr.dataset.id)));
   }
-
-  function escapeHtml(s){
-    if(s==null) return "";
-    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-
-  function pick(id){ return rows.find(r=>r.id===id) || null; }
 
   function showDetail(id){
-    currentId = id;
-    const r = pick(id);
-    if(!r){
-      $("#ac-detail-body").innerHTML = `<div class="empty">選択した行が見つかりません。</div>`;
-      return;
-    }
-    // Fill form controls
-    $("#ac-status").value = r.status || "未読";
-    $("#ac-important").checked = !!r.is_important;
-
-    $("#ac-detail-body").innerHTML = `
-      <div class="grid2">
-        <div class="kv"><div class="muted">受信日時</div><div class="mono">${new Date(r.created_at).toLocaleString('ja-JP')}</div></div>
-        <div class="kv"><div class="muted">ステータス</div><div>${badge(r.status||"未読")}</div></div>
-        <div class="kv"><div class="muted">氏名</div><div>${escapeHtml(r.name||"-")}</div></div>
-        <div class="kv"><div class="muted">会社・所属</div><div>${escapeHtml(r.organization||"-")}</div></div>
-        <div class="kv"><div class="muted">メール</div><div class="mono">${escapeHtml(r.email||"-")}</div></div>
-        <div class="kv"><div class="muted">電話</div><div class="mono">${escapeHtml(r.phone||"-")}</div></div>
-        <div class="kv"><div class="muted">種別</div><div>${escapeHtml(r.category||"-")}</div></div>
-        <div class="kv"><div class="muted">件名</div><div>${escapeHtml(r.subject||"-")}</div></div>
-        <div class="kv" style="grid-column:1/-1"><div class="muted">本文</div><div style="white-space:pre-wrap">${escapeHtml(r.message||"-")}</div></div>
-        <div class="kv"><div class="muted">同意</div><div>${r.agree ? "同意" : "未同意"}</div></div>
-        <div class="kv"><div class="muted">重要</div><div>${r.is_important ? "⭐ 重要" : "-"}</div></div>
-        <div class="kv"><div class="muted">UA</div><div class="mono ellipsis" title="${escapeHtml(r.meta_user_agent||"")}">${escapeHtml(r.meta_user_agent||"-")}</div></div>
-        <div class="kv"><div class="muted">パス</div><div class="mono">${escapeHtml(r.meta_path||"-")}</div></div>
-        <div class="kv"><div class="muted">ID</div><div class="mono">${escapeHtml(r.id)}</div></div>
-      </div>
-    `;
+    currentId=id;
+    const r=rows.find(x=>x.id===id);
+    if(!r){ detailBody.innerHTML="<div>データが見つかりません</div>"; return; }
+    document.querySelector("#ac-status").value=statusMap[r.status]||"未読";
+    document.querySelector("#ac-important").checked=!!r.is_important;
+    detailBody.innerHTML=`
+      <div><b>受信日時:</b> ${new Date(r.created_at).toLocaleString("ja-JP")}</div>
+      <div><b>氏名:</b> ${r.name||"-"} / ${r.organization||""}</div>
+      <div><b>メール:</b> ${r.email||"-"} / ${r.phone||""}</div>
+      <div><b>種別:</b> ${r.category||"-"} / 件名: ${r.subject||"-"}</div>
+      <div><b>本文:</b><pre>${r.message||""}</pre></div>
+      <div><b>同意:</b> ${r.agree?"同意":"未同意"} / <b>重要:</b> ${r.is_important?"⭐":""}</div>
+      <div><b>UA:</b> ${r.meta_user_agent||""}</div>
+      <div><b>Path:</b> ${r.meta_path||""}</div>
+      <div><b>ID:</b> ${r.id}</div>`;
   }
 
-  // Events
-  $("#ac-size").addEventListener("change", e => { size = parseInt(e.target.value,10)||20; page=1; renderList(); });
-  $("#ac-prev").addEventListener("click", () => { if(page>1){ page--; renderList(); } });
-  $("#ac-next").addEventListener("click", () => { if(page*size < filtered.length){ page++; renderList(); } });
-
-  $$(".chip").forEach(btn => btn.addEventListener("click", () => {
-    $$(".chip").forEach(b=>b.setAttribute("aria-pressed","false"));
-    btn.setAttribute("aria-pressed","true");
-    currentFilter = btn.getAttribute("data-filter");
-    applyFilter();
-  }));
-  $("#ac-q").addEventListener("input", e => { currentQuery = e.target.value; applyFilter(); });
-
-  $("#ac-status").addEventListener("change", async e => {
+  document.querySelector("#ac-status").addEventListener("change",async e=>{
     if(!currentId) return;
-    const { error } = await supabase.from("contact_messages").update({ status: e.target.value }).eq("id", currentId);
-    if(error){ alert("ステータス更新に失敗しました: " + error.message); return; }
-    const rec = pick(currentId); if(rec){ rec.status = e.target.value; }
+    const newStatus=reverseStatusMap[e.target.value];
+    const { error }=await supabase.from("contact_messages").update({status:newStatus}).eq("id",currentId);
+    if(error){ alert("更新失敗:"+error.message); return; }
+    const rec=rows.find(r=>r.id===currentId); if(rec) rec.status=newStatus;
     renderList(); showDetail(currentId);
   });
 
-  $("#ac-important").addEventListener("change", async e => {
+  document.querySelector("#ac-important").addEventListener("change",async e=>{
     if(!currentId) return;
-    const { error } = await supabase.from("contact_messages").update({ is_important: e.target.checked }).eq("id", currentId);
-    if(error){ alert("重要フラグ更新に失敗しました: " + error.message); return; }
-    const rec = pick(currentId); if(rec){ rec.is_important = e.target.checked; }
+    const { error }=await supabase.from("contact_messages").update({is_important:e.target.checked}).eq("id",currentId);
+    if(error){ alert("更新失敗:"+error.message); return; }
+    const rec=rows.find(r=>r.id===currentId); if(rec) rec.is_important=e.target.checked;
     renderList(); showDetail(currentId);
   });
 
-  $("#ac-delete").addEventListener("click", async () => {
+  document.querySelector("#ac-delete").addEventListener("click",async()=>{
     if(!currentId) return;
-    if(!confirm("このお問い合わせを削除します。よろしいですか？")) return;
-    const { error } = await supabase.from("contact_messages").delete().eq("id", currentId);
-    if(error){ alert("削除に失敗しました: " + error.message); return; }
-    rows = rows.filter(r=>r.id!==currentId);
-    applyFilter();
-    $("#ac-detail-body").innerHTML = `<div class="empty">削除しました。左の一覧から選択してください。</div>`;
-    currentId = null;
+    if(!confirm("削除しますか？")) return;
+    const { error }=await supabase.from("contact_messages").delete().eq("id",currentId);
+    if(error){ alert("削除失敗:"+error.message); return; }
+    rows=rows.filter(r=>r.id!==currentId);
+    renderList(); detailBody.innerHTML="<div>削除しました</div>"; currentId=null;
   });
 
-  // Init
   fetchRows();
 </script>
