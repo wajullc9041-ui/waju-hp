@@ -1,15 +1,4 @@
-
-// URL から slug を生成（/about.html → about ／ / → index）
-function toSlug(url){
-  if(!url) return "";
-  let s = url.trim();
-  try { const u = new URL(s, location.origin); s = u.pathname; } catch(e){}
-  s = s.replace(/^\//,"").replace(/\.html?$/,"").replace(/\/$/,"");
-  if(s==="") s="index";
-  return s;
-}
-
-<!-- ===== 管理：メニュー管理ページ (スタイリッシュ完全版) ===== -->
+<!-- ===== 管理：公開メニュー管理 (完全修正版) ===== -->
 <div id="menu-admin-root">
   <h2>メニュー管理</h2>
 
@@ -90,6 +79,16 @@ function toSlug(url){
   const $$ = (q)=>document.querySelectorAll(q);
   const toast = (m,t="success")=>{ const n=document.createElement("div"); n.className="toast "+t; n.textContent=m; $("#toast-container").appendChild(n); setTimeout(()=>n.remove(),3000); };
 
+  // URL から slug を生成（/about.html → about ／ / → index）
+  function toSlug(url){
+    if(!url) return "";
+    let s = url.trim();
+    try { const u = new URL(s, location.origin); s = u.pathname; } catch(e){}
+    s = s.replace(/^\//,"").replace(/\.html?$/,"").replace(/\/$/,"");
+    if(s==="") s="index";
+    return s;
+  }
+
   let editingId = null;
 
   async function fetchMenus(){
@@ -139,9 +138,22 @@ function toSlug(url){
   async function addMenu(){
     const rec=readMenuForm();
     if(!rec.title || !rec.url){ toast("表示名とURLは必須です","error"); return; }
-    const { error } = await supabase.from("public_menus").insert([rec]);
+    const { data: inserted, error } = await supabase.from("public_menus").insert([rec]).select().single();
     if(error){ console.error(error); toast("追加失敗","error"); return; }
-    resetMenuForm(); await fetchMenus(); toast("追加しました");
+
+    // pages にも初期レコードを upsert
+    const slug = toSlug(rec.url) || ("page-"+inserted.id);
+    const { error: pageErr } = await supabase.from("pages").upsert([{
+      slug,
+      title: rec.title,
+      content: `<h1>${rec.title}</h1><p>ここに本文を入力してください。</p>`,
+      updated_at: new Date().toISOString()
+    }], { onConflict: "slug", ignoreDuplicates: true });
+    if(pageErr){ console.error(pageErr); toast("ページ作成に失敗","error"); }
+
+    resetMenuForm();
+    await fetchMenus();
+    toast("追加しました");
   }
 
   async function startEdit(id){
@@ -163,9 +175,21 @@ function toSlug(url){
 
   async function deleteMenu(id){
     if(!confirm("削除してよろしいですか？")) return;
+
+    const { data: menuRow, error: fetchErr } = await supabase.from("public_menus").select("*").eq("id", id).single();
+    if(fetchErr){ console.error(fetchErr); toast("削除失敗","error"); return; }
+
     const { error } = await supabase.from("public_menus").delete().eq("id", id);
     if(error){ console.error(error); toast("削除失敗","error"); return; }
-    await fetchMenus(); toast("削除しました");
+
+    if(menuRow && menuRow.url){
+      const slug = toSlug(menuRow.url);
+      const { error: pageErr } = await supabase.from("pages").delete().eq("slug", slug);
+      if(pageErr){ console.error(pageErr); toast("ページ削除失敗","error"); }
+    }
+
+    await fetchMenus();
+    toast("削除しました");
   }
 
   function enableDnD(){
