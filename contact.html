@@ -81,5 +81,53 @@
     </div>
   </main>
   <footer id="site-footer"></footer>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    const sb = createClient(
+      "https://htnmjsqgoapvuanrsuma.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+    );
+
+    const $ = s => document.querySelector(s);
+    // 簡略化: index.html で使用していたヘッダー・フッター描画関数を読み込む処理を再利用
+    async function loadHF(){
+      const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
+        sb.from("public_menus").select("*").eq("is_active", true).order("sort_order",{ascending:true}),
+        sb.from("hf_settings").select("*").eq("area","header").single(),
+        sb.from("hf_settings").select("*").eq("area","footer").single()
+      ]);
+      // ヘッダー
+      const nav = (menus||[]).filter(m=>m.show_in_header).map(m=>`<a href="${m.url}">${m.title}</a>`).join("");
+      $("#site-header").innerHTML = `<div style="padding:12px;background:${hdr?.bg_color||"#0f172a"};color:${hdr?.nav_color||"#fff"}">${nav}</div>`;
+      // フッター
+      const fnav = (menus||[]).filter(m=>m.show_in_footer).map(m=>`<a href="${m.url}">${m.title}</a>`).join("");
+      $("#site-footer").innerHTML = `<div style="padding:12px;background:${ftr?.bg_color||"#0f172a"};color:${ftr?.footer_color||"#fff"}">${ftr?.footer_text||""}<div>${fnav}</div></div>`;
+    }
+    loadHF();
+
+    // フォーム送信処理
+    document.getElementById("contact-form").addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const statusEl = document.getElementById("form-status");
+      statusEl.textContent = "";
+      const rec = {
+        name: document.getElementById("name").value.trim(),
+        organization: document.getElementById("organization").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        category: document.getElementById("category").value,
+        subject: document.getElementById("subject").value.trim(),
+        message: document.getElementById("message").value.trim(),
+        agree: document.getElementById("agree").checked,
+        status: "unread",
+        meta_user_agent: navigator.userAgent,
+        meta_path: location.pathname
+      };
+      const { error } = await sb.from("contact_messages").insert([rec]);
+      if(error){statusEl.textContent="送信に失敗しました。";statusEl.className="status error";}
+      else{statusEl.textContent="送信完了しました。";statusEl.className="status success";e.target.reset();}
+    });
+  </script>
 </body>
 </html>
