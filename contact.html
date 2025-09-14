@@ -6,51 +6,47 @@
   <title>お問い合わせ | WaJu公式HP</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body { margin:0; font-family: 'Segoe UI', sans-serif; color:#333; background:#f9fafb; }
-    header, footer { background:#fff; border-bottom:1px solid #e5e7eb; }
-    header nav, footer nav { display:flex; gap:20px; padding:12px 24px; justify-content:center; flex-wrap:wrap; }
-    header nav a, footer nav a { color:#374151; text-decoration:none; font-weight:500; }
-    header nav a:hover, footer nav a:hover { color:#2563eb; }
-    main { max-width:800px; margin:40px auto; padding:24px; background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
+    body { margin:0; font-family: 'Segoe UI', sans-serif; background:#f9fafb; color:#333; }
+    header, footer { width:100%; }
+    main { max-width:900px; margin:40px auto; padding:24px; background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
     h1 { font-size:24px; margin-bottom:24px; text-align:center; }
     form { display:grid; gap:16px; }
-    label { display:block; font-weight:600; margin-bottom:6px; }
-    input, select, textarea { width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; font-size:14px; }
+    .form-row { display:flex; align-items:center; gap:16px; }
+    .form-row label { width:180px; font-weight:600; text-align:right; }
+    .form-row input, .form-row select, .form-row textarea { flex:1; padding:10px; border:1px solid #d1d5db; border-radius:6px; font-size:14px; }
     textarea { resize:vertical; min-height:120px; }
-    .checkbox { display:flex; align-items:center; gap:8px; }
+    .checkbox { display:flex; align-items:center; gap:8px; margin-left:180px; }
     button { background:#2563eb; color:#fff; padding:12px 20px; border:none; border-radius:6px; cursor:pointer; font-size:15px; font-weight:600; }
     button:hover { background:#1e40af; }
     .success { color:#10b981; margin-top:16px; }
     .error { color:#ef4444; margin-top:16px; }
-    footer { margin-top:40px; padding-top:16px; border-top:1px solid #e5e7eb; }
-    footer div { text-align:center; padding:8px; font-size:13px; color:#6b7280; }
+    footer { margin-top:40px; }
+    footer .inner { text-align:center; padding:12px; font-size:13px; color:#6b7280; }
   </style>
 </head>
 <body>
-  <header>
-    <nav id="header-nav"></nav>
-  </header>
+  <header id="site-header"></header>
 
   <main>
     <h1>お問い合わせ</h1>
     <form id="contact-form">
-      <div>
+      <div class="form-row">
         <label for="name">お名前 <span style="color:red">*</span></label>
         <input type="text" id="name" required>
       </div>
-      <div>
+      <div class="form-row">
         <label for="organization">所属</label>
         <input type="text" id="organization">
       </div>
-      <div>
+      <div class="form-row">
         <label for="email">メール</label>
         <input type="email" id="email">
       </div>
-      <div>
+      <div class="form-row">
         <label for="phone">電話番号</label>
         <input type="text" id="phone">
       </div>
-      <div>
+      <div class="form-row">
         <label for="category">お問い合わせ種別 <span style="color:red">*</span></label>
         <select id="category" required>
           <option value="">選択してください</option>
@@ -60,11 +56,11 @@
           <option value="その他">その他</option>
         </select>
       </div>
-      <div>
+      <div class="form-row">
         <label for="subject">件名 <span style="color:red">*</span></label>
         <input type="text" id="subject" maxlength="100" required>
       </div>
-      <div>
+      <div class="form-row">
         <label for="message">本文 <span style="color:red">*</span></label>
         <textarea id="message" maxlength="4000" required></textarea>
       </div>
@@ -72,14 +68,15 @@
         <input type="checkbox" id="agree" required>
         <label for="agree">プライバシーポリシーに同意します</label>
       </div>
-      <button type="submit">送信する</button>
+      <div style="text-align:center;">
+        <button type="submit">送信する</button>
+      </div>
       <p id="form-status"></p>
     </form>
   </main>
 
-  <footer>
-    <nav id="footer-nav"></nav>
-    <div>&copy; 2025 WaJu合同会社</div>
+  <footer id="site-footer">
+    <div class="inner">&copy; 2025 WaJu合同会社</div>
   </footer>
 
   <script type="module">
@@ -89,29 +86,63 @@
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
     );
 
-    // メニュー読み込み（ページ遷移用リンク）
-    async function loadMenus(){
-      const { data, error } = await supabase.from("public_menus").select("*").eq("is_active", true).order("sort_order");
-      if(error){ console.error(error); return; }
-      const headerNav = document.getElementById("header-nav");
-      const footerNav = document.getElementById("footer-nav");
-      headerNav.innerHTML=""; footerNav.innerHTML="";
-      data.forEach(item=>{
-        if(item.show_in_header){
-          const a=document.createElement("a");
-          a.href=item.url; // 各ページへ遷移
-          a.textContent=item.title;
-          headerNav.appendChild(a);
+    async function loadHeaderFooter(){
+      const { data: settings } = await supabase.from("hf_settings").select("*");
+      const { data: menus } = await supabase.from("public_menus").select("*").eq("is_active", true).order("sort_order");
+
+      const headerEl = document.getElementById("site-header");
+      const footerEl = document.getElementById("site-footer");
+
+      if(settings && settings.length>0){
+        const s=settings[0];
+
+        // header
+        const header=document.createElement("div");
+        header.style.background = s.bg_gradient || s.bg_color || "#fff";
+        header.style.padding = s.padding+"px";
+        header.style.display="flex"; header.style.alignItems="center"; header.style.justifyContent="space-between";
+
+        if(s.logo_url){
+          const logo=document.createElement("img");
+          logo.src=s.logo_url; logo.style.height=s.logo_height+"px";
+          header.appendChild(logo);
         }
-        if(item.show_in_footer){
-          const a=document.createElement("a");
-          a.href=item.url;
-          a.textContent=item.title;
-          footerNav.appendChild(a);
+        if(s.company_name){
+          const name=document.createElement("span");
+          name.textContent=s.company_name;
+          name.style.fontSize=s.header_company_size+"px";
+          name.style.color=s.company_color;
+          header.appendChild(name);
         }
-      });
+
+        const nav=document.createElement("nav");
+        nav.style.display="flex"; nav.style.gap="20px";
+        menus.forEach(m=>{
+          if(m.show_in_header){
+            const a=document.createElement("a");
+            a.href=m.url; a.textContent=m.title;
+            a.style.color=s.nav_color; a.style.fontSize=s.header_nav_size+"px";
+            nav.appendChild(a);
+          }
+        });
+        header.appendChild(nav);
+        headerEl.appendChild(header);
+
+        // footer nav
+        const navF=document.createElement("nav");
+        navF.style.display="flex"; navF.style.justifyContent="center"; navF.style.gap="20px";
+        menus.forEach(m=>{
+          if(m.show_in_footer){
+            const a=document.createElement("a");
+            a.href=m.url; a.textContent=m.title;
+            a.style.color=s.nav_color_footer; a.style.fontSize=s.footer_nav_size+"px";
+            navF.appendChild(a);
+          }
+        });
+        footerEl.insertBefore(navF, footerEl.firstChild);
+      }
     }
-    loadMenus();
+    loadHeaderFooter();
 
     // フォーム送信処理
     document.getElementById("contact-form").addEventListener("submit", async(e)=>{
