@@ -1,3 +1,14 @@
+
+// URL から slug を生成（/about.html → about ／ / → index）
+function toSlug(url){
+  if(!url) return "";
+  let s = url.trim();
+  try { const u = new URL(s, location.origin); s = u.pathname; } catch(e){}
+  s = s.replace(/^\//,"").replace(/\.html?$/,"").replace(/\/$/,"");
+  if(s==="") s="index";
+  return s;
+}
+
 <!-- ===== 管理：メニュー管理ページ (スタイリッシュ完全版) ===== -->
 <div id="menu-admin-root">
   <h2>メニュー管理</h2>
@@ -125,40 +136,12 @@
     $("#addBtn").style.display="inline-block"; $("#updateBtn").style.display="none"; $("#cancelBtn").style.display="none";
   }
 
-  // URL から slug を生成（/about.html → about ／ / → index）
-  function toSlug(url){
-    if(!url) return "";
-    let s = url.trim();
-    // 相対・絶対どちらでもOKにする
-    try { const u = new URL(s, location.origin); s = u.pathname; } catch(e){}
-    s = s.replace(/^\//,"").replace(/\.html?$/,"").replace(/\/$/,"");
-    if(s==="") s="index";
-    return s;
-  }
-
   async function addMenu(){
     const rec=readMenuForm();
     if(!rec.title || !rec.url){ toast("表示名とURLは必須です","error"); return; }
-    // public_menus に追加（挿入行を取得）
-    const { data: inserted, error } = await supabase.from("public_menus").insert([rec]).select().single();
+    const { error } = await supabase.from("public_menus").insert([rec]);
     if(error){ console.error(error); toast("追加失敗","error"); return; }
-
-    // pages にも初期レコードをUpsert（slug重複は無視）
-    const slug = toSlug(rec.url) || ("page-"+inserted.id);
-    const { error: pageErr } = await supabase
-      .from("pages")
-      .upsert([{
-        slug,
-        title: rec.title,
-        content: `<h1>${rec.title}</h1><p>ここに本文を入力してください。</p>`,
-        updated_at: new Date().toISOString()
-      }], { onConflict: "slug", ignoreDuplicates: true });
-
-    if(pageErr){ console.error(pageErr); toast("ページ作成に失敗","error"); }
-
-    resetMenuForm();
-    await fetchMenus();
-    toast("追加しました");
+    resetMenuForm(); await fetchMenus(); toast("追加しました");
   }
 
   async function startEdit(id){
