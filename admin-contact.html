@@ -1,77 +1,52 @@
-<!-- Admin Contact: list + detail with Japanese status mapping -->
+<!-- Admin Contact: Accordion style with pagination on top -->
 <section id="admin-contact" aria-label="お問い合わせ管理">
   <style>
-    /* Scoped Styles */
-    #admin-contact { --bg:#0f172a; --card:#ffffff; --muted:#64748b; --line:#e2e8f0; --shadow:0 6px 22px rgba(0,0,0,.08); --radius:14px; --primary:#2563eb; --danger:#dc2626; --warn:#f59e0b; --success:#16a34a; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans JP", sans-serif; color:#0f172a; }
+    #admin-contact { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", sans-serif; color:#0f172a; }
     #admin-contact * { box-sizing: border-box; }
-    #admin-contact .wrap { display:grid; grid-template-columns: 1.2fr .8fr; gap:20px; }
-    #admin-contact .toolbar { display:flex; flex-wrap: wrap; gap:10px; align-items:center; margin-bottom:12px; }
-    #admin-contact .chip { padding:6px 10px; border:1px solid var(--line); border-radius:999px; background:#fff; cursor:pointer; user-select:none; font-size:13px; }
-    #admin-contact .chip[aria-pressed="true"] { background:#eef2ff; border-color:#c7d2fe; }
-    #admin-contact .search { margin-left:auto; display:flex; gap:8px; align-items:center; }
-    #admin-contact input[type="search"], #admin-contact select { border:1px solid var(--line); border-radius:10px; padding:8px 10px; background:#fff; }
-    #admin-contact .card { background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow: var(--shadow); }
-    #admin-contact .card > .head { padding:12px 14px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:10px; justify-content:space-between; }
-    #admin-contact .card > .body { padding:12px 14px; }
-    #admin-contact .tbl { width:100%; border-collapse: collapse; }
-    #admin-contact .tbl th, #admin-contact .tbl td { border-bottom:1px solid var(--line); padding:10px 8px; font-size:13px; text-align:left; vertical-align: top; }
-    #admin-contact .tbl th { color:#0f172a; font-weight:700; background:#fafafa; position:sticky; top:0; z-index:1; }
+    #admin-contact .card { background:#fff; border:1px solid #e2e8f0; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,.08); }
+    #admin-contact .head { padding:10px 14px; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+    #admin-contact .pagination { display:flex; align-items:center; gap:10px; }
+    #admin-contact .pagination select, #admin-contact .pagination button { padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#fff; cursor:pointer; }
+    #admin-contact .tbl { width:100%; border-collapse:collapse; }
+    #admin-contact .tbl th, #admin-contact .tbl td { border-bottom:1px solid #e2e8f0; padding:8px; text-align:left; font-size:13px; }
+    #admin-contact .tbl th { background:#f9fafb; font-weight:600; }
     #admin-contact .row { cursor:pointer; }
-    #admin-contact .row:hover { background:#f8fafc; }
-    #admin-contact .muted { color: var(--muted); }
-    #admin-contact .nowrap { white-space: nowrap; }
-    #admin-contact .ellipsis { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display:inline-block; vertical-align:bottom; }
-    #admin-contact .status { display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; font-size:12px; font-weight:700; }
+    #admin-contact .row:hover { background:#f3f4f6; }
+    #admin-contact .status { display:inline-block; padding:3px 8px; border-radius:999px; font-size:12px; font-weight:600; }
     #admin-contact .s-unread { background:#fee2e2; color:#991b1b; }
     #admin-contact .s-working { background:#fef3c7; color:#92400e; }
     #admin-contact .s-done { background:#dcfce7; color:#065f46; }
-    #admin-contact .center { text-align:center; }
-    #admin-contact .btn { padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:#fff; cursor:pointer; }
+    #admin-contact .accordion { background:#f9fafb; padding:10px 14px; }
+    #admin-contact .accordion dl { margin:0; }
+    #admin-contact .accordion dt { font-weight:600; margin-top:6px; }
+    #admin-contact .accordion dd { margin:0 0 6px 0; white-space:pre-wrap; }
+    #admin-contact .controls { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0; }
+    #admin-contact .btn { padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#fff; cursor:pointer; font-size:13px; }
     #admin-contact .btn.danger { background:#fee2e2; border-color:#fecaca; color:#b91c1c; }
-    @media (max-width: 1000px){
-      #admin-contact .wrap { grid-template-columns: 1fr; }
-    }
   </style>
 
-  <div class="toolbar">
-    <div class="controls">
-      <button class="chip" data-filter="all" aria-pressed="true">すべて</button>
-      <button class="chip" data-filter="unread">未読</button>
-      <button class="chip" data-filter="in_progress">対応中</button>
-      <button class="chip" data-filter="done">対応済</button>
-      <button class="chip" data-filter="important">重要</button>
-    </div>
-    <div class="search">
-      <input id="ac-q" type="search" placeholder="検索（氏名・件名・本文・メール）" />
-    </div>
-  </div>
-
-  <div class="wrap">
-    <div class="card" id="ac-list">
-      <div class="head"><div>お問い合わせ一覧</div><div class="muted" id="ac-count"></div></div>
-      <div class="body">
-        <table class="tbl">
-          <thead><tr><th>日時</th><th>氏名 / 会社</th><th>件名 / 種別</th><th>メール</th><th>状態</th><th>⭐</th></tr></thead>
-          <tbody id="ac-tbody"><tr><td colspan="6" class="center">読込中...</td></tr></tbody>
-        </table>
+  <div class="card">
+    <div class="head">
+      <div id="ac-count">- 件</div>
+      <div class="pagination">
+        <span id="ac-pageinfo">-</span>
+        <select id="ac-size">
+          <option value="20">20件</option>
+          <option value="50">50件</option>
+          <option value="100">100件</option>
+        </select>
+        <button id="ac-prev">前へ</button>
+        <button id="ac-next">次へ</button>
       </div>
     </div>
-
-    <div class="card" id="ac-detail">
-      <div class="head">
-        <div>詳細</div>
-        <div class="controls">
-          <select id="ac-status">
-            <option>未読</option>
-            <option>対応中</option>
-            <option>対応済</option>
-          </select>
-          <label><input type="checkbox" id="ac-important" /> ⭐重要</label>
-          <button class="btn danger" id="ac-delete">削除</button>
-        </div>
-      </div>
-      <div class="body" id="ac-detail-body"><div class="center">左の一覧から選択してください。</div></div>
-    </div>
+    <table class="tbl">
+      <thead>
+        <tr><th>日時</th><th>氏名 / 会社</th><th>件名 / 種別</th><th>メール</th><th>状態</th><th>⭐</th></tr>
+      </thead>
+      <tbody id="ac-tbody">
+        <tr><td colspan="6">読込中...</td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
@@ -82,84 +57,106 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
   );
 
-  const statusMap = { unread: "未読", in_progress: "対応中", done: "対応済" };
-  const reverseStatusMap = { "未読":"unread", "対応中":"in_progress", "対応済":"done" };
+  const statusMap = { unread:"未読", in_progress:"対応中", done:"対応済" };
+  const reverseStatusMap = { "未読":"unread","対応中":"in_progress","対応済":"done" };
 
-  const tbody = document.querySelector("#ac-tbody");
-  const detailBody = document.querySelector("#ac-detail-body");
-  let rows = [];
-  let currentId = null;
-
-  function badge(status){
-    if(status === "unread") return '<span class="status s-unread">未読</span>';
-    if(status === "in_progress") return '<span class="status s-working">対応中</span>';
-    return '<span class="status s-done">対応済</span>';
-  }
+  let rows=[], filtered=[], page=1, size=20;
+  const tbody=document.querySelector("#ac-tbody"), count=document.querySelector("#ac-count"), pageinfo=document.querySelector("#ac-pageinfo");
 
   async function fetchRows(){
-    const { data, error } = await supabase.from("contact_messages").select("*").order("created_at",{ascending:false});
+    const { data,error }=await supabase.from("contact_messages").select("*").order("created_at",{ascending:false});
     if(error){ console.error(error); return; }
-    rows = data;
-    renderList();
+    rows=data||[]; applyFilter();
   }
+
+  function applyFilter(){ filtered=rows; page=1; renderList(); }
+
+  function paginate(list){ const start=(page-1)*size; return list.slice(start,start+size); }
+
+  function badge(st){ if(st==="unread") return '<span class="status s-unread">未読</span>'; if(st==="in_progress") return '<span class="status s-working">対応中</span>'; return '<span class="status s-done">対応済</span>'; }
 
   function renderList(){
-    if(rows.length===0){ tbody.innerHTML=`<tr><td colspan="6" class="center">データなし</td></tr>`; return; }
-    tbody.innerHTML = rows.map(r=>`
+    const pageRows=paginate(filtered);
+    count.textContent=`${filtered.length}件`;
+    pageinfo.textContent=`${filtered.length===0?0:((page-1)*size+1)}-${Math.min(page*size,filtered.length)} / ${filtered.length}`;
+    if(pageRows.length===0){ tbody.innerHTML='<tr><td colspan="6">データなし</td></tr>'; return; }
+    tbody.innerHTML=pageRows.map(r=>`
       <tr class="row" data-id="${r.id}">
         <td>${new Date(r.created_at).toLocaleString("ja-JP")}</td>
-        <td>${r.name||"-"}<div class="muted">${r.organization||""}</div></td>
-        <td>${r.subject||"-"}<div class="muted">${r.category||""}</div></td>
+        <td><div>${r.name||"-"}</div><div class="muted">${r.organization||""}</div></td>
+        <td><div>${r.subject||"-"}</div><div class="muted">${r.category||""}</div></td>
         <td>${r.email||"-"}</td>
         <td>${badge(r.status)}</td>
-        <td class="center">${r.is_important?"⭐":""}</td>
-      </tr>`).join("");
-    tbody.querySelectorAll(".row").forEach(tr=>tr.addEventListener("click",()=>showDetail(tr.dataset.id)));
+        <td>${r.is_important?"⭐":""}</td>
+      </tr>
+      <tr class="accordion-row" id="acc-${r.id}" style="display:none;">
+        <td colspan="6">
+          <div class="accordion">
+            <dl>
+              <dt>氏名</dt><dd>${r.name||"-"}</dd>
+              <dt>会社・所属</dt><dd>${r.organization||"-"}</dd>
+              <dt>メール</dt><dd>${r.email||"-"}</dd>
+              <dt>電話</dt><dd>${r.phone||"-"}</dd>
+              <dt>種別</dt><dd>${r.category||"-"}</dd>
+              <dt>件名</dt><dd>${r.subject||"-"}</dd>
+              <dt>本文</dt><dd>${r.message||""}</dd>
+              <dt>UA</dt><dd>${r.meta_user_agent||""}</dd>
+              <dt>Path</dt><dd>${r.meta_path||""}</dd>
+              <dt>ID</dt><dd>${r.id}</dd>
+            </dl>
+            <div class="controls">
+              <select class="status-select">
+                <option ${r.status==="unread"?"selected":""}>未読</option>
+                <option ${r.status==="in_progress"?"selected":""}>対応中</option>
+                <option ${r.status==="done"?"selected":""}>対応済</option>
+              </select>
+              <label><input type="checkbox" class="important-check" ${r.is_important?"checked":""}/> ⭐重要</label>
+              <button class="btn danger delete-btn">削除</button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+
+    tbody.querySelectorAll(".row").forEach(tr=>{
+      tr.addEventListener("click",()=>{
+        const acc=document.querySelector(`#acc-${tr.dataset.id}`);
+        acc.style.display=acc.style.display==="none"?"table-row":"none";
+      });
+    });
+
+    tbody.querySelectorAll(".status-select").forEach(sel=>{
+      sel.addEventListener("change",async e=>{
+        const tr=e.target.closest(".accordion-row"); const id=tr.id.replace("acc-","");
+        const newStatus=reverseStatusMap[e.target.value];
+        await supabase.from("contact_messages").update({status:newStatus}).eq("id",id);
+        const rec=rows.find(r=>r.id===id); if(rec) rec.status=newStatus;
+        renderList();
+      });
+    });
+
+    tbody.querySelectorAll(".important-check").forEach(chk=>{
+      chk.addEventListener("change",async e=>{
+        const tr=e.target.closest(".accordion-row"); const id=tr.id.replace("acc-","");
+        await supabase.from("contact_messages").update({is_important:e.target.checked}).eq("id",id);
+        const rec=rows.find(r=>r.id===id); if(rec) rec.is_important=e.target.checked;
+        renderList();
+      });
+    });
+
+    tbody.querySelectorAll(".delete-btn").forEach(btn=>{
+      btn.addEventListener("click",async e=>{
+        if(!confirm("削除しますか？")) return;
+        const tr=e.target.closest(".accordion-row"); const id=tr.id.replace("acc-","");
+        await supabase.from("contact_messages").delete().eq("id",id);
+        rows=rows.filter(r=>r.id!==id); applyFilter();
+      });
+    });
   }
 
-  function showDetail(id){
-    currentId=id;
-    const r=rows.find(x=>x.id===id);
-    if(!r){ detailBody.innerHTML="<div>データが見つかりません</div>"; return; }
-    document.querySelector("#ac-status").value=statusMap[r.status]||"未読";
-    document.querySelector("#ac-important").checked=!!r.is_important;
-    detailBody.innerHTML=`
-      <div><b>受信日時:</b> ${new Date(r.created_at).toLocaleString("ja-JP")}</div>
-      <div><b>氏名:</b> ${r.name||"-"} / ${r.organization||""}</div>
-      <div><b>メール:</b> ${r.email||"-"} / ${r.phone||""}</div>
-      <div><b>種別:</b> ${r.category||"-"} / 件名: ${r.subject||"-"}</div>
-      <div><b>本文:</b><pre>${r.message||""}</pre></div>
-      <div><b>同意:</b> ${r.agree?"同意":"未同意"} / <b>重要:</b> ${r.is_important?"⭐":""}</div>
-      <div><b>UA:</b> ${r.meta_user_agent||""}</div>
-      <div><b>Path:</b> ${r.meta_path||""}</div>
-      <div><b>ID:</b> ${r.id}</div>`;
-  }
-
-  document.querySelector("#ac-status").addEventListener("change",async e=>{
-    if(!currentId) return;
-    const newStatus=reverseStatusMap[e.target.value];
-    const { error }=await supabase.from("contact_messages").update({status:newStatus}).eq("id",currentId);
-    if(error){ alert("更新失敗:"+error.message); return; }
-    const rec=rows.find(r=>r.id===currentId); if(rec) rec.status=newStatus;
-    renderList(); showDetail(currentId);
-  });
-
-  document.querySelector("#ac-important").addEventListener("change",async e=>{
-    if(!currentId) return;
-    const { error }=await supabase.from("contact_messages").update({is_important:e.target.checked}).eq("id",currentId);
-    if(error){ alert("更新失敗:"+error.message); return; }
-    const rec=rows.find(r=>r.id===currentId); if(rec) rec.is_important=e.target.checked;
-    renderList(); showDetail(currentId);
-  });
-
-  document.querySelector("#ac-delete").addEventListener("click",async()=>{
-    if(!currentId) return;
-    if(!confirm("削除しますか？")) return;
-    const { error }=await supabase.from("contact_messages").delete().eq("id",currentId);
-    if(error){ alert("削除失敗:"+error.message); return; }
-    rows=rows.filter(r=>r.id!==currentId);
-    renderList(); detailBody.innerHTML="<div>削除しました</div>"; currentId=null;
-  });
+  document.querySelector("#ac-size").addEventListener("change",e=>{ size=parseInt(e.target.value,10)||20; page=1; renderList(); });
+  document.querySelector("#ac-prev").addEventListener("click",()=>{ if(page>1){ page--; renderList(); } });
+  document.querySelector("#ac-next").addEventListener("click",()=>{ if(page*size<filtered.length){ page++; renderList(); } });
 
   fetchRows();
 </script>
