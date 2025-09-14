@@ -1,323 +1,105 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>お問い合わせ | 合同会社WaJu</title>
-  <script type="module">
-    // Defer supabase module import to body to avoid FOUC
-  </script>
   <style>
-    :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#f5f7fb}
-    a{color:inherit;text-decoration:none}
-    main{min-height:40vh}
-    .container{max-width:var(--container);margin:0 auto;padding:0 16px}
-    .hf-wrap{width:100%}
-    .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
-    .hfbar.hf-row{justify-content:flex-start}
-    .hfbar.hf-column{flex-direction:column;align-items:stretch}
-    .hf-brand{display:flex;align-items:center;gap:8px}
-    .hf-nav{display:flex;gap:var(--gap);flex-wrap:wrap;width:100%}
-    .slot{display:flex;align-items:center}
-    .slot.brand{flex:0 0 auto}
-    .slot.nav{flex:1 1 auto}
-    .hf-copy{display:flex;width:100%}
-    /* Mobile nav trigger */
-    .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
-    .hamburger:hover{background:#fff}
-    .hamburger:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
-    .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
-    /* Drawer */
-    .drawer{position:fixed;inset:0;pointer-events:none}
-    .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
-    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);
-      transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
-    .drawer[aria-hidden="false"]{pointer-events:auto}
-    .drawer[aria-hidden="false"] .overlay{opacity:1}
-    .drawer[aria-hidden="false"] .panel{transform:none}
-    .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
-    .drawer .panel header .title{font-weight:700}
-    .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
-    .drawer .panel nav a{padding:12px 10px;border-radius:10px}
-    .drawer .panel nav a:hover{background:#f1f5f9}
-    /* Responsive */
-    @media (max-width:768px){
-      .container{padding:0 12px}
-      :root{--container:100%}
-      /* Hide header nav; show hamburger */
-      .slot.nav{display:none}
-      .hamburger{display:block;margin-left:auto}
-      /* Hide footer nav; show only copyright */
-      #site-footer .hf-nav{display:none !important}
-      .form-row{flex-direction:column;align-items:stretch}
-      .form-row label{width:auto;text-align:left}
-      .checkbox{margin-left:0}
-      /* inputs full width on mobile */
-      .form-row input,.form-row select,.form-row textarea{flex:1 1 100%;max-width:100%}
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f9fafb; }
+    header, footer { background:#0d2c6c; color:white; padding:10px 20px; }
+    header nav a, footer nav a { color:white; margin:0 10px; text-decoration:none; }
+    header nav a:hover, footer nav a:hover { text-decoration:underline; }
+    .container { max-width:900px; margin:30px auto; padding:20px; background:#fff; border-radius:8px; }
+    h1 { text-align:center; margin-bottom:5px; }
+    .required-note { text-align:center; font-size:0.9em; color:#666; margin-bottom:20px; }
+    form { display:flex; flex-direction:column; align-items:center; }
+    .form-group { display:flex; align-items:center; margin:10px 0; width:100%; justify-content:center; }
+    .form-group label { width:120px; text-align:right; margin-right:10px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width:55%; padding:8px; border:1px solid #ccc; border-radius:4px;
     }
-
-    /* Main card & form */
-    main .card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:24px}
-    h1{font-size:24px;margin:8px 0 8px;text-align:center}
-    .form-note{text-align:center;font-size:13px;color:#6b7280;margin:0 0 16px}
-    form{display:grid;gap:16px;justify-items:center}
-    .form-row{display:flex;align-items:center;gap:16px}
-    .form-row label{width:200px;font-weight:600;text-align:right}
-    /* ↓ 入力欄をデスクトップで約半幅に */
-    .form-row input,.form-row select,.form-row textarea{flex:0 1 50%;max-width:50%;padding:10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;background:#fff}
-    .form-row select{appearance:auto}
-    textarea{resize:vertical;min-height:140px}
-    .checkbox{display:flex;align-items:center;gap:8px;justify-content:center;margin-left:0}
-    button.submit{background:#2563eb;color:#fff;padding:12px 20px;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:700;min-width:160px}
-    button.submit:hover{background:#1e40af}
-    .status.success{color:#059669}
-    .status.error{color:#dc2626}
+    textarea { resize:vertical; height:100px; }
+    .form-actions { margin-top:20px; }
+    .form-actions button { background:#2563eb; color:white; border:none; padding:10px 20px; border-radius:4px; cursor:pointer; }
+    .form-actions button:hover { background:#1e40af; }
+    .privacy { margin-top:15px; font-size:0.9em; display:flex; justify-content:center; align-items:center; }
+    footer { text-align:center; margin-top:30px; }
   </style>
 </head>
 <body>
-  <header id="site-header" class="hf-wrap"></header>
-
-  <main>
-    <div class="container">
-      <div class="card" id="content">
-        <h1>お問い合わせ</h1>
-        <p class="form-note"><span style="color:#dc2626">*</span> 印は必須項目です。</p>
-        <form id="contact-form" novalidate>
-          <div class="form-row">
-            <label for="name">お名前 <span style="color:#dc2626">*</span></label>
-            <input type="text" id="name" required />
-          </div>
-          <div class="form-row">
-            <label for="organization">所属</label>
-            <input type="text" id="organization" />
-          </div>
-          <div class="form-row">
-            <label for="email">メール</label>
-            <input type="email" id="email" />
-          </div>
-          <div class="form-row">
-            <label for="phone">電話番号</label>
-            <input type="text" id="phone" />
-          </div>
-          <div class="form-row">
-            <label for="category">お問い合わせ種別 <span style="color:#dc2626">*</span></label>
-            <select id="category" required>
-              <option value="">選択してください</option>
-              <option>サービス導入相談</option>
-              <option>業務提携・連携・協業</option>
-              <option>取材・メディア</option>
-              <option>その他</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label for="subject">件名 <span style="color:#dc2626">*</span></label>
-            <input type="text" id="subject" maxlength="100" required />
-          </div>
-          <div class="form-row">
-            <label for="message">本文 <span style="color:#dc2626">*</span></label>
-            <textarea id="message" maxlength="4000" required></textarea>
-          </div>
-          <div class="checkbox">
-            <input type="checkbox" id="agree" required />
-            <label for="agree">プライバシーポリシーに同意します</label>
-          </div>
-          <div style="text-align:center">
-            <button class="submit" type="submit">送信する</button>
-          </div>
-          <p id="form-status" class="status"></p>
-        </form>
+  <header>
+    <div style="display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center;">
+        <img src="CARELAYロゴ01.png" alt="WaJuロゴ" style="height:40px; margin-right:10px;">
+        <strong>合同会社WaJu</strong>
       </div>
+      <nav>
+        <a href="index.html">トップ</a>
+        <a href="about.html">会社概要</a>
+        <a href="service.html">事業内容</a>
+        <a href="blog.html">ブログ</a>
+        <a href="contact.html">お問い合わせ</a>
+      </nav>
     </div>
-  </main>
+  </header>
 
-  <footer id="site-footer" class="hf-wrap"></footer>
-
-  <!-- Mobile drawer (右から) -->
-  <div id="mobile-drawer" class="drawer" aria-hidden="true">
-    <div class="overlay" data-close></div>
-    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
-      <header>
-        <div class="title" id="drawer-title">メニュー</div>
-        <button class="hamburger" id="drawer-close" aria-label="閉じる">
-          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-        </button>
-      </header>
-      <nav id="drawer-nav" aria-label="モバイルメニュー"></nav>
-    </div>
+  <div class="container">
+    <h1>お問い合わせ</h1>
+    <p class="required-note">※ <span style="color:red;">*</span> 印は必須項目です。</p>
+    <form>
+      <div class="form-group">
+        <label for="name">お名前 <span style="color:red;">*</span></label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="org">所属</label>
+        <input type="text" id="org" name="org">
+      </div>
+      <div class="form-group">
+        <label for="email">メール <span style="color:red;">*</span></label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="tel">電話番号</label>
+        <input type="tel" id="tel" name="tel">
+      </div>
+      <div class="form-group">
+        <label for="type">お問い合わせ種類 <span style="color:red;">*</span></label>
+        <select id="type" name="type" required>
+          <option value="">選択してください</option>
+          <option value="業務提携">業務提携・連携・協業</option>
+          <option value="サービスに関するお問い合わせ">サービスに関するお問い合わせ</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="subject">件名 <span style="color:red;">*</span></label>
+        <input type="text" id="subject" name="subject" required>
+      </div>
+      <div class="form-group">
+        <label for="message">本文 <span style="color:red;">*</span></label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <div class="privacy">
+        <input type="checkbox" id="privacy" required>
+        <label for="privacy"> プライバシーポリシーに同意します</label>
+      </div>
+      <div class="form-actions">
+        <button type="submit">送信する</button>
+      </div>
+    </form>
   </div>
 
-  <script type="module">
-    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
-    const sb = createClient(
-      "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-    );
-    const $ = s => document.querySelector(s);
-    const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
-    const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/\b(sans-serif|serif|monospace)\b/i.test(s) ? s : `${s}, sans-serif`);
-    const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
-    const bgParts = (row, def) => {
-      const grad = stripQuotes(row.bg_gradient||"").trim();
-      if (grad){ return {bgColor:def, bgImage:grad}; }
-      const col = (row.bg_color && row.bg_color.trim()) ? row.bg_color : def;
-      return {bgColor:col, bgImage:"none"};
-    };
-
-    async function loadHeaderFooter(){
-      const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
-        sb.from("public_menus").select("*").eq("is_active", true).order("sort_order",{ascending:true}),
-        sb.from("hf_settings").select("*").eq("area","header").single(),
-        sb.from("hf_settings").select("*").eq("area","footer").single()
-      ]);
-
-      renderHeader(hdr||{}, menus||[]);
-      renderFooter(ftr||{}, menus||[]);
-      buildDrawer(menus||[]);
-      adjustOffsets(ftr||{});
-      window.addEventListener('resize', ()=>adjustOffsets(ftr||{}));
-    }
-
-    function renderHeader(d, menus){
-      const items = (menus||[])
-        .filter(m=>m.show_in_header)
-        .map(m=>`<a href="${m.url||'#'}">${m.title}</a>`)
-        .join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
-      const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
-      const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
-      const brandJustifyMargins = (align)=> align==='left'?'margin-right:auto':(align==='center'?'margin:0 auto':'margin-left:auto');
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-
-      $("#site-header").innerHTML = `
-        <div class="hf-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY}; height:${num(d.bar_height,60)}px;">
-              <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
-                <div class="hf-brand">
-                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}
-                  <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
-                </div>
-              </div>
-              <div class="slot nav">
-                <nav class="hf-nav" id="desktop-nav" style="justify-content:${toJustify(d.nav_alignment)};color:${d.nav_color};font-weight:${d.nav_weight};font-size:${num(d.header_nav_size,14)}px">${items}</nav>
-              </div>
-              <button id="hamburger" class="hamburger" aria-controls="mobile-drawer" aria-expanded="false" aria-label="メニューを開く">
-                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-              </button>
-            </div>
-          </div>
-        </div>`;
-
-      if(d.header_fixed){
-        const wrap=$("#site-header").firstElementChild;
-        wrap.style.position="sticky"; wrap.style.top="0"; wrap.style.zIndex="5";
-      }
-
-      const btn = $("#hamburger");
-      if(btn){
-        btn.addEventListener("click", ()=> {
-          const open = $("#mobile-drawer").getAttribute("aria-hidden")==="false";
-          if(open) closeDrawer(); else openDrawer();
-        });
-      }
-    }
-
-    function renderFooter(d, menus){
-      const items = (menus||[])
-        .filter(m=>m.show_in_footer)
-        .map(m=>`<a href="${m.url||'#'}">${m.title}</a>`)
-        .join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
-      const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
-      const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-
-      const inner = d.layout_mode==="row"
-        ? `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-           <nav class="hf-nav" id="footer-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`
-        : (d.layout_mode==="nav-top"
-          ? `<nav class="hf-nav" id="footer-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
-             <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
-          : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-             <nav class="hf-nav" id="footer-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`);
-
-      $("#site-footer").innerHTML = `
-        <div class="hf-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY}; height:${num(d.bar_height,60)}px;">
-              ${inner}
-            </div>
-          </div>
-        </div>`;
-
-      if(d.footer_fixed){
-        const wrap=$("#site-footer").firstElementChild;
-        wrap.style.position="fixed"; wrap.style.left="0"; wrap.style.right="0"; wrap.style.bottom="0";
-      }
-    }
-
-    function buildDrawer(menus){
-      const list = (menus||[]).filter(m=>m.is_active && (m.show_in_footer || menus.every(x=>!x.show_in_footer)));
-      const nav = $("#drawer-nav");
-      nav.innerHTML = list.map(m => `<a href="${m.url||'#'}">${m.title}</a>`).join("");
-      $("#drawer-close").addEventListener("click", closeDrawer);
-      $("#mobile-drawer [data-close]").addEventListener("click", closeDrawer);
-      document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeDrawer(); });
-    }
-    function openDrawer(){
-      const d = $("#mobile-drawer");
-      d.setAttribute("aria-hidden","false");
-      $("#hamburger")?.setAttribute("aria-expanded","true");
-      document.body.style.overflow="hidden";
-      setTimeout(()=> $("#drawer-nav a")?.focus(), 30);
-    }
-    function closeDrawer(){
-      const d = $("#mobile-drawer");
-      d.setAttribute("aria-hidden","true");
-      $("#hamburger")?.setAttribute("aria-expanded","false");
-      document.body.style.overflow="";
-      $("#hamburger")?.focus();
-    }
-    function adjustOffsets(ftr){
-      const wrap = $("#site-footer").firstElementChild;
-      document.body.style.paddingBottom = (ftr && ftr.footer_fixed && wrap)
-        ? wrap.getBoundingClientRect().height + "px"
-        : "";
-    }
-
-    loadHeaderFooter();
-
-    // --- 問い合わせ送信処理 ---
-    document.getElementById("contact-form").addEventListener("submit", async (e)=>{
-      e.preventDefault();
-      const statusEl = document.getElementById("form-status");
-      statusEl.textContent = "";
-      const rec = {
-        name: document.getElementById("name").value.trim(),
-        organization: document.getElementById("organization").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
-        category: document.getElementById("category").value,
-        subject: document.getElementById("subject").value.trim(),
-        message: document.getElementById("message").value.trim(),
-        agree: document.getElementById("agree").checked,
-        status: "unread",
-        meta_user_agent: navigator.userAgent,
-        meta_path: location.pathname
-      };
-      const { error } = await sb.from("contact_messages").insert([rec]);
-      if(error){
-        console.error(error); statusEl.textContent="送信に失敗しました。"; statusEl.className="status error";
-      }else{
-        statusEl.textContent="送信完了しました。"; statusEl.className="status success";
-        e.target.reset();
-      }
-    });
-  </script>
+  <footer>
+    <nav>
+      <a href="index.html">トップ</a>
+      <a href="about.html">会社概要</a>
+      <a href="service.html">事業内容</a>
+      <a href="blog.html">ブログ</a>
+      <a href="contact.html">お問い合わせ</a>
+      <a href="privacypolicy.html">プライバシーポリシー</a>
+    </nav>
+    <p>Copyright © 2023 WaJu LLC</p>
+  </footer>
 </body>
 </html>
