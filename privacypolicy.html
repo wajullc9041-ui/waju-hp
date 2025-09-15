@@ -5,28 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>プライバシーポリシー | 合同会社WaJu</title>
 
-  <!-- 共通のファビコンやテーマカラー -->
+  <!-- Favicon / PWA -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
   <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
+  <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
   <meta name="theme-color" content="#0f172a">
 
   <style>
+    :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
+    *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff}
+    a{color:inherit;text-decoration:none}
+    main{min-height:40vh}
+    .container{max-width:var(--container);margin:0 auto;padding:0 16px}
+    .hf-wrap{width:100%}
+
     main .card{
       max-width:1000px;margin:32px auto;padding:40px;background:#fff;border-radius:12px;
-      box-shadow:0 2px 8px rgba(0,0,0,.08);line-height:1.8
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);line-height:1.8
     }
     h1{margin:0 0 20px;font-size:32px;text-align:center}
     h2{margin:32px 0 12px;font-size:20px;color:#1976d2;border-left:4px solid #1976d2;padding-left:8px}
     p{margin:0 0 14px}
+    ul{margin:0 0 14px 20px}
     .signature{margin-top:40px;text-align:right;font-weight:700}
   </style>
 </head>
 <body>
+  <!-- Header -->
   <header id="site-header" class="hf-wrap"></header>
 
-  <main id="page-content">
+  <main id="page-content" aria-live="polite">
     <div class="container">
       <div class="card">
         <h1>プライバシーポリシー</h1>
@@ -62,7 +72,147 @@
     </div>
   </main>
 
+  <!-- Footer -->
   <footer id="site-footer" class="hf-wrap"></footer>
+
+  <!-- Mobile drawer -->
+  <div id="mobile-drawer" class="drawer" aria-hidden="true">
+    <div class="overlay" data-close></div>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <header>
+        <div class="title" id="drawer-title">メニュー</div>
+        <button class="hamburger" id="drawer-close" aria-label="閉じる">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+      </header>
+      <nav id="drawer-nav" aria-label="モバイルメニュー"></nav>
+    </div>
+  </div>
+
+  <!-- Supabase / Header-Footer Loader -->
+  <script type="module">
+    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+    const sb = createClient(
+      "https://htnmjsqgoapvuanrsuma.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+    );
+
+    const $ = s => document.querySelector(s);
+    const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
+    const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
+    const withFallback = s => !s ? "" : (/\b(sans-serif|serif|monospace)\b/i.test(s) ? s : `${s}, sans-serif`);
+    const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
+    const bgParts = (row, def) => {
+      const grad = stripQuotes(row?.bg_gradient||"").trim();
+      if (grad){ return {bgColor:def, bgImage:grad}; }
+      const col = (row?.bg_color && row.bg_color.trim()) ? row.bg_color : def;
+      return {bgColor:col, bgImage:"none"};
+    };
+    const brandJustifyMargins = (align)=> align==='left'?'margin-right:auto':(align==='center'?'margin:0 auto':'margin-left:auto');
+
+    let allMenus = [];
+
+    async function loadHF(){
+      const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
+        sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
+        sb.from("hf_settings").select("*").eq("area","header").single(),
+        sb.from("hf_settings").select("*").eq("area","footer").single()
+      ]);
+      allMenus = menus||[];
+      renderHeader(hdr||{}, allMenus);
+      renderFooter(ftr||{}, allMenus);
+      buildDrawer(allMenus);
+      adjustOffsets(hdr||{}, ftr||{});
+      addResizeObserver(hdr||{}, ftr||{});
+    }
+
+    function linkOf(m){ return (m.url ?? m.href ?? '#'); }
+
+    function renderHeader(d, menus){
+      const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
+        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      const {bgColor,bgImage} = bgParts(d, "#0f172a");
+      const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
+      const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
+      const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
+      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
+      $("#site-header").innerHTML = `
+        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand}">
+          <div class="container">
+            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY}; height:${num(d.bar_height,60)}px;">
+              <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
+                <div class="hf-brand">
+                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}
+                  <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
+                </div>
+              </div>
+              <div class="slot nav">
+                <nav class="hf-nav" id="desktop-nav" style="justify-content:${toJustify(d.nav_alignment)};color:${d.nav_color};font-weight:${d.nav_weight};font-size:${num(d.header_nav_size,14)}px">${items}</nav>
+              </div>
+              <button id="hamburger" class="hamburger" aria-controls="mobile-drawer" aria-expanded="false" aria-label="メニューを開く">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+              </button>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderFooter(d, menus){
+      const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
+        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      const {bgColor,bgImage} = bgParts(d, "#0f172a");
+      const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
+      const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
+      const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
+      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
+      const inner = d.layout_mode==="row"
+        ? `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
+           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`
+        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
+           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
+      $("#site-footer").innerHTML = `
+        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand}">
+          <div class="container">
+            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY}; height:${num(d.bar_height,60)}px;">
+              ${inner}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function buildDrawer(menus){
+      const list = (menus||[]).filter(m=>m.is_active);
+      const nav = $("#drawer-nav");
+      nav.innerHTML = list.map(m => `<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      $("#drawer-close").addEventListener("click", closeDrawer);
+      $("#mobile-drawer [data-close]").addEventListener("click", closeDrawer);
+      document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeDrawer(); });
+    }
+    function openDrawer(){
+      $("#mobile-drawer").setAttribute("aria-hidden","false");
+      $("#hamburger")?.setAttribute("aria-expanded","true");
+      document.body.style.overflow="hidden";
+    }
+    function closeDrawer(){
+      $("#mobile-drawer").setAttribute("aria-hidden","true");
+      $("#hamburger")?.setAttribute("aria-expanded","false");
+      document.body.style.overflow="";
+    }
+
+    function adjustOffsets(hdr, ftr){
+      const headerEl = $("#hf-header-bg");
+      const footerEl = $("#hf-footer-bg");
+      document.body.style.paddingTop = (hdr?.header_fixed && headerEl) ? headerEl.getBoundingClientRect().height + "px" : "";
+      document.body.style.paddingBottom = (ftr?.footer_fixed && footerEl) ? footerEl.getBoundingClientRect().height + "px" : "";
+    }
+    function addResizeObserver(hdr,ftr){
+      const ro = new ResizeObserver(()=>adjustOffsets(hdr,ftr));
+      const h = $("#hf-header-bg"), f = $("#hf-footer-bg");
+      if(h) ro.observe(h); if(f) ro.observe(f);
+      window.addEventListener('resize', ()=>adjustOffsets(hdr,ftr));
+    }
+
+    loadHF();
+  </script>
 </body>
 </html>
-
