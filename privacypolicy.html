@@ -20,7 +20,43 @@
     main{min-height:40vh}
     .container{max-width:var(--container);margin:0 auto;padding:0 16px}
     .hf-wrap{width:100%}
+    .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
+    .hfbar.hf-row{justify-content:flex-start}
+    .hfbar.hf-column{flex-direction:column;align-items:stretch}
+    .hf-brand{display:flex;align-items:center;gap:8px}
+    .hf-nav{display:flex;gap:var(--gap);flex-wrap:wrap;width:100%}
+    .slot{display:flex;align-items:center}
+    .slot.brand{flex:0 0 auto}
+    .slot.nav{flex:1 1 auto}
+    .hf-copy{display:flex;width:100%}
+    /* Mobile nav trigger */
+    .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+    .hamburger:hover{background:#fff}
+    .hamburger:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
+    .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
+    /* Drawer */
+    .drawer{position:fixed;inset:0;pointer-events:none}
+    .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
+    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);
+      transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .drawer[aria-hidden="false"]{pointer-events:auto}
+    .drawer[aria-hidden="false"] .overlay{opacity:1}
+    .drawer[aria-hidden="false"] .panel{transform:none}
+    .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
+    .drawer .panel header .title{font-weight:700}
+    .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
+    .drawer .panel nav a{padding:12px 10px;border-radius:10px}
+    .drawer .panel nav a:hover{background:#f1f5f9}
+    /* Responsive */
+    @media (max-width:768px){
+      .container{padding:0 12px}
+      :root{--container:100%}
+      .slot.nav{display:none}
+      .hamburger{display:block;margin-left:auto}
+      #site-footer .hf-nav{display:none !important}
+    }
 
+    /* ======= Privacy page area ======= */
     main .card{
       max-width:1000px;margin:32px auto;padding:40px;background:#fff;border-radius:12px;
       box-shadow:0 2px 8px rgba(0,0,0,0.08);line-height:1.8
@@ -137,12 +173,12 @@
       const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
       $("#site-header").innerHTML = `
-        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand}">
+        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
           <div class="container">
             <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY}; height:${num(d.bar_height,60)}px;">
               <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
                 <div class="hf-brand">
-                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}
+                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}
                   <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
                 </div>
               </div>
@@ -166,12 +202,12 @@
       const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
       const inner = d.layout_mode==="row"
-        ? `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
+        ? `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
            <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`
-        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
+        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
            <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
       $("#site-footer").innerHTML = `
-        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand}">
+        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
           <div class="container">
             <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY}; height:${num(d.bar_height,60)}px;">
               ${inner}
