@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>プライバシーポリシー | 合同会社WaJu</title>
 
-  <!-- Favicon / PWA -->
+  <!-- Favicon / PWA（indexの設定を踏襲） -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
   <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
+  <link rel="icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon.ico?v=1">
   <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
   <meta name="theme-color" content="#0f172a">
 
@@ -69,7 +70,7 @@
   </style>
 </head>
 <body>
-  <!-- Header -->
+  <!-- Header / Footer are rendered from Supabase settings -->
   <header id="site-header" class="hf-wrap"></header>
 
   <main id="page-content" aria-live="polite">
@@ -108,7 +109,6 @@
     </div>
   </main>
 
-  <!-- Footer -->
   <footer id="site-footer" class="hf-wrap"></footer>
 
   <!-- Mobile drawer -->
@@ -125,14 +125,15 @@
     </div>
   </div>
 
-  <!-- Supabase / Header-Footer Loader -->
   <script type="module">
+    /* ===== Supabase client ===== */
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
     const sb = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-    );
+    ); /* index.txt と同一設定を使用 */
 
+    /* ===== Helpers ===== */
     const $ = s => document.querySelector(s);
     const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
     const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
@@ -167,11 +168,13 @@
     function renderHeader(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+
       const {bgColor,bgImage} = bgParts(d, "#0f172a");
       const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
       const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
       const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
+
       $("#site-header").innerHTML = `
         <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
           <div class="container">
@@ -191,21 +194,41 @@
             </div>
           </div>
         </div>`;
+
+      // 確実固定
+      const bg = $("#hf-header-bg");
+      if(d.header_fixed && bg){
+        Object.assign(bg.style, {position:"fixed", top:"0", left:"0", right:"0", zIndex:"1000", width:"100%"});
+      }
+
+      const btn = $("#hamburger");
+      if(btn){
+        btn.addEventListener("click", ()=> {
+          const open = $("#mobile-drawer").getAttribute("aria-hidden")==="false";
+          if(open) closeDrawer(); else openDrawer();
+        });
+      }
     }
 
     function renderFooter(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+
       const {bgColor,bgImage} = bgParts(d, "#0f172a");
       const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
       const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
       const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
+
       const inner = d.layout_mode==="row"
         ? `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
            <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`
-        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
+        : (d.layout_mode==="nav-top"
+          ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
+             <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
+          : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
+             <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`);
+
       $("#site-footer").innerHTML = `
         <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
           <div class="container">
@@ -214,20 +237,28 @@
             </div>
           </div>
         </div>`;
+
+      if(d.footer_fixed){
+        const wrap=$("#hf-footer-bg");
+        Object.assign(wrap.style, {position:"fixed", left:"0", right:"0", bottom:"0", zIndex:"1000", width:"100%"});
+      }
     }
 
     function buildDrawer(menus){
       const list = (menus||[]).filter(m=>m.is_active);
       const nav = $("#drawer-nav");
       nav.innerHTML = list.map(m => `<a href="${linkOf(m)}">${m.title}</a>`).join("");
+
       $("#drawer-close").addEventListener("click", closeDrawer);
       $("#mobile-drawer [data-close]").addEventListener("click", closeDrawer);
       document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeDrawer(); });
     }
+
     function openDrawer(){
       $("#mobile-drawer").setAttribute("aria-hidden","false");
       $("#hamburger")?.setAttribute("aria-expanded","true");
       document.body.style.overflow="hidden";
+      setTimeout(()=>$("#drawer-close")?.focus(),100);
     }
     function closeDrawer(){
       $("#mobile-drawer").setAttribute("aria-hidden","true");
@@ -241,6 +272,7 @@
       document.body.style.paddingTop = (hdr?.header_fixed && headerEl) ? headerEl.getBoundingClientRect().height + "px" : "";
       document.body.style.paddingBottom = (ftr?.footer_fixed && footerEl) ? footerEl.getBoundingClientRect().height + "px" : "";
     }
+
     function addResizeObserver(hdr,ftr){
       const ro = new ResizeObserver(()=>adjustOffsets(hdr,ftr));
       const h = $("#hf-header-bg"), f = $("#hf-footer-bg");
