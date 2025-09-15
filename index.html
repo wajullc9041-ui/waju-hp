@@ -19,6 +19,44 @@
     a{color:inherit;text-decoration:none}
     main{min-height:40vh}
     .container{max-width:var(--container);margin:0 auto;padding:0 16px}
+    .hf-wrap{width:100%}
+    .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
+    .hfbar.hf-row{justify-content:flex-start}
+    .hfbar.hf-column{flex-direction:column;align-items:stretch}
+    .hf-brand{display:flex;align-items:center;gap:8px}
+    .hf-nav{display:flex;gap:var(--gap);flex-wrap:wrap;width:100%}
+    .slot{display:flex;align-items:center}
+    .slot.brand{flex:0 0 auto}
+    .slot.nav{flex:1 1 auto}
+    .hf-copy{display:flex;width:100%}
+    /* Mobile nav trigger */
+    .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+    .hamburger:hover{background:#fff}
+    .hamburger:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
+    .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
+    /* Drawer */
+    .drawer{position:fixed;inset:0;pointer-events:none}
+    .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
+    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);
+      transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .drawer[aria-hidden="false"]{pointer-events:auto}
+    .drawer[aria-hidden="false"] .overlay{opacity:1}
+    .drawer[aria-hidden="false"] .panel{transform:none}
+    .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
+    .drawer .panel header .title{font-weight:700}
+    .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
+    .drawer .panel nav a{padding:12px 10px;border-radius:10px}
+    .drawer .panel nav a:hover{background:#f1f5f9}
+    /* Responsive */
+    @media (max-width:768px){
+      .container{padding:0 12px}
+      :root{--container:100%}
+      .slot.nav{display:none}
+      .hamburger{display:block;margin-left:auto}
+      #site-footer .hf-nav{display:none !important}
+    }
+
+    /* ======= Index page area ======= */
     section{margin:60px auto}
     h1,h2,h3{margin:0 0 20px;font-weight:700}
     h1{font-size:36px;text-align:center}
@@ -34,7 +72,6 @@
   </style>
 </head>
 <body>
-  <!-- 共通ヘッダー -->
   <header id="site-header" class="hf-wrap"></header>
 
   <main id="page-content" aria-live="polite">
@@ -102,10 +139,9 @@
     </div>
   </main>
 
-  <!-- 共通フッター -->
   <footer id="site-footer" class="hf-wrap"></footer>
 
-  <!-- モバイルドロワー -->
+  <!-- Mobile drawer -->
   <div id="mobile-drawer" class="drawer" aria-hidden="true">
     <div class="overlay" data-close></div>
     <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
@@ -119,7 +155,7 @@
     </div>
   </div>
 
-  <!-- Supabaseヘッダー／フッター共通処理（contact.htmlと同じ内容をコピー） -->
+  <!-- Supabaseヘッダー／フッター共通処理 -->
   <script type="module">
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
     const sb = createClient(
