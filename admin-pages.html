@@ -1,158 +1,175 @@
  
-  <style>
-    main {
-      max-width: 1000px;
-      margin: 2rem auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .header-row h2 {
-      margin: 0;
-      color: #334155;
-    }
-    select {
-      padding: 0.5rem;
-      border: 1px solid #cbd5e1;
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-    .editor-area {
-      border: 2px dashed #cbd5e1;
-      border-radius: 6px;
-      padding: 1rem;
-      margin-bottom: 2rem;
-    }
-    .editor-area .header,
-    .editor-area .footer {
-      background: #e2e8f0;
-      padding: 0.8rem;
-      border-radius: 4px;
-      margin: 0.5rem 0;
-      text-align: center;
-      font-weight: bold;
-    }
-    .editor-area button {
-      display: block;
-      margin: 1rem auto;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 4px;
-      background: #3b82f6;
-      color: #fff;
-      cursor: pointer;
-    }
-    .editor-area button:hover {
-      background: #2563eb;
-    }
-    .generated {
-      margin-top: 2rem;
-    }
-    .button-row {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 0.5rem;
-    }
-    .button-row button {
-      flex: 1;
-      padding: 0.6rem;
-      font-size: 0.9rem;
-    }
-    .generate-btn {
-      background: #3b82f6;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .copy-btn {
-      background: #10b981;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    textarea.generated-code {
-      width: 100%;
-      height: 200px;
-      font-family: monospace;
-      font-size: 0.9rem;
-    }
-  </style>
+<style>
+  main {
+    max-width: 1000px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .header-row h2 {
+    margin: 0;
+    color: #334155;
+  }
+  select {
+    padding: 0.5rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  .editor-area {
+    border: 2px dashed #cbd5e1;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+  .editor-area button {
+    display: block;
+    margin: 1rem auto;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    background: #3b82f6;
+    color: #fff;
+    cursor: pointer;
+  }
+  .editor-area button:hover {
+    background: #2563eb;
+  }
+  .generated {
+    margin-top: 2rem;
+  }
+  .button-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .button-row button {
+    flex: 1;
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+  .generate-btn {
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .copy-btn {
+    background: #10b981;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  textarea.generated-code {
+    width: 100%;
+    height: 200px;
+    font-family: monospace;
+    font-size: 0.9rem;
+  }
+</style>
 
-  <main>
-    <div class="header-row">
-      <h2>編集ページ</h2>
-      <select id="page-select">
-        <option value="">-- ページを選択 --</option>
-        <!-- Supabaseからpublic_menusを読み込んでここに反映予定 -->
-      </select>
+<main>
+  <div class="header-row">
+    <h2>編集ページ</h2>
+    <select id="page-select">
+      <option value="">-- ページを選択 --</option>
+    </select>
+  </div>
+
+  <div class="editor-area" id="editor-area">
+    <header id="site-header" class="hf-wrap"></header>
+    <div id="editor-sections">
+      <!-- セクションがここに追加される -->
     </div>
+    <button onclick="addSection()">＋ セクション追加</button>
+    <footer id="site-footer" class="hf-wrap"></footer>
+  </div>
 
-    <div class="editor-area" id="editor-area">
-      <div class="header">[ ヘッダー プレビュー ]</div>
-      <button onclick="addSection()">＋ セクション追加</button>
-      <div class="footer">[ フッター プレビュー ]</div>
+  <div class="generated">
+    <h2>HTML生成</h2>
+    <div class="button-row">
+      <button class="generate-btn" onclick="generateHTML()">生成する</button>
+      <button class="copy-btn" onclick="copyCode()">コピー</button>
     </div>
+    <textarea id="generated-code" class="generated-code" readonly></textarea>
+  </div>
+</main>
 
-    <div class="generated">
-      <h2>HTML生成</h2>
-      <div class="button-row">
-        <button class="generate-btn" onclick="generateHTML()">生成する</button>
-        <button class="copy-btn" onclick="copyCode()">コピー</button>
-      </div>
-      <textarea id="generated-code" class="generated-code" readonly></textarea>
-    </div>
-  </main>
+<script>
+  // ダミーメニュー
+  const dummyMenus = [
+    {id:1, title:"トップ", url:"index.html"},
+    {id:2, title:"会社概要", url:"about.html"},
+    {id:3, title:"事業内容", url:"service.html"},
+    {id:4, title:"ブログ", url:"blog.html"},
+    {id:5, title:"お問い合わせ", url:"contact.html"},
+    {id:6, title:"プライバシーポリシー", url:"privacypolicy.html"}
+  ];
 
-  <script>
-    // 将来的にSupabaseからpublic_menusを取得する予定
-    const dummyMenus = [
-      {id:1, title:"トップ", url:"index.html"},
-      {id:2, title:"会社概要", url:"about.html"},
-      {id:3, title:"事業内容", url:"service.html"},
-      {id:4, title:"ブログ", url:"blog.html"},
-      {id:5, title:"お問い合わせ", url:"contact.html"},
-      {id:6, title:"プライバシーポリシー", url:"privacypolicy.html"}
-    ];
+  // index_part1 / index_part3 の中身を一体化（サンプル簡略化版）
+  const INDEX_PART1 = `<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WaJu</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header id="site-header" class="hf-wrap"></header>
+<main>`;
 
-    window.onload = () => {
-      const select = document.getElementById("page-select");
-      dummyMenus.forEach(m => {
-        const opt = document.createElement("option");
-        opt.value = m.id;
-        opt.textContent = m.title + " (" + m.url + ")";
-        select.appendChild(opt);
-      });
-    };
+  const INDEX_PART3 = `</main>
+<footer id="site-footer" class="hf-wrap"></footer>
+<script src="script.js"></script>
+</body>
+</html>`;
 
-    function addSection(){
-      const area = document.getElementById("editor-area");
-      const newBlock = document.createElement("div");
-      newBlock.className = "section-block";
-      newBlock.style.border = "1px solid #cbd5e1";
-      newBlock.style.padding = "1rem";
-      newBlock.style.margin = "0.5rem 0";
-      newBlock.textContent = "新しいセクション（ダミー）";
-      area.insertBefore(newBlock, area.querySelector(".footer"));
-    }
+  window.onload = () => {
+    const select = document.getElementById("page-select");
+    dummyMenus.forEach(m => {
+      const opt = document.createElement("option");
+      opt.value = m.id;
+      opt.textContent = m.title + " (" + m.url + ")";
+      select.appendChild(opt);
+    });
 
-    function generateHTML(){
-      const code = "<!-- ここに選択したページのHTMLが生成されます -->";
-      document.getElementById("generated-code").value = code;
-    }
+    // 本来は loadHF() を呼んで Supabase からヘッダー/フッターを反映
+    document.getElementById("site-header").innerHTML = "[ ヘッダー内容がここに反映 ]";
+    document.getElementById("site-footer").innerHTML = "[ フッター内容がここに反映 ]";
+  };
 
-    function copyCode(){
-      const textarea = document.getElementById("generated-code");
-      textarea.select();
-      document.execCommand("copy");
-      alert("コピーしました！");
-    }
-  </script>
+  function addSection(){
+    const area = document.getElementById("editor-sections");
+    const newBlock = document.createElement("div");
+    newBlock.className = "section-block";
+    newBlock.style.border = "1px solid #cbd5e1";
+    newBlock.style.padding = "1rem";
+    newBlock.style.margin = "0.5rem 0";
+    newBlock.textContent = "新しいセクション（ダミー）";
+    area.appendChild(newBlock);
+  }
+
+  function generateHTML(){
+    const bodyContent = document.getElementById("editor-sections").innerHTML || "";
+    const code = INDEX_PART1 + "\n" + bodyContent + "\n" + INDEX_PART3;
+    document.getElementById("generated-code").value = code;
+  }
+
+  function copyCode(){
+    const textarea = document.getElementById("generated-code");
+    textarea.select();
+    document.execCommand("copy");
+    alert("コピーしました！");
+  }
+</script>
