@@ -256,6 +256,10 @@
             </div>
           </div>
         </div>`;
+      const bg = $("#hf-footer-bg");
+      if(d.footer_fixed && bg){
+        Object.assign(bg.style,{position:"fixed",bottom:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
+      }
     }
 
     function buildDrawer(menus){
@@ -272,7 +276,7 @@
       const headerEl=$("#hf-header-bg");
       const body=document.body;
       body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
-      body.style.paddingBottom="0"; // フッター下の余白は付けない
+      body.style.paddingBottom="0";
     }
 
     function addResizeObserver(h,f){
