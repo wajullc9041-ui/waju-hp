@@ -1,175 +1,116 @@
- 
-<style>
-  main {
-    max-width: 1000px;
-    margin: 2rem auto;
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  }
-  .header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  .header-row h2 {
-    margin: 0;
-    color: #334155;
-  }
-  select {
-    padding: 0.5rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-  .editor-area {
-    border: 2px dashed #cbd5e1;
-    border-radius: 6px;
-    padding: 1rem;
-    margin-bottom: 2rem;
-  }
-  .editor-area button {
-    display: block;
-    margin: 1rem auto;
-    padding: 0.6rem 1.2rem;
-    border: none;
-    border-radius: 4px;
-    background: #3b82f6;
-    color: #fff;
-    cursor: pointer;
-  }
-  .editor-area button:hover {
-    background: #2563eb;
-  }
-  .generated {
-    margin-top: 2rem;
-  }
-  .button-row {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-  }
-  .button-row button {
-    flex: 1;
-    padding: 0.6rem;
-    font-size: 0.9rem;
-  }
-  .generate-btn {
-    background: #3b82f6;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  .copy-btn {
-    background: #10b981;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  textarea.generated-code {
-    width: 100%;
-    height: 200px;
-    font-family: monospace;
-    font-size: 0.9rem;
-  }
-</style>
-
-<main>
-  <div class="header-row">
-    <h2>編集ページ</h2>
-    <select id="page-select">
-      <option value="">-- ページを選択 --</option>
-    </select>
-  </div>
-
-  <div class="editor-area" id="editor-area">
-    <div id="header-preview">[ ヘッダー プレビュー ]</div>
-    <div id="editor-sections">
-      <!-- セクションがここに追加される -->
-    </div>
-    <button onclick="addSection()">＋ セクション追加</button>
-    <div id="footer-preview">[ フッター プレビュー ]</div>
-  </div>
-
-  <div class="generated">
-    <h2>HTML生成</h2>
-    <div class="button-row">
-      <button class="generate-btn" onclick="generateHTML()">生成する</button>
-      <button class="copy-btn" onclick="copyCode()">コピー</button>
-    </div>
-    <textarea id="generated-code" class="generated-code" readonly></textarea>
-  </div>
-</main>
-
-<script>
-  // ダミーメニュー
-  const dummyMenus = [
-    {id:1, title:"トップ", url:"index.html"},
-    {id:2, title:"会社概要", url:"about.html"},
-    {id:3, title:"事業内容", url:"service.html"},
-    {id:4, title:"ブログ", url:"blog.html"},
-    {id:5, title:"お問い合わせ", url:"contact.html"},
-    {id:6, title:"プライバシーポリシー", url:"privacypolicy.html"}
-  ];
-
-  // index_part1 / index_part3 の中身（安全化済み）
-  const INDEX_PART1 = `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WaJu</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>管理者ダッシュボード - ページ編集</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; display: flex; background: #f4f6f9; }
+    .sidebar { width: 220px; background: #2c3e50; color: #fff; min-height: 100vh; padding-top: 20px; }
+    .sidebar a { display: block; padding: 12px 20px; color: #fff; text-decoration: none; }
+    .sidebar a:hover { background: #1a252f; }
+    .main { flex-grow: 1; padding: 20px; }
+    h2 { margin-top: 0; }
+    .card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 6px; font-weight: bold; }
+    select, input, textarea, button { width: 100%; padding: 8px; margin-top: 4px; }
+    button { cursor: pointer; border: none; border-radius: 4px; }
+    .btn-primary { background: #3498db; color: #fff; }
+    .btn-success { background: #2ecc71; color: #fff; }
+    .btn-small { width: auto; padding: 6px 12px; margin-right: 10px; }
+    .editor-area { border: 2px dashed #ccc; padding: 20px; min-height: 200px; margin-bottom: 20px; }
+    .preview { border: 1px solid #ddd; padding: 10px; margin: 10px 0; background: #fafafa; border-radius: 6px; }
+    .footer { text-align: center; margin-top: 20px; font-size: 0.9em; color: #666; }
+  </style>
 </head>
 <body>
-<header id="site-header" class="hf-wrap"></header>
-<main>`;
+  <div class="sidebar">
+    <a href="#">管理メニュー管理</a>
+    <a href="#">メニュー管理</a>
+    <a href="#">ヘッダー/フッター</a>
+    <a href="#">ページ作成</a>
+    <a href="#">ブログ一覧</a>
+    <a href="#">ブログ追加・編集</a>
+    <a href="#">お問い合わせ管理</a>
+    <a href="#">アクセス解析設定</a>
+    <a href="#">アセット管理</a>
+    <a href="#">設定管理</a>
+  </div>
+  <div class="main">
+    <h2>管理者ダッシュボード</h2>
 
-  const INDEX_PART3 = `</main>
-<footer id="site-footer" class="hf-wrap"></footer>
-<script src="script.js"><` + `/script>
+    <div class="card">
+      <h3>編集ページ
+        <select id="page-select">
+          <option value="">-- ページを選択 --</option>
+        </select>
+      </h3>
+
+      <div id="editor-sections" class="editor-area">
+        <div id="site-header" class="preview">ヘッダーを読み込み中...</div>
+        <button class="btn-primary btn-small" onclick="addSection()">+ セクション追加</button>
+        <div id="site-footer" class="preview">フッターを読み込み中...</div>
+      </div>
+
+      <h3>HTML生成</h3>
+      <div style="display:flex; gap:10px; margin-bottom:10px;">
+        <button class="btn-primary" onclick="generateHTML()">生成する</button>
+        <button class="btn-success" onclick="copyCode()">コピー</button>
+      </div>
+      <textarea id="generated-code" rows="10"></textarea>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script>
+    // Supabase 初期化
+    const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
+    const SUPABASE_KEY = "YOUR_ANON_KEY";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // ヘッダー/フッター読込
+    async function loadHF() {
+      let { data, error } = await supabase.from("hf_settings").select("*").limit(1).single();
+      if (error) {
+        console.error(error);
+        document.getElementById("site-header").innerHTML = "ヘッダー取得エラー";
+        document.getElementById("site-footer").innerHTML = "フッター取得エラー";
+        return;
+      }
+      document.getElementById("site-header").innerHTML = data.header_html || "[ヘッダーなし]";
+      document.getElementById("site-footer").innerHTML = data.footer_html || "[フッターなし]";
+      window.HEADER_HTML = data.header_html || "";
+      window.FOOTER_HTML = data.footer_html || "";
+    }
+
+    // セクション追加
+    function addSection() {
+      const area = document.getElementById("editor-sections");
+      const newBlock = document.createElement("div");
+      newBlock.className = "section-block";
+      newBlock.style.border = "1px solid #cbd5e1";
+      newBlock.style.padding = "1rem";
+      newBlock.style.margin = "0.5rem 0";
+      newBlock.textContent = "新しいセクション (ダミー)";
+      area.insertBefore(newBlock, document.getElementById("site-footer"));
+    }
+
+    // HTML生成
+    function generateHTML() {
+      const bodyContent = document.getElementById("editor-sections").innerHTML;
+      const code = (window.HEADER_HTML || "") + "\n" + bodyContent + "\n" + (window.FOOTER_HTML || "");
+      document.getElementById("generated-code").value = code;
+    }
+
+    // コピー
+    function copyCode() {
+      const textarea = document.getElementById("generated-code");
+      textarea.select();
+      document.execCommand("copy");
+      alert("コピーしました！");
+    }
+
+    window.onload = loadHF;
+  </script>
 </body>
-</html>`;
-
-  window.onload = () => {
-    const select = document.getElementById("page-select");
-    dummyMenus.forEach(m => {
-      const opt = document.createElement("option");
-      opt.value = m.id;
-      opt.textContent = m.title + " (" + m.url + ")";
-      select.appendChild(opt);
-    });
-
-    // 本来は loadHF() を呼んで Supabase から反映
-    document.getElementById("header-preview").innerHTML = "[ 本物のヘッダーがここに反映 ]";
-    document.getElementById("footer-preview").innerHTML = "[ 本物のフッターがここに反映 ]";
-  };
-
-  function addSection(){
-    const area = document.getElementById("editor-sections");
-    const newBlock = document.createElement("div");
-    newBlock.className = "section-block";
-    newBlock.style.border = "1px solid #cbd5e1";
-    newBlock.style.padding = "1rem";
-    newBlock.style.margin = "0.5rem 0";
-    newBlock.textContent = "新しいセクション（ダミー）";
-    area.appendChild(newBlock);
-  }
-
-  function generateHTML(){
-    const bodyContent = document.getElementById("editor-sections").innerHTML || "";
-    const code = INDEX_PART1 + "\n" + bodyContent + "\n" + INDEX_PART3;
-    document.getElementById("generated-code").value = code;
-  }
-
-  function copyCode(){
-    const textarea = document.getElementById("generated-code");
-    textarea.select();
-    document.execCommand("copy");
-    alert("コピーしました！");
-  }
-</script>
+</html>
