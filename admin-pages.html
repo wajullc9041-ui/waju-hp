@@ -116,7 +116,7 @@
     {id:6, title:"プライバシーポリシー", url:"privacypolicy.html"}
   ];
 
-  // index_part1 / index_part3 の中身を一体化（サンプル簡略化版）
+  // index_part1 / index_part3 の中身を一体化（</script>を分割して安全化）
   const INDEX_PART1 = `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -131,7 +131,7 @@
 
   const INDEX_PART3 = `</main>
 <footer id="site-footer" class="hf-wrap"></footer>
-<script src="script.js"></script>
+<script src="script.js"><` + `/script>
 </body>
 </html>`;
 
