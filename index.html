@@ -269,10 +269,10 @@
     $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
 
     function adjustOffsets(h,f){
-      const headerEl=$("#hf-header-bg");const footerEl=$("#hf-footer-bg");
+      const headerEl=$("#hf-header-bg");
       const body=document.body;
       body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
-      body.style.paddingBottom=footerEl?`${footerEl.offsetHeight}px`:"0";
+      body.style.paddingBottom="0"; // フッター下の余白は付けない
     }
 
     function addResizeObserver(h,f){
