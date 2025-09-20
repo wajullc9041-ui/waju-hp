@@ -28,42 +28,76 @@
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    h2 {
-      margin-top: 0;
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .header-row h2 {
+      margin: 0;
       color: #334155;
     }
-    label {
-      display: block;
-      margin: 1rem 0 0.5rem;
-      font-weight: bold;
-    }
-    select, input, textarea, button {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 1rem;
+    select {
+      padding: 0.5rem;
       border: 1px solid #cbd5e1;
       border-radius: 4px;
       font-size: 1rem;
     }
-    button {
+    .editor-area {
+      border: 2px dashed #cbd5e1;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    .editor-area .header,
+    .editor-area .footer {
+      background: #e2e8f0;
+      padding: 0.8rem;
+      border-radius: 4px;
+      margin: 0.5rem 0;
+      text-align: center;
+      font-weight: bold;
+    }
+    .editor-area button {
+      display: block;
+      margin: 1rem auto;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 4px;
+      background: #3b82f6;
+      color: #fff;
+      cursor: pointer;
+    }
+    .editor-area button:hover {
+      background: #2563eb;
+    }
+    .generated {
+      margin-top: 2rem;
+    }
+    .button-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .button-row button {
+      flex: 1;
+      padding: 0.6rem;
+      font-size: 0.9rem;
+    }
+    .generate-btn {
       background: #3b82f6;
       color: #fff;
       border: none;
       cursor: pointer;
+      border-radius: 4px;
     }
-    button:hover {
-      background: #2563eb;
-    }
-    .editor-area {
-      border: 2px dashed #cbd5e1;
-      border-radius: 6px;
-      padding: 2rem;
-      text-align: center;
-      color: #94a3b8;
-      margin-bottom: 2rem;
-    }
-    .generated {
-      margin-top: 2rem;
+    .copy-btn {
+      background: #10b981;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
     }
     textarea.generated-code {
       width: 100%;
@@ -71,34 +105,31 @@
       font-family: monospace;
       font-size: 0.9rem;
     }
-    .copy-btn {
-      margin-top: 0.5rem;
-      background: #10b981;
-    }
-    .copy-btn:hover {
-      background: #059669;
-    }
   </style>
 </head>
 <body>
   <header>ページ編集</header>
   <main>
-    <h2>ページ選択</h2>
-    <label for="page-select">編集するページを選んでください</label>
-    <select id="page-select">
-      <option value="">-- ページを選択 --</option>
-      <!-- Supabaseからpublic_menusを読み込んでここに反映予定 -->
-    </select>
+    <div class="header-row">
+      <h2>編集ページ</h2>
+      <select id="page-select">
+        <option value="">-- ページを選択 --</option>
+        <!-- Supabaseからpublic_menusを読み込んでここに反映予定 -->
+      </select>
+    </div>
 
-    <h2>編集エリア</h2>
     <div class="editor-area" id="editor-area">
-      ここにブロックが追加されます（デザインのみのダミー）
+      <div class="header">[ ヘッダー プレビュー ]</div>
+      <button onclick="addSection()">＋ セクション追加</button>
+      <div class="footer">[ フッター プレビュー ]</div>
     </div>
 
     <div class="generated">
       <h2>HTML生成</h2>
-      <button onclick="generateHTML()">生成する</button>
-      <button class="copy-btn" onclick="copyCode()">コピー</button>
+      <div class="button-row">
+        <button class="generate-btn" onclick="generateHTML()">生成する</button>
+        <button class="copy-btn" onclick="copyCode()">コピー</button>
+      </div>
       <textarea id="generated-code" class="generated-code" readonly></textarea>
     </div>
   </main>
@@ -123,6 +154,17 @@
         select.appendChild(opt);
       });
     };
+
+    function addSection(){
+      const area = document.getElementById("editor-area");
+      const newBlock = document.createElement("div");
+      newBlock.className = "section-block";
+      newBlock.style.border = "1px solid #cbd5e1";
+      newBlock.style.padding = "1rem";
+      newBlock.style.margin = "0.5rem 0";
+      newBlock.textContent = "新しいセクション（ダミー）";
+      area.insertBefore(newBlock, area.querySelector(".footer"));
+    }
 
     function generateHTML(){
       const code = "<!-- ここに選択したページのHTMLが生成されます -->";
