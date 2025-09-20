@@ -29,25 +29,18 @@
     .slot.brand{flex:0 0 auto}
     .slot.nav{flex:1 1 auto}
     .hf-copy{display:flex;width:100%}
-    /* Mobile nav trigger */
     .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
-    .hamburger:hover{background:#fff}
-    .hamburger:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
     .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
-    /* Drawer */
     .drawer{position:fixed;inset:0;pointer-events:none}
     .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
-    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);
-      transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
     .drawer[aria-hidden="false"]{pointer-events:auto}
     .drawer[aria-hidden="false"] .overlay{opacity:1}
     .drawer[aria-hidden="false"] .panel{transform:none}
     .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
-    .drawer .panel header .title{font-weight:700}
     .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
     .drawer .panel nav a{padding:12px 10px;border-radius:10px}
     .drawer .panel nav a:hover{background:#f1f5f9}
-    /* Responsive */
     @media (max-width:768px){
       .container{padding:0 12px}
       :root{--container:100%}
@@ -55,20 +48,6 @@
       .hamburger{display:block;margin-left:auto}
       #site-footer .hf-nav{display:none !important}
     }
-
-    /* ======= Index page area ======= */
-    section{margin:60px auto}
-    h1,h2,h3{margin:0 0 20px;font-weight:700}
-    h1{font-size:36px;text-align:center}
-    h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
-    h3{font-size:20px;margin-bottom:10px}
-    p{margin:0 0 14px}
-    .lead{font-size:20px;text-align:center;margin-bottom:30px;color:#374151}
-    .card{background:#fff;padding:32px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:30px}
-    .topics ul{list-style:none;padding:0}
-    .topics li{margin-bottom:12px;border-bottom:1px solid #e5e7eb;padding-bottom:8px}
-    .cta{text-align:center;margin-top:40px}
-    .cta a{display:inline-block;padding:12px 28px;background:#1976d2;color:#fff;border-radius:8px;text-decoration:none}
   </style>
 </head>
 <body>
@@ -76,66 +55,8 @@
 
   <main id="page-content" aria-live="polite">
     <div class="container">
-
-      <section>
-        <h1>「できない」「わからない」を支援する会社『WaJu』</h1>
-        <p class="lead">“あんなことができたらいいな”“こんなものがあったら便利だな” を形にする。</p>
-        <div class="card">
-          <p>社会福祉の一環として、介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い社会的支援ができる企業を目指しています。</p>
-          <p>絶えず前進するための <b>Walk</b>、そして躍進するための <b>Jump</b> を心掛け、社会に貢献していきます。</p>
-        </div>
-      </section>
-
-      <section>
-        <h2>事業内容</h2>
-        <div class="card">
-          <h3>介護事業所マッチング＆SNS</h3>
-          <p>ケアマネジャーや相談員の方と介護サービス提供事業所を効果的につなぐ革新的なサービス <b>CARELAY</b> をリリースしています。</p>
-          <p>介護業界の営業コストを軽減し、最適な連携が生まれるよう、ぜひご活用をご検討ください！</p>
-          <div class="cta"><a href="#">詳しくはこちら</a></div>
-        </div>
-      </section>
-
-      <section class="topics">
-        <h2>Topics</h2>
-        <div class="card">
-          <ul>
-            <li>2025年9月1日　「CARELAY」再稼働のお知らせ</li>
-            <li>2024年12月25日　弊社サービス「CARELAY」のチラシができました。</li>
-            <li>2024年9月27日　弊社サービス「CARELAY」紹介資料</li>
-            <li>2024年9月26日　プレスリリース配信サービス「valuepress」に掲載していただきました。</li>
-            <li>2024年9月23日　「CARELAY」案内</li>
-          </ul>
-          <div class="cta"><a href="#">もっと見る</a></div>
-        </div>
-      </section>
-
-      <section>
-        <h2>一から会社を、一緒に創っていきましょう</h2>
-        <div class="card">
-          <p>合同会社WaJuはまだできたての会社です。同じ志を持ち、会社を一緒に作り上げていける方を募集しております。</p>
-          <p>当社の提供するサービスをよく理解し、全国へ普及させていくという強い意志をお持ちの方は、ぜひご応募ください。</p>
-          <div class="cta"><a href="#">もっと見る</a></div>
-        </div>
-      </section>
-
-      <section>
-        <h2>お問い合わせ</h2>
-        <div class="card">
-          <p>サービスに関するお問い合わせ、求人情報に関するお問い合わせ、その他ご質問やご要望がございましたら、フォームよりお気軽にご連絡ください。</p>
-          <div class="cta"><a href="contact.html">お問い合わせフォームへ</a></div>
-        </div>
-      </section>
-
-      <section>
-        <h2>会社情報</h2>
-        <div class="card">
-          <p>合同会社WaJu</p>
-          <p>〒658-0052　兵庫県神戸市東灘区住吉東町2丁目7-20-102</p>
-          <p><a href="mailto:info@waju.co.jp">info@waju.co.jp</a></p>
-        </div>
-      </section>
-
+      <h1>「できない」「わからない」を支援する会社『WaJu』</h1>
+      <p>ここにトップページ用の本文を入れてください。</p>
     </div>
   </main>
 
@@ -155,7 +76,6 @@
     </div>
   </div>
 
-  <!-- Supabaseヘッダー／フッター共通処理 -->
   <script type="module">
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
     const sb = createClient(
@@ -166,7 +86,7 @@
     const $ = s => document.querySelector(s);
     const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
     const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/\b(sans-serif|serif|monospace)\b/i.test(s) ? s : `${s}, sans-serif`);
+    const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : `${s}, sans-serif`);
     const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
     const bgParts = (row, def) => {
       const grad = stripQuotes(row?.bg_gradient||"").trim();
@@ -185,8 +105,17 @@
         sb.from("hf_settings").select("*").eq("area","footer").single()
       ]);
       allMenus = menus||[];
+
+      // =========================
+      // ヘッダー処理ここから
+      // =========================
       renderHeader(hdr||{}, allMenus);
+
+      // =========================
+      // フッター処理ここから
+      // =========================
       renderFooter(ftr||{}, allMenus);
+
       buildDrawer(allMenus);
       adjustOffsets(hdr||{}, ftr||{});
       addResizeObserver(hdr||{}, ftr||{});
@@ -194,6 +123,9 @@
 
     function linkOf(m){ return (m.url ?? m.href ?? '#'); }
 
+    // =========================
+    // ヘッダー処理
+    // =========================
     function renderHeader(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
@@ -203,12 +135,12 @@
       const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
       $("#site-header").innerHTML = `
-        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
+        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
           <div class="container">
             <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY}; height:${num(d.bar_height,60)}px;">
               <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
                 <div class="hf-brand">
-                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}
+                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}
                   <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
                 </div>
               </div>
@@ -228,6 +160,9 @@
       $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
     }
 
+    // =========================
+    // フッター処理
+    // =========================
     function renderFooter(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
@@ -236,13 +171,13 @@
       const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
       const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      const inner = d.layout_mode==="row"
-        ? `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`
-        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
+      const inner = d.layout_mode==="nav-top"
+        ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
+           <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
+        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
            <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
       $("#site-footer").innerHTML = `
-        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
+        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
           <div class="container">
             <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY}; height:${num(d.bar_height,60)}px;">
               ${inner}
