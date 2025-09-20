@@ -87,12 +87,12 @@
   </div>
 
   <div class="editor-area" id="editor-area">
-    <header id="site-header" class="hf-wrap"></header>
+    <div id="header-preview">[ ヘッダー プレビュー ]</div>
     <div id="editor-sections">
       <!-- セクションがここに追加される -->
     </div>
     <button onclick="addSection()">＋ セクション追加</button>
-    <footer id="site-footer" class="hf-wrap"></footer>
+    <div id="footer-preview">[ フッター プレビュー ]</div>
   </div>
 
   <div class="generated">
@@ -116,7 +116,7 @@
     {id:6, title:"プライバシーポリシー", url:"privacypolicy.html"}
   ];
 
-  // index_part1 / index_part3 の中身を一体化（</script>を分割して安全化）
+  // index_part1 / index_part3 の中身（安全化済み）
   const INDEX_PART1 = `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -144,9 +144,9 @@
       select.appendChild(opt);
     });
 
-    // 本来は loadHF() を呼んで Supabase からヘッダー/フッターを反映
-    document.getElementById("site-header").innerHTML = "[ ヘッダー内容がここに反映 ]";
-    document.getElementById("site-footer").innerHTML = "[ フッター内容がここに反映 ]";
+    // 本来は loadHF() を呼んで Supabase から反映
+    document.getElementById("header-preview").innerHTML = "[ 本物のヘッダーがここに反映 ]";
+    document.getElementById("footer-preview").innerHTML = "[ 本物のフッターがここに反映 ]";
   };
 
   function addSection(){
