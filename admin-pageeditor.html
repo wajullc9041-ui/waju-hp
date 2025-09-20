@@ -1,5 +1,224 @@
-<section>
-  <h2>サイトページ編集</h2>
-  <p>ページのブロック構成や公開状態を管理できます。</p>
-  <p>※ この機能の実装は今後追加予定です。</p>
-</section>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ページ管理</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar {
+      width: 250px;
+      background: #1e293b;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar h2 {
+      padding: 1rem;
+      margin: 0;
+      font-size: 1.2rem;
+      background: #334155;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    .sidebar li {
+      padding: 0.8rem 1rem;
+      cursor: pointer;
+    }
+    .sidebar li:hover, .sidebar li.active {
+      background: #475569;
+    }
+    .sidebar button {
+      margin: 1rem;
+      padding: 0.5rem;
+      background: #3b82f6;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      background: #f8fafc;
+    }
+    .editor {
+      flex-grow: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .editor input, .editor textarea, .editor select {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+    }
+    .section {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .preview {
+      border-top: 1px solid #e2e8f0;
+      padding: 1rem;
+      background: #fff;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .generated {
+      border-top: 1px solid #e2e8f0;
+      padding: 1rem;
+    }
+    textarea.generated-code {
+      width: 100%;
+      height: 200px;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>ページ一覧</h2>
+    <ul id="page-list"></ul>
+    <button onclick="createPage()">新規ページ作成</button>
+  </div>
+  <div class="main">
+    <div class="editor">
+      <h2>ページ編集</h2>
+      <input id="page-title" placeholder="ページタイトル">
+      <input id="page-slug" placeholder="スラッグ (URL名)">
+      <div id="sections"></div>
+      <button onclick="addSection()">セクション追加</button>
+    </div>
+    <div class="preview" id="preview">
+      <h3>プレビュー</h3>
+      <div id="preview-content"></div>
+    </div>
+    <div class="generated">
+      <h3>HTML生成</h3>
+      <button onclick="generateHTML()">生成する</button>
+      <textarea id="generated-code" class="generated-code" readonly></textarea>
+    </div>
+  </div>
+
+  <script>
+    let pages = [];
+    let currentPage = null;
+
+    function renderPages(){
+      const list = document.getElementById('page-list');
+      list.innerHTML = '';
+      pages.forEach((p,i)=>{
+        const li = document.createElement('li');
+        li.textContent = p.title || '無題ページ';
+        li.className = (currentPage===i)?'active':'';
+        li.onclick=()=>{currentPage=i;renderEditor();};
+        list.appendChild(li);
+      });
+    }
+
+    function createPage(){
+      pages.push({title:'新しいページ',slug:'',sections:[]});
+      currentPage = pages.length-1;
+      renderPages();
+      renderEditor();
+    }
+
+    function renderEditor(){
+      if(currentPage===null) return;
+      const p = pages[currentPage];
+      document.getElementById('page-title').value = p.title;
+      document.getElementById('page-slug').value = p.slug;
+      const secDiv=document.getElementById('sections');
+      secDiv.innerHTML='';
+      p.sections.forEach((s,idx)=>{
+        const div=document.createElement('div');
+        div.className='section';
+        div.innerHTML=`
+          <select onchange="updateSectionType(${idx}, this.value)">
+            <option value="heading" ${s.type==='heading'?'selected':''}>見出し</option>
+            <option value="text" ${s.type==='text'?'selected':''}>テキスト</option>
+          </select>
+          <textarea placeholder="内容を入力" oninput="updateSectionContent(${idx}, this.value)">${s.content}</textarea>
+          <button onclick="deleteSection(${idx})">削除</button>
+        `;
+        secDiv.appendChild(div);
+      });
+    }
+
+    function addSection(){
+      if(currentPage===null) return;
+      pages[currentPage].sections.push({type:'text',content:''});
+      renderEditor();
+    }
+
+    function updateSectionType(idx,val){
+      pages[currentPage].sections[idx].type=val;
+    }
+    function updateSectionContent(idx,val){
+      pages[currentPage].sections[idx].content=val;
+      renderPreview();
+    }
+    function deleteSection(idx){
+      pages[currentPage].sections.splice(idx,1);
+      renderEditor();
+      renderPreview();
+    }
+
+    function renderPreview(){
+      if(currentPage===null) return;
+      const pc = document.getElementById('preview-content');
+      pc.innerHTML = pages[currentPage].sections.map(s=>{
+        if(s.type==='heading') return `<h2>${s.content}</h2>`;
+        if(s.type==='text') return `<p>${s.content}</p>`;
+        return '';
+      }).join('');
+    }
+
+    function generateHTML(){
+      if(currentPage===null) return;
+      const p = pages[currentPage];
+      const html = `<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8"><title>${p.title}</title></head>
+<body>
+<header><!-- ヘッダーここに挿入 --></header>
+<main>${p.sections.map(s=>{
+  if(s.type==='heading') return '<h2>'+s.content+'</h2>';
+  if(s.type==='text') return '<p>'+s.content+'</p>';
+  return '';
+}).join('')}</main>
+<footer><!-- フッターここに挿入 --></footer>
+</body></html>`;
+      document.getElementById('generated-code').value=html;
+    }
+
+    document.getElementById('page-title').oninput=function(){
+      if(currentPage===null) return;
+      pages[currentPage].title=this.value;
+      renderPages();
+    };
+    document.getElementById('page-slug').oninput=function(){
+      if(currentPage===null) return;
+      pages[currentPage].slug=this.value;
+    };
+  </script>
+</body>
+</html>
