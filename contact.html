@@ -207,7 +207,7 @@
       $("#site-header").innerHTML = `
         <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
           <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY}; height:${num(d.bar_height,60)}px;">
+            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
               <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
                 <div class="hf-brand">
                   ${d.logo_url?`<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}
