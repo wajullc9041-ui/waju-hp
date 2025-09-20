@@ -204,7 +204,7 @@
       const {bgColor,bgImage} = bgParts(d, "#0f172a");
       const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
       const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
-      const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
+      const paddingY = d.padding || "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
       $("#site-header").innerHTML = `
         <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
@@ -241,7 +241,7 @@
       const {bgColor,bgImage} = bgParts(d, "#0f172a");
       const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
       const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
-      const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
+      const paddingY = d.padding || "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
       const inner = d.layout_mode==="nav-top"
         ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
