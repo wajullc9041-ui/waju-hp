@@ -3,20 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>会社概要 | 合同会社WaJu</title>
+  <title>合同会社WaJu | 公式サイト</title>
 
   <!-- Favicon / PWA -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
   <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
-  <link rel="icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon.ico?v=1">
   <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
   <meta name="theme-color" content="#0f172a">
 
   <style>
     :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff}
+    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
     a{color:inherit;text-decoration:none}
     main{min-height:40vh}
     .container{max-width:var(--container);margin:0 auto;padding:0 16px}
@@ -31,18 +30,14 @@
     .slot.nav{flex:1 1 auto}
     .hf-copy{display:flex;width:100%}
     .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
-    .hamburger:hover{background:#fff}
-    .hamburger:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
     .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
     .drawer{position:fixed;inset:0;pointer-events:none}
     .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
-    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);
-      transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
     .drawer[aria-hidden="false"]{pointer-events:auto}
     .drawer[aria-hidden="false"] .overlay{opacity:1}
     .drawer[aria-hidden="false"] .panel{transform:none}
     .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
-    .drawer .panel header .title{font-weight:700}
     .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
     .drawer .panel nav a{padding:12px 10px;border-radius:10px}
     .drawer .panel nav a:hover{background:#f1f5f9}
@@ -54,33 +49,51 @@
       #site-footer .hf-nav{display:none !important}
     }
 
-    /* about 専用 */
-    h1{margin:0 0 20px;font-size:28px;text-align:center}
-    .card{max-width:1000px;margin:24px auto;padding:24px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
-    table{width:100%;border-collapse:collapse;margin-top:20px}
-    th,td{padding:12px;border-bottom:1px solid #e5e7eb;text-align:left}
-    th{width:25%;background:#f9fafb;font-weight:600}
+    /* index専用 */
+    section{margin:60px auto}
+    h1,h2,h3{margin:0 0 20px;font-weight:700}
+    h1{font-size:36px;text-align:center}
+    h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
+    h3{font-size:20px;margin-bottom:10px}
+    p{margin:0 0 14px}
+    .lead{font-size:20px;text-align:center;margin-bottom:30px;color:#374151}
+    .card{background:#fff;padding:32px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:30px}
+    .topics ul{list-style:none;padding:0}
+    .topics li{margin-bottom:12px;border-bottom:1px solid #e5e7eb;padding-bottom:8px}
+    .cta{text-align:center;margin-top:40px}
+    .cta a{display:inline-block;padding:12px 28px;background:#1976d2;color:#fff;border-radius:8px;text-decoration:none}
   </style>
 </head>
 <body>
   <header id="site-header" class="hf-wrap"></header>
 
+  
   <main id="page-content" aria-live="polite">
     <div class="container">
-      <div class="card">
-        <h1>会社概要</h1>
-        <p>介護業界にて長年に渡って現場業務から管理者業務まで勤めてきた代表の経験から、無駄な事務作業や非効率な業務、働く方々の低賃金労働や人手不足などの不満要素を解消する為、事業を立ち上げました。</p>
-        <p>介護業界に留まらず、将来的には様々な業界の問題点を解消できるサービスを提案・提供ができるような会社に成長できることを目指しています。</p>
+      <section class="about-section">
+        <div class="about-hero">
+          <h1 class="about-title">会社概要</h1>
+          <p class="about-lead">
+            介護業界にて長年に渡り現場から管理業務まで携わってきた代表の経験から、
+            無駄な事務作業や非効率な業務、低賃金や人手不足といった課題を解決するために設立されました。
+          </p>
+          <p class="about-lead">
+            今後は介護業界にとどまらず、幅広い業界の課題を解消できるサービスを提案・提供できる企業を目指しています。
+          </p>
+        </div>
 
-        <table>
-          <tr><th>会社名</th><td>合同会社WaJu</td></tr>
-          <tr><th>代表社員</th><td>大野 洋</td></tr>
-          <tr><th>住所</th><td>〒658-0052　兵庫県神戸市東灘区住吉東町2丁目7-20-102</td></tr>
-          <tr><th>代表メールアドレス</th><td><a href="mailto:ohno@waju.co.jp">ohno@waju.co.jp</a></td></tr>
-        </table>
-      </div>
+        <div class="about-info card">
+          <table>
+            <tr><th>会社名</th><td>合同会社WaJu</td></tr>
+            <tr><th>代表社員</th><td>大野 洋</td></tr>
+            <tr><th>住所</th><td>〒658-0052　兵庫県神戸市東灘区住吉東町2丁目7-20-102</td></tr>
+            <tr><th>代表メールアドレス</th><td><a href="mailto:ohno@waju.co.jp">ohno@waju.co.jp</a></td></tr>
+          </table>
+        </div>
+      </section>
     </div>
   </main>
+
 
   <footer id="site-footer" class="hf-wrap"></footer>
 
@@ -98,7 +111,6 @@
     </div>
   </div>
 
-  <!-- Supabaseヘッダー／フッター共通処理 -->
   <script type="module">
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
     const sb = createClient(
@@ -109,7 +121,7 @@
     const $ = s => document.querySelector(s);
     const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
     const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/\b(sans-serif|serif|monospace)\b/i.test(s) ? s : `${s}, sans-serif`);
+    const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : `${s}, sans-serif`);
     const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
     const bgParts = (row, def) => {
       const grad = stripQuotes(row?.bg_gradient||"").trim();
@@ -128,8 +140,17 @@
         sb.from("hf_settings").select("*").eq("area","footer").single()
       ]);
       allMenus = menus||[];
+
+      // =========================
+      // ヘッダー処理ここから
+      // =========================
       renderHeader(hdr||{}, allMenus);
+
+      // =========================
+      // フッター処理ここから
+      // =========================
       renderFooter(ftr||{}, allMenus);
+
       buildDrawer(allMenus);
       adjustOffsets(hdr||{}, ftr||{});
       addResizeObserver(hdr||{}, ftr||{});
@@ -137,21 +158,24 @@
 
     function linkOf(m){ return (m.url ?? m.href ?? '#'); }
 
+    // =========================
+    // ヘッダー処理
+    // =========================
     function renderHeader(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
       const {bgColor,bgImage} = bgParts(d, "#0f172a");
       const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
       const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
-      const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
+      const paddingY = d.padding || "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
       $("#site-header").innerHTML = `
-        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
+        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
           <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY}; height:${num(d.bar_height,60)}px;">
+            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
               <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
                 <div class="hf-brand">
-                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}
+                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||60,60)}px">`:""}
                   <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
                 </div>
               </div>
@@ -171,41 +195,59 @@
       $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
     }
 
+    // =========================
+    // フッター処理
+    // =========================
     function renderFooter(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
       const {bgColor,bgImage} = bgParts(d, "#0f172a");
       const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
       const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
-      const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
+      const paddingY = d.padding || "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      const inner = d.layout_mode==="row"
-        ? `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`
-        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
+      const inner = d.layout_mode==="nav-top"
+        ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
+           <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
+        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
            <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
       $("#site-footer").innerHTML = `
-        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
+        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
           <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY}; height:${num(d.bar_height,60)}px;">
+            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
               ${inner}
             </div>
           </div>
         </div>`;
-      if(d.footer_fixed){const wrap=$("#hf-footer-bg");Object.assign(wrap.style,{position:"fixed",left:"0",right:"0",bottom:"0",zIndex:"1000",width:"100%"});}
+      const bg = $("#hf-footer-bg");
+      if(d.footer_fixed && bg){
+        Object.assign(bg.style,{position:"fixed",bottom:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
+      }
     }
 
     function buildDrawer(menus){
-      const list=(menus||[]).filter(m=>m.is_active);
-      $("#drawer-nav").innerHTML=list.map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      $("#drawer-close").addEventListener("click",closeDrawer);
-      $("#mobile-drawer [data-close]").addEventListener("click",closeDrawer);
-      document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer();});
+      const items = menus.filter(m=>m.is_active).map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      $("#drawer-nav").innerHTML = items;
     }
-    function openDrawer(){$("#mobile-drawer").setAttribute("aria-hidden","false");$("#hamburger")?.setAttribute("aria-expanded","true");document.body.style.overflow="hidden";setTimeout(()=>$("#drawer-close")?.focus(),100);}
-    function closeDrawer(){$("#mobile-drawer").setAttribute("aria-hidden","true");$("#hamburger")?.setAttribute("aria-expanded","false");document.body.style.overflow="";}
-    function adjustOffsets(hdr,ftr){const h=$("#hf-header-bg"),f=$("#hf-footer-bg");document.body.style.paddingTop=(hdr?.header_fixed&&h)?h.getBoundingClientRect().height+"px":"";document.body.style.paddingBottom=(ftr?.footer_fixed&&f)?f.getBoundingClientRect().height+"px":"";}
-    function addResizeObserver(hdr,ftr){const ro=new ResizeObserver(()=>adjustOffsets(hdr,ftr));const h=$("#hf-header-bg"),f=$("#hf-footer-bg");if(h)ro.observe(h);if(f)ro.observe(f);window.addEventListener('resize',()=>adjustOffsets(hdr,ftr));}
+
+    function openDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","false");$("#hamburger").setAttribute("aria-expanded","true");}
+    function closeDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","true");$("#hamburger").setAttribute("aria-expanded","false");}
+    $("#drawer-close")?.addEventListener("click", closeDrawer);
+    $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
+
+    function adjustOffsets(h,f){
+      const headerEl=$("#hf-header-bg");
+      const body=document.body;
+      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
+      body.style.paddingBottom="0";
+    }
+
+    function addResizeObserver(h,f){
+      const ro=new ResizeObserver(()=>adjustOffsets(h,f));
+      const headerEl=$("#hf-header-bg");const footerEl=$("#hf-footer-bg");
+      if(headerEl) ro.observe(headerEl); if(footerEl) ro.observe(footerEl);
+    }
+
     loadHF();
   </script>
 </body>
