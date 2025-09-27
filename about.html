@@ -3,9 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>合同会社WaJu | 公式サイト</title>
+  <title>会社概要 | 合同会社WaJu</title>
 
-  <!-- Favicon / PWA -->
+  <!-- SEO / OGP (追加) -->
+  <meta name="description" content="合同会社WaJuの会社概要ページ。理念、代表メッセージ、会社情報を掲載しています。">
+  <meta property="og:title" content="会社概要 | 合同会社WaJu">
+  <meta property="og:description" content="合同会社WaJuの理念、代表メッセージ、会社情報を紹介しています。">
+  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png">
+  <meta property="og:url" content="https://waju.co.jp/about.html">
+  <meta property="og:type" content="article">
+
+  <!-- Favicon / PWA (index_part1.txtからそのまま流用) -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
   <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
@@ -13,11 +21,12 @@
   <meta name="theme-color" content="#0f172a">
 
   <style>
+    /* index_part1.txtのCSSをそのまま利用 */
     :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
     a{color:inherit;text-decoration:none}
-    main{min-height:40vh}
+    main{min-height:40vh;padding-bottom:80px;} /* フッターとの間隔を調整 */
     .container{max-width:var(--container);margin:0 auto;padding:0 16px}
     .hf-wrap{width:100%}
     .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
@@ -49,79 +58,366 @@
       #site-footer .hf-nav{display:none !important}
     }
 
-    /* about専用 */
-    .about-section {
-      background: linear-gradient(135deg, #f8fafc, #eef2ff);
-      padding: 2rem;
-      border-radius: 1rem;
+    /* ページ共通スタイル (index_part1.txtより) */
+    section{margin:60px auto}
+    h1,h2,h3{margin:0 0 20px;font-weight:700}
+    h1{font-size:36px;text-align:center}
+    h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
+    h3{font-size:20px;margin-bottom:10px}
+    p{margin:0 0 14px}
+    .lead{font-size:20px;text-align:center;margin-bottom:30px;color:#374151}
+    /* .card, .topics, .cta スタイルはabout.htmlではカスタム */
+
+    /* about.html 専用カスタムスタイル */
+    #page-title {
+        font-size: 42px;
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 60px;
+        font-weight: 900;
+        color: #1976d2;
+        letter-spacing: 2px;
+        position: relative;
     }
-    .about-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #1e3a8a;
-      margin-bottom: 1rem;
-    }
-    .about-lead {
-      font-size: 1.1rem;
-      color: #334155;
-      line-height: 1.7;
-      margin-bottom: 1rem;
-    }
-    .about-info.card {
-      margin-top: 2rem;
-      background: #ffffff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      border-radius: 0.75rem;
-      padding: 1.5rem;
-    }
-    .about-info table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .about-info th {
-      text-align: left;
-      color: #475569;
-      padding: 0.5rem;
-      width: 30%;
-    }
-    .about-info td {
-      padding: 0.5rem;
-      color: #1e293b;
+    #page-title::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: #0f172a;
+        margin: 10px auto 0;
+        border-radius: 2px;
     }
 
+    .section-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #0f172a;
+        text-align: center;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+    .section-subtitle {
+        font-size: 20px;
+        font-weight: 500;
+        color: #1976d2;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    /* Philosophy Section - 修正点: 画像とテキストの横並び配置 */
+    #philosophy .content-card {
+        background: linear-gradient(135deg, #e0f2fe 0%, #fff 100%); /* Light blue gradient */
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 15px 30px rgba(25, 118, 210, 0.1);
+        text-align: center;
+        overflow: hidden;
+    }
+    
+    #philosophy .philosophy-content-wrapper {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start; /* 上揃え */
+        text-align: left; /* テキストを左寄せに */
+    }
+
+    .philosophy-image {
+        max-width: 300px; /* 画像の最大サイズを制限 */
+        flex-shrink: 0; /* 縮まないように */
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 0; /* flexbox内のため margin-bottom を削除 */
+        box-shadow: 0 4px 12px rgba(0,0,0,.1);
+        display: block;
+        /* margin: 0 auto; は flexbox で不要に */
+    }
+    
+    #philosophy .philosophy-text-container {
+        flex: 1;
+    }
+
+    #philosophy .main-text {
+        font-size: 20px; /* 少し小さく */
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 20px;
+        line-height: 1.6;
+        border-bottom: 2px dashed #1976d2;
+        padding-bottom: 10px;
+        display: block; /* inline-blockから変更 */
+        max-width: none; /* max-width解除 */
+        text-align: left;
+    }
+    #philosophy p {
+        max-width: none;
+        margin: 0 0 14px;
+        font-size: 16px;
+        color: #374151;
+        text-align: left;
+    }
+    #philosophy .keywords {
+        margin-top: 30px;
+        font-weight: 700;
+        color: #1976d2;
+        font-size: 18px;
+        letter-spacing: 1px;
+        text-align: left;
+    }
+
+
+    /* Message Section */
+    #message {
+        background: #f8fafc; /* Light grey background */
+        padding: 80px 0;
+    }
+    #message .message-wrapper {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+    }
+    #message .profile-card {
+        flex: 0 0 300px; /* Fixed width for profile */
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,.08);
+        text-align: center;
+        position: sticky; /* スクロールしても追従 */
+        top: calc(80px + 20px); /* ヘッダーの高さ+余白を考慮 */
+    }
+    #message .profile-card img {
+        /* 修正点: 縦長比率を維持するよう修正 */
+        aspect-ratio: auto; /* 正方形強制を解除 */
+        width: 100%;
+        height: auto;
+        border-radius: 8px; /* HTMLインラインから移動 */
+        /* object-fit: cover; も削除し、元の比率を維持 */
+        
+        border: 4px solid #1976d2;
+        box-shadow: 0 0 0 6px rgba(25, 118, 210, 0.2); /* 外枠のシャドウ */
+    }
+    #message .profile-card .name {
+        font-size: 22px;
+        font-weight: 700;
+        margin-top: 10px;
+        color: #0f172a;
+    }
+    #message .profile-card .title {
+        font-size: 16px;
+        color: #1976d2;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+    #message .message-content {
+        flex: 1;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,.08);
+    }
+    #message .message-content p {
+        text-align: justify;
+        text-justify: inter-ideograph;
+        margin-bottom: 20px;
+    }
+    #message .message-content p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Company Profile Section */
+    #company-profile {
+        padding: 80px 0;
+    }
+    .profile-table {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        border-collapse: collapse;
+        box-shadow: 0 5px 15px rgba(0,0,0,.05);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .profile-table th, .profile-table td {
+        padding: 18px 25px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .profile-table th {
+        width: 30%;
+        background-color: #f1f5f9; /* Light gray background for headers */
+        color: #374151;
+        font-weight: 600;
+    }
+    .profile-table td {
+        background-color: #fff;
+        color: #0f172a;
+    }
+    .profile-table tr:last-child th, .profile-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+        #message .profile-card {
+            flex: 0 0 250px;
+        }
+    }
+    @media (max-width: 768px) {
+        #page-title {
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+        .section-title {
+            font-size: 28px;
+        }
+        .section-subtitle {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        /* 理念セクションのモバイルでの縦並び（修正点） */
+        #philosophy .philosophy-content-wrapper {
+            flex-direction: column; /* 縦並びに戻す */
+            gap: 20px;
+        }
+        .philosophy-image {
+            max-width: 80%; /* モバイルでは少し大きく表示 */
+            margin-left: auto; /* 中央寄せに戻す */
+            margin-right: auto;
+        }
+        #philosophy .main-text,
+        #philosophy p,
+        #philosophy .keywords {
+            text-align: center; /* 中央寄せに戻す */
+        }
+
+        /* 代表メッセージセクションのモバイルでの縦並び */
+        #message .message-wrapper {
+            flex-direction: column;
+            gap: 30px;
+        }
+        #message .profile-card {
+            flex: 1 1 auto;
+            width: 100%;
+            position: static; /* stickyを解除 */
+            top: auto;
+        }
+        #message .message-content {
+            padding: 30px;
+        }
+
+        /* その他モバイル調整 */
+        #philosophy .content-card {
+            padding: 30px 20px;
+        }
+        .profile-table th, .profile-table td {
+            padding: 14px 18px;
+        }
+        .profile-table th {
+            width: 40%; /* モバイルで項目名を広めに */
+        }
+    }
   </style>
 </head>
 <body>
+  <!-- index_part1.txtのヘッダー部分をそのまま利用 -->
   <header id="site-header" class="hf-wrap"></header>
 
-  
-  <main id="page-content" aria-live="polite">
+  <main>
     <div class="container">
-      <section class="about-section">
-        <div class="about-hero">
-          <h1 class="about-title">会社概要</h1>
-          <p class="about-lead">
-            介護業界にて長年に渡り現場から管理業務まで携わってきた代表の経験から、
-            無駄な事務作業や非効率な業務、低賃金や人手不足といった課題を解決するために設立されました。
-          </p>
-          <p class="about-lead">
-            今後は介護業界にとどまらず、幅広い業界の課題を解消できるサービスを提案・提供できる企業を目指しています。
-          </p>
-        </div>
+      <h1 id="page-title">会社概要</h1>
 
-        <div class="about-info card">
-          <table>
-            <tr><th>会社名</th><td>合同会社WaJu</td></tr>
-            <tr><th>代表社員</th><td>大野 洋</td></tr>
-            <tr><th>住所</th><td>〒658-0052　兵庫県神戸市東灘区住吉東町2丁目7-20-102</td></tr>
-            <tr><th>代表メールアドレス</th><td><a href="mailto:ohno@waju.co.jp">ohno@waju.co.jp</a></td></tr>
-          </table>
+      <!-- ==================== Philosophy / 理念 ==================== -->
+      <section id="philosophy">
+        <div class="section-title">Philosophy</div>
+        <div class="section-subtitle">理念</div>
+        <div class="content-card">
+            <!-- PCでは画像とテキストを横並びにするラッパー -->
+            <div class="philosophy-content-wrapper">
+                <!-- 理念のイメージ (wjhp0004.png) -->
+                <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="WaJu 理念イメージ：挑戦と支援の光" class="philosophy-image">
+
+                <div class="philosophy-text-container">
+                    <p class="main-text">合同会社WaJuは、「できない」「わからない」を支援する会社です。</p>
+
+                    <p>「あんなことができたらいいな」「こんなものがあったら便利だな」という声を形にし、個人や企業の挑戦を後押しすることを目的に設立されました。</p>
+                    <p>社会福祉の一環として介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い分野で社会的支援ができる企業を目指しています。</p>
+                    <p>「できない・わからない」と足踏みしている方々に対して、指示を与えるのではなく、一緒に考え、一緒に問題解決をし、未来へと繋がる社会的意義のある事業を展開していきます。</p>
+                    
+                    <p class="keywords">常に前進する <strong>Walk</strong>、大きく躍進する <strong>Jump</strong> を心掛け、人と人をつなぐことで社会に貢献します。</p>
+                </div>
+            </div>
         </div>
       </section>
+
+      <!-- ==================== Message / 代表メッセージ ==================== -->
+      <section id="message">
+        <div class="container">
+            <div class="section-title">Message</div>
+            <div class="section-subtitle">代表メッセージ</div>
+
+            <div class="message-wrapper">
+                <div class="profile-card">
+                    <!-- 代表社員の写真 (wjhp0007.png) - CSSで縦長比率を維持するように修正 -->
+                    <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0007.png" alt="代表社員 大野 洋">
+                    <p class="title">代表社員</p>
+                    <p class="name">大野 洋</p>
+                </div>
+                <div class="message-content">
+                    <p>私はこれまで15年以上にわたり、特別養護老人ホームや有料老人ホームで介護士として勤務し、サービス付き高齢者住宅の立ち上げ、サービス提供責任者、施設長といった役職も経験してきました。その中で常に直面したのは、慢性的な人手不足や賃金が上がらない厳しい現実でした。</p>
+                    <p>事業所の倒産は増え続け、採用しても定着せず、採用コストばかりが膨らんでいく。退職の多くは賃金や業務内容ではなく人間関係が原因で、現場と運営の意識の溝が大きな課題となっていました。</p>
+                    <p>現場では「上はわかってくれない」という声が多く聞かれる一方で、運営側も多忙で現場のフォローに十分に時間を割けない状況があります。記録ソフトや見守りサービスなど現場を支援するツールは数多くあっても、管理者や相談員、ケアマネを支える仕組みは少なく、さらに業種横断的に全事業所が共通で使えるものはほとんどありません。</p>
+                    <p>営業や連絡手段がいまだに電話やFAX中心で非効率なことも時間と費用を浪費する大きな要因です。コロナ禍で対面が制限された際も、もしオンラインでの仕組みが浸透していれば、よりスムーズに業務を続けられたはずです。</p>
+                    <p>だからこそ、私は「運営を支援するシステム」を作ることが業界改善に直結すると考え、独立してCARELAYを開発しました。CARELAYを通じて全国の高齢者介護サービス事業所や障害福祉事業所、関係機関をつなぎ、業務効率化とコスト削減を実現することで、現場をフォローできる運営体制を整え、利用者により良いサービスを届ける循環を目指しています。</p>
+                    <p>そして介護・福祉業界にとどまらず、今後は他の業界にも同様の仕組みを広げていきたい。作って終わりではなく、常にユーザーの声を聞きながら改善し、求められるサービスを提供し続けることを約束します。</p>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- ==================== Company Profile / 会社情報 ==================== -->
+      <section id="company-profile">
+        <div class="section-title">Company Profile</div>
+        <div class="section-subtitle">会社情報</div>
+        
+        <table class="profile-table" aria-label="会社情報">
+            <thead>
+                <tr>
+                    <th colspan="2" style="background-color: #1976d2; color: #fff; text-align: center; border-bottom: none;">
+                        合同会社WaJu 会社概要
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>法人名</th>
+                    <td>合同会社WaJu</td>
+                </tr>
+                <tr>
+                    <th>代表社員</th>
+                    <td>大野 洋</td>
+                </tr>
+                <tr>
+                    <th>設立年月日</th>
+                    <td>2023年4月27日</td>
+                </tr>
+                <tr>
+                    <th>所在地</th>
+                    <td>〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td>
+                </tr>
+                <tr>
+                    <th>事業内容</th>
+                    <td>介護福祉業界のオンラインプラットフォーム「CARELAY」の製作および販売</td>
+                </tr>
+            </tbody>
+        </table>
+      </section>
+
     </div>
   </main>
 
-
+  <!-- index_part3.txtのフッターとスクリプト部分をそのまま利用 -->
   <footer id="site-footer" class="hf-wrap"></footer>
 
   <!-- Mobile drawer -->
@@ -148,7 +444,7 @@
     const $ = s => document.querySelector(s);
     const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
     const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : `${s}, sans-serif`);
+    const withFallback = s => !s ? "" : (/ (sans-serif|serif|monospace) /i.test(s) ? s : `${s}, sans-serif`);
     const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
     const bgParts = (row, def) => {
       const grad = stripQuotes(row?.bg_gradient||"").trim();
@@ -266,6 +562,7 @@
       const headerEl=$("#hf-header-bg");
       const body=document.body;
       body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
+      // フッターのpaddingBottomは不要
       body.style.paddingBottom="0";
     }
 
