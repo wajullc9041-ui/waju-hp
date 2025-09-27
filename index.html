@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>合同会社WaJu | 公式サイト</title>
 
+  <!-- SEO / OGP -->
+  <meta name="description" content="合同会社WaJuの公式サイト。介護・福祉業界の課題を解決するCARELAYの紹介、会社概要や最新のお知らせを発信しています。">
+  <meta name="keywords" content="合同会社WaJu, CARELAY, 介護, 福祉, 求人, 営業, 地域連携">
+
+  <meta property="og:title" content="合同会社WaJu | 公式サイト">
+  <meta property="og:description" content="介護・福祉業界の課題を解決するCARELAYを中心に、社会貢献を目指すWaJuの公式サイト。">
+  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png">
+  <meta property="og:url" content="https://waju.co.jp/">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@waju_corp">
+
+  <meta name="language" content="ja">
+  <meta name="geo.placename" content="Kobe, Japan">
+  <!-- /SEO / OGP -->
+
   <!-- Favicon / PWA -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
@@ -281,11 +298,12 @@
         },
     ];
 
+    // 修正指示2: NEWSセクションのリンク修正
     const NEWS_ITEMS = [
-        { date: "2024.09.27", title: "【重要】ホームページをリニューアルしました", link: "#" },
-        { date: "2024.09.01", title: "新サービス「CARELAY」の提供を開始しました。", link: "#" },
-        { date: "2024.08.15", title: "夏季休業のお知らせとご協力のお願い", link: "#" },
-        { date: "2023.04.01", title: "合同会社WaJuを設立しました。", link: "#" },
+        { date: "2024.09.27", title: "【重要】ホームページをリニューアルしました", link: "blog.html" },
+        { date: "2024.09.01", title: "新サービス「CARELAY」の提供を開始しました。", link: "blog.html" },
+        { date: "2024.08.15", title: "夏季休業のお知らせとご協力のお願い", link: "blog.html" },
+        { date: "2023.04.01", title: "合同会社WaJuを設立しました。", link: "blog.html" },
     ];
 
     const COMPANY_INFO = [
@@ -499,7 +517,8 @@
             <div class="max-w-3xl mx-auto">
                 ${newsList}
                 <div class="text-center mt-8">
-                    <a href="#" class="font-semibold text-sm hover:underline accent-color-text">
+                    <!-- 修正指示2: 「Read More」リンクをblog.htmlに修正 -->
+                    <a href="blog.html" class="font-semibold text-sm hover:underline accent-color-text">
                         Read More &rarr;
                     </a>
                 </div>
@@ -520,6 +539,7 @@
         return SectionLayout('about', 'ABOUT US', ContentBlock({ 
             title: "社会に貢献する、新たな価値創造へ",
             imageUrl: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png",
+            // 修正指示3: ABOUTセクションのリンクをabout.htmlに修正
             linkUrl: "about.html",
             contentHtml: contentHtml,
             isReverse: false,
@@ -539,6 +559,7 @@
         return SectionLayout('service', 'SERVICE', ContentBlock({ 
             title: "介護・福祉業界の課題をオンラインで解決「CARELAY（ケアレイ）」",
             imageUrl: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png",
+            // 修正指示4: SERVICEセクションのリンクをservice.htmlに修正
             linkUrl: "service.html",
             contentHtml: contentHtml,
             isReverse: true,
@@ -623,7 +644,8 @@
             </div>
             <div class="text-center mt-12">
                 ${getIconSVG('mail', 20, 'inline-block mr-2 align-text-bottom', ACCENT_COLOR_HEX)}
-                <a href="mailto:info@waju.co.jp" class="text-lg font-semibold hover:underline accent-color-text">
+                <!-- 修正指示5: 「お問い合わせ」リンクをcontact.htmlに修正 -->
+                <a href="contact.html" class="text-lg font-semibold hover:underline accent-color-text">
                     お問い合わせ
                 </a>
             </div>
