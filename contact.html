@@ -3,20 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>お問い合わせ | 合同会社WaJu</title>
+  <title>合同会社WaJu | 公式サイト</title>
 
-  <!-- Favicon / PWA（indexの設定を踏襲） -->
+  <!-- Favicon / PWA -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
   <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
-  <link rel="icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon.ico?v=1">
   <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
   <meta name="theme-color" content="#0f172a">
 
   <style>
     :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff}
+    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
     a{color:inherit;text-decoration:none}
     main{min-height:40vh}
     .container{max-width:var(--container);margin:0 auto;padding:0 16px}
@@ -30,113 +29,167 @@
     .slot.brand{flex:0 0 auto}
     .slot.nav{flex:1 1 auto}
     .hf-copy{display:flex;width:100%}
-    /* Mobile nav trigger */
     .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
-    .hamburger:hover{background:#fff}
-    .hamburger:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
     .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
-    /* Drawer */
     .drawer{position:fixed;inset:0;pointer-events:none}
     .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
-    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);
-      transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
     .drawer[aria-hidden="false"]{pointer-events:auto}
     .drawer[aria-hidden="false"] .overlay{opacity:1}
     .drawer[aria-hidden="false"] .panel{transform:none}
     .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
-    .drawer .panel header .title{font-weight:700}
     .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
     .drawer .panel nav a{padding:12px 10px;border-radius:10px}
     .drawer .panel nav a:hover{background:#f1f5f9}
-    /* Responsive */
     @media (max-width:768px){
       .container{padding:0 12px}
       :root{--container:100%}
       .slot.nav{display:none}
       .hamburger{display:block;margin-left:auto}
       #site-footer .hf-nav{display:none !important}
-      .form-container{width:100% !important}
     }
 
-    /* ======= Contact form area ======= */
-    main .card{
-      max-width:1000px;margin:24px auto;padding:24px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08)
+    /* index専用 */
+    section{margin:60px auto}
+    h1,h2,h3{margin:0 0 20px;font-weight:700}
+    h1{font-size:36px;text-align:center}
+    h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
+    h3{font-size:20px;margin-bottom:10px}
+    p{margin:0 0 14px}
+    .lead{font-size:20px;text-align:center;margin-bottom:30px;color:#374151}
+    .card{background:#fff;padding:32px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:30px}
+    .topics ul{list-style:none;padding:0}
+    .topics li{margin-bottom:12px;border-bottom:1px solid #e5e7eb;padding-bottom:8px}
+    .cta{text-align:center;margin-top:40px}
+    .cta a{display:inline-block;padding:12px 28px;background:#1976d2;color:#fff;border-radius:8px;text-decoration:none}
+  
+    /* --- フォーム専用スタイル (kari2準拠 + 修正) --- */
+    main { padding-bottom: 120px; } /* フッター固定対策 */
+
+    .contact-intro-text,
+    .privacy-notice {
+      max-width: 800px;
+      margin: 0 auto 20px;
+      padding: 16px 20px;
+      text-align: left;
+      background: #f9fafb;
+      border-radius: 8px;
     }
-    h1{margin:0 0 6px;font-size:28px;text-align:center}
-    .required-note{font-size:14px;color:#555;margin:0 0 20px;text-align:center}
-    .form-container{width:55%;margin:0 auto}
-    .form-group{display:flex;align-items:center;margin-bottom:14px;gap:12px}
-    .form-group label{width:150px;font-weight:700}
-    .form-group input,.form-group select,.form-group textarea{
-      flex:1;padding:10px;border:1px solid #cbd5e1;border-radius:8px
+
+    .required-note {
+      text-align: center;
+      font-size: 14px;
+      color: #ef4444;
+      margin: 10px auto 30px;
+      max-width: 800px;
     }
-    textarea{resize:vertical;height:120px}
-    .privacy{text-align:center;margin:14px 0}
-    .submit-btn{
-      display:block;margin:0 auto;padding:12px 22px;background:#1976d2;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer
-    }
-    .submit-btn:hover{background:#0d47a1}
-    .msg{margin-top:14px;text-align:center;font-size:14px}
+
+    .form-container{max-width:800px;width:100%;margin:0 auto;}
+    .form-group{display:flex;align-items:flex-start;margin-bottom:20px;gap:24px;}
+    .form-group label{width:180px;font-weight:600;padding-top:12px;line-height:1.5;color:#1f2937;}
+    .form-group input,.form-group select,.form-group textarea{flex:1;padding:12px;border:1px solid #d1d5db;border-radius:8px;transition:border-color 0.2s, box-shadow 0.2s;}
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus{border-color:#3b82f6;outline:none;box-shadow:0 0 0 3px rgba(59,130,246,0.2)}
+    textarea{resize:vertical;height:140px}
+
+    .submit-btn{display:block;margin:30px auto 10px;padding:14px 36px;background:linear-gradient(180deg, #3b82f6, #1d4ed8);color:#fff;border:none;border-radius:10px;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(29,78,216,0.3);transition:transform 0.15s ease, box-shadow 0.15s ease;}
+    .submit-btn:hover{background:linear-gradient(180deg, #60a5fa, #3b82f6);transform:translateY(-1px);box-shadow:0 6px 12px rgba(29,78,216,0.4);}
+
+    .msg{margin-top:20px;text-align:center;font-size:16px}
     .msg.success{color:#0a7f3f}
     .msg.error{color:#b91c1c}
-  </style>
+
+    .hidden{display:none}
+    .confirm-row{margin-bottom:12px;}
+    .confirm-label{font-weight:600;color:#1f2937;display:block;margin-bottom:4px;}
+    .confirm-value{padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;}
+
+    .actions{display:flex;gap:16px;justify-content:center;margin-top:20px}
+
+    @media (max-width:768px){
+      .form-group{flex-direction:column;align-items:flex-start;gap:8px;margin-bottom:15px;}
+      .form-group label{width:100%;margin-bottom:0;padding-top:0;}
+      .submit-btn{width:100%;padding:14px 20px;}
+    }
+
+</style>
 </head>
 <body>
-  <!-- Header / Footer are rendered from Supabase settings -->
   <header id="site-header" class="hf-wrap"></header>
 
+  
   <main id="page-content" aria-live="polite">
-    <div class="container">
-      <div class="card">
-        <h1>お問い合わせ</h1>
-        <p class="required-note"><span style="color:red;">*</span> 印は必須項目です。</p>
+    <div class="container contact-content-area">
+      <h1>お問い合わせ</h1>
 
-        <form id="contact-form" novalidate>
-          <div class="form-container">
-            <div class="form-group">
-              <label for="name">お名前 <span style="color:red;">*</span></label>
-              <input id="name" name="name" type="text" required>
-            </div>
-            <div class="form-group">
-              <label for="organization">所属</label>
-              <input id="organization" name="organization" type="text">
-            </div>
-            <div class="form-group">
-              <label for="email">メール <span style="color:red;">*</span></label>
-              <input id="email" name="email" type="email" required>
-            </div>
-            <div class="form-group">
-              <label for="phone">電話番号</label>
-              <input id="phone" name="phone" type="tel">
-            </div>
-            <div class="form-group">
-              <label for="category">お問い合わせ種類 <span style="color:red;">*</span></label>
-              <select id="category" name="category" required>
-                <option value="">選択してください</option>
-                <option value="サービス導入相談">サービス導入相談</option>
-                <option value="業務提携・連携・協業">業務提携・連携・協業</option>
-                <option value="取材・メディア">取材・メディア</option>
-                <option value="その他">その他</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="subject">件名 <span style="color:red;">*</span></label>
-              <input id="subject" name="subject" type="text" required>
-            </div>
-            <div class="form-group">
-              <label for="message">本文 <span style="color:red;">*</span></label>
-              <textarea id="message" name="message" required></textarea>
-            </div>
-            <div class="privacy">
-              <label><input id="agree" name="agree" type="checkbox" required> プライバシーポリシーに同意します</label>
-            </div>
-            <button type="submit" class="submit-btn" id="submit-btn">送信する</button>
-            <div id="feedback" class="msg" role="status" aria-live="polite"></div>
+      <div class="contact-intro-text">
+        <p>合同会社WaJuのホームページをご覧いただき誠にありがとうございます。</p>
+        <p>お問い合わせに関しましては下記のお問い合わせフォームよりご連絡下さい。</p>
+        <p>必須項目（<span style="color:red;">※</span>）をご記入の上、「確認画面へ」のボタンを押してください。</p>
+        <p>いただいた内容を確認でき次第、ご連絡させていただきます。</p>
+        <p>なお、営業メールにはご返信できない場合もございますのでご了承ください。</p>
+      </div>
+
+      <p class="required-note"><span style="color:red;">※</span> 印は必須項目です。</p>
+
+      <!-- 入力フォーム -->
+      <form id="contact-form" novalidate>
+        <div class="form-container" id="form-section">
+          <div class="form-group"><label for="name">お名前 <span style="color:red;">*</span></label><input id="name" name="name" type="text" required></div>
+          <div class="form-group"><label for="organization">所属</label><input id="organization" name="organization" type="text"></div>
+          <div class="form-group"><label for="email">メール <span style="color:red;">*</span></label><input id="email" name="email" type="email" required></div>
+          <div class="form-group"><label for="phone">電話番号</label><input id="phone" name="phone" type="tel"></div>
+          <div class="form-group"><label for="category">お問い合わせ種類 <span style="color:red;">*</span></label>
+            <select id="category" name="category" required>
+              <option value="">選択してください</option>
+              <option value="サービス導入相談">サービス導入相談</option>
+              <option value="業務提携・連携・協業">業務提携・連携・協業</option>
+              <option value="取材・メディア">取材・メディア</option>
+              <option value="その他">その他</option>
+            </select>
           </div>
-        </form>
+          <div class="form-group"><label for="subject">件名 <span style="color:red;">*</span></label><input id="subject" name="subject" type="text" required></div>
+          <div class="form-group"><label for="message">本文 <span style="color:red;">*</span></label><textarea id="message" name="message" required></textarea></div>
+
+          <div class="privacy-notice">
+            <p><strong>個人情報の収集について</strong></p>
+            <p>当サイトは、お客様の個人情報について、お客様の承諾が無い限り第三者に開示、提供を一切致しません。</p>
+            <p>お客様から個人情報をご提供して頂く際には、その利用目的を明示し、その目的以外には利用致しません。</p>
+            <p>そして、ご提供頂いた個人情報を取り扱うにあたり管理責任者を置き、適切な管理を行っております。</p>
+          </div>
+
+          <div class="privacy">
+            <label><input id="agree" name="agree" type="checkbox" required> 
+              <a href="privacypolicy.html" target="_blank" style="color:#1976d2; text-decoration:underline;">プライバシーポリシー</a>に同意します
+            </label>
+          </div>
+
+          <div class="g-recaptcha" data-sitekey="6Le17NcrAAAAACXZT9WCPcjAv3wLsuceh-nIryuJ"></div>
+          <button type="submit" class="submit-btn" id="submit-btn">確認画面へ</button>
+        </div>
+      </form>
+
+      <!-- 確認画面 -->
+      <div id="confirm-section" class="form-container hidden">
+        <div class="confirm-row"><span class="confirm-label">お名前</span><div id="c-name" class="confirm-value"></div></div>
+        <div class="confirm-row"><span class="confirm-label">所属</span><div id="c-organization" class="confirm-value"></div></div>
+        <div class="confirm-row"><span class="confirm-label">メール</span><div id="c-email" class="confirm-value"></div></div>
+        <div class="confirm-row"><span class="confirm-label">電話番号</span><div id="c-phone" class="confirm-value"></div></div>
+        <div class="confirm-row"><span class="confirm-label">お問い合わせ種類</span><div id="c-category" class="confirm-value"></div></div>
+        <div class="confirm-row"><span class="confirm-label">件名</span><div id="c-subject" class="confirm-value"></div></div>
+        <div class="confirm-row"><span class="confirm-label">本文</span><div id="c-message" class="confirm-value"></div></div>
+        <div class="actions">
+          <button id="back-btn" class="submit-btn" type="button" style="background:#9ca3af">戻る</button>
+          <button id="send-btn" class="submit-btn" type="button">送信する</button>
+        </div>
+      </div>
+
+      <!-- 完了画面 -->
+      <div id="thanks-section" class="form-container hidden">
+        <p class="msg success">送信ありがとうございました。<br>内容を確認の上、ご連絡いたします。<br>数秒後にトップページへ戻ります。</p>
       </div>
     </div>
   </main>
+
 
   <footer id="site-footer" class="hf-wrap"></footer>
 
@@ -155,18 +208,16 @@
   </div>
 
   <script type="module">
-    /* ===== Supabase client ===== */
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
     const sb = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-    ); /* index.txt と同一設定を使用 */
+    );
 
-    /* ===== Helpers ===== */
     const $ = s => document.querySelector(s);
     const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
     const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/\b(sans-serif|serif|monospace)\b/i.test(s) ? s : `${s}, sans-serif`);
+    const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : `${s}, sans-serif`);
     const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
     const bgParts = (row, def) => {
       const grad = stripQuotes(row?.bg_gradient||"").trim();
@@ -185,8 +236,17 @@
         sb.from("hf_settings").select("*").eq("area","footer").single()
       ]);
       allMenus = menus||[];
+
+      // =========================
+      // ヘッダー処理ここから
+      // =========================
       renderHeader(hdr||{}, allMenus);
+
+      // =========================
+      // フッター処理ここから
+      // =========================
       renderFooter(ftr||{}, allMenus);
+
       buildDrawer(allMenus);
       adjustOffsets(hdr||{}, ftr||{});
       addResizeObserver(hdr||{}, ftr||{});
@@ -194,23 +254,24 @@
 
     function linkOf(m){ return (m.url ?? m.href ?? '#'); }
 
+    // =========================
+    // ヘッダー処理
+    // =========================
     function renderHeader(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-
       const {bgColor,bgImage} = bgParts(d, "#0f172a");
       const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
       const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
-      const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
+      const paddingY = d.padding || "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-
       $("#site-header").innerHTML = `
-        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
+        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
           <div class="container">
             <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
               <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
                 <div class="hf-brand">
-                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" onerror="this.style.display='none'" style="max-height:${num(d.logo_height||d.bar_height,60)}px">`:""}
+                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||60,60)}px">`:""}
                   <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
                 </div>
               </div>
@@ -223,139 +284,144 @@
             </div>
           </div>
         </div>`;
-
-      // 確実固定
       const bg = $("#hf-header-bg");
       if(d.header_fixed && bg){
-        Object.assign(bg.style, {position:"fixed", top:"0", left:"0", right:"0", zIndex:"1000", width:"100%"});
+        Object.assign(bg.style,{position:"fixed",top:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
       }
-
-      const btn = $("#hamburger");
-      if(btn){
-        btn.addEventListener("click", ()=> {
-          const open = $("#mobile-drawer").getAttribute("aria-hidden")==="false";
-          if(open) closeDrawer(); else openDrawer();
-        });
-      }
+      $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
     }
 
+    // =========================
+    // フッター処理
+    // =========================
     function renderFooter(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-
       const {bgColor,bgImage} = bgParts(d, "#0f172a");
       const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
       const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
-      const paddingY = (d.padding && d.padding.trim()) ? d.padding.split(' ')[0] : "8px 0";
+      const paddingY = d.padding || "8px 0";
       const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-
-      const inner = d.layout_mode==="row"
-        ? `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`
-        : (d.layout_mode==="nav-top"
-          ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
-             <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
-          : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight||'normal'};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-             <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`);
-
+      const inner = d.layout_mode==="nav-top"
+        ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
+           <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
+        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
+           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
       $("#site-footer").innerHTML = `
-        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand} !important;background-color:${bgColor} !important;background-image:${bgImage==='none'?'none':bgImage} !important;">
+        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
           <div class="container">
             <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
               ${inner}
             </div>
           </div>
         </div>`;
-
-      if(d.footer_fixed){
-        const wrap=$("#hf-footer-bg");
-        Object.assign(wrap.style, {position:"fixed", left:"0", right:"0", bottom:"0"});
+      const bg = $("#hf-footer-bg");
+      if(d.footer_fixed && bg){
+        Object.assign(bg.style,{position:"fixed",bottom:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
       }
     }
 
-    /* Drawer: build & control */
     function buildDrawer(menus){
-      const list = (menus||[]).filter(m=>m.is_active);
-      const nav = $("#drawer-nav");
-      nav.innerHTML = list.map(m => `<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      $("#drawer-close").addEventListener("click", closeDrawer);
-      $("#mobile-drawer [data-close]").addEventListener("click", closeDrawer);
-      document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeDrawer(); });
-    }
-    function openDrawer(){
-      $("#mobile-drawer").setAttribute("aria-hidden","false");
-      $("#hamburger")?.setAttribute("aria-expanded","true");
-      document.body.style.overflow="hidden";
-      setTimeout(()=> $("#drawer-nav a")?.focus(), 30);
-    }
-    function closeDrawer(){
-      $("#mobile-drawer").setAttribute("aria-hidden","true");
-      $("#hamburger")?.setAttribute("aria-expanded","false");
-      document.body.style.overflow="";
-      $("#hamburger")?.focus();
+      const items = menus.filter(m=>m.is_active).map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      $("#drawer-nav").innerHTML = items;
     }
 
-    /* Layout padding for fixed header/footer */
-    function adjustOffsets(hdr, ftr){
-      const headerEl = $("#hf-header-bg");
-      const footerEl = $("#hf-footer-bg");
-      document.body.style.paddingTop = (hdr?.header_fixed && headerEl)
-        ? headerEl.getBoundingClientRect().height + "px"
-        : "";
-      document.body.style.paddingBottom = (ftr?.footer_fixed && footerEl)
-        ? footerEl.getBoundingClientRect().height + "px"
-        : "";
-    }
-    function addResizeObserver(hdr,ftr){
-      const ro = new ResizeObserver(()=>adjustOffsets(hdr,ftr));
-      const h = $("#hf-header-bg"), f = $("#hf-footer-bg");
-      if(h) ro.observe(h); if(f) ro.observe(f);
-      window.addEventListener('resize', ()=>adjustOffsets(hdr,ftr));
+    function openDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","false");$("#hamburger").setAttribute("aria-expanded","true");}
+    function closeDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","true");$("#hamburger").setAttribute("aria-expanded","false");}
+    $("#drawer-close")?.addEventListener("click", closeDrawer);
+    $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
+
+    function adjustOffsets(h,f){
+      const headerEl=$("#hf-header-bg");
+      const body=document.body;
+      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
+      body.style.paddingBottom="0";
     }
 
-    /* ===== Contact form: insert into contact_messages ===== */
-    async function handleSubmit(e){
+    function addResizeObserver(h,f){
+      const ro=new ResizeObserver(()=>adjustOffsets(h,f));
+      const headerEl=$("#hf-header-bg");const footerEl=$("#hf-footer-bg");
+      if(headerEl) ro.observe(headerEl); if(footerEl) ro.observe(footerEl);
+    }
+
+    loadHF();
+  </script>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    const sb = createClient(
+      "https://htnmjsqgoapvuanrsuma.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+    );
+
+    const form = document.getElementById("contact-form");
+    const formSec = document.getElementById("form-section");
+    const confirmSec = document.getElementById("confirm-section");
+    const thanksSec = document.getElementById("thanks-section");
+
+    const cName = document.getElementById("c-name");
+    const cOrganization = document.getElementById("c-organization");
+    const cEmail = document.getElementById("c-email");
+    const cPhone = document.getElementById("c-phone");
+    const cCategory = document.getElementById("c-category");
+    const cSubject = document.getElementById("c-subject");
+    const cMessage = document.getElementById("c-message");
+
+    let payload = {};
+
+    form.addEventListener("submit", e => {
       e.preventDefault();
-      const btn = $("#submit-btn");
-      const fb = $("#feedback");
-      fb.textContent = "";
-      btn.disabled = true;
+      if(!form.reportValidity()) return;
 
-      const form = e.currentTarget;
-      if(!form.reportValidity()){
-        btn.disabled = false;
+      const token = grecaptcha.getResponse();
+      if(!token){
+        alert("reCAPTCHAを完了してください。");
         return;
       }
 
-      const payload = {
-        name: $("#name").value.trim(),
-        organization: $("#organization").value.trim() || null,
-        email: $("#email").value.trim(),
-        phone: $("#phone").value.trim() || null,
-        category: $("#category").value,
-        subject: $("#subject").value.trim(),
-        message: $("#message").value.trim(),
-        agree: $("#agree").checked,
-        meta_user_agent: navigator.userAgent || null,
-        meta_path: location.pathname || null
+      payload = {
+        name: document.getElementById("name").value.trim(),
+        organization: document.getElementById("organization").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        category: document.getElementById("category").value,
+        subject: document.getElementById("subject").value.trim(),
+        message: document.getElementById("message").value.trim(),
+        agree: document.getElementById("agree").checked,
+        meta_user_agent: navigator.userAgent,
+        meta_path: location.pathname
       };
+      cName.textContent = payload.name;
+      cOrganization.textContent = payload.organization || "-";
+      cEmail.textContent = payload.email;
+      cPhone.textContent = payload.phone || "-";
+      cCategory.textContent = payload.category;
+      cSubject.textContent = payload.subject;
+      cMessage.textContent = payload.message;
 
+      formSec.classList.add("hidden");
+      confirmSec.classList.remove("hidden");
+    });
+
+    document.getElementById("back-btn").addEventListener("click", ()=>{
+      confirmSec.classList.add("hidden");
+      formSec.classList.remove("hidden");
+    });
+
+    document.getElementById("send-btn").addEventListener("click", async ()=>{
+      const token = grecaptcha.getResponse();
+      if(!token){ alert("reCAPTCHAを完了してください。"); return; }
       const { error } = await sb.from("contact_messages").insert(payload);
+      confirmSec.classList.add("hidden");
       if(error){
-        console.error(error);
-        fb.className = "msg error";
-        fb.textContent = "送信に失敗しました。時間をおいて再度お試しください。";
-      }else{
-        form.reset();
-        fb.className = "msg success";
-        fb.textContent = "送信しました。ありがとうございます。";
+        alert("送信に失敗しました。時間をおいて再度お試しください。");
+        formSec.classList.remove("hidden");
+        return;
       }
-      btn.disabled = false;
-    }
-
-    /* Boot */
-    loadHF();
-    $("#contact-form").addEventListener("submit", handleSubmit);
+      thanksSec.classList.remove("hidden");
+      setTimeout(()=>location.href="/index.html",5000);
+    });
   </script>
+
 </body>
 </html>
