@@ -89,7 +89,7 @@
     .form-group label{width:180px;font-weight:600;padding-top:12px;line-height:1.5;color:#1f2937;}
     .form-group input,.form-group select,.form-group textarea{flex:1;padding:12px;border:1px solid #d1d5db;border-radius:8px;transition:border-color 0.2s, box-shadow 0.2s;}
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus{border-color:#3b82f6;outline:none;box-shadow:0 0 0 3px rgba(59,130,246,0.2)}
-    textarea{resize:vertical;height:140px}
+    textarea{resize:vertical;height:140px;max-width:600px;}
 
     .submit-btn{display:block;margin:30px auto 10px;padding:14px 36px;background:linear-gradient(180deg, #3b82f6, #1d4ed8);color:#fff;border:none;border-radius:10px;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(29,78,216,0.3);transition:transform 0.15s ease, box-shadow 0.15s ease;}
     .submit-btn:hover{background:linear-gradient(180deg, #60a5fa, #3b82f6);transform:translateY(-1px);box-shadow:0 6px 12px rgba(29,78,216,0.4);}
@@ -123,11 +123,13 @@
     <div class="container contact-content-area">
       <h1>お問い合わせ</h1>
 
+      
       <div class="contact-intro-text">
         <p>必須項目（<span style="color:red;">※</span>）をご記入の上、「確認画面へ」のボタンを押してください。</p>
         <p>いただいた内容を確認でき次第、ご連絡させていただきます。</p>
         <p>なお、営業メールにはご返信できない場合もございますのでご了承ください。</p>
       </div>
+
 
       <p class="required-note"><span style="color:red;">※</span> 印は必須項目です。</p>
 
@@ -392,7 +394,7 @@
       cPhone.textContent = payload.phone || "-";
       cCategory.textContent = payload.category;
       cSubject.textContent = payload.subject;
-      cMessage.textContent = payload.message;
+      cMessage.innerHTML = payload.message.replace(/\n/g, "<br>");
 
       formSec.classList.add("hidden");
       confirmSec.classList.remove("hidden");
