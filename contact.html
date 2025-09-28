@@ -13,9 +13,28 @@
   <meta name="theme-color" content="#0f172a">
 
   <style>
-    :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
+    /* ------------------------------------------------------------------ */
+    /* 基本・共通スタイル (ヘッダー/フッターの表示ロジックに影響しない範囲で調整) */
+    /* ------------------------------------------------------------------ */
+    :root{
+      --container:1000px;
+      --gap:16px;
+      --shadow:0 4px 12px rgba(0,0,0,.08);
+      --shadow-lg:0 8px 20px rgba(0,0,0,.12);
+      --blue-main:#1d4ed8; /* 濃い青 */
+      --blue-accent:#3b82f6; /* 明るい青 */
+      --gray-bg:#f4f7fa;
+      --text-color:#1f2937;
+    }
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
+    body{
+      margin:0;
+      /* フォントをモダンなものに変更 */
+      font-family:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+      color:var(--text-color);
+      background:var(--gray-bg); /* 全体の背景をソフトなグレーに */
+      line-height:1.7
+    }
     a{color:inherit;text-decoration:none}
     main{min-height:40vh}
     .container{max-width:var(--container);margin:0 auto;padding:0 16px}
@@ -49,69 +68,174 @@
       #site-footer .hf-nav{display:none !important}
     }
 
-    /* index専用 */
+    /* ------------------------------------------------------------------ */
+    /* index専用 (お問い合わせページでも使用されるスタイルをモダンに調整) */
+    /* ------------------------------------------------------------------ */
     section{margin:60px auto}
     h1,h2,h3{margin:0 0 20px;font-weight:700}
-    h1{font-size:36px;text-align:center}
-    h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
+    h1{font-size:32px;text-align:center; color:var(--blue-main); margin-top:40px;} /* サイズと色を調整 */
+    h2{font-size:26px;border-left:4px solid var(--blue-accent);padding-left:10px;margin-bottom:20px; color:#1f2937;}
     h3{font-size:20px;margin-bottom:10px}
     p{margin:0 0 14px}
     .lead{font-size:20px;text-align:center;margin-bottom:30px;color:#374151}
-    .card{background:#fff;padding:32px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:30px}
+    .card{background:#fff;padding:32px;border-radius:12px;box-shadow:var(--shadow);margin-bottom:30px}
     .topics ul{list-style:none;padding:0}
     .topics li{margin-bottom:12px;border-bottom:1px solid #e5e7eb;padding-bottom:8px}
     .cta{text-align:center;margin-top:40px}
-    .cta a{display:inline-block;padding:12px 28px;background:#1976d2;color:#fff;border-radius:8px;text-decoration:none}
+    .cta a{display:inline-block;padding:12px 28px;background:var(--blue-accent);color:#fff;border-radius:8px;text-decoration:none}
   
-    /* --- フォーム専用スタイル (kari2準拠 + 修正) --- */
-    main { padding-bottom: 120px; } /* フッター固定対策 */
+    /* ------------------------------------------------------------------ */
+    /* フォーム専用スタイル (大幅刷新) */
+    /* ------------------------------------------------------------------ */
+    main { padding-bottom: 100px; } 
 
-    .contact-intro-text { text-align: center; margin-bottom: 20px; padding: 16px 20px; background: #f9fafb; border-radius: 8px; }
+    .contact-intro-text { 
+      text-align: center; 
+      margin-bottom: 24px; 
+      padding: 20px; 
+      background: #eef2ff; /* 薄い青の背景 */
+      border-radius: 12px; /* 角丸を適用 */
+      border-left: 4px solid var(--blue-accent); /* アクセントライン */
+      color: #374151;
+    }
 
-.privacy-notice {
+    .privacy-notice {
       max-width: 800px;
-      margin: 0 auto 20px;
-      padding: 16px 20px;
+      margin: 0 auto 30px;
+      padding: 20px;
       text-align: left;
-      background: #f9fafb;
-      border-radius: 8px;
+      background: #f0f4f8; /* 柔らかい背景色 */
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      font-size: 15px;
     }
 
+    .privacy-notice strong { color: var(--blue-main); font-size: 16px; display: block; margin-bottom: 8px;}
+
+    /* required-note のスタイルは残しますが、HTMLから要素を削除します */
     .required-note {
-      text-align: center;
-      font-size: 14px;
+      font-size: 15px;
       color: #ef4444;
-      margin: 10px auto 30px;
-      max-width: 800px;
+      margin: 10px auto 20px;
+      max-width: 1000px;
+      text-align: right; /* 右寄せに変更 */
     }
 
-    .form-container{max-width:800px;width:100%;margin:0 auto;}
-    .form-group{display:flex;align-items:flex-start;margin-bottom:20px;gap:24px;}
-    .form-group label{width:180px;font-weight:600;padding-top:12px;line-height:1.5;color:#1f2937;}
-    .form-group input,.form-group select,.form-group textarea{flex:1;padding:12px;border:1px solid #d1d5db;border-radius:8px;transition:border-color 0.2s, box-shadow 0.2s;}
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus{border-color:#3b82f6;outline:none;box-shadow:0 0 0 3px rgba(59,130,246,0.2)}
+    .form-container{
+      max-width:800px;
+      width:100%;
+      margin:40px auto;
+      padding:40px;
+      background:#ffffff;
+      border-radius:16px; /* 角丸を大きく */
+      box-shadow:var(--shadow-lg); /* 影を強調 */
+    }
+
+    .form-group{
+      display:flex;
+      align-items:flex-start;
+      margin-bottom:24px; /* 間隔を広く */
+      border-bottom: 1px solid #e5e7eb; /* グループ間に区切り線 */
+      padding-bottom: 20px;
+      gap: 24px;
+    }
+
+    .form-group label{
+      width:150px; /* ラベル幅を調整 */
+      font-weight:700;
+      padding-top:10px;
+      line-height:1.5;
+      color:var(--blue-main); /* ラベルの色を濃く */
+      flex-shrink: 0;
+      font-size: 15px;
+    }
+
+    .form-group input,.form-group select,.form-group textarea{
+      flex:1;
+      padding:10px 14px; /* パディングを調整 */
+      border:2px solid #e5e7eb; /* 枠線を太く、目立たなく */
+      border-radius:10px; /* 角丸を大きく */
+      transition:border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      background: #f9fafb; /* 背景色を薄くつける */
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus{
+      border-color:var(--blue-accent);
+      outline:none;
+      box-shadow:0 0 0 4px rgba(59,130,246,0.15); /* フォーカス時の影を調整 */
+      background: #ffffff;
+    }
     textarea{resize:vertical;height:140px;max-width:600px;}
 
-    .submit-btn{display:block;margin:30px auto 10px;padding:14px 36px;background:linear-gradient(180deg, #3b82f6, #1d4ed8);color:#fff;border:none;border-radius:10px;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(29,78,216,0.3);transition:transform 0.15s ease, box-shadow 0.15s ease;}
-    .submit-btn:hover{background:linear-gradient(180deg, #60a5fa, #3b82f6);transform:translateY(-1px);box-shadow:0 6px 12px rgba(29,78,216,0.4);}
+    .submit-btn{
+      display:block;
+      margin:30px auto 10px;
+      padding:16px 40px; /* パディングを大きく */
+      background:linear-gradient(45deg, var(--blue-main), #4f46e5); /* グラデーションを洗練 */
+      color:#fff;
+      border:none;
+      border-radius:12px; /* 角丸を調整 */
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 6px 15px rgba(29,78,216,0.4); /* 影を強調 */
+      transition:transform 0.15s ease, box-shadow 0.15s ease;
+      min-width: 200px;
+    }
 
-    .msg{margin-top:20px;text-align:center;font-size:16px}
-    .msg.success{color:#0a7f3f}
+    .submit-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 18px rgba(29,78,216,0.5); /* ホバー時の影を強調 */
+      background:linear-gradient(45deg, #2563eb, #6366f1);
+    }
+
+    .msg{margin-top:20px;text-align:center;font-size:18px}
+    .msg.success{color:#0a7f3f; font-weight: 600;}
     .msg.error{color:#b91c1c}
 
     .hidden{display:none}
-    .privacy { text-align: center; margin-top: 20px; }
+    .privacy { text-align: center; margin-top: 20px; font-size: 15px;}
     .privacy label { display: inline-block; }
-    .confirm-row{margin-bottom:12px;}
-    .confirm-label{font-weight:600;color:#1f2937;display:block;margin-bottom:4px;}
-    .confirm-value{padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;}
+    .privacy a { color: var(--blue-accent); }
 
-    .actions{display:flex;gap:16px;justify-content:center;margin-top:20px}
+    /* 確認画面のスタイル */
+    .confirm-row{margin-bottom:15px; padding-bottom:10px; border-bottom: 1px dashed #e5e7eb;}
+    .confirm-label{font-weight:700;color:var(--blue-main);display:block;margin-bottom:6px; font-size: 15px;}
+    .confirm-value{
+      padding:10px 14px;
+      background:#eef2ff; /* 確認画面の値を強調 */
+      border:none;
+      border-radius:8px;
+      line-height: 1.6;
+      white-space: pre-wrap; /* 本文の改行を保持 */
+    }
+
+    .actions{display:flex;gap:16px;justify-content:center;margin-top:30px}
+    .actions #back-btn {
+      background: #9ca3af;
+      box-shadow:0 4px 10px rgba(156, 163, 175, 0.4);
+    }
+    .actions #back-btn:hover {
+      background: #6b7280;
+      transform:translateY(-1px);
+      box-shadow:0 6px 12px rgba(107, 114, 128, 0.5);
+    }
 
     @media (max-width:768px){
-      .form-group{flex-direction:column;align-items:flex-start;gap:8px;margin-bottom:15px;}
+      .form-container { padding: 30px 20px; margin: 20px auto; }
+      .form-group{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:6px;
+        margin-bottom:20px;
+        padding-bottom: 15px;
+      }
       .form-group label{width:100%;margin-bottom:0;padding-top:0;}
       .submit-btn{width:100%;padding:14px 20px;}
+      h1 { font-size: 28px; margin-bottom: 30px; }
+      /* required-note のスタイルは残しますが、HTMLから要素を削除します */
+      .required-note { text-align: center; margin: 10px auto 20px; }
+      .contact-intro-text { padding: 15px; font-size: 15px;}
     }
 
 </style>
@@ -125,8 +249,8 @@
       <h1>お問い合わせ</h1>
 
       
-      <p class="required-note"><span style="color:red;">※</span> 印は必須項目です。</p>
-
+      <!-- 「※ 印は必須項目です。」の行を削除しました -->
+      
       <!-- 入力フォーム -->
       <form id="contact-form" novalidate>
         <div class="form-container" id="form-section">
@@ -163,7 +287,7 @@
 
           <div class="privacy">
             <label><input id="agree" name="agree" type="checkbox" required> 
-              <a href="privacypolicy.html" target="_blank" style="color:#1976d2; text-decoration:underline;">プライバシーポリシー</a>に同意します
+              <a href="privacypolicy.html" target="_blank" style="text-decoration:underline;">プライバシーポリシー</a>に同意します
             </label>
           </div>
 
@@ -183,7 +307,7 @@
         <div class="confirm-row"><span class="confirm-label">本文</span><div id="c-message" class="confirm-value"></div></div>
         <div class="g-recaptcha" data-sitekey="6Le17NcrAAAAACXZT9WCPcjAv3wLsuceh-nIryuJ" style="margin-bottom:20px; display:flex; justify-content:center;"></div>
         <div class="actions">
-          <button id="back-btn" class="submit-btn" type="button" style="background:#9ca3af">戻る</button>
+          <button id="back-btn" class="submit-btn" type="button">戻る</button>
           <button id="send-btn" class="submit-btn" type="button">送信する</button>
         </div>
       </div>
@@ -222,7 +346,7 @@
     const $ = s => document.querySelector(s);
     const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
     const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : `${s}, sans-serif`);
+    const withFallback = s => !s ? "" : (/ (sans-serif|serif|monospace) /i.test(s) ? s : `${s}, sans-serif`);
     const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
     const bgParts = (row, def) => {
       const grad = stripQuotes(row?.bg_gradient||"").trim();
@@ -311,7 +435,7 @@
         ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
            <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
         : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
+           <nav class="hf-nav" id="footer-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
       $("#site-footer").innerHTML = `
         <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
           <div class="container">
@@ -353,6 +477,9 @@
   </script>
 
   <script type="module">
+    // ------------------------------------------------------------------
+    // フォームの機能ロジック (変更なし)
+    // ------------------------------------------------------------------
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
     const sb = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
@@ -396,6 +523,7 @@
       cPhone.textContent = payload.phone || "-";
       cCategory.textContent = payload.category;
       cSubject.textContent = payload.subject;
+      // 確認画面で改行を表示するためにinnerHTMLと<br>を使用 (ロジックは維持)
       cMessage.innerHTML = payload.message.replace(/\n/g, "<br>");
 
       formSec.classList.add("hidden");
