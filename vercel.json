@@ -1,3 +1,5 @@
-git add vercel.json
-git commit -m "Add vercel rewrites for blog detail"
-git push
+{
+  "rewrites": [
+    { "source": "/blog/:slug", "destination": "/blog-detail.html" }
+  ]
+}
