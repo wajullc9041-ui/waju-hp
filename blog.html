@@ -1,1 +1,74 @@
+<!-- === index_part1をそのまま利用 === -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ブログ一覧 | 合同会社WaJu</title>
+
+  <!-- FaviconやCSSなどは index_part1 と同じ -->
+  <!-- ... index_part1 の内容 ... -->
+
+  <style>
+    /* blog専用 */
+    .blog-list { list-style:none; padding:0; margin:40px auto; max-width:var(--container);}
+    .blog-list li { display:flex; gap:16px; border-bottom:1px solid #e5e7eb; padding:16px 0; align-items:flex-start; }
+    .blog-list img { width:160px; height:100px; object-fit:cover; border-radius:8px; background:#f3f4f6;}
+    .blog-list .info { flex:1; }
+    .blog-list .title { font-size:18px; font-weight:700; margin-bottom:6px; color:#1976d2;}
+    .blog-list .date { font-size:14px; color:#6b7280; margin-bottom:8px;}
+    .blog-list .desc { font-size:15px; color:#374151; }
+
+    /* カード型に切り替える場合 */
+    .blog-cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:20px; list-style:none; padding:0; margin:40px auto; max-width:var(--container);}
+    .blog-cards li { background:#fff; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.06);}
+    .blog-cards img { width:100%; height:180px; object-fit:cover; background:#f3f4f6;}
+    .blog-cards .info { padding:14px;}
+    .blog-cards .title { font-size:18px; font-weight:700; margin-bottom:6px; color:#1976d2;}
+    .blog-cards .date { font-size:14px; color:#6b7280; margin-bottom:8px;}
+    .blog-cards .desc { font-size:15px; color:#374151; }
+  </style>
+</head>
+<body>
+  <header id="site-header" class="hf-wrap"></header>
+
+  <main class="container">
+    <h1>ブログ一覧</h1>
+    <ul id="blog-list" class="blog-list"></ul>
+  </main>
+
+  <!-- === index_part3をそのまま利用 === -->
+  <footer id="site-footer" class="hf-wrap"></footer>
+  <!-- Mobile drawer など index_part3 の内容をここに貼る -->
+
+  <script type="module">
+    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+    const sb = createClient(
+      "https://htnmjsqgoapvuanrsuma.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+    );
+
+    async function loadArticles(){
+      const { data, error } = await sb.from("articles").select("*").eq("published", true).order("created_at", { ascending: false });
+      if(error){ console.error(error); return; }
+
+      const ul = document.getElementById("blog-list");
+      ul.innerHTML = data.map(a => `
+        <li>
+          <a href="/blog/${a.slug}">
+            <img src="${a.thumbnail_url || '/images/noimage.png'}" alt="${a.title}">
+          </a>
+          <div class="info">
+            <a href="/blog/${a.slug}" class="title">${a.title}</a>
+            <div class="date">${new Date(a.created_at).toLocaleDateString()}</div>
+            <p class="desc">${a.description || ""}</p>
+          </div>
+        </li>
+      `).join("");
+    }
+
+    loadArticles();
+  </script>
+</body>
+</html>
 
