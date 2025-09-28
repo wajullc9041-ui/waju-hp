@@ -99,6 +99,8 @@
     .msg.error{color:#b91c1c}
 
     .hidden{display:none}
+    .privacy { text-align: center; margin-top: 20px; }
+    .privacy label { display: inline-block; }
     .confirm-row{margin-bottom:12px;}
     .confirm-label{font-weight:600;color:#1f2937;display:block;margin-bottom:4px;}
     .confirm-value{padding:8px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;}
@@ -164,7 +166,7 @@
           </div>
 
           <div class="g-recaptcha" data-sitekey="6Le17NcrAAAAACXZT9WCPcjAv3wLsuceh-nIryuJ"></div>
-          <button type="submit" class="submit-btn" id="submit-btn">確認画面へ</button>
+          <button type="button" class="submit-btn" id="submit-btn">確認画面へ</button>
         </div>
       </form>
 
@@ -369,7 +371,7 @@
 
     let payload = {};
 
-    form.addEventListener("submit", e => {
+    document.getElementById("submit-btn").addEventListener("click", e => {
       e.preventDefault();
       if(!form.reportValidity()) return;
 
