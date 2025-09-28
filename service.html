@@ -1,10 +1,17 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>合同会社WaJu | 公式サイト</title>
+  <title>CARELAY（ケアレイ） | 介護・福祉業界の業務支援プラットフォーム</title>
+
+  <!-- SEO / OGP -->
+  <meta name="description" content="介護・福祉業界の運営側を支援するプラットフォームCARELAY（ケアレイ）。現場経験から生まれた直感的ツールで、業務効率化とコスト削減を実現します。">
+  <meta property="og:title" content="CARELAY（ケアレイ） | 業務支援プラットフォーム">
+  <meta property="og:description" content="介護・福祉業界の運営側を支援するプラットフォームCARELAY（ケアレイ）。現場経験から生まれた直感的ツールで、業務効率化とコスト削減を実現します。">
+  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png">
+  <meta property="og:url" content="https://waju.co.jp/service_carelay.html">
+  <meta property="og:type" content="article">
 
   <!-- Favicon / PWA -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
@@ -14,11 +21,12 @@
   <meta name="theme-color" content="#0f172a">
 
   <style>
+    /* index_part1.txtのCSSをそのまま利用 */
     :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
     a{color:inherit;text-decoration:none}
-    main{min-height:40vh}
+    main{min-height:40vh;padding-bottom:80px;}
     .container{max-width:var(--container);margin:0 auto;padding:0 16px}
     .hf-wrap{width:100%}
     .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
@@ -50,26 +58,798 @@
       #site-footer .hf-nav{display:none !important}
     }
 
-    /* index専用 */
-    section{margin:60px auto}
-    h1,h2,h3{margin:0 0 20px;font-weight:700}
-    h1{font-size:36px;text-align:center}
-    h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
-    h3{font-size:20px;margin-bottom:10px}
-    p{margin:0 0 14px}
-    .lead{font-size:20px;text-align:center;margin-bottom:30px;color:#374151}
-    .card{background:#fff;padding:32px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:30px}
-    .topics ul{list-style:none;padding:0}
-    .topics li{margin-bottom:12px;border-bottom:1px solid #e5e7eb;padding-bottom:8px}
-    .cta{text-align:center;margin-top:40px}
-    .cta a{display:inline-block;padding:12px 28px;background:#1976d2;color:#fff;border-radius:8px;text-decoration:none}
+    /* ページ共通スタイル */
+    section{margin:80px auto}
+    h2,h3{margin:0 0 20px;font-weight:700}
+    h2{font-size:32px;text-align:center;color:#1976d2;margin-bottom:10px}
+    h3{font-size:24px;text-align:center;color:#0f172a;margin-bottom:40px}
+    p{margin:0 0 16px}
+    
+    /* LP共通のセクションタイトルスタイル */
+    .lp-section-title {
+        font-size: 38px;
+        font-weight: 900;
+        color: #0f172a;
+        text-align: center;
+        margin-bottom: 5px;
+        letter-spacing: 1px;
+    }
+    .lp-section-subtitle {
+        font-size: 20px;
+        font-weight: 500;
+        color: #1976d2;
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    .lp-section-subtitle::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 3px;
+        background: #1976d2;
+        margin: 0 auto;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    /* ==================== Hero Section ==================== */
+    #hero {
+        background: linear-gradient(135deg, #1976d2 0%, #0f172a 100%);
+        padding: 100px 0 80px;
+        color: #fff;
+        text-align: center;
+        margin-top: calc(-80px - 8px); /* ヘッダーの初期高さ分を調整 */
+    }
+    #hero-title {
+        font-size: 56px;
+        font-weight: 900;
+        margin-bottom: 20px;
+        line-height: 1.2;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    #hero-subtitle {
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 40px;
+        color: #e0f2fe;
+    }
+    .hero-image {
+        max-width: 600px;
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .hero-catch {
+        font-size: 28px;
+        font-weight: 700;
+        background: #fef08a; /* Yellow background */
+        color: #0f172a;
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 8px;
+        margin-top: 40px;
+        animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(254, 240, 138, 0.7); }
+        70% { transform: scale(1.02); box-shadow: 0 0 0 15px rgba(254, 240, 138, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(254, 240, 138, 0); }
+    }
+    
+    /* CTA Button (Common) */
+    .cta-button {
+        display: inline-block;
+        background: #e91e63; /* Pink/Red for strong action */
+        color: #fff;
+        font-size: 24px;
+        font-weight: 700;
+        padding: 15px 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-top: 30px;
+    }
+    .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(233, 30, 99, 0.6);
+    }
+
+    /* ==================== Problem/Issue Section ==================== */
+    #problem {
+        background: #f8fafc;
+        padding: 80px 0;
+    }
+    .problem-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+    .problem-card {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        text-align: center;
+        border-top: 5px solid #e91e63;
+    }
+    .problem-card .icon {
+        font-size: 40px;
+        color: #e91e63;
+        margin-bottom: 15px;
+    }
+    .problem-card h4 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 10px;
+    }
+    .problem-card p {
+        font-size: 16px;
+        color: #374151;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    /* ==================== Solution Section ==================== */
+    #solution {
+        padding: 80px 0;
+    }
+    .solution-content {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+    }
+    .solution-text {
+        flex: 1;
+    }
+    .solution-text h4 {
+        font-size: 32px;
+        color: #1976d2;
+        font-weight: 800;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+    .solution-text p {
+        font-size: 18px;
+        color: #374151;
+    }
+    .solution-image {
+        flex: 0 0 400px;
+        max-width: 400px;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    /* ==================== Features Section ==================== */
+    #features {
+        background: #e0f2fe; /* Light blue */
+        padding: 80px 0;
+    }
+    .feature-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-top: 40px;
+    }
+    .feature-card {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(25, 118, 210, 0.15);
+        border: 1px solid #bfdbfe;
+        transition: transform 0.3s;
+    }
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+    .feature-card .icon {
+        font-size: 30px;
+        color: #1976d2;
+        background: #e0f2fe;
+        padding: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+    .feature-card h4 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+    .feature-card p {
+        font-size: 15px;
+        color: #374151;
+        line-height: 1.6;
+        margin-bottom: 0;
+        text-align: left;
+    }
+    
+    /* 機能イメージ図 (Page 7) */
+    .function-map {
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        margin-top: 50px;
+        box-shadow: var(--shadow);
+    }
+    .map-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #e91e63;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .connection-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr 1fr; /* 3列レイアウト */
+        grid-template-rows: repeat(3, auto);
+        gap: 20px 0;
+        align-items: center;
+        justify-items: center;
+        position: relative;
+    }
+
+    .carelay-center {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+        padding: 15px 25px;
+        background: #1976d2;
+        color: #fff;
+        font-size: 26px;
+        font-weight: 800;
+        border-radius: 50px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        z-index: 10;
+        text-align: center;
+    }
+    
+    .stakeholder {
+        background: #f1f5f9;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-weight: 600;
+        color: #0f172a;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        z-index: 5;
+    }
+
+    .stakeholder:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; } /* 病院 */
+    .stakeholder:nth-child(2) { grid-column: 3 / 4; grid-row: 1 / 2; } /* 訪問介護 */
+    .stakeholder:nth-child(3) { grid-column: 1 / 2; grid-row: 3 / 4; } /* デイサービス */
+    .stakeholder:nth-child(4) { grid-column: 3 / 4; grid-row: 3 / 4; } /* 福祉用具 */
+    .stakeholder:nth-child(5) { grid-column: 1 / 2; grid-row: 2 / 3; transform: translateY(-30px); } /* ケアマネ */
+    .stakeholder:nth-child(6) { grid-column: 3 / 4; grid-row: 2 / 3; transform: translateY(-30px); } /* 薬局 */
+
+    /* 接続線 (SVGで実装するのが理想的だが、簡易的な表現としてCSSで対応) */
+    .connection-grid::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 2px;
+        background: #bfdbfe;
+        z-index: 1;
+    }
+    .connection-grid::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: 2px;
+        background: #bfdbfe;
+        z-index: 1;
+    }
+    /* 追加の接続線調整（ケアマネ、薬局の位置に合わせて） */
+    .connection-grid .stakeholder:nth-child(5)::before,
+    .connection-grid .stakeholder:nth-child(6)::before {
+        content: '';
+        position: absolute;
+        width: 150%;
+        height: 2px;
+        background: #bfdbfe;
+        z-index: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* ==================== Benefit Section ==================== */
+    #benefit {
+        padding: 80px 0;
+        background: #fff;
+    }
+    .benefit-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+    .benefit-item {
+        background: linear-gradient(145deg, #fff 0%, #f0f9ff 100%);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(25, 118, 210, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        border-left: 6px solid #1976d2;
+    }
+    .benefit-item .icon {
+        font-size: 50px;
+        color: #e91e63;
+        margin-bottom: 10px;
+    }
+    .benefit-item h4 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1976d2;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    .benefit-item p {
+        font-size: 16px;
+        color: #374151;
+        margin-bottom: 0;
+    }
+    
+    /* ==================== Price Section ==================== */
+    #price {
+        background: #f8fafc;
+        padding: 80px 0;
+    }
+    .price-card {
+        max-width: 450px;
+        margin: 0 auto 50px;
+        background: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        text-align: center;
+        border: 4px solid #1976d2;
+    }
+    .price-card .label {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1976d2;
+        margin-bottom: 15px;
+    }
+    .price-card .cost {
+        font-size: 50px;
+        font-weight: 900;
+        color: #e91e63;
+        margin-bottom: 10px;
+        line-height: 1;
+    }
+    .price-card .cost small {
+        font-size: 24px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+    .price-details {
+        font-size: 18px;
+        color: #374151;
+        margin-top: 20px;
+        border-top: 1px dashed #ccc;
+        padding-top: 20px;
+    }
+    .step-list {
+        display: flex;
+        justify-content: space-around;
+        gap: 30px;
+        margin-top: 50px;
+    }
+    .step-item {
+        flex: 1;
+        text-align: center;
+    }
+    .step-number {
+        display: inline-block;
+        width: 45px;
+        height: 45px;
+        line-height: 45px;
+        background: #1976d2;
+        color: #fff;
+        font-size: 24px;
+        font-weight: 700;
+        border-radius: 50%;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        position: relative;
+    }
+    .step-item h4 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 10px;
+    }
+    .step-item p {
+        font-size: 14px;
+        color: #374151;
+        margin-bottom: 0;
+    }
+    .step-list .step-item:not(:last-child)::after {
+        content: '→';
+        position: absolute;
+        right: -30px;
+        top: 10px;
+        font-size: 30px;
+        color: #1976d2;
+        font-weight: 300;
+    }
+
+    /* ==================== Final CTA ==================== */
+    #final-cta {
+        background: #1976d2;
+        color: #fff;
+        padding: 50px 0;
+        text-align: center;
+    }
+    #final-cta h4 {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        color: #fff;
+    }
+    #final-cta p {
+        font-size: 18px;
+        margin-bottom: 30px;
+        color: #e0f2fe;
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+        #hero-title {
+            font-size: 48px;
+        }
+        .solution-content {
+            gap: 30px;
+        }
+    }
+    @media (max-width: 768px) {
+        section {
+            margin: 60px auto;
+        }
+        #hero {
+            padding: 80px 0 60px;
+        }
+        #hero-title {
+            font-size: 40px;
+        }
+        #hero-subtitle {
+            font-size: 20px;
+        }
+        .hero-catch {
+            font-size: 24px;
+        }
+        .lp-section-title {
+            font-size: 30px;
+        }
+        .lp-section-subtitle {
+            font-size: 18px;
+        }
+
+        /* Problem */
+        .problem-cards {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        /* Solution */
+        .solution-content {
+            flex-direction: column;
+            gap: 30px;
+        }
+        .solution-text h4 {
+            text-align: center;
+            font-size: 28px;
+        }
+        .solution-image {
+            flex: 1 1 auto;
+            max-width: 100%;
+        }
+
+        /* Features */
+        .feature-list {
+            grid-template-columns: 1fr;
+        }
+        .feature-card h4, .feature-card p {
+            text-align: center;
+        }
+        
+        /* Function Map */
+        .connection-grid {
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(7, auto);
+        }
+        .carelay-center {
+            grid-column: 1 / 2;
+            grid-row: 4 / 5;
+        }
+        /* ステークホルダーの配置を調整 */
+        .stakeholder:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; }
+        .stakeholder:nth-child(2) { grid-column: 1 / 2; grid-row: 2 / 3; }
+        .stakeholder:nth-child(3) { grid-column: 1 / 2; grid-row: 3 / 4; }
+        .stakeholder:nth-child(4) { grid-column: 1 / 2; grid-row: 5 / 6; }
+        .stakeholder:nth-child(5) { grid-column: 1 / 2; grid-row: 6 / 7; transform: translateY(0); }
+        .stakeholder:nth-child(6) { grid-column: 1 / 2; grid-row: 7 / 8; transform: translateY(0); }
+
+        /* 縦並びなので接続線は不要 */
+        .connection-grid::before, .connection-grid::after,
+        .connection-grid .stakeholder:nth-child(5)::before,
+        .connection-grid .stakeholder:nth-child(6)::before {
+            display: none;
+        }
+        /* 代わりに縦の矢印を追加 */
+        .stakeholder:not(:last-child)::after {
+            content: '↓';
+            display: block;
+            font-size: 20px;
+            color: #bfdbfe;
+            margin: 5px 0;
+        }
+        .carelay-center::before, .carelay-center::after {
+             content: '↑';
+             display: block;
+             font-size: 20px;
+             color: #bfdbfe;
+             margin: 5px 0;
+        }
+        .carelay-center::before { content: '↑'; }
+        .carelay-center::after { content: '↓'; }
+
+        /* Benefit */
+        .benefit-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        /* Price */
+        .step-list {
+            flex-direction: column;
+            gap: 20px;
+        }
+        .step-list .step-item:not(:last-child)::after {
+            content: '↓';
+            right: 50%;
+            top: auto;
+            bottom: -20px;
+            transform: translateX(50%);
+        }
+        .step-number {
+            margin-bottom: 25px; /* 矢印分のスペース */
+        }
+        .step-item h4 {
+            margin-bottom: 5px;
+        }
+    }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJzL3m+TDPQfXgq4v3d3sA+KzL/8qj4tYFq5k5vF7j/t6c9+v+5w7h8pG/g+g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+  <!-- index_part1.txtのヘッダー部分をそのまま利用 -->
   <header id="site-header" class="hf-wrap"></header>
 
-  
+  <main>
+    <!-- ==================== Hero Section ==================== -->
+    <section id="hero">
+        <div class="container">
+            <h1 id="hero-title">
+                ケアレイで、<br>もっと楽に繋がろう。
+            </h1>
+            <p id="hero-subtitle">介護・福祉業界を支える業務支援プラットフォーム</p>
+            
+            <!-- CARELAYのロゴまたはイメージ (資料P2より) -->
+            <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0008.png" alt="CARELAY サービス画面イメージ" class="hero-image">
+            
+            <p class="hero-catch">
+                現場経験から生まれた、<br class="hidden-lg">「運営側」の負担を軽減するシステム
+            </p>
 
+            <a href="#price" class="cta-button">
+                30日間 無料で試す
+            </a>
+        </div>
+    </section>
+    
+    <!-- ==================== Problem/Issue Section / 課題 ==================== -->
+    <section id="problem">
+        <div class="container">
+            <div class="lp-section-title">STOP THE WASTE.</div>
+            <div class="lp-section-subtitle">貴社が抱える「無駄な業務」を解消します</div>
+
+            <div class="problem-cards">
+                <div class="problem-card">
+                    <div class="icon"><i class="fas fa-fax"></i></div>
+                    <h4>非効率な連絡手段</h4>
+                    <p>営業や連絡手段が未だに電話やFAXが中心。送信ミスや確認漏れが多く、時間と費用を浪費しています。</p>
+                </div>
+                <div class="problem-card">
+                    <div class="icon"><i class="fas fa-user-friends"></i></div>
+                    <h4>運営側の慢性的な課題</h4>
+                    <p>多くのICTシステムは「現場」の効率化が目的。管理者や相談員、ケアマネなど「運営側」を支える仕組みが不足しています。</p>
+                </div>
+                <div class="problem-card">
+                    <div class="icon"><i class="fas fa-hand-holding-usd"></i></div>
+                    <h4>高額なコスト負担</h4>
+                    <p>複雑なシステムの導入コストや、求人・利用者獲得にかかる高額な紹介料が事業所の経営を圧迫しています。</p>
+                </div>
+            </div>
+            
+            <div style="text-align:center; margin-top:50px;">
+                <p style="font-size:18px; color:#e91e63; font-weight:600;">CARELAYは、15年以上の介護現場を経験した代表の実体験に基づき、これらの課題解決のために開発されました。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== Solution Section / ソリューション ==================== -->
+    <section id="solution">
+        <div class="container">
+            <div class="lp-section-title">What is CARELAY?</div>
+            <div class="lp-section-subtitle">誰でも直感的に使える、業務支援プラットフォーム</div>
+
+            <div class="solution-content">
+                <div class="solution-text">
+                    <h4>介護事業所の連携を、もっとスムーズに。</h4>
+                    <p>CARELAYは、高齢者介護サービス事業所、障害福祉事業所、および関係機関（病院、薬局、ケアマネ等）をオンラインで繋ぐ**業界特化型プラットフォーム**です。</p>
+                    <p>「必要な機能に絞り、誰でも直感的に使えるUI」を採用することで、ITが苦手な方でも簡単に導入・運用が可能。複雑な操作や高額な導入費用は一切不要で、運営側の時間とコストの負担を大幅に軽減します。</p>
+                    <p>これにより運営に**“余裕”**が生まれ、そのゆとりがスタッフ・利用者に還元される好循環を目指します。</p>
+                </div>
+                <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0009.png" alt="CARELAYダッシュボードイメージ" class="solution-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== Features Section / 機能 ==================== -->
+    <section id="features">
+        <div class="container">
+            <div class="lp-section-title">Key Features</div>
+            <div class="lp-section-subtitle">主要な機能で、業務の「無駄」を一掃</div>
+
+            <div class="feature-list">
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-comments"></i></div>
+                    <h4>メッセージ&ファイル送信機能</h4>
+                    <p>提供票や実績など、毎月の重要書類をスムーズに共有。電話やFAXではなくメッセージでやり取りを残せるため、送信ミスや確認漏れを防ぎます。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-q"></i></div>
+                    <h4>Q&A機能（コミュニティ）</h4>
+                    <p>事業所同士で質疑応答や情報交換が可能。業界特有の悩み事をみんなで解決し、知識を共有することで業務の質が向上します。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-bullhorn"></i></div>
+                    <h4>イベント発信機能</h4>
+                    <p>一般にも公開したいイベントやセミナー、採用情報の告知を簡単に行えます。集客や広報活動のコストを削減します。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-tools"></i></div>
+                    <h4>業界製品・サービス紹介</h4>
+                    <p>必要な情報を膨大なインターネット検索なしで収集。業界の製品・サービスのプレスリリースや情報を集約して提供します。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-book-open"></i></div>
+                    <h4>おすすめコラム</h4>
+                    <p>業務改善、法改正情報など、運営に役立つ専門性の高いコラムを提供。知識のアップデートをサポートします。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon"><i class="fas fa-user-circle"></i></div>
+                    <h4>求人情報ページ</h4>
+                    <p>介護の求人をお探しの方にもご活用いただける求人ページを提供。高額な紹介料なしで採用活動を支援します。（※資料に記載あり）</p>
+                </div>
+            </div>
+
+            <!-- 機能イメージ図 -->
+            <div class="function-map">
+                <div class="map-title">あらゆる関係機関をCARELAYが繋ぎます</div>
+                <div class="connection-grid">
+                    <div class="stakeholder">病院</div>
+                    <div class="stakeholder">訪問介護</div>
+                    <div class="stakeholder">デイサービス</div>
+                    <div class="carelay-center">CARELAY</div>
+                    <div class="stakeholder">福祉用具</div>
+                    <div class="stakeholder">ケアマネ</div>
+                    <div class="stakeholder">薬局</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ==================== Benefit Section / 導入メリット ==================== -->
+    <section id="benefit">
+        <div class="container">
+            <div class="lp-section-title">The Benefits</div>
+            <div class="lp-section-subtitle">導入で得られる３つの効果</div>
+
+            <div class="benefit-grid">
+                <div class="benefit-item">
+                    <div class="icon"><i class="fas fa-clock"></i></div>
+                    <h4>時間短縮とペーパーレス化</h4>
+                    <p>電話、FAX、対面での説明、やりとりの時間を大幅に短縮。送信ミスや印刷ミスの防止により、ペーパーレスも促進し、本来の業務に集中できます。</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon"><i class="fas fa-chart-line"></i></div>
+                    <h4>圧倒的な投資対効果（ROI）</h4>
+                    <p>月額5,500円の定額制で、時間とコストを浪費する非効率な業務を解消。高額な求人紹介料や複雑なシステム費用と比較し、高い費用対効果を実現します。</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon"><i class="fas fa-heart"></i></div>
+                    <h4>スタッフの負担軽減と定着率向上</h4>
+                    <p>運営側の業務が効率化され、時間にゆとりが生まれることで、現場スタッフへのサポートが充実。職場の満足度と定着率の向上に繋がります。</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="icon"><i class="fas fa-globe"></i></div>
+                    <h4>情報収集と共有の効率化</h4>
+                    <p>必要な情報が一元化され、業界の製品情報やコラムを膨大なネット検索なしで収集可能。質の高い情報共有がスムーズに行えます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== Price & Flow Section / 料金と導入の流れ ==================== -->
+    <section id="price">
+        <div class="container">
+            <div class="lp-section-title">Pricing & Flow</div>
+            <div class="lp-section-subtitle">シンプルで安心な料金体系と簡単導入</div>
+
+            <div class="price-card">
+                <div class="label">全機能使い放題の定額制</div>
+                <div class="cost">
+                    ¥5,500<small> / 月額（税込）</small>
+                </div>
+                <div class="price-details">
+                    <p><strong>初期費用・登録料：</strong> ¥0</p>
+                    <p><strong>追加料金：</strong> ¥0 (機能制限・従量課金なし)</p>
+                    <p>初回登録時に**30日間無料**でお試しいただけます。</p>
+                    <p>マイページからの退会もいつでも可能です。</p>
+                </div>
+            </div>
+
+            <h4 style="text-align:center; font-size:22px; font-weight:700; color:#1976d2; margin-bottom:30px;">簡単3ステップで導入完了！</h4>
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <h4>お申込み</h4>
+                    <p>WEBフォームにてお申込み、事業所情報を入力して送信。</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <h4>アカウント登録</h4>
+                    <p>運営の確認後、登録可能であればお支払い情報確認メールをお送りします。</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <h4>利用開始</h4>
+                    <p>情報に問題なければ、すぐに全機能をご利用いただけます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== Final CTA ==================== -->
+    <section id="final-cta">
+        <div class="container">
+            <h4>介護・福祉業界の未来は、CARELAYから。</h4>
+            <p>非効率な業務に終止符を打ち、利用者とスタッフに最高のサービスを提供するための第一歩を踏み出しましょう。</p>
+            <a href="#price" class="cta-button">
+                今すぐ30日間無料体験を始める
+            </a>
+        </div>
+    </section>
+
+  </main>
+
+  <!-- index_part3.txtのフッターとスクリプト部分をそのまま利用 -->
   <footer id="site-footer" class="hf-wrap"></footer>
 
   <!-- Mobile drawer -->
@@ -87,6 +867,7 @@
   </div>
 
   <script type="module">
+    // index_part3.txtのスクリプトをそのまま利用
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
     const sb = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
@@ -96,7 +877,7 @@
     const $ = s => document.querySelector(s);
     const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
     const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : `${s}, sans-serif`);
+    const withFallback = s => !s ? "" : (/ (sans-serif|serif|monospace) /i.test(s) ? s : `${s}, sans-serif`);
     const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
     const bgParts = (row, def) => {
       const grad = stripQuotes(row?.bg_gradient||"").trim();
@@ -129,7 +910,23 @@
       buildDrawer(allMenus);
       adjustOffsets(hdr||{}, ftr||{});
       addResizeObserver(hdr||{}, ftr||{});
+
+      // スクロール時のHeroセクションのオフセット調整を再度実行 (headerのload後に実行)
+      adjustHeroMargin();
     }
+    
+    // Heroセクションのmargin-topを動的に調整する関数
+    function adjustHeroMargin() {
+        const headerEl = $("#hf-header-bg");
+        const heroEl = $("#hero");
+        if (headerEl && heroEl) {
+            // ヘッダーがfixedの場合、コンテンツがヘッダーの下に潜り込まないように調整
+            const headerHeight = headerEl.offsetHeight;
+            // ヘッダーの高さ分をheroセクションのpadding-topに追加することで対応する (CSS側で-80pxをしているため、それを打ち消す)
+            heroEl.style.paddingTop = `${100 + headerHeight}px`; 
+        }
+    }
+
 
     function linkOf(m){ return (m.url ?? m.href ?? '#'); }
 
@@ -164,6 +961,7 @@
           </div>
         </div>`;
       const bg = $("#hf-header-bg");
+      // ここでheader_fixedがtrueの場合、position:fixedを設定
       if(d.header_fixed && bg){
         Object.assign(bg.style,{position:"fixed",top:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
       }
@@ -211,9 +1009,15 @@
     $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
 
     function adjustOffsets(h,f){
-      const headerEl=$("#hf-header-bg");
       const body=document.body;
-      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
+      const headerEl=$("#hf-header-bg");
+      if(h.header_fixed){
+        body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
+        adjustHeroMargin(); // ヘッダーの高さ変更に合わせてHeroのPaddingも調整
+      } else {
+        body.style.paddingTop="0";
+      }
+      // フッターのpaddingBottomは不要
       body.style.paddingBottom="0";
     }
 
