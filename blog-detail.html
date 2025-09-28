@@ -1,1 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ブログ記事 | 合同会社WaJu</title>
+
+  <!-- OGP用（記事読み込み後にJSで書き換え予定） -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:image" content="">
+
+  <style>
+    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;line-height:1.7}
+    main{max-width:800px;margin:40px auto;padding:0 16px}
+    .post-title{font-size:28px;font-weight:700;margin-bottom:12px;color:#111827}
+    .post-date{font-size:14px;color:#6b7280;margin-bottom:24px}
+    .post-thumbnail{width:100%;height:auto;margin-bottom:24px;border-radius:12px;background:#f3f4f6}
+    .post-content{font-size:16px;color:#374151}
+  </style>
+</head>
+<body>
+  <header id="site-header" class="hf-wrap"></header>
+
+  <main>
+    <h1 id="post-title" class="post-title"></h1>
+    <div id="post-date" class="post-date"></div>
+    <img id="post-thumbnail" class="post-thumbnail" alt="">
+    <div id="post-content" class="post-content"></div>
+  </main>
+
+  <footer id="site-footer" class="hf-wrap"></footer>
+
+  <!-- Mobile drawer -->
+  <div id="mobile-drawer" class="drawer" aria-hidden="true">
+    <div class="overlay" data-close></div>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <header>
+        <div class="title" id="drawer-title">メニュー</div>
+        <button class="hamburger" id="drawer-close" aria-label="閉じる">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+      </header>
+      <nav id="drawer-nav" aria-label="モバイルメニュー"></nav>
+    </div>
+  </div>
+
+  <script type="module">
+    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+    const sb = createClient(
+      "https://htnmjsqgoapvuanrsuma.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+    );
+
+    const $ = s => document.querySelector(s);
+
+    // slugをURLから取得
+    const slug = location.pathname.split("/").pop();
+
+    async function loadArticle(){
+      const { data, error } = await sb.from("articles").select("*").eq("slug", slug).single();
+      if(error || !data){ 
+        $("#post-title").textContent = "記事が見つかりません";
+        return; 
+      }
+      $("#post-title").textContent = data.title;
+      $("#post-date").textContent = new Date(data.created_at).toLocaleDateString();
+      $("#post-thumbnail").src = data.thumbnail_url || "/images/noimage.png";
+      $("#post-thumbnail").alt = data.title;
+      $("#post-content").innerHTML = data.content;
+
+      // OGPタグを書き換え（SEO対応）
+      document.title = data.title + " | 合同会社WaJu";
+      document.querySelector('meta[property="og:title"]').setAttribute("content", data.title);
+      document.querySelector('meta[property="og:description"]').setAttribute("content", data.description || "");
+      document.querySelector('meta[property="og:image"]').setAttribute("content", data.thumbnail_url || "/images/noimage.png");
+    }
+
+    loadArticle();
+
+    // ===== ヘッダー・フッター読み込み処理（indexと同じ） =====
+    const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
+    const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
+    const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : `${s}, sans-serif`);
+    const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
+    const bgParts = (row, def) => {
+      const grad = stripQuotes(row?.bg_gradient||"").trim();
+      if (grad){ return {bgColor:def, bgImage:grad}; }
+      const col = (row?.bg_color && row.bg_color.trim()) ? row.bg_color : def;
+      return {bgColor:col, bgImage:"none"};
+    };
+    const brandJustifyMargins = (align)=> align==='left'?'margin-right:auto':(align==='center'?'margin:0 auto':'margin-left:auto');
+
+    let allMenus = [];
+
+    async function loadHF(){
+      const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
+        sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
+        sb.from("hf_settings").select("*").eq("area","header").single(),
+        sb.from("hf_settings").select("*").eq("area","footer").single()
+      ]);
+      allMenus = menus||[];
+
+      renderHeader(hdr||{}, allMenus);
+      renderFooter(ftr||{}, allMenus);
+      buildDrawer(allMenus);
+      adjustOffsets(hdr||{}, ftr||{});
+      addResizeObserver(hdr||{}, ftr||{});
+    }
+
+    function linkOf(m){ return (m.url ?? m.href ?? '#'); }
+
+    function renderHeader(d, menus){
+      const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
+        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      const {bgColor,bgImage} = bgParts(d, "#0f172a");
+      const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
+      const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
+      const paddingY = d.padding || "8px 0";
+      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
+      $("#site-header").innerHTML = `
+        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
+          <div class="container">
+            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
+              <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
+                <div class="hf-brand">
+                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||60,60)}px">`:""}
+                  <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
+                </div>
+              </div>
+              <div class="slot nav">
+                <nav class="hf-nav" id="desktop-nav" style="justify-content:${toJustify(d.nav_alignment)};color:${d.nav_color};font-weight:${d.nav_weight};font-size:${num(d.header_nav_size,14)}px">${items}</nav>
+              </div>
+              <button id="hamburger" class="hamburger" aria-controls="mobile-drawer" aria-expanded="false" aria-label="メニューを開く">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+              </button>
+            </div>
+          </div>
+        </div>`;
+      const bg = $("#hf-header-bg");
+      if(d.header_fixed && bg){
+        Object.assign(bg.style,{position:"fixed",top:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
+      }
+      $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
+    }
+
+    function renderFooter(d, menus){
+      const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
+        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      const {bgColor,bgImage} = bgParts(d, "#0f172a");
+      const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
+      const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
+      const paddingY = d.padding || "8px 0";
+      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
+      const inner = d.layout_mode==="nav-top"
+        ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
+           <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
+        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
+           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
+      $("#site-footer").innerHTML = `
+        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
+          <div class="container">
+            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
+              ${inner}
+            </div>
+          </div>
+        </div>`;
+      const bg = $("#hf-footer-bg");
+      if(d.footer_fixed && bg){
+        Object.assign(bg.style,{position:"fixed",bottom:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
+      }
+    }
+
+    function buildDrawer(menus){
+      const items = menus.filter(m=>m.is_active).map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      $("#drawer-nav").innerHTML = items;
+    }
+
+    function openDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","false");$("#hamburger").setAttribute("aria-expanded","true");}
+    function closeDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","true");$("#hamburger").setAttribute("aria-expanded","false");}
+    $("#drawer-close")?.addEventListener("click", closeDrawer);
+    $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
+
+    function adjustOffsets(h,f){
+      const headerEl=$("#hf-header-bg");
+      const body=document.body;
+      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
+      body.style.paddingBottom="0";
+    }
+
+    function addResizeObserver(h,f){
+      const ro=new ResizeObserver(()=>adjustOffsets(h,f));
+      const headerEl=$("#hf-header-bg");const footerEl=$("#hf-footer-bg");
+      if(headerEl) ro.observe(headerEl); if(footerEl) ro.observe(footerEl);
+    }
+
+    loadHF();
+  </script>
+</body>
+</html>
 
