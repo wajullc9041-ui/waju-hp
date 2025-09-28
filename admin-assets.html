@@ -1,5 +1,101 @@
-<section>
-  <h2>アセット管理</h2>
-  <p>画像やファイルなどのアセットをSupabase上で管理できます。</p>
-  <p>※ この機能の実装は今後追加予定です。</p>
-</section>
+<style>
+  .assets-page{display:flex;gap:16px;height:100%;}
+  .assets-list{width:40%;border-right:1px solid #ddd;overflow:auto;padding:10px;}
+  .assets-preview{flex:1;padding:10px;overflow:auto;}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th,td{border:1px solid #ddd;padding:6px;}
+  th{background:#f1f5f9;}
+  .actions{margin-top:10px;}
+  button{margin:2px;padding:6px 10px;}
+  .preview-box img{max-width:100%;height:auto;}
+</style>
+
+<div class="assets-page">
+  <div class="assets-list">
+    <h3>ファイル一覧</h3>
+    <input type="file" id="fileInput" multiple>
+    <button onclick="uploadFiles()">アップロード</button>
+    <table id="assetsTable">
+      <thead><tr><th>名前</th><th>サイズ</th><th>更新日</th><th>操作</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="assets-preview">
+    <h3>プレビュー</h3>
+    <div id="preview" class="preview-box">ファイルを選択してください</div>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+  const sb = createClient(
+    "https://htnmjsqgoapvuanrsuma.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+  );
+
+  const $ = s => document.querySelector(s);
+  const tbody = $("#assetsTable tbody");
+  let currentFiles = [];
+
+  async function loadFiles(){
+    const { data, error } = await sb.storage.from("assets").list("", { limit: 100 });
+    if(error){ console.error(error); return; }
+    currentFiles = data;
+    tbody.innerHTML = data.map(f => {
+      const sizeKB = f.metadata?.size ? (f.metadata.size/1024).toFixed(1)+" KB" : "";
+      const updated = f.updated_at ? new Date(f.updated_at).toLocaleString() : "";
+      return `<tr>
+        <td><a href="#" onclick="previewFile('${f.name}');return false;">${f.name}</a></td>
+        <td>${sizeKB}</td>
+        <td>${updated}</td>
+        <td>
+          <button onclick="copyUrl('${f.name}')">URLコピー</button>
+          <button onclick="deleteFile('${f.name}')">削除</button>
+        </td>
+      </tr>`;
+    }).join("");
+  }
+
+  async function uploadFiles(){
+    const files = $("#fileInput").files;
+    if(!files.length){ alert("ファイルを選択してください"); return; }
+    for(const file of files){
+      const { error } = await sb.storage.from("assets").upload(file.name, file, { upsert: true });
+      if(error){ alert("アップロード失敗:"+error.message); return; }
+    }
+    alert("アップロード完了");
+    loadFiles();
+  }
+
+  async function previewFile(name){
+    const { data } = sb.storage.from("assets").getPublicUrl(name);
+    const url = data.publicUrl;
+    let previewHTML = `<a href="${url}" target="_blank">${name}</a>`;
+    if(name.match(/\.(jpg|jpeg|png|gif|webp)$/i)){
+      previewHTML += `<br><img src="${url}" alt="${name}">`;
+    }
+    $("#preview").innerHTML = previewHTML;
+  }
+
+  async function copyUrl(name){
+    const { data } = sb.storage.from("assets").getPublicUrl(name);
+    await navigator.clipboard.writeText(data.publicUrl);
+    alert("URLをコピーしました");
+  }
+
+  async function deleteFile(name){
+    if(!confirm(name+" を削除しますか？")) return;
+    const { error } = await sb.storage.from("assets").remove([name]);
+    if(error){ alert("削除失敗:"+error.message); return; }
+    alert("削除しました");
+    loadFiles();
+    $("#preview").innerHTML = "ファイルを選択してください";
+  }
+
+  loadFiles();
+  window.uploadFiles = uploadFiles;
+  window.previewFile = previewFile;
+  window.copyUrl = copyUrl;
+  window.deleteFile = deleteFile;
+</script>
