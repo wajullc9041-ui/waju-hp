@@ -33,6 +33,19 @@
   .storage-usage{margin:10px 0;}
   .progress{width:100%;height:10px;background:#eee;border-radius:5px;overflow:hidden;}
   .progress-bar{height:100%;background:#3b82f6;}
+
+  /* ドラッグ＆ドロップ */
+  .drop-zone {
+    border: 2px dashed #3b82f6;
+    padding: 20px;
+    text-align: center;
+    color: #555;
+    margin: 10px 0;
+    transition: background 0.2s;
+  }
+  .drop-zone.dragover {
+    background: #e0f2fe;
+  }
 </style>
 
 <div class="assets-page">
@@ -48,6 +61,8 @@
     <input type="file" id="fileInput" multiple>
     <button onclick="uploadFiles()">アップロード</button>
   </div>
+
+  <div id="dropZone" class="drop-zone">ここにファイルをドラッグ＆ドロップ</div>
 
   <div id="listView">
     <table>
@@ -78,6 +93,7 @@
   const tbody = $("#assetsTable");
   const cardView = $("#cardView");
   const listView = $("#listView");
+  const dropZone = $("#dropZone");
   const MAX_STORAGE = 500 * 1024 * 1024;
   let currentFiles = [];
   let currentView = "list";
@@ -154,6 +170,10 @@
   async function uploadFiles(){
     const files = $("#fileInput").files;
     if(!files.length){ alert("ファイルを選択してください"); return; }
+    await handleFiles(files);
+  }
+
+  async function handleFiles(files){
     for(const file of files){
       const { error } = await sb.storage.from("assets").upload(file.name, file, { upsert: true });
       if(error){ alert("アップロード失敗:"+error.message); return; }
@@ -195,6 +215,19 @@
     alert("削除しました");
     loadFiles();
   }
+
+  // ドラッグ&ドロップ処理
+  dropZone.addEventListener("dragover", e=>{
+    e.preventDefault();
+    dropZone.classList.add("dragover");
+  });
+  dropZone.addEventListener("dragleave", ()=> dropZone.classList.remove("dragover"));
+  dropZone.addEventListener("drop", e=>{
+    e.preventDefault();
+    dropZone.classList.remove("dragover");
+    const files = e.dataTransfer.files;
+    if(files.length) handleFiles(files);
+  });
 
   loadFiles();
   window.setView=setView;
