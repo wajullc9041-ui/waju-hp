@@ -376,12 +376,6 @@
       e.preventDefault();
       if(!form.reportValidity()) return;
 
-      const token = grecaptcha.getResponse();
-      if(!token){
-        alert("reCAPTCHAを完了してください。");
-        return;
-      }
-
       payload = {
         name: document.getElementById("name").value.trim(),
         organization: document.getElementById("organization").value.trim(),
