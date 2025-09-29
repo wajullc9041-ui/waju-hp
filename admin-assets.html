@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>アセット管理</title>
-  <style>
-    /* ルート */
+<style>
+/* ルート */
     .assets-page { padding: 10px; }
 
     /* 操作系 */
@@ -69,10 +63,9 @@
       background: #fff;
     }
     .assets-page .drop-zone.dragover { background: #e0f2fe; }
-  </style>
-</head>
-<body>
-  <div class="assets-page">
+</style>
+
+<div class="assets-page">
     <h3>アセット管理</h3>
 
     <div class="storage-usage">
@@ -181,13 +174,12 @@
             ? `<div class="thumb"><img src="${url}" alt=""></div>`
             : `<div class="thumb" aria-label="file">📄</div>`;
           cardView.insertAdjacentHTML("beforeend", `<div class="card">
-            ${thumb}
+            <a href="#" onclick="assetsPage.openModal('${url}','${f.name}');return false;">${thumb}</a>
             <div>${f.name}</div>
             <div class="actions">
               <button onclick="assetsPage.copyUrl('${f.name}')">URL</button>
               <button onclick="assetsPage.deleteFile('${f.name}')">削除</button>
             </div>
-            <a href="#" onclick="assetsPage.openModal('${url}','${f.name}');return false;" style="position:absolute;top:0;left:0;width:100%;height:100%;"></a>
           </div>`);
         });
       }
@@ -265,5 +257,161 @@
       setView, uploadFiles, copyUrl, deleteFile, openModal, closeModal
     };
   </script>
-</body>
-</html>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    const sb = createClient(
+      "https://htnmjsqgoapvuanrsuma.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+    );
+
+    const $ = (s) => document.querySelector(s);
+    const tbody    = $("#assetsTable");
+    const cardView = $("#cardView");
+    const listView = $("#listView");
+    const dropZone = $("#dropZone");
+    const MAX_STORAGE = 500 * 1024 * 1024;
+
+    let currentFiles = [];
+    let currentView  = "list";
+
+    function formatSize(bytes){
+      if(!bytes && bytes !== 0) return "";
+      if(bytes < 1024) return bytes + " B";
+      if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + " KB";
+      return (bytes/1024/1024).toFixed(1) + " MB";
+    }
+
+    async function loadFiles(){
+      const { data, error } = await sb.storage.from("assets").list("", { limit: 100 });
+      if(error){ console.error(error); return; }
+      currentFiles = data || [];
+
+      const totalSize = currentFiles.reduce((s,f)=> s + (f.metadata?.size || 0), 0);
+      const percent   = ((totalSize / MAX_STORAGE) * 100).toFixed(1);
+      $("#usageText").innerText = `使用量: ${formatSize(totalSize)} / ${formatSize(MAX_STORAGE)} (${percent}%)`;
+      $("#usageBar").style.width = percent + "%";
+
+      render();
+    }
+
+    function render(){
+      if(currentView === "list"){
+        listView.style.display = "block";
+        cardView.style.display = "none";
+        tbody.innerHTML = "";
+        currentFiles.forEach(f=>{
+          const { data } = sb.storage.from("assets").getPublicUrl(f.name);
+          const url = data.publicUrl;
+          const isImg = /\.(jpg|jpeg|png|gif|webp)$/i.test(f.name);
+          const thumb = isImg
+            ? `<div class="thumb"><img src="${url}" alt=""></div>`
+            : `<div class="thumb" aria-label="file">📄</div>`;
+          const size = formatSize(f.metadata?.size);
+          const updated = f.updated_at ? new Date(f.updated_at).toLocaleString() : "";
+          tbody.insertAdjacentHTML("beforeend", `<tr>
+            <td>${thumb}</td>
+            <td><a href="#" onclick="assetsPage.openModal('${url}','${f.name}');return false;">${f.name}</a></td>
+            <td>${size}</td>
+            <td>${updated}</td>
+            <td>
+              <button onclick="assetsPage.copyUrl('${f.name}')">URL</button>
+              <button onclick="assetsPage.deleteFile('${f.name}')">削除</button>
+            </td>
+          </tr>`);
+        });
+      } else {
+        listView.style.display = "none";
+        cardView.style.display = "grid";
+        cardView.innerHTML = "";
+        currentFiles.forEach(f=>{
+          const { data } = sb.storage.from("assets").getPublicUrl(f.name);
+          const url = data.publicUrl;
+          const isImg = /\.(jpg|jpeg|png|gif|webp)$/i.test(f.name);
+          const thumb = isImg
+            ? `<div class="thumb"><img src="${url}" alt=""></div>`
+            : `<div class="thumb" aria-label="file">📄</div>`;
+          cardView.insertAdjacentHTML("beforeend", `<div class="card">
+            <a href="#" onclick="assetsPage.openModal('${url}','${f.name}');return false;">${thumb}</a>
+            <div>${f.name}</div>
+            <div class="actions">
+              <button onclick="assetsPage.copyUrl('${f.name}')">URL</button>
+              <button onclick="assetsPage.deleteFile('${f.name}')">削除</button>
+            </div>
+          </div>`);
+        });
+      }
+    }
+
+    function setView(v){ currentView = v; render(); }
+
+    async function uploadFiles(){
+      const files = $("#fileInput").files;
+      if(!files || !files.length){ alert("ファイルを選択してください"); return; }
+      await handleFiles(files);
+    }
+
+    async function handleFiles(files){
+      for(const file of files){
+        const { error } = await sb.storage.from("assets").upload(file.name, file, { upsert: true });
+        if(error){ alert("アップロード失敗: " + error.message); return; }
+      }
+      alert("アップロード完了");
+      loadFiles();
+    }
+
+    function openModal(url,name){
+      if(/\.(jpg|jpeg|png|gif|webp)$/i.test(name)){
+        const img = new Image();
+        img.onload = () => {
+          $("#modalBody").innerHTML = `<p>${name}</p><p>実サイズ: ${img.naturalWidth} x ${img.naturalHeight}px</p><a href="${url}" target="_blank" rel="noopener">リンクを開く</a><br><img src="${url}" alt="">`;
+        };
+        img.src = url;
+      } else {
+        $("#modalBody").innerHTML = `<p>${name}</p><a href="${url}" target="_blank" rel="noopener">${url}</a>`;
+      }
+      $("#previewModal").style.display = "flex";
+    }
+
+    function closeModal(e){
+      if(!e || e.target === e.currentTarget || (e.target && e.target.classList && e.target.classList.contains("close-btn"))){
+        $("#previewModal").style.display = "none";
+        $("#modalBody").innerHTML = "";
+      }
+    }
+
+    async function copyUrl(name){
+      const { data } = sb.storage.from("assets").getPublicUrl(name);
+      await navigator.clipboard.writeText(data.publicUrl);
+      alert("URLをコピーしました");
+    }
+
+    async function deleteFile(name){
+      if(!confirm(name + " を削除しますか？")) return;
+      const { error } = await sb.storage.from("assets").remove([name]);
+      if(error){ alert("削除失敗: " + error.message); return; }
+      alert("削除しました");
+      loadFiles();
+    }
+
+    // D&D
+    dropZone.addEventListener("dragover", (e)=>{
+      e.preventDefault();
+      dropZone.classList.add("dragover");
+    });
+    dropZone.addEventListener("dragleave", ()=> dropZone.classList.remove("dragover"));
+    dropZone.addEventListener("drop", (e)=>{
+      e.preventDefault();
+      dropZone.classList.remove("dragover");
+      const files = e.dataTransfer.files;
+      if(files && files.length) handleFiles(files);
+    });
+
+    // 初期化
+    loadFiles();
+
+    // グローバル汚染を避け、操作は専用名前空間からのみ実行
+    window.assetsPage = {
+      setView, uploadFiles, copyUrl, deleteFile, openModal, closeModal
+    };
+</script>
