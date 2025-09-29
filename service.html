@@ -64,43 +64,33 @@
     .cta a{display:inline-block;padding:12px 28px;background:#1976d2;color:#fff;border-radius:8px;text-decoration:none}
   </style>
 
-
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-ZHLJ5K19ZE');
-  </script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
+<script>
+  window.dataLayer = window.dataLayer or [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZHLJ5K19ZE');
+</script>
 
   <style>
-section{margin:80px auto}
-    h2,h3{margin:0 0 20px;font-weight:700}
-    h2{font-size:32px;text-align:center;color:#1976d2;margin-bottom:10px}
-    h3{font-size:24px;text-align:center;color:#0f172a;margin-bottom:40px}
-    p{margin:0 0 16px}
-    
-    /* LP共通のセクションタイトルスタイル */
-    .lp-section-title {
-        font-size: 38px;
+#service-page /* index_part1.txtのCSSをそのまま利用 */
+    :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}}#service-page *{box-sizing:border-box}}#service-page a{color:inherit;text-decoration:none}}#service-page main{min-height:40vh;}}#service-page .container{max-width:var(--container);margin:0 auto;padding:0 16px}}#service-page .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}}#service-page .slot{display:flex;align-items:center}}#service-page .slot.brand{flex:0 0 auto}}#service-page .slot.nav{flex:1 1 auto}}#service-page .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}}#service-page .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}}#service-page .drawer{position:fixed;inset:0;pointer-events:none}}#service-page .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}}#service-page .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}}#service-page .drawer[aria-hidden="false"]{pointer-events:auto}}#service-page .drawer[aria-hidden="false"] .overlay{opacity:1}}#service-page .drawer[aria-hidden="false"] .panel{transform:none}}#service-page .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}}#service-page .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}}#service-page .drawer .panel nav a{padding:12px 10px;border-radius:10px}}#service-page .drawer .panel nav a:hover{background:#f1f5f9}}
+@media (max-width:768px){#service-page .container{padding:0 12px}}:root{--container:100%}}#service-page .slot.nav{display:none}}#service-page .hamburger{display:block;margin-left:auto}}}
+#service-page /* ページ共通スタイル */
+    section{margin:80px auto}}#service-page h2, #service-page h3{margin:0 0 20px;font-weight:700}}#service-page h2{font-size:32px;text-align:center;color:#1976d2;margin-bottom:10px}}#service-page h3{font-size:24px;text-align:center;color:#0f172a;margin-bottom:40px}}#service-page p{margin:0 0 16px}}#service-page /* LP共通のセクションタイトルスタイル */
+    .lp-section-title{font-size: 38px;
         font-weight: 900;
         color: #0f172a;
         text-align: center;
         margin-bottom: 5px;
-        letter-spacing: 1px;
-    }
-    .lp-section-subtitle {
-        font-size: 20px;
+        letter-spacing: 1px;}}#service-page .lp-section-subtitle{font-size: 20px;
         font-weight: 500;
         color: #1976d2;
         text-align: center;
         margin-bottom: 40px;
         position: relative;
-        padding-bottom: 10px;
-    }
-    .lp-section-subtitle::after {
-        content: '';
+        padding-bottom: 10px;}}#service-page .lp-section-subtitle::after{content: '';
         display: block;
         width: 80px;
         height: 3px;
@@ -110,40 +100,24 @@ section{margin:80px auto}
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
-        border-radius: 2px;
-    }
-
-    /* ==================== Hero Section ==================== */
-    #hero {
-        background: linear-gradient(135deg, #1976d2 0%, #0f172a 100%);
+        border-radius: 2px;}}#service-page /* ==================== Hero Section ==================== */
+    #hero{background: linear-gradient(135deg, #1976d2 0%, #0f172a 100%);
         padding: 100px 0 80px;
         color: #fff;
         text-align: center;
-        margin-top: calc(-80px - 8px); /* ヘッダーの初期高さ分を調整 */
-    }
-    #hero-title {
-        font-size: 56px;
+        margin-top: calc(-80px - 8px); /* ヘッダーの初期高さ分を調整 */}}#service-page #hero-title{font-size: 56px;
         font-weight: 900;
         margin-bottom: 20px;
         line-height: 1.2;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-    #hero-subtitle {
-        font-size: 24px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);}}#service-page #hero-subtitle{font-size: 24px;
         font-weight: 500;
         margin-bottom: 40px;
-        color: #e0f2fe;
-    }
-    .hero-image {
-        max-width: 600px;
+        color: #e0f2fe;}}#service-page .hero-image{max-width: 600px;
         width: 100%;
         height: auto;
         margin: 0 auto;
         border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-    .hero-catch {
-        font-size: 28px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);}}#service-page .hero-catch{font-size: 28px;
         font-weight: 700;
         background: #fef08a; /* Yellow background */
         color: #0f172a;
@@ -151,17 +125,8 @@ section{margin:80px auto}
         padding: 10px 20px;
         border-radius: 8px;
         margin-top: 40px;
-        animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(254, 240, 138, 0.7); }
-        70% { transform: scale(1.02); box-shadow: 0 0 0 15px rgba(254, 240, 138, 0); }
-        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(254, 240, 138, 0); }
-    }
-    
-    /* CTA Button (Common) */
-    .cta-button {
-        display: inline-block;
+        animation: pulse 1.5s infinite;}}#service-page @keyframes pulse{0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(254, 240, 138, 0.7);}}#service-page 70%{transform: scale(1.02); box-shadow: 0 0 0 15px rgba(254, 240, 138, 0);}}#service-page 100%{transform: scale(1); box-shadow: 0 0 0 0 rgba(254, 240, 138, 0);}}#service-page /* CTA Button (Common) */
+    .cta-button{display: inline-block;
         background: #e91e63; /* Pink/Red for strong action */
         color: #fff;
         font-size: 24px;
@@ -170,153 +135,76 @@ section{margin:80px auto}
         border-radius: 10px;
         box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
         transition: transform 0.2s, box-shadow 0.2s;
-        margin-top: 30px;
-    }
-    .cta-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(233, 30, 99, 0.6);
-    }
-
-    /* ==================== Problem/Issue Section ==================== */
-    #problem {
-        background: #f8fafc;
-        padding: 80px 0;
-    }
-    .problem-cards {
-        display: grid;
+        margin-top: 30px;}}#service-page .cta-button:hover{transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(233, 30, 99, 0.6);}}#service-page /* ==================== Problem/Issue Section ==================== */
+    #problem{background: #f8fafc;
+        padding: 80px 0;}}#service-page .problem-cards{display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-    }
-    .problem-card {
-        background: #fff;
+        gap: 30px;}}#service-page .problem-card{background: #fff;
         padding: 30px;
         border-radius: 12px;
         box-shadow: var(--shadow);
         text-align: center;
-        border-top: 5px solid #e91e63;
-    }
-    .problem-card .icon {
-        font-size: 40px;
+        border-top: 5px solid #e91e63;}}#service-page .problem-card .icon{font-size: 40px;
         color: #e91e63;
-        margin-bottom: 15px;
-    }
-    .problem-card h4 {
-        font-size: 20px;
+        margin-bottom: 15px;}}#service-page .problem-card h4{font-size: 20px;
         font-weight: 700;
         color: #0f172a;
-        margin-bottom: 10px;
-    }
-    .problem-card p {
-        font-size: 16px;
+        margin-bottom: 10px;}}#service-page .problem-card p{font-size: 16px;
         color: #374151;
         line-height: 1.6;
-        margin-bottom: 0;
-    }
-
-    /* ==================== Solution Section ==================== */
-    #solution {
-        padding: 80px 0;
-    }
-    .solution-content {
-        display: flex;
+        margin-bottom: 0;}}#service-page /* ==================== Solution Section ==================== */
+    #solution{padding: 80px 0;}}#service-page .solution-content{display: flex;
         align-items: center;
-        gap: 50px;
-    }
-    .solution-text {
-        flex: 1;
-    }
-    .solution-text h4 {
-        font-size: 32px;
+        gap: 50px;}}#service-page .solution-text{flex: 1;}}#service-page .solution-text h4{font-size: 32px;
         color: #1976d2;
         font-weight: 800;
         margin-bottom: 20px;
-        text-align: left;
-    }
-    .solution-text p {
-        font-size: 18px;
-        color: #374151;
-    }
-    .solution-image {
-        flex: 0 0 400px;
+        text-align: left;}}#service-page .solution-text p{font-size: 18px;
+        color: #374151;}}#service-page .solution-image{flex: 0 0 400px;
         max-width: 400px;
         height: auto;
         border-radius: 12px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    }
-
-    /* ==================== Features Section ==================== */
-    #features {
-        background: #e0f2fe; /* Light blue */
-        padding: 80px 0;
-    }
-    .feature-list {
-        display: grid;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);}}#service-page /* ==================== Features Section ==================== */
+    #features{background: #e0f2fe; /* Light blue */
+        padding: 80px 0;}}#service-page .feature-list{display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 30px;
-        margin-top: 40px;
-    }
-    .feature-card {
-        background: #fff;
+        margin-top: 40px;}}#service-page .feature-card{background: #fff;
         padding: 30px;
         border-radius: 12px;
         box-shadow: 0 5px 15px rgba(25, 118, 210, 0.15);
         border: 1px solid #bfdbfe;
-        transition: transform 0.3s;
-    }
-    .feature-card:hover {
-        transform: translateY(-5px);
-    }
-    .feature-card .icon {
-        font-size: 30px;
+        transition: transform 0.3s;}}#service-page .feature-card:hover{transform: translateY(-5px);}}#service-page .feature-card .icon{font-size: 30px;
         color: #1976d2;
         background: #e0f2fe;
         padding: 10px;
         border-radius: 50%;
         display: inline-block;
-        margin-bottom: 15px;
-    }
-    .feature-card h4 {
-        font-size: 20px;
+        margin-bottom: 15px;}}#service-page .feature-card h4{font-size: 20px;
         font-weight: 700;
         color: #0f172a;
         margin-bottom: 10px;
-        text-align: left;
-    }
-    .feature-card p {
-        font-size: 15px;
+        text-align: left;}}#service-page .feature-card p{font-size: 15px;
         color: #374151;
         line-height: 1.6;
         margin-bottom: 0;
-        text-align: left;
-    }
-    
-    /* 機能イメージ図 (Page 7) */
-    .function-map {
-        background: #fff;
+        text-align: left;}}#service-page /* 機能イメージ図 (Page 7) */
+    .function-map{background: #fff;
         padding: 40px;
         border-radius: 12px;
         margin-top: 50px;
-        box-shadow: var(--shadow);
-    }
-    .map-title {
-        font-size: 22px;
+        box-shadow: var(--shadow);}}#service-page .map-title{font-size: 22px;
         font-weight: 700;
         color: #e91e63;
         text-align: center;
-        margin-bottom: 30px;
-    }
-    .connection-grid {
-        display: grid;
+        margin-bottom: 30px;}}#service-page .connection-grid{display: grid;
         grid-template-columns: 1fr 1.5fr 1fr; /* 3列レイアウト */
         grid-template-rows: repeat(3, auto);
         gap: 20px 0;
         align-items: center;
         justify-items: center;
-        position: relative;
-    }
-
-    .carelay-center {
-        grid-column: 2 / 3;
+        position: relative;}}#service-page .carelay-center{grid-column: 2 / 3;
         grid-row: 2 / 3;
         padding: 15px 25px;
         background: #1976d2;
@@ -326,72 +214,47 @@ section{margin:80px auto}
         border-radius: 50px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         z-index: 10;
-        text-align: center;
-    }
-    
-    .stakeholder {
-        background: #f1f5f9;
+        text-align: center;}}#service-page .stakeholder{background: #f1f5f9;
         padding: 10px 15px;
         border-radius: 8px;
         font-weight: 600;
         color: #0f172a;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        z-index: 5;
-    }
-
-    .stakeholder:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; } /* 病院 */
-    .stakeholder:nth-child(2) { grid-column: 3 / 4; grid-row: 1 / 2; } /* 訪問介護 */
-    .stakeholder:nth-child(3) { grid-column: 1 / 2; grid-row: 3 / 4; } /* デイサービス */
-    .stakeholder:nth-child(4) { grid-column: 3 / 4; grid-row: 3 / 4; } /* 福祉用具 */
-    .stakeholder:nth-child(5) { grid-column: 1 / 2; grid-row: 2 / 3; transform: translateY(-30px); } /* ケアマネ */
-    .stakeholder:nth-child(6) { grid-column: 3 / 4; grid-row: 2 / 3; transform: translateY(-30px); } /* 薬局 */
+        z-index: 5;}}#service-page .stakeholder:nth-child(1){grid-column: 1 / 2; grid-row: 1 / 2;}}#service-page /* 病院 */
+    .stakeholder:nth-child(2){grid-column: 3 / 4; grid-row: 1 / 2;}}#service-page /* 訪問介護 */
+    .stakeholder:nth-child(3){grid-column: 1 / 2; grid-row: 3 / 4;}}#service-page /* デイサービス */
+    .stakeholder:nth-child(4){grid-column: 3 / 4; grid-row: 3 / 4;}}#service-page /* 福祉用具 */
+    .stakeholder:nth-child(5){grid-column: 1 / 2; grid-row: 2 / 3; transform: translateY(-30px);}}#service-page /* ケアマネ */
+    .stakeholder:nth-child(6){grid-column: 3 / 4; grid-row: 2 / 3; transform: translateY(-30px);}}#service-page /* 薬局 */
 
     /* 接続線 (SVGで実装するのが理想的だが、簡易的な表現としてCSSで対応) */
-    .connection-grid::before {
-        content: '';
+    .connection-grid::before{content: '';
         position: absolute;
         top: 0;
         bottom: 0;
         left: 50%;
         width: 2px;
         background: #bfdbfe;
-        z-index: 1;
-    }
-    .connection-grid::after {
-        content: '';
+        z-index: 1;}}#service-page .connection-grid::after{content: '';
         position: absolute;
         left: 0;
         right: 0;
         top: 50%;
         height: 2px;
         background: #bfdbfe;
-        z-index: 1;
-    }
-    /* 追加の接続線調整（ケアマネ、薬局の位置に合わせて） */
-    .connection-grid .stakeholder:nth-child(5)::before,
-    .connection-grid .stakeholder:nth-child(6)::before {
-        content: '';
+        z-index: 1;}}#service-page /* 追加の接続線調整（ケアマネ、薬局の位置に合わせて） */
+    .connection-grid .stakeholder:nth-child(5)::before, #service-page .connection-grid .stakeholder:nth-child(6)::before{content: '';
         position: absolute;
         width: 150%;
         height: 2px;
         background: #bfdbfe;
         z-index: 0;
         top: 50%;
-        transform: translateY(-50%);
-    }
-
-    /* ==================== Benefit Section ==================== */
-    #benefit {
-        padding: 80px 0;
-        background: #fff;
-    }
-    .benefit-grid {
-        display: grid;
+        transform: translateY(-50%);}}#service-page /* ==================== Benefit Section ==================== */
+    #benefit{padding: 80px 0;
+        background: #fff;}}#service-page .benefit-grid{display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
-    }
-    .benefit-item {
-        background: linear-gradient(145deg, #fff 0%, #f0f9ff 100%);
+        gap: 30px;}}#service-page .benefit-item{background: linear-gradient(145deg, #fff 0%, #f0f9ff 100%);
         padding: 30px;
         border-radius: 12px;
         box-shadow: 0 8px 20px rgba(25, 118, 210, 0.1);
@@ -399,78 +262,41 @@ section{margin:80px auto}
         flex-direction: column;
         align-items: center;
         text-align: center;
-        border-left: 6px solid #1976d2;
-    }
-    .benefit-item .icon {
-        font-size: 50px;
+        border-left: 6px solid #1976d2;}}#service-page .benefit-item .icon{font-size: 50px;
         color: #e91e63;
-        margin-bottom: 10px;
-    }
-    .benefit-item h4 {
-        font-size: 22px;
+        margin-bottom: 10px;}}#service-page .benefit-item h4{font-size: 22px;
         font-weight: 700;
         color: #1976d2;
         margin-bottom: 15px;
-        text-align: center;
-    }
-    .benefit-item p {
-        font-size: 16px;
+        text-align: center;}}#service-page .benefit-item p{font-size: 16px;
         color: #374151;
-        margin-bottom: 0;
-    }
-    
-    /* ==================== Price Section ==================== */
-    #price {
-        background: #f8fafc;
-        padding: 80px 0;
-    }
-    .price-card {
-        max-width: 450px;
+        margin-bottom: 0;}}#service-page /* ==================== Price Section ==================== */
+    #price{background: #f8fafc;
+        padding: 80px 0;}}#service-page .price-card{max-width: 450px;
         margin: 0 auto 50px;
         background: #fff;
         padding: 40px;
         border-radius: 16px;
         box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         text-align: center;
-        border: 4px solid #1976d2;
-    }
-    .price-card .label {
-        font-size: 20px;
+        border: 4px solid #1976d2;}}#service-page .price-card .label{font-size: 20px;
         font-weight: 700;
         color: #1976d2;
-        margin-bottom: 15px;
-    }
-    .price-card .cost {
-        font-size: 50px;
+        margin-bottom: 15px;}}#service-page .price-card .cost{font-size: 50px;
         font-weight: 900;
         color: #e91e63;
         margin-bottom: 10px;
-        line-height: 1;
-    }
-    .price-card .cost small {
-        font-size: 24px;
+        line-height: 1;}}#service-page .price-card .cost small{font-size: 24px;
         font-weight: 700;
-        color: #0f172a;
-    }
-    .price-details {
-        font-size: 18px;
+        color: #0f172a;}}#service-page .price-details{font-size: 18px;
         color: #374151;
         margin-top: 20px;
         border-top: 1px dashed #ccc;
-        padding-top: 20px;
-    }
-    .step-list {
-        display: flex;
+        padding-top: 20px;}}#service-page .step-list{display: flex;
         justify-content: space-around;
         gap: 30px;
-        margin-top: 50px;
-    }
-    .step-item {
-        flex: 1;
-        text-align: center;
-    }
-    .step-number {
-        display: inline-block;
+        margin-top: 50px;}}#service-page .step-item{flex: 1;
+        text-align: center;}}#service-page .step-number{display: inline-block;
         width: 45px;
         height: 45px;
         line-height: 45px;
@@ -481,174 +307,57 @@ section{margin:80px auto}
         border-radius: 50%;
         margin-bottom: 15px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        position: relative;
-    }
-    .step-item h4 {
-        font-size: 18px;
+        position: relative;}}#service-page .step-item h4{font-size: 18px;
         font-weight: 700;
         color: #0f172a;
-        margin-bottom: 10px;
-    }
-    .step-item p {
-        font-size: 14px;
+        margin-bottom: 10px;}}#service-page .step-item p{font-size: 14px;
         color: #374151;
-        margin-bottom: 0;
-    }
-    .step-list .step-item:not(:last-child)::after {
-        content: '→';
+        margin-bottom: 0;}}#service-page .step-list .step-item:not(:last-child)::after{content: '→';
         position: absolute;
         right: -30px;
         top: 10px;
         font-size: 30px;
         color: #1976d2;
-        font-weight: 300;
-    }
-
-    /* ==================== Final CTA ==================== */
-    #final-cta {
-        background: #1976d2;
+        font-weight: 300;}}#service-page /* ==================== Final CTA ==================== */
+    #final-cta{background: #1976d2;
         color: #fff;
         padding: 50px 0;
-        text-align: center;
-    }
-    #final-cta h4 {
-        font-size: 28px;
+        text-align: center;}}#service-page #final-cta h4{font-size: 28px;
         font-weight: 800;
         margin-bottom: 10px;
-        color: #fff;
-    }
-    #final-cta p {
-        font-size: 18px;
+        color: #fff;}}#service-page #final-cta p{font-size: 18px;
         margin-bottom: 30px;
-        color: #e0f2fe;
-    }
-
-
-    /* Responsive adjustments */
-    @media (max-width: 1024px) {
-        #hero-title {
-            font-size: 48px;
-        }
-        .solution-content {
-            gap: 30px;
-        }
-    }
-    @media (max-width: 768px) {
-        section {
-            margin: 60px auto;
-        }
-        #hero {
-            padding: 80px 0 60px;
-        }
-        #hero-title {
-            font-size: 40px;
-        }
-        #hero-subtitle {
-            font-size: 20px;
-        }
-        .hero-catch {
-            font-size: 24px;
-        }
-        .lp-section-title {
-            font-size: 30px;
-        }
-        .lp-section-subtitle {
-            font-size: 18px;
-        }
-
-        /* Problem */
-        .problem-cards {
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        /* Solution */
-        .solution-content {
-            flex-direction: column;
-            gap: 30px;
-        }
-        .solution-text h4 {
-            text-align: center;
-            font-size: 28px;
-        }
-        .solution-image {
-            flex: 1 1 auto;
-            max-width: 100%;
-        }
-
-        /* Features */
-        .feature-list {
-            grid-template-columns: 1fr;
-        }
-        .feature-card h4, .feature-card p {
-            text-align: center;
-        }
-        
-        /* Function Map */
-        .connection-grid {
-            grid-template-columns: 1fr;
-            grid-template-rows: repeat(7, auto);
-        }
-        .carelay-center {
-            grid-column: 1 / 2;
-            grid-row: 4 / 5;
-        }
-        /* ステークホルダーの配置を調整 */
-        .stakeholder:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; }
-        .stakeholder:nth-child(2) { grid-column: 1 / 2; grid-row: 2 / 3; }
-        .stakeholder:nth-child(3) { grid-column: 1 / 2; grid-row: 3 / 4; }
-        .stakeholder:nth-child(4) { grid-column: 1 / 2; grid-row: 5 / 6; }
-        .stakeholder:nth-child(5) { grid-column: 1 / 2; grid-row: 6 / 7; transform: translateY(0); }
-        .stakeholder:nth-child(6) { grid-column: 1 / 2; grid-row: 7 / 8; transform: translateY(0); }
-
-        /* 縦並びなので接続線は不要 */
-        .connection-grid::before, .connection-grid::after,
-        .connection-grid .stakeholder:nth-child(5)::before,
-        .connection-grid .stakeholder:nth-child(6)::before {
-            display: none;
-        }
-        /* 代わりに縦の矢印を追加 */
-        .stakeholder:not(:last-child)::after {
-            content: '↓';
+        color: #e0f2fe;}}
+@media (max-width: 1024px) {#service-page #hero-title{font-size: 48px;}}#service-page .solution-content{gap: 30px;}}}
+@media (max-width: 768px) {#service-page section{margin: 60px auto;}}#service-page #hero{padding: 80px 0 60px;}}#service-page #hero-title{font-size: 40px;}}#service-page #hero-subtitle{font-size: 20px;}}#service-page .hero-catch{font-size: 24px;}}#service-page .lp-section-title{font-size: 30px;}}#service-page .lp-section-subtitle{font-size: 18px;}}#service-page /* Problem */
+        .problem-cards{grid-template-columns: 1fr;
+            gap: 20px;}}#service-page /* Solution */
+        .solution-content{flex-direction: column;
+            gap: 30px;}}#service-page .solution-text h4{text-align: center;
+            font-size: 28px;}}#service-page .solution-image{flex: 1 1 auto;
+            max-width: 100%;}}#service-page /* Features */
+        .feature-list{grid-template-columns: 1fr;}}#service-page .feature-card h4, #service-page .feature-card p{text-align: center;}}#service-page /* Function Map */
+        .connection-grid{grid-template-columns: 1fr;
+            grid-template-rows: repeat(7, auto);}}#service-page .carelay-center{grid-column: 1 / 2;
+            grid-row: 4 / 5;}}#service-page /* ステークホルダーの配置を調整 */
+        .stakeholder:nth-child(1){grid-column: 1 / 2; grid-row: 1 / 2;}}#service-page .stakeholder:nth-child(2){grid-column: 1 / 2; grid-row: 2 / 3;}}#service-page .stakeholder:nth-child(3){grid-column: 1 / 2; grid-row: 3 / 4;}}#service-page .stakeholder:nth-child(4){grid-column: 1 / 2; grid-row: 5 / 6;}}#service-page .stakeholder:nth-child(5){grid-column: 1 / 2; grid-row: 6 / 7; transform: translateY(0);}}#service-page .stakeholder:nth-child(6){grid-column: 1 / 2; grid-row: 7 / 8; transform: translateY(0);}}#service-page /* 縦並びなので接続線は不要 */
+        .connection-grid::before, #service-page .connection-grid::after, #service-page .connection-grid .stakeholder:nth-child(5)::before, #service-page .connection-grid .stakeholder:nth-child(6)::before{display: none;}}#service-page /* 代わりに縦の矢印を追加 */
+        .stakeholder:not(:last-child)::after{content: '↓';
             display: block;
             font-size: 20px;
             color: #bfdbfe;
-            margin: 5px 0;
-        }
-        .carelay-center::before, .carelay-center::after {
-             content: '↑';
+            margin: 5px 0;}}#service-page .carelay-center::before, #service-page .carelay-center::after{content: '↑';
              display: block;
              font-size: 20px;
              color: #bfdbfe;
-             margin: 5px 0;
-        }
-        .carelay-center::before { content: '↑'; }
-        .carelay-center::after { content: '↓'; }
-
-        /* Benefit */
-        .benefit-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        /* Price */
-        .step-list {
-            flex-direction: column;
-            gap: 20px;
-        }
-        .step-list .step-item:not(:last-child)::after {
-            content: '↓';
+             margin: 5px 0;}}#service-page .carelay-center::before{content: '↑';}}#service-page .carelay-center::after{content: '↓';}}#service-page /* Benefit */
+        .benefit-grid{grid-template-columns: 1fr;}}#service-page /* Price */
+        .step-list{flex-direction: column;
+            gap: 20px;}}#service-page .step-list .step-item:not(:last-child)::after{content: '↓';
             right: 50%;
             top: auto;
             bottom: -20px;
-            transform: translateX(50%);
-        }
-        .step-number {
-            margin-bottom: 25px; /* 矢印分のスペース */
-        }
-        .step-item h4 {
-            margin-bottom: 5px;
-        }
-    }
+            transform: translateX(50%);}}#service-page .step-number{margin-bottom: 25px; /* 矢印分のスペース */}}#service-page .step-item h4{margin-bottom: 5px;}}}
   </style>
 </head>
 <body>
