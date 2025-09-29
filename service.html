@@ -3,15 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CARELAY（ケアレイ） | 介護・福祉業界の業務支援プラットフォーム</title>
-
-  <!-- SEO / OGP -->
-  <meta name="description" content="介護・福祉業界の運営側を支援するプラットフォームCARELAY（ケアレイ）。現場経験から生まれた直感的ツールで、業務効率化とコスト削減を実現します。">
-  <meta property="og:title" content="CARELAY（ケアレイ） | 業務支援プラットフォーム">
-  <meta property="og:description" content="介護・福祉業界の運営側を支援するプラットフォームCARELAY（ケアレイ）。現場経験から生まれた直感的ツールで、業務効率化とコスト削減を実現します。">
-  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png">
-  <meta property="og:url" content="https://waju.co.jp/service_carelay.html">
-  <meta property="og:type" content="article">
+  <title>合同会社WaJu | 公式サイト</title>
 
   <!-- Favicon / PWA -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
@@ -21,12 +13,11 @@
   <meta name="theme-color" content="#0f172a">
 
   <style>
-    /* index_part1.txtのCSSをそのまま利用 */
     :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
     a{color:inherit;text-decoration:none}
-    main{min-height:40vh;padding-bottom:80px;}
+    main{min-height:40vh}
     .container{max-width:var(--container);margin:0 auto;padding:0 16px}
     .hf-wrap{width:100%}
     .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
@@ -58,8 +49,33 @@
       #site-footer .hf-nav{display:none !important}
     }
 
-    /* ページ共通スタイル */
-    section{margin:80px auto}
+    /* index専用 */
+    section{margin:60px auto}
+    h1,h2,h3{margin:0 0 20px;font-weight:700}
+    h1{font-size:36px;text-align:center}
+    h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
+    h3{font-size:20px;margin-bottom:10px}
+    p{margin:0 0 14px}
+    .lead{font-size:20px;text-align:center;margin-bottom:30px;color:#374151}
+    .card{background:#fff;padding:32px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:30px}
+    .topics ul{list-style:none;padding:0}
+    .topics li{margin-bottom:12px;border-bottom:1px solid #e5e7eb;padding-bottom:8px}
+    .cta{text-align:center;margin-top:40px}
+    .cta a{display:inline-block;padding:12px 28px;background:#1976d2;color:#fff;border-radius:8px;text-decoration:none}
+  </style>
+
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHLJ5K19ZE');
+  </script>
+
+  <style>
+section{margin:80px auto}
     h2,h3{margin:0 0 20px;font-weight:700}
     h2{font-size:32px;text-align:center;color:#1976d2;margin-bottom:10px}
     h3{font-size:24px;text-align:center;color:#0f172a;margin-bottom:40px}
@@ -634,13 +650,12 @@
         }
     }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJzL3m+TDPQfXgq4v3d3sA+KzL/8qj4tYFq5k5vF7j/t6c9+v+5w7h8pG/g+g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <!-- index_part1.txtのヘッダー部分をそのまま利用 -->
+  
   <header id="site-header" class="hf-wrap"></header>
 
-  <main>
+  <main id="service-page">
     <!-- ==================== Hero Section ==================== -->
     <section id="hero">
         <div class="container">
@@ -849,7 +864,8 @@
 
   </main>
 
-  <!-- index_part3.txtのフッターとスクリプト部分をそのまま利用 -->
+  
+
   <footer id="site-footer" class="hf-wrap"></footer>
 
   <!-- Mobile drawer -->
@@ -867,7 +883,6 @@
   </div>
 
   <script type="module">
-    // index_part3.txtのスクリプトをそのまま利用
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
     const sb = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
@@ -877,7 +892,7 @@
     const $ = s => document.querySelector(s);
     const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
     const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/ (sans-serif|serif|monospace) /i.test(s) ? s : `${s}, sans-serif`);
+    const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : `${s}, sans-serif`);
     const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
     const bgParts = (row, def) => {
       const grad = stripQuotes(row?.bg_gradient||"").trim();
@@ -910,23 +925,7 @@
       buildDrawer(allMenus);
       adjustOffsets(hdr||{}, ftr||{});
       addResizeObserver(hdr||{}, ftr||{});
-
-      // スクロール時のHeroセクションのオフセット調整を再度実行 (headerのload後に実行)
-      adjustHeroMargin();
     }
-    
-    // Heroセクションのmargin-topを動的に調整する関数
-    function adjustHeroMargin() {
-        const headerEl = $("#hf-header-bg");
-        const heroEl = $("#hero");
-        if (headerEl && heroEl) {
-            // ヘッダーがfixedの場合、コンテンツがヘッダーの下に潜り込まないように調整
-            const headerHeight = headerEl.offsetHeight;
-            // ヘッダーの高さ分をheroセクションのpadding-topに追加することで対応する (CSS側で-80pxをしているため、それを打ち消す)
-            heroEl.style.paddingTop = `${100 + headerHeight}px`; 
-        }
-    }
-
 
     function linkOf(m){ return (m.url ?? m.href ?? '#'); }
 
@@ -961,7 +960,6 @@
           </div>
         </div>`;
       const bg = $("#hf-header-bg");
-      // ここでheader_fixedがtrueの場合、position:fixedを設定
       if(d.header_fixed && bg){
         Object.assign(bg.style,{position:"fixed",top:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
       }
@@ -1009,15 +1007,9 @@
     $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
 
     function adjustOffsets(h,f){
-      const body=document.body;
       const headerEl=$("#hf-header-bg");
-      if(h.header_fixed){
-        body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
-        adjustHeroMargin(); // ヘッダーの高さ変更に合わせてHeroのPaddingも調整
-      } else {
-        body.style.paddingTop="0";
-      }
-      // フッターのpaddingBottomは不要
+      const body=document.body;
+      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
       body.style.paddingBottom="0";
     }
 
