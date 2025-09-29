@@ -56,13 +56,9 @@
     }
     main {
       flex: 1 1 auto;
-      min-width: 0; /* コンテンツが広がっても押し込まれない */
+      min-width: 0; /* 中身が広がってもasideに干渉しない */
       padding: 4.5rem 2rem 2rem 2rem;
       overflow-y: auto;
-    }
-    /* 読み込むHTMLのCSSリセット防止 */
-    #main-content * {
-      all: revert;
     }
     .card {
       background: #fff;
@@ -107,7 +103,7 @@
       const res = await fetch(page);
       const html = await res.text();
       const container = document.getElementById("main-content");
-      container.innerHTML = html;
+      container.innerHTML = `<div class="subpage">${html}</div>`; // ラップして読み込む
       executeScripts(container);
     };
 
