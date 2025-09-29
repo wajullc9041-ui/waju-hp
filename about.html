@@ -319,6 +319,16 @@
         }
     }
   </style>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHLJ5K19ZE');
+  </script>
+
 </head>
 <body>
   <!-- index_part1.txtのヘッダー部分をそのまま利用 -->
@@ -435,7 +445,11 @@
   </div>
 
   <script type="module">
+// ==============================================
+    // 1. ヘッダー/フッターのロジック (index_part3.txtから)
+    // ==============================================
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+    // データベース接続情報 (既存のファイルをそのまま利用)
     const sb = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
@@ -457,6 +471,7 @@
     let allMenus = [];
 
     async function loadHF(){
+      // ヘッダーとフッターの設定を読み込み
       const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
         sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
         sb.from("hf_settings").select("*").eq("area","header").single(),
@@ -464,26 +479,19 @@
       ]);
       allMenus = menus||[];
 
-      // =========================
-      // ヘッダー処理ここから
-      // =========================
       renderHeader(hdr||{}, allMenus);
-
-      // =========================
-      // フッター処理ここから
-      // =========================
       renderFooter(ftr||{}, allMenus);
-
       buildDrawer(allMenus);
       adjustOffsets(hdr||{}, ftr||{});
       addResizeObserver(hdr||{}, ftr||{});
+
+      // ヘッダー/フッター読み込み後、メインコンテンツをレンダリング
+      renderApp();
     }
 
     function linkOf(m){ return (m.url ?? m.href ?? '#'); }
 
-    // =========================
     // ヘッダー処理
-    // =========================
     function renderHeader(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
@@ -518,9 +526,7 @@
       $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
     }
 
-    // =========================
     // フッター処理
-    // =========================
     function renderFooter(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
@@ -561,8 +567,8 @@
     function adjustOffsets(h,f){
       const headerEl=$("#hf-header-bg");
       const body=document.body;
+      // ヘッダーの高さ分、bodyの上部にパディングを設定 (固定ヘッダー対応)
       body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
-      // フッターのpaddingBottomは不要
       body.style.paddingBottom="0";
     }
 
@@ -573,6 +579,6 @@
     }
 
     loadHF();
-  </script>
+</script>
 </body>
 </html>
