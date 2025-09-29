@@ -3,17 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>会社概要 | 合同会社WaJu</title>
+  <title>合同会社WaJu | 公式サイト</title>
 
-  <!-- SEO / OGP (追加) -->
-  <meta name="description" content="合同会社WaJuの会社概要ページ。理念、代表メッセージ、会社情報を掲載しています。">
-  <meta property="og:title" content="会社概要 | 合同会社WaJu">
-  <meta property="og:description" content="合同会社WaJuの理念、代表メッセージ、会社情報を紹介しています。">
-  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png">
-  <meta property="og:url" content="https://waju.co.jp/about.html">
-  <meta property="og:type" content="article">
-
-  <!-- Favicon / PWA (index_part1.txtからそのまま流用) -->
+  <!-- Favicon / PWA -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
   <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
@@ -21,12 +13,11 @@
   <meta name="theme-color" content="#0f172a">
 
   <style>
-    /* index_part1.txtのCSSをそのまま利用 */
     :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
     a{color:inherit;text-decoration:none}
-    main{min-height:40vh;padding-bottom:80px;} /* フッターとの間隔を調整 */
+    main{min-height:40vh}
     .container{max-width:var(--container);margin:0 auto;padding:0 16px}
     .hf-wrap{width:100%}
     .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
@@ -58,7 +49,7 @@
       #site-footer .hf-nav{display:none !important}
     }
 
-    /* ページ共通スタイル (index_part1.txtより) */
+    /* index専用 */
     section{margin:60px auto}
     h1,h2,h3{margin:0 0 20px;font-weight:700}
     h1{font-size:36px;text-align:center}
@@ -66,10 +57,15 @@
     h3{font-size:20px;margin-bottom:10px}
     p{margin:0 0 14px}
     .lead{font-size:20px;text-align:center;margin-bottom:30px;color:#374151}
-    /* .card, .topics, .cta スタイルはabout.htmlではカスタム */
+    .card{background:#fff;padding:32px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:30px}
+    .topics ul{list-style:none;padding:0}
+    .topics li{margin-bottom:12px;border-bottom:1px solid #e5e7eb;padding-bottom:8px}
+    .cta{text-align:center;margin-top:40px}
+    .cta a{display:inline-block;padding:12px 28px;background:#1976d2;color:#fff;border-radius:8px;text-decoration:none}
+  </style>
 
-    /* about.html 専用カスタムスタイル */
-    #page-title {
+  <style>
+#page-title {
         font-size: 42px;
         text-align: center;
         margin-top: 40px;
@@ -319,22 +315,12 @@
         }
     }
   </style>
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-ZHLJ5K19ZE');
-  </script>
-
 </head>
 <body>
-  <!-- index_part1.txtのヘッダー部分をそのまま利用 -->
+  
   <header id="site-header" class="hf-wrap"></header>
 
-  <main>
+  <main id="about-page">
     <div class="container">
       <h1 id="page-title">会社概要</h1>
 
@@ -427,7 +413,8 @@
     </div>
   </main>
 
-  <!-- index_part3.txtのフッターとスクリプト部分をそのまま利用 -->
+  
+
   <footer id="site-footer" class="hf-wrap"></footer>
 
   <!-- Mobile drawer -->
@@ -445,11 +432,7 @@
   </div>
 
   <script type="module">
-// ==============================================
-    // 1. ヘッダー/フッターのロジック (index_part3.txtから)
-    // ==============================================
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
-    // データベース接続情報 (既存のファイルをそのまま利用)
     const sb = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
@@ -458,7 +441,7 @@
     const $ = s => document.querySelector(s);
     const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
     const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/ (sans-serif|serif|monospace) /i.test(s) ? s : `${s}, sans-serif`);
+    const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : `${s}, sans-serif`);
     const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
     const bgParts = (row, def) => {
       const grad = stripQuotes(row?.bg_gradient||"").trim();
@@ -471,7 +454,6 @@
     let allMenus = [];
 
     async function loadHF(){
-      // ヘッダーとフッターの設定を読み込み
       const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
         sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
         sb.from("hf_settings").select("*").eq("area","header").single(),
@@ -479,19 +461,26 @@
       ]);
       allMenus = menus||[];
 
+      // =========================
+      // ヘッダー処理ここから
+      // =========================
       renderHeader(hdr||{}, allMenus);
+
+      // =========================
+      // フッター処理ここから
+      // =========================
       renderFooter(ftr||{}, allMenus);
+
       buildDrawer(allMenus);
       adjustOffsets(hdr||{}, ftr||{});
       addResizeObserver(hdr||{}, ftr||{});
-
-      // ヘッダー/フッター読み込み後、メインコンテンツをレンダリング
-      renderApp();
     }
 
     function linkOf(m){ return (m.url ?? m.href ?? '#'); }
 
+    // =========================
     // ヘッダー処理
+    // =========================
     function renderHeader(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
@@ -526,7 +515,9 @@
       $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
     }
 
+    // =========================
     // フッター処理
+    // =========================
     function renderFooter(d, menus){
       const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
         .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
@@ -567,7 +558,6 @@
     function adjustOffsets(h,f){
       const headerEl=$("#hf-header-bg");
       const body=document.body;
-      // ヘッダーの高さ分、bodyの上部にパディングを設定 (固定ヘッダー対応)
       body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
       body.style.paddingBottom="0";
     }
@@ -579,6 +569,6 @@
     }
 
     loadHF();
-</script>
+  </script>
 </body>
 </html>
