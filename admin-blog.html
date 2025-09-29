@@ -101,8 +101,8 @@
     tbody.innerHTML = data.map(a => `
       <tr onclick="editArticle('${a.id}')">
         <td>${a.title||""}</td>
-        <td>${a.slug}</td>
-        <td>${(a.tags||[]).join ? a.tags.join(",") : a.tags || ""}</td>
+        <td>${a.slug||""}</td>
+        <td>${Array.isArray(a.tags) ? a.tags.join(",") : ""}</td>
         <td>${a.published?"公開":"非公開"}</td>
         <td>${new Date(a.created_at).toLocaleDateString()}</td>
       </tr>`).join("");
@@ -119,7 +119,7 @@
     $("#description").value = data.description||"";
     editor.setData(data.content || "");
     $("#thumbnail").value = data.thumbnail_url||"";
-    $("#tags").value = (data.tags || []).join(",");
+    $("#tags").value = Array.isArray(data.tags) ? data.tags.join(",") : "";
     $("#published").checked = data.published;
   }
 
