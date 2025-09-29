@@ -12,6 +12,7 @@
       display: flex;
       height: 100vh;
       background-color: #f9fafb;
+      overflow: hidden;
     }
     header {
       background: linear-gradient(90deg, #1f2937, #374151);
@@ -30,11 +31,12 @@
     }
     aside {
       background: #1f2937;
-      width: 240px;
+      flex: 0 0 240px; /* 幅固定・縮まない */
       padding-top: 3.5rem;
       border-right: 1px solid #111827;
       box-shadow: 2px 0 5px rgba(0,0,0,0.2);
       color: #fff;
+      overflow-y: auto;
     }
     aside button {
       display: block;
@@ -53,9 +55,14 @@
       background-color: #4b5563;
     }
     main {
-      flex-grow: 1;
+      flex: 1 1 auto;
+      min-width: 0; /* コンテンツが広がっても押し込まれない */
       padding: 4.5rem 2rem 2rem 2rem;
       overflow-y: auto;
+    }
+    /* 読み込むHTMLのCSSリセット防止 */
+    #main-content * {
+      all: revert;
     }
     .card {
       background: #fff;
