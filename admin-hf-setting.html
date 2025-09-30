@@ -1,196 +1,414 @@
-<section id="hf-setting" class="p-6 space-y-10">
+<!-- 管理: ヘッダー＆フッター設定（安全版 v2：位置反映/フッターはプレビュー領域内のみ表示） -->
+<style>
+  #hf-app{box-sizing:border-box;width:100%;max-width:1120px;margin:16px auto;padding:16px;
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a}
+  #hf-app h1{font-size:20px;margin:0 0 16px}
+  .card{background:#fff;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);padding:16px;margin:0 0 16px}
+  .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+  .panel-head h2{font-size:16px;margin:0}
+  .btn{padding:6px 12px;border:none;border-radius:8px;cursor:pointer;font-size:13px}
+  .btn.primary{background:#2563eb;color:#fff}
+  .btn.small{font-size:12px;padding:2px 8px;margin-left:8px}
+  .preview{border:1px dashed #cbd5e1;border-radius:10px;padding:12px;margin-bottom:12px;background:#f8fafc}
+  .groups{display:flex;gap:12px;flex-wrap:wrap}
+  fieldset.group{flex:1 1 320px;min-width:300px;border:1px solid #e2e8f0;border-radius:10px;padding:10px}
+  legend{font-size:12px;padding:0 6px;color:#334155}
+  .field{display:flex;align-items:center;justify-content:flex-start;gap:8px;margin:6px 0;flex-wrap:wrap}
+  .field label{flex:1 1 38%;font-size:12px;color:#475569;min-width:140px}
+  .field input,.field select{flex:1 1 60%;max-width:100%;box-sizing:border-box;padding:6px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px}
+  .field .hint{flex-basis:100%;font-size:11px;color:#64748b;margin:4px 0 0}
+  .hfbar{display:flex;align-items:center;gap:var(--gap,16px);border-radius:8px}
+  .hfbar.hf-row{justify-content:flex-start}
+  .hfbar.hf-column{flex-direction:column;align-items:stretch}
+  .slot{display:flex;align-items:center}
+  .slot.brand{flex:0 0 auto}
+  .slot.nav{flex:1 1 auto}
+  .hf-brand{display:flex;align-items:center;gap:8px}
+  .hf-brand img{height:auto;max-height:inherit}
+  .hf-nav{display:flex;gap:var(--gap,16px);flex-wrap:wrap;width:100%}
+  .hf-copy{display:flex;width:100%}
+  #toast{position:fixed;top:16px;right:16px;z-index:1000}
+  .toast{background:#2563eb;color:#fff;padding:8px 12px;border-radius:10px;margin-top:10px;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.2);opacity:.97}
+  .toast.err{background:#dc2626}
+</style>
 
-  <!-- ヘッダー設定 -->
-  <div>
-    <h2 class="text-xl font-bold mb-4">ヘッダー設定</h2>
-    <form id="header-form" class="space-y-4">
-      <!-- ロゴ -->
-      <fieldset>
-        <legend class="font-semibold">ロゴ</legend>
-        <input id="logo_url" type="text" placeholder="ロゴURL" class="input">
-        <input id="logo_height" type="text" placeholder="高さ(px)" class="input">
-        <select id="logo_alignment" class="input">
-          <option value="left">左</option>
-          <option value="center">中央</option>
-          <option value="right">右</option>
-        </select>
+<div id="hf-app">
+  <h1>ヘッダー & フッター設定</h1>
+
+  <section class="card" id="section-header">
+    <div class="panel-head">
+      <h2>ヘッダー設定</h2>
+      <div class="actions" style="display:flex;gap:8px;align-items:center">
+        <label>行レイアウト
+          <select id="header_layout_mode">
+            <option value="row">1行（横並び）</option>
+            <option value="column">2行（縦並び）</option>
+          </select>
+        </label>
+        <label style="display:flex;gap:6px;align-items:center">
+          <input id="header_fixed" type="checkbox"> 上部に固定（常時表示）
+        </label>
+        <button id="saveHeader" class="btn primary" type="button">保存</button>
+      </div>
+    </div>
+    <div id="headerPreview" class="preview"></div>
+
+    <div class="groups">
+      <fieldset class="group"><legend>ロゴ</legend>
+        <div class="field"><label>URL</label><input id="logo_url" type="text"></div>
+        <div class="field"><label>高さ(px)</label><input id="logo_height" type="number" min="0" step="1"></div>
+        <div class="field"><label>位置</label><select id="logo_alignment"><option>left</option><option>center</option><option>right</option></select></div>
       </fieldset>
-      <!-- 社名 -->
-      <fieldset>
-        <legend class="font-semibold">社名</legend>
-        <input id="company_name" type="text" placeholder="会社名" class="input">
-        <select id="company_alignment" class="input">
-          <option value="left">左</option>
-          <option value="center">中央</option>
-          <option value="right">右</option>
-        </select>
-        <input id="company_color" type="color" class="input">
-        <select id="company_weight" class="input">
-          <option value="normal">通常</option>
-          <option value="bold">太字</option>
-        </select>
-        <input id="header_company_size" type="text" placeholder="文字サイズ(px)" class="input">
+
+      <fieldset class="group"><legend>社名</legend>
+        <div class="field"><label>会社名</label><input id="company_name" type="text"></div>
+        <div class="field"><label>位置</label><select id="company_alignment"><option>left</option><option>center</option><option>right</option></select></div>
+        <div class="field"><label>文字色</label><input id="company_color" type="color"></div>
+        <div class="field"><label>太さ</label><select id="company_weight"><option>normal</option><option>bold</option></select></div>
+        <div class="field"><label>文字サイズ(px)</label><input id="header_company_size" type="number" min="8" step="1"></div>
       </fieldset>
-      <!-- ナビ -->
-      <fieldset>
-        <legend class="font-semibold">ナビ</legend>
-        <select id="nav_alignment" class="input">
-          <option value="left">左</option>
-          <option value="center">中央</option>
-          <option value="right">右</option>
-        </select>
-        <input id="nav_color" type="color" class="input">
-        <select id="nav_weight" class="input">
-          <option value="normal">通常</option>
-          <option value="bold">太字</option>
-        </select>
-        <input id="header_nav_size" type="text" placeholder="文字サイズ(px)" class="input">
+
+      <fieldset class="group"><legend>ナビ</legend>
+        <div class="field"><label>位置</label><select id="nav_alignment"><option>left</option><option>center</option><option>right</option></select></div>
+        <div class="field"><label>文字色</label><input id="nav_color" type="color"></div>
+        <div class="field"><label>太さ</label><select id="nav_weight"><option>normal</option><option>bold</option></select></div>
+        <div class="field"><label>文字サイズ(px)</label><input id="header_nav_size" type="number" min="8" step="1"></div>
       </fieldset>
-      <!-- 全体 -->
-      <fieldset>
-        <legend class="font-semibold">全体</legend>
-        <input id="header_font_family" type="text" placeholder="フォントファミリー" class="input">
-        <input id="bar_height_header" type="text" placeholder="高さ(px)" class="input">
-        <input id="padding_header" type="text" placeholder="パディング" class="input">
-        <input id="link_spacing_header" type="text" placeholder="リンク間隔(px)" class="input">
-        <input id="bg_color_header" type="color" class="input">
+
+      <fieldset class="group"><legend>全体</legend>
+        <div class="field">
+          <label>フォントファミリー</label>
+          <input id="header_font_family" type="text" placeholder='"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif'>
+          <div class="hint">第一候補 + フォールバック（末尾は sans-serif 推奨）。</div>
+        </div>
+        <div class="field"><label>ヘッダー高さ(px)</label><input id="bar_height_header" type="number" min="0" step="1"></div>
+        <div class="field"><label>パディング</label><input id="padding_header" type="text"></div>
+        <div class="field"><label>リンク間隔</label><input id="link_spacing_header" type="number" min="0" step="1"></div>
+        <div class="field"><label>背景色</label><input id="bg_color_header" type="color"></div>
+        <div class="field"><label>グラデーション</label><input id="bg_gradient_header" type="text" readonly></div>
+        <div class="field"><label>方向</label>
+          <select id="grad_dir_header">
+            <option value="to right">→</option><option value="to bottom">↓</option>
+            <option value="to left">←</option><option value="to top">↑</option>
+          </select></div>
+        <div class="field"><label>開始色</label><input id="grad_start_header" type="color" value="#000000"></div>
+        <div class="field"><label>終了色</label><input id="grad_end_header" type="color" value="#333333"></div>
+        <div class="field"><label>操作</label><div style="display:flex;gap:8px">
+          <button id="grad_apply_header" class="btn small" type="button">生成</button>
+          <button id="grad_reset_header" class="btn small" type="button">リセット</button>
+        </div></div>
       </fieldset>
-      <button type="button" id="save-header" class="btn">保存</button>
-    </form>
-    <div id="header-preview" class="mt-6 border p-4 bg-gray-50"></div>
+    </div>
+  </section>
+
+  <section class="card" id="section-footer">
+    <div class="panel-head">
+      <h2>フッター設定</h2>
+      <div class="actions" style="display:flex;gap:8px;align-items:center">
+        <label>行レイアウト
+          <select id="footer_layout_mode">
+            <option value="row">横並び</option>
+            <option value="nav-top">コピー上／ナビ下</option>
+            <option value="nav-bottom">ナビ上／コピー下</option>
+          </select>
+        </label>
+        <button id="saveFooter" class="btn primary" type="button">保存</button>
+      </div>
+    </div>
+    <div id="footerPreview" class="preview"></div>
+
+    <div class="groups">
+      <fieldset class="group"><legend>コピーライト</legend>
+        <div class="field"><label>テキスト</label><input id="footer_text" type="text"></div>
+        <div class="field"><label>位置</label><select id="footer_alignment"><option>left</option><option>center</option><option>right</option></select></div>
+        <div class="field"><label>文字色</label><input id="footer_color" type="color"></div>
+        <div class="field"><label>太さ</label><select id="footer_weight"><option value="normal">normal</option><option value="bold">bold</option></select></div>
+        <div class="field"><label>文字サイズ(px)</label><input id="footer_copy_size" type="number" min="8" step="1"></div>
+      </fieldset>
+
+      <fieldset class="group"><legend>ナビ</legend>
+        <div class="field"><label>位置</label><select id="nav_alignment_footer"><option>left</option><option>center</option><option>right</option></select></div>
+        <div class="field"><label>文字色</label><input id="nav_color_footer" type="color"></div>
+        <div class="field"><label>太さ</label><select id="nav_weight_footer"><option>normal</option><option>bold</option></select></div>
+        <div class="field"><label>固定表示（常時最下部）</label><input id="footer_fixed" type="checkbox"></div>
+        <div class="field"><label>文字サイズ(px)</label><input id="footer_nav_size" type="number" min="8" step="1"></div>
+      </fieldset>
+
+      <fieldset class="group"><legend>全体</legend>
+        <div class="field">
+          <label>フォントファミリー</label>
+          <input id="footer_font_family" type="text" placeholder='"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif'>
+          <div class="hint">第一候補 + フォールバック。末尾は sans-serif 推奨。</div>
+        </div>
+        <div class="field"><label>フッター高さ(px)</label><input id="bar_height_footer" type="number" min="0" step="1"></div>
+        <div class="field"><label>パディング</label><input id="padding_footer" type="text"></div>
+        <div class="field"><label>リンク間隔</label><input id="link_spacing_footer" type="number" min="0" step="1"></div>
+        <div class="field"><label>背景色</label><input id="bg_color_footer" type="color"></div>
+        <div class="field"><label>グラデーション</label><input id="bg_gradient_footer" type="text" readonly></div>
+        <div class="field"><label>方向</label>
+          <select id="grad_dir_footer">
+            <option value="to right">→</option><option value="to bottom">↓</option>
+            <option value="to left">←</option><option value="to top">↑</option>
+          </select></div>
+        <div class="field"><label>開始色</label><input id="grad_start_footer" type="color" value="#000000"></div>
+        <div class="field"><label>終了色</label><input id="grad_end_footer" type="color" value="#333333"></div>
+        <div class="field"><label>操作</label><div style="display:flex;gap:8px">
+          <button id="grad_apply_footer" class="btn small" type="button">生成</button>
+          <button id="grad_reset_footer" class="btn small" type="button">リセット</button>
+        </div></div>
+      </fieldset>
+    </div>
+  </section>
+
+  <div class="card" style="background:#f8fafc">
+    <strong>フォント指定のヒント</strong>
+    <div class="hint">「フォントA, フォントB, sans-serif」の順で指定。A/Bが無ければ最後の sans-serif（ゴシック系）が使われます。</div>
   </div>
 
-  <!-- フッター設定 -->
-  <div>
-    <h2 class="text-xl font-bold mb-4">フッター設定</h2>
-    <form id="footer-form" class="space-y-4">
-      <!-- コピーライト -->
-      <fieldset>
-        <legend class="font-semibold">コピーライト</legend>
-        <input id="footer_text" type="text" placeholder="コピーライト" class="input">
-        <select id="footer_alignment" class="input">
-          <option value="left">左</option>
-          <option value="center">中央</option>
-          <option value="right">右</option>
-        </select>
-        <input id="footer_color" type="color" class="input">
-        <select id="footer_weight" class="input">
-          <option value="normal">通常</option>
-          <option value="bold">太字</option>
-        </select>
-        <input id="footer_copy_size" type="text" placeholder="文字サイズ(px)" class="input">
-      </fieldset>
-      <!-- ナビ -->
-      <fieldset>
-        <legend class="font-semibold">ナビ</legend>
-        <select id="nav_alignment_footer" class="input">
-          <option value="left">左</option>
-          <option value="center">中央</option>
-          <option value="right">右</option>
-        </select>
-        <input id="nav_color_footer" type="color" class="input">
-        <select id="nav_weight_footer" class="input">
-          <option value="normal">通常</option>
-          <option value="bold">太字</option>
-        </select>
-        <input id="footer_nav_size" type="text" placeholder="文字サイズ(px)" class="input">
-      </fieldset>
-      <!-- 全体 -->
-      <fieldset>
-        <legend class="font-semibold">全体</legend>
-        <input id="footer_font_family" type="text" placeholder="フォントファミリー" class="input">
-        <input id="bar_height_footer" type="text" placeholder="高さ(px)" class="input">
-        <input id="padding_footer" type="text" placeholder="パディング" class="input">
-        <input id="link_spacing_footer" type="text" placeholder="リンク間隔(px)" class="input">
-        <input id="bg_color_footer" type="color" class="input">
-      </fieldset>
-      <button type="button" id="save-footer" class="btn">保存</button>
-    </form>
-    <div id="footer-preview" class="mt-6 border p-4 bg-gray-50"></div>
-  </div>
-</section>
+  <div id="toast"></div>
+</div>
 
 <script type="module">
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-const supabaseUrl = "https://htnmjsqgoapvuanrsuma.supabase.co";
-const supabaseKey = "YOUR_SUPABASE_ANON_KEY";
-const sb = createClient(supabaseUrl, supabaseKey);
-
-// 値をまとめる関数
-function getHeader(){
-  return {
-    logo_url: document.getElementById("logo_url").value,
-    logo_height: document.getElementById("logo_height").value,
-    logo_alignment: document.getElementById("logo_alignment").value,
-    company_name: document.getElementById("company_name").value,
-    company_alignment: document.getElementById("company_alignment").value,
-    company_color: document.getElementById("company_color").value,
-    company_weight: document.getElementById("company_weight").value,
-    header_company_size: document.getElementById("header_company_size").value,
-    nav_alignment: document.getElementById("nav_alignment").value,
-    nav_color: document.getElementById("nav_color").value,
-    nav_weight: document.getElementById("nav_weight").value,
-    header_nav_size: document.getElementById("header_nav_size").value,
-    header_font_family: document.getElementById("header_font_family").value,
-    bar_height_header: document.getElementById("bar_height_header").value,
-    padding_header: document.getElementById("padding_header").value,
-    link_spacing_header: document.getElementById("link_spacing_header").value,
-    bg_color_header: document.getElementById("bg_color_header").value,
-  };
-}
-function getFooter(){
-  return {
-    footer_text: document.getElementById("footer_text").value,
-    footer_alignment: document.getElementById("footer_alignment").value,
-    footer_color: document.getElementById("footer_color").value,
-    footer_weight: document.getElementById("footer_weight").value,
-    footer_copy_size: document.getElementById("footer_copy_size").value,
-    nav_alignment_footer: document.getElementById("nav_alignment_footer").value,
-    nav_color_footer: document.getElementById("nav_color_footer").value,
-    nav_weight_footer: document.getElementById("nav_weight_footer").value,
-    footer_nav_size: document.getElementById("footer_nav_size").value,
-    footer_font_family: document.getElementById("footer_font_family").value,
-    bar_height_footer: document.getElementById("bar_height_footer").value,
-    padding_footer: document.getElementById("padding_footer").value,
-    link_spacing_footer: document.getElementById("link_spacing_footer").value,
-    bg_color_footer: document.getElementById("bg_color_footer").value,
-  };
-}
-
-// 保存
-document.getElementById("save-header").onclick = async () => {
-  const payload = getHeader();
-  const { data, error } = await sb.from("hf_settings")
-    .update({ data: payload })
-    .eq("area", "header")
-    .select();
-  console.log("payload:", payload);
-  console.log("save-header result:", data, error);
-};
-document.getElementById("save-footer").onclick = async () => {
-  const payload = getFooter();
-  await sb.from("hf_settings").update({ data: payload }).eq("area","footer");
-  document.getElementById("footer-preview").innerText = JSON.stringify(payload, null, 2);
-};
-
-// 初期ロード
-async function loadHF(){
-  const headerRow = await sb.from("hf_settings").select("data").eq("area","header").single();
-  const footerRow = await sb.from("hf_settings").select("data").eq("area","footer").single();
-  if(headerRow.data?.data){
-    Object.entries(headerRow.data.data).forEach(([key,val])=>{
-      const el = document.getElementById(key);
-      if(el) el.value = val;
-    });
-    document.getElementById("header-preview").innerText = JSON.stringify(headerRow.data.data, null, 2);
+  let supabase;
+  if (!window.__supabase) {
+    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+    window.__supabase = createClient(
+      "https://htnmjsqgoapvuanrsuma.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+    );
   }
-  if(footerRow.data?.data){
-    Object.entries(footerRow.data.data).forEach(([key,val])=>{
-      const el = document.getElementById(key);
-      if(el) el.value = val;
-    });
-    document.getElementById("footer-preview").innerText = JSON.stringify(footerRow.data.data, null, 2);
+  supabase = window.__supabase;
+
+  const $ = (q, r=document)=> r.querySelector(q);
+  const $$ = (q, r=document)=> Array.from(r.querySelectorAll(q));
+  const toast = (m, ok=true)=>{const n=document.createElement('div');n.className='toast '+(ok?'':'err');n.textContent=m;(document.querySelector('#toast')||document.body).appendChild(n);setTimeout(()=>n.remove(),2200);};
+  const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
+  const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
+  const withFallback = s => !s ? "" : (/\b(sans-serif|serif|monospace)\b/i.test(s) ? s : (s + ", sans-serif"));
+  const linear = (dir,a,b) => (!a||!b) ? "" : ("linear-gradient(" + dir + ", " + a + ", " + b + ")");
+
+  function computeBgParts(d, defColor){
+    if (d.bg_gradient && d.bg_gradient.trim()){
+      return { bgColor: defColor, bgImage: d.bg_gradient };
+    }
+    const col = (d.bg_color && d.bg_color.trim()) ? d.bg_color : defColor;
+    return { bgColor: col, bgImage: "none" };
   }
-}
-loadHF();
+
+  function el(tag, className){ const x=document.createElement(tag); if(className) x.className=className; return x; }
+
+  function buildHeaderDOM(d, menus){
+    const {bgColor,bgImage} = computeBgParts(d, "#0f172a");
+    const bar = el("div", d.layout_mode==="column"?"hfbar hf-column":"hfbar hf-row");
+    if(d.header_font_family){ bar.style.fontFamily = withFallback(d.header_font_family); }
+    bar.style.setProperty("background-color", bgColor, "important");
+    bar.style.setProperty("background-image", bgImage==="none"?"none":bgImage, "important");
+    bar.style.height = (num(d.bar_height,60)) + "px";
+    bar.style.padding = d.padding || "8px 12px";
+    bar.style.setProperty("--gap", (num(d.link_spacing,16)) + "px");
+
+    const brandSlot = el("div","slot brand");
+    const navSlot = el("div","slot nav");
+
+    // brand alignment by margins (left/center/right)
+    if (d.company_alignment==="left"){ brandSlot.style.marginRight="auto"; brandSlot.style.marginLeft="0"; }
+    else if (d.company_alignment==="center"){ brandSlot.style.margin="0 auto"; }
+    else { brandSlot.style.marginLeft="auto"; brandSlot.style.marginRight="0"; }
+
+    const brand = el("div","hf-brand");
+    if(d.logo_url){
+      const img = new Image();
+      img.alt = "logo";
+      img.onerror = function(){ this.style.display="none"; };
+      img.style.maxHeight = (num(d.logo_height||d.bar_height,60)) + "px";
+      img.src = d.logo_url;
+      brand.appendChild(img);
+    }
+    const name = el("span"); name.textContent = d.company_name||"";
+    if(d.company_color) name.style.color = d.company_color;
+    if(d.company_weight) name.style.fontWeight = d.company_weight;
+    name.style.fontSize = (num(d.header_company_size,18)) + "px";
+    brand.appendChild(name);
+    brandSlot.appendChild(brand);
+    bar.appendChild(brandSlot);
+
+    const nav = el("nav","hf-nav");
+    nav.style.color = d.nav_color || "";
+    nav.style.fontWeight = d.nav_weight || "normal";
+    nav.style.fontSize = (num(d.header_nav_size,14)) + "px";
+    nav.style.justifyContent = toJustify(d.nav_alignment); // ← nav 内で揃える
+    (menus||[]).filter(m=>m.is_active && m.show_in_header).forEach(m=>{
+      const a = document.createElement("a"); a.textContent = m.title; a.href = m.href || "#"; nav.appendChild(a);
+    });
+    navSlot.appendChild(nav); bar.appendChild(navSlot);
+
+    if(d.header_fixed){ bar.style.position="sticky"; bar.style.top="0"; bar.style.zIndex="5"; }
+    return bar;
+  }
+
+  function buildFooterDOM(d, menus){
+    const {bgColor,bgImage} = computeBgParts(d, "#0f172a");
+    const bar = el("div", d.layout_mode==="row"?"hfbar hf-row":"hfbar hf-column");
+    if(d.footer_font_family){ bar.style.fontFamily = withFallback(d.footer_font_family); }
+    bar.style.setProperty("background-color", bgColor, "important");
+    bar.style.setProperty("background-image", bgImage==="none"?"none":bgImage, "important");
+    bar.style.height = (num(d.bar_height,60)) + "px";
+    bar.style.padding = d.padding || "8px 12px";
+    bar.style.setProperty("--gap", (num(d.link_spacing,16)) + "px");
+
+    const copy = el("div","hf-copy");
+    copy.style.justifyContent = toJustify(d.footer_alignment);
+    copy.style.color = d.footer_color || "";
+    copy.style.fontWeight = d.footer_weight || "normal";
+    copy.style.fontSize = (num(d.footer_copy_size,14)) + "px";
+    copy.textContent = d.footer_text || "";
+
+    const nav = el("nav","hf-nav");
+    nav.style.justifyContent = toJustify(d.nav_alignment_footer);
+    nav.style.color = d.nav_color_footer || "";
+    nav.style.fontWeight = d.nav_weight_footer || "normal";
+    nav.style.fontSize = (num(d.footer_nav_size,14)) + "px";
+    (menus||[]).filter(m=>m.is_active && m.show_in_footer).forEach(m=>{
+      const a = document.createElement("a"); a.textContent = m.title; a.href = m.href || "#"; nav.appendChild(a);
+    });
+
+    if(d.layout_mode==="row"){ bar.appendChild(copy); bar.appendChild(nav); }
+    else if(d.layout_mode==="nav-top"){ bar.appendChild(nav); bar.appendChild(copy); }
+    else { bar.appendChild(copy); bar.appendChild(nav); }
+
+    // PREVIEWでは固定にしない（画面全体に効かないように）
+    // if(d.footer_fixed){ ... } ← 無効化
+
+    return bar;
+  }
+
+  function getHeader(){ return {
+    logo_url: $("#logo_url").value,
+    logo_height: Number($("#logo_height").value),
+    logo_alignment: $("#logo_alignment").value,
+    company_name: $("#company_name").value,
+    company_alignment: $("#company_alignment").value,
+    company_color: $("#company_color").value,
+    company_weight: $("#company_weight").value,
+    header_company_size: Number($("#header_company_size").value),
+    nav_alignment: $("#nav_alignment").value,
+    nav_color: $("#nav_color").value,
+    nav_weight: $("#nav_weight").value,
+    header_nav_size: Number($("#header_nav_size").value),
+    bar_height: Number($("#bar_height_header").value),
+    padding: $("#padding_header").value,
+    link_spacing: Number($("#link_spacing_header").value),
+    bg_color: $("#bg_color_header").value,
+    bg_gradient: $("#bg_gradient_header").value,
+    layout_mode: $("#header_layout_mode").value,
+    header_fixed: $("#header_fixed").checked,
+    header_font_family: $("#header_font_family").value,
+    area: "header"
+  };}
+  function getFooter(){ return {
+    footer_text: $("#footer_text").value,
+    footer_alignment: $("#footer_alignment").value,
+    footer_color: $("#footer_color").value,
+    footer_weight: $("#footer_weight").value,
+    footer_copy_size: Number($("#footer_copy_size").value),
+    nav_alignment_footer: $("#nav_alignment_footer").value,
+    nav_color_footer: $("#nav_color_footer").value,
+    nav_weight_footer: $("#nav_weight_footer").value,
+    footer_nav_size: Number($("#footer_nav_size").value),
+    footer_fixed: $("#footer_fixed").checked,
+    bar_height: Number($("#bar_height_footer").value),
+    padding: $("#padding_footer").value,
+    link_spacing: Number($("#link_spacing_footer").value),
+    bg_color: $("#bg_color_footer").value,
+    bg_gradient: $("#bg_gradient_footer").value,
+    layout_mode: $("#footer_layout_mode").value,
+    footer_font_family: $("#footer_font_family").value,
+    area: "footer"
+  };}
+
+  function setHeader(r){
+    $("#logo_url").value = r.logo_url || "";
+    $("#logo_height").value = (r.logo_height!=null)?r.logo_height:48;
+    $("#logo_alignment").value = r.logo_alignment || "left";
+    $("#company_name").value = r.company_name || "";
+    $("#company_alignment").value = r.company_alignment || "left";
+    $("#company_color").value = r.company_color || "#000000";
+    $("#company_weight").value = r.company_weight || "normal";
+    $("#header_company_size").value = (r.header_company_size!=null)?r.header_company_size:18;
+    $("#nav_alignment").value = r.nav_alignment || "right";
+    $("#nav_color").value = r.nav_color || "#ffffff";
+    $("#nav_weight").value = r.nav_weight || "normal";
+    $("#header_nav_size").value = (r.header_nav_size!=null)?r.header_nav_size:14;
+    $("#bar_height_header").value = (r.bar_height!=null)?r.bar_height:60;
+    $("#padding_header").value = r.padding || "8px 12px";
+    $("#link_spacing_header").value = (r.link_spacing!=null)?r.link_spacing:16;
+    $("#bg_color_header").value = r.bg_color || "#0b1e4a";
+    $("#bg_gradient_header").value = r.bg_gradient || "";
+    $("#header_layout_mode").value = r.layout_mode || "row";
+    $("#header_fixed").checked = !!r.header_fixed;
+    $("#header_font_family").value = r.header_font_family || '"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif';
+  }
+  function setFooter(r){
+    $("#footer_text").value = r.footer_text || "";
+    $("#footer_alignment").value = r.footer_alignment || "center";
+    $("#footer_color").value = r.footer_color || "#ffffff";
+    $("#footer_weight").value = r.footer_weight || "normal";
+    $("#footer_copy_size").value = (r.footer_copy_size!=null)?r.footer_copy_size:14;
+    $("#nav_alignment_footer").value = r.nav_alignment_footer || "center";
+    $("#nav_color_footer").value = r.nav_color_footer || "#ffffff";
+    $("#nav_weight_footer").value = r.nav_weight_footer || "normal";
+    $("#footer_nav_size").value = (r.footer_nav_size!=null)?r.footer_nav_size:14;
+    $("#footer_fixed").checked = !!r.footer_fixed;
+    $("#bar_height_footer").value = (r.bar_height!=null)?r.bar_height:60;
+    $("#padding_footer").value = r.padding || "8px 12px";
+    $("#link_spacing_footer").value = (r.link_spacing!=null)?r.link_spacing:16;
+    $("#bg_color_footer").value = r.bg_color || "#0b1e4a";
+    $("#bg_gradient_footer").value = r.bg_gradient || "";
+    $("#footer_layout_mode").value = r.layout_mode || "row";
+    $("#footer_font_family").value = r.footer_font_family || '"Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif';
+  }
+
+  function renderHeaderPreview(d, menus){
+    const pv = $("#headerPreview"); pv.textContent = ""; pv.appendChild(buildHeaderDOM(d, menus));
+  }
+  function renderFooterPreview(d, menus){
+    const pv = $("#footerPreview"); pv.textContent = ""; pv.appendChild(buildFooterDOM(d, menus));
+  }
+
+  async function saveRow(area, payload){
+    const { error } = await supabase.from('hf_settings').update({ data: payload }).eq('area', area);
+    if (error){ console.error(error); toast('保存失敗', false); return; }
+    toast('保存しました', true);
+  }
+
+  let menus = [];
+  (async function init(){
+    const m = await supabase.from('public_menus').select('*').order('sort_order', {ascending:true});
+    menus = m.data || [];
+
+    const h = await supabase.from('hf_settings').select('*').eq('area','header').single();
+    const f = await supabase.from('hf_settings').select('*').eq('area','footer').single();
+    setHeader((h.data && h.data.data) || {}); setFooter((f.data && f.data.data) || {});
+    renderHeaderPreview(getHeader(), menus);
+    renderFooterPreview(getFooter(), menus);
+
+    $$("#section-header input, #section-header select").forEach(function(el){
+      el.addEventListener("input", function(){ renderHeaderPreview(getHeader(), menus); });
+      el.addEventListener("change", function(){ renderHeaderPreview(getHeader(), menus); });
+    });
+    $$("#section-footer input, #section-footer select").forEach(function(el){
+      el.addEventListener("input", function(){ renderFooterPreview(getFooter(), menus); });
+      el.addEventListener("change", function(){ renderFooterPreview(getFooter(), menus); });
+    });
+
+    $("#bg_color_header").addEventListener("input", function(){ $("#bg_gradient_header").value=""; renderHeaderPreview(getHeader(), menus); });
+    $("#bg_color_footer").addEventListener("input", function(){ $("#bg_gradient_footer").value=""; renderFooterPreview(getFooter(), menus); });
+    $("#grad_apply_header").addEventListener("click", function(){ $("#bg_gradient_header").value = linear($("#grad_dir_header").value,$("#grad_start_header").value,$("#grad_end_header").value); renderHeaderPreview(getHeader(), menus); });
+    $("#grad_reset_header").addEventListener("click", function(){ $("#bg_gradient_header").value = ""; renderHeaderPreview(getHeader(), menus); });
+    $("#grad_apply_footer").addEventListener("click", function(){ $("#bg_gradient_footer").value = linear($("#grad_dir_footer").value,$("#grad_start_footer").value,$("#grad_end_footer").value); renderFooterPreview(getFooter(), menus); });
+    $("#grad_reset_footer").addEventListener("click", function(){ $("#bg_gradient_footer").value = ""; renderFooterPreview(getFooter(), menus); });
+
+    $("#saveHeader").addEventListener("click", async function(){ const d=getHeader(); renderHeaderPreview(d,menus); await saveRow("header", d); });
+    $("#saveFooter").addEventListener("click", async function(){ const d=getFooter(); renderFooterPreview(d,menus); await saveRow("footer", d); });
+  })();
 </script>
