@@ -160,8 +160,12 @@ function getFooter(){
 // 保存
 document.getElementById("save-header").onclick = async () => {
   const payload = getHeader();
-  await sb.from("hf_settings").update({ data: payload }).eq("area","header");
-  document.getElementById("header-preview").innerText = JSON.stringify(payload, null, 2);
+  const { data, error } = await sb.from("hf_settings")
+    .update({ data: payload })
+    .eq("area", "header")
+    .select();
+  console.log("payload:", payload);
+  console.log("save-header result:", data, error);
 };
 document.getElementById("save-footer").onclick = async () => {
   const payload = getFooter();
