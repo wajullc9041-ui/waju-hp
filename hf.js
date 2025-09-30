@@ -42,4 +42,11 @@ async function loadHF() {
   }
 }
 
+// ページロード時に必ず実行
 loadHF();
+
+// 念のための保険：3秒経過後には強制的に表示を復帰
+setTimeout(() => {
+  const body = document.getElementById("page-body");
+  if (body) body.style.visibility = "visible";
+}, 3000);
