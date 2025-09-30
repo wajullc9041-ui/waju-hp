@@ -13,57 +13,109 @@
   <meta property="og:url" content="https://waju.co.jp/about.html">
   <meta property="og:type" content="article">
 
-  <!-- Favicon -->
+  <!-- Favicon / PWA -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
   <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
+  <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
   <meta name="theme-color" content="#0f172a">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP',sans-serif;color:#0f172a;background:#fff;line-height:1.7}
+    /* ========== 共通CSS（index準拠） ========== */
+    :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
+    a{color:inherit;text-decoration:none}
     main{min-height:40vh}
-    .container{max-width:1120px;margin:0 auto;padding:0 16px}
+    .container{max-width:var(--container);margin:0 auto;padding:0 16px}
+    .hf-wrap{width:100%}
+    .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
+    .hfbar.hf-row{justify-content:flex-start}
+    .hfbar.hf-column{flex-direction:column;align-items:stretch}
+    .hf-brand{display:flex;align-items:center;gap:8px}
+    .hf-nav{display:flex;gap:var(--gap);flex-wrap:wrap;width:100%}
+    .slot{display:flex;align-items:center}
+    .slot.brand{flex:0 0 auto}
+    .slot.nav{flex:1 1 auto}
+    .hf-copy{display:flex;width:100%}
+    .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+    .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
+    .drawer{position:fixed;inset:0;pointer-events:none}
+    .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
+    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .drawer[aria-hidden="false"]{pointer-events:auto}
+    .drawer[aria-hidden="false"] .overlay{opacity:1}
+    .drawer[aria-hidden="false"] .panel{transform:none}
+    .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
+    .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
+    .drawer .panel nav a{padding:12px 10px;border-radius:10px}
+    .drawer .panel nav a:hover{background:#f1f5f9}
+    @media (max-width:768px){
+      .container{padding:0 12px}
+      :root{--container:100%}
+      .slot.nav{display:none}
+      .hamburger{display:block;margin-left:auto}
+      #site-footer .hf-nav{display:none !important}
+    }
 
-    #page-title{font-size:42px;text-align:center;margin:40px 0 60px;font-weight:900;color:#1976d2}
-    #page-title::after{content:'';display:block;width:60px;height:3px;background:#0f172a;margin:10px auto 0;border-radius:2px}
-
-    .section-title{font-size:28px;font-weight:700;margin-bottom:20px;text-align:center;color:#0f172a}
-    .section-subtitle{font-size:18px;font-weight:500;color:#1976d2;text-align:center;margin-bottom:40px}
-
-    /* 理念 */
-    #philosophy .content-card{background:linear-gradient(135deg,#e0f2fe 0%,#fff 100%);padding:40px;border-radius:16px;box-shadow:0 15px 30px rgba(25,118,210,.1)}
-    #philosophy .philosophy-content-wrapper{display:flex;gap:40px;align-items:flex-start}
+    /* about専用 */
+    #page-title {
+        font-size: 42px;
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 60px;
+        font-weight: 900;
+        color: #1976d2;
+        letter-spacing: 2px;
+        position: relative;
+    }
+    #page-title::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: #0f172a;
+        margin: 10px auto 0;
+        border-radius: 2px;
+    }
+    .section-title {font-size:32px;font-weight:800;color:#0f172a;text-align:center;margin-bottom:10px;text-transform:uppercase}
+    .section-subtitle {font-size:20px;font-weight:500;color:#1976d2;text-align:center;margin-bottom:40px}
+    /* 以下は既存 about.html の専用スタイルを残す */
+    #philosophy .content-card{background:linear-gradient(135deg,#e0f2fe 0%,#fff 100%);padding:40px;border-radius:16px;box-shadow:0 15px 30px rgba(25,118,210,.1);overflow:hidden}
+    #philosophy .philosophy-content-wrapper{display:flex;gap:40px;align-items:flex-start;text-align:left}
     .philosophy-image{max-width:300px;flex-shrink:0;height:auto;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
     #philosophy .philosophy-text-container{flex:1}
-
-    /* 代表メッセージ */
     #message{background:#f8fafc;padding:80px 0}
-    .message-wrapper{display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap}
-    .profile-card{text-align:center;flex:0 0 200px}
-    .profile-card img{max-width:180px;border-radius:50%;margin-bottom:20px}
-    .profile-card .title{font-weight:600;color:#1976d2}
-    .profile-card .name{font-weight:700;font-size:18px;margin-top:4px}
-
-    /* 会社情報 */
     .profile-table{width:100%;max-width:800px;margin:0 auto;border-collapse:collapse;box-shadow:0 5px 15px rgba(0,0,0,.05);border-radius:8px;overflow:hidden}
     .profile-table th,.profile-table td{padding:18px 25px;text-align:left;border-bottom:1px solid #e5e7eb}
     .profile-table th{width:30%;background-color:#f1f5f9;color:#374151;font-weight:600}
     .profile-table td{background-color:#fff;color:#0f172a}
-
-    @media (max-width:768px){
-      #philosophy .philosophy-content-wrapper{flex-direction:column;gap:20px}
-      .philosophy-image{max-width:100%;margin:0 auto}
-      .message-wrapper{flex-direction:column;align-items:center}
-    }
   </style>
 </head>
 <body>
-  <header id="site-header"></header>
+  <header id="site-header" class="hf-wrap"></header>
   <main id="app-root"></main>
-  <footer id="site-footer"></footer>
+  <footer id="site-footer" class="hf-wrap"></footer>
+
+  <!-- Mobile drawer -->
+  <div id="mobile-drawer" class="drawer" aria-hidden="true">
+    <div class="overlay" data-close></div>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <header>
+        <div class="title" id="drawer-title">メニュー</div>
+        <button class="hamburger" id="drawer-close" aria-label="閉じる">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+      </header>
+      <nav id="drawer-nav" aria-label="モバイルメニュー"></nav>
+    </div>
+  </div>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
   <script type="module">
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
@@ -72,80 +124,173 @@
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
     );
 
+    const $ = s => document.querySelector(s);
+    const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
+    const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
+    const withFallback = s => !s ? "" : (/ (sans-serif|serif|monospace) /i.test(s) ? s : `${s}, sans-serif`);
+    const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
+    const bgParts = (row, def) => {
+      const grad = stripQuotes(row?.bg_gradient||"").trim();
+      if (grad){ return {bgColor:def, bgImage:grad}; }
+      const col = (row?.bg_color && row.bg_color.trim()) ? row.bg_color : def;
+      return {bgColor:col, bgImage:"none"};
+    };
+    const brandJustifyMargins = (align)=> align==='left'?'margin-right:auto':(align==='center'?'margin:0 auto':'margin-left:auto');
+
+    let allMenus = [];
+
     async function loadHF(){
-      try {
-        const [{data:hdr},{data:ftr}] = await Promise.all([
-          sb.from("hf_settings").select("*").eq("area","header").single(),
-          sb.from("hf_settings").select("*").eq("area","footer").single()
-        ]);
-        document.getElementById("site-header").innerHTML = hdr?.data?.headerHtml || "";
-        document.getElementById("site-footer").innerHTML = ftr?.data?.footerHtml || "";
-        adjustOffsets();
-        addResizeObserver();
-      } catch(e){
-        console.error("HF load error:", e);
-      } finally {
-        renderApp();
+      const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
+        sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
+        sb.from("hf_settings").select("*").eq("area","header").single(),
+        sb.from("hf_settings").select("*").eq("area","footer").single()
+      ]);
+      allMenus = menus||[];
+      renderHeader(hdr||{}, allMenus);
+      renderFooter(ftr||{}, allMenus);
+      buildDrawer(allMenus);
+      adjustOffsets(hdr||{}, ftr||{});
+      addResizeObserver(hdr||{}, ftr||{});
+      renderApp();
+    }
+
+    function linkOf(m){ return (m.url ?? m.href ?? '#'); }
+
+    function renderHeader(d, menus){
+      const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
+        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      const {bgColor,bgImage} = bgParts(d, "#0f172a");
+      const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
+      const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
+      const paddingY = d.padding || "8px 0";
+      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
+      $("#site-header").innerHTML = `
+        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
+          <div class="container">
+            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
+              <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
+                <div class="hf-brand">
+                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||60,60)}px">`:""}
+                  <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
+                </div>
+              </div>
+              <div class="slot nav">
+                <nav class="hf-nav" id="desktop-nav" style="justify-content:${toJustify(d.nav_alignment)};color:${d.nav_color};font-weight:${d.nav_weight};font-size:${num(d.header_nav_size,14)}px">${items}</nav>
+              </div>
+              <button id="hamburger" class="hamburger" aria-controls="mobile-drawer" aria-expanded="false" aria-label="メニューを開く">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+              </button>
+            </div>
+          </div>
+        </div>`;
+      const bg = $("#hf-header-bg");
+      if(d.header_fixed && bg){
+        Object.assign(bg.style,{position:"fixed",top:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
+      }
+      $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
+    }
+
+    function renderFooter(d, menus){
+      const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
+        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      const {bgColor,bgImage} = bgParts(d, "#0f172a");
+      const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
+      const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
+      const paddingY = d.padding || "8px 0";
+      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
+      const inner = d.layout_mode==="nav-top"
+        ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
+           <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
+        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
+           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
+      $("#site-footer").innerHTML = `
+        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
+          <div class="container">
+            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
+              ${inner}
+            </div>
+          </div>
+        </div>`;
+      const bg = $("#hf-footer-bg");
+      if(d.footer_fixed && bg){
+        Object.assign(bg.style,{position:"fixed",bottom:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
       }
     }
 
-    function adjustOffsets(){
-      const headerEl=document.querySelector("header");
-      const footerEl=document.querySelector("footer");
-      document.body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
-      document.body.style.paddingBottom=footerEl?`${footerEl.offsetHeight}px`:"0";
-    }
-    function addResizeObserver(){
-      const ro=new ResizeObserver(()=>adjustOffsets());
-      const headerEl=document.querySelector("header");
-      const footerEl=document.querySelector("footer");
-      if(headerEl) ro.observe(headerEl);
-      if(footerEl) ro.observe(footerEl);
+    function buildDrawer(menus){
+      const items = menus.filter(m=>m.is_active).map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      $("#drawer-nav").innerHTML = items;
     }
 
+    function openDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","false");$("#hamburger").setAttribute("aria-expanded","true");}
+    function closeDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","true");$("#hamburger").setAttribute("aria-expanded","false");}
+    $("#drawer-close")?.addEventListener("click", closeDrawer);
+    $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
+
+    function adjustOffsets(h,f){
+      const headerEl=$("#hf-header-bg");
+      const body=document.body;
+      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
+      body.style.paddingBottom="0";
+    }
+
+    function addResizeObserver(h,f){
+      const ro=new ResizeObserver(()=>adjustOffsets(h,f));
+      const headerEl=$("#hf-header-bg");const footerEl=$("#hf-footer-bg");
+      if(headerEl) ro.observe(headerEl); if(footerEl) ro.observe(footerEl);
+    }
+
+    loadHF();
+
+    // ==========================
+    // メイン部分のレンダリング
+    // ==========================
     function renderApp(){
-      document.getElementById("app-root").innerHTML = `
+      document.querySelector("#app-root").innerHTML = `
         <div class="container">
           <h1 id="page-title">会社概要</h1>
 
-          <!-- 理念 -->
+          <!-- Philosophy -->
           <section id="philosophy">
             <div class="section-title">Philosophy</div>
             <div class="section-subtitle">理念</div>
             <div class="content-card">
               <div class="philosophy-content-wrapper">
-                <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="WaJu理念" class="philosophy-image">
+                <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="WaJu 理念イメージ" class="philosophy-image">
                 <div class="philosophy-text-container">
-                  <p>合同会社WaJuは、「できない」「わからない」を支援する会社です。</p>
+                  <p class="main-text">合同会社WaJuは、「できない」「わからない」を支援する会社です。</p>
                   <p>「あんなことができたらいいな」「こんなものがあったら便利だな」という声を形にし、挑戦を後押しすることを目的に設立されました。</p>
                   <p>社会福祉の一環として介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い分野で社会的支援ができる企業を目指しています。</p>
-                  <p>常に前進する <strong>Walk</strong>、大きく躍進する <strong>Jump</strong> を心掛け、人と人をつなぐことで社会に貢献します。</p>
+                  <p>「できない・わからない」と足踏みしている方々に対して、一緒に考え、一緒に問題解決をし、未来へと繋がる社会的意義のある事業を展開していきます。</p>
+                  <p class="keywords">常に前進する <strong>Walk</strong>、大きく躍進する <strong>Jump</strong> を心掛け、人と人をつなぐことで社会に貢献します。</p>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- 代表メッセージ -->
+          <!-- Message -->
           <section id="message">
-            <div class="section-title">Message</div>
-            <div class="section-subtitle">代表メッセージ</div>
-            <div class="message-wrapper">
-              <div class="profile-card">
-                <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0007.png" alt="代表社員 大野 洋">
-                <p class="title">代表社員</p>
-                <p class="name">大野 洋</p>
-              </div>
-              <div class="message-content">
-                <p>私はこれまで15年以上にわたり、介護士・管理職として現場に携わってきました。その中で常に直面したのは、慢性的な人手不足や賃金が上がらない厳しい現実でした。</p>
-                <p>事業所の倒産は増え続け、採用しても定着せず、採用コストばかりが膨らんでいく。退職の多くは人間関係が原因で、現場と運営の意識の溝が課題でした。</p>
-                <p>営業や連絡手段が電話やFAX中心で非効率なのも大きな要因です。もしオンラインの仕組みが浸透していれば、よりスムーズに業務を続けられたはずです。</p>
-                <p>だからこそ「運営を支援するシステム」を作ることが業界改善に直結すると考え、CARELAYを開発しました。全国の事業所をつなぎ、業務効率化とコスト削減を実現することで、現場を支える運営体制を目指しています。</p>
-                <p>そして今後は他業界にも仕組みを広げ、ユーザーの声を聞きながら改善し、求められるサービスを提供し続けます。</p>
+            <div class="container">
+              <div class="section-title">Message</div>
+              <div class="section-subtitle">代表メッセージ</div>
+              <div class="message-wrapper">
+                <div class="profile-card">
+                  <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0007.png" alt="代表社員 大野 洋">
+                  <p class="title">代表社員</p>
+                  <p class="name">大野 洋</p>
+                </div>
+                <div class="message-content">
+                  <p>私はこれまで15年以上にわたり、介護士・管理職として現場に携わってきました。その中で常に直面したのは、慢性的な人手不足や賃金が上がらない厳しい現実でした。</p>
+                  <p>事業所の倒産は増え続け、採用しても定着せず、採用コストばかりが膨らんでいく。退職の多くは人間関係が原因で、現場と運営の意識の溝が課題でした。</p>
+                  <p>営業や連絡手段が電話やFAX中心で非効率なのも大きな要因です。もしオンラインの仕組みが浸透していれば、よりスムーズに業務を続けられたはずです。</p>
+                  <p>だからこそ「運営を支援するシステム」を作ることが業界改善に直結すると考え、CARELAYを開発しました。全国の事業所をつなぎ、業務効率化とコスト削減を実現することで、現場を支える運営体制を目指しています。</p>
+                  <p>そして今後は他業界にも仕組みを広げ、ユーザーの声を聞きながら改善し、求められるサービスを提供し続けます。</p>
+                </div>
               </div>
             </div>
           </section>
 
-          <!-- 会社情報 -->
+          <!-- Company Profile -->
           <section id="company-profile">
             <div class="section-title">Company Profile</div>
             <div class="section-subtitle">会社情報</div>
@@ -162,10 +307,9 @@
               </tbody>
             </table>
           </section>
-        </div>`;
+        </div>
+      `;
     }
-
-    loadHF();
   </script>
 </body>
 </html>
