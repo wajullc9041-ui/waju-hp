@@ -34,7 +34,7 @@
 
   <!-- ページ専用スタイル -->
   <style>
-    #hero img { width: 100%; height: auto; }
+    #hero { position: relative; overflow: hidden; }
     #news, #about, #service, #youtube, #sns, #company { padding: 4rem 1rem; }
     #news { background: #f9fafb; }
     #service { background: #f9fafb; }
@@ -56,10 +56,7 @@
     <!-- Hero スライダー -->
     <section id="hero" class="relative w-full">
       <div class="swiper-container">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide"><img src="images/hero1.jpg" alt="Hero1"></div>
-          <div class="swiper-slide"><img src="images/hero2.jpg" alt="Hero2"></div>
-        </div>
+        <div class="swiper-wrapper"></div>
         <div class="swiper-pagination"></div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
@@ -156,6 +153,32 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
   <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
   <script>
+    const MAIN_VISUAL_SLIDES = [
+      { 
+        url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png", 
+        alt: "ビジュアル 1: 社会貢献のイメージ",
+        bgColorClass: "bg-gradient-to-br from-green-100 to-white"
+      },
+      { 
+        url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png", 
+        alt: "ビジュアル 2: チームワークのイメージ",
+        bgColorClass: "bg-gradient-to-br from-sky-100 to-white"
+      },
+      { 
+        url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png", 
+        alt: "ビジュアル 3: 未来への躍進",
+        bgColorClass: "bg-gradient-to-br from-orange-100 to-white"
+      },
+    ];
+
+    const wrapper = document.querySelector('.swiper-wrapper');
+    MAIN_VISUAL_SLIDES.forEach(slide => {
+      const div = document.createElement('div');
+      div.className = `swiper-slide flex items-center justify-center ${slide.bgColorClass}`;
+      div.innerHTML = `<img src="${slide.url}" alt="${slide.alt}" class="max-h-[500px] object-contain">`;
+      wrapper.appendChild(div);
+    });
+
     new Swiper('.swiper-container', {
       loop: true,
       pagination: { el: '.swiper-pagination', clickable: true },
