@@ -1,12 +1,11 @@
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>合同会社WaJu | 公式サイト</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>会社概要 | 合同会社WaJu</title>
 
-  <!-- SEO / OGP -->
-  <meta name="description" content="合同会社WaJuの公式サイト。介護・福祉業界の課題を解決するCARELAYの紹介、会社概要や最新のお知らせを発信しています。">
-  <meta name="keywords" content="合同会社WaJu, CARELAY, 介護, 福祉, 求人, 営業, 地域連携">
   <!-- SEO / OGP (追加) -->
   <meta name="description" content="合同会社WaJuの会社概要ページ。理念、代表メッセージ、会社情報を掲載しています。">
   <meta property="og:title" content="会社概要 | 合同会社WaJu">
@@ -15,38 +14,20 @@
   <meta property="og:url" content="https://waju.co.jp/about.html">
   <meta property="og:type" content="article">
 
-  <meta property="og:title" content="合同会社WaJu | 公式サイト">
-  <meta property="og:description" content="介護・福祉業界の課題を解決するCARELAYを中心に、社会貢献を目指すWaJuの公式サイト。">
-  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png">
-  <meta property="og:url" content="https://waju.co.jp/">
-  <meta property="og:type" content="website">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@waju_corp">
-
-  <meta name="language" content="ja">
-  <meta name="geo.placename" content="Kobe, Japan">
-  <!-- /SEO / OGP -->
-
-  <!-- Favicon / PWA -->
   <!-- Favicon / PWA (index_part1.txtからそのまま流用) -->
-<link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
-<link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
-<link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
-<link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
-<meta name="theme-color" content="#0f172a">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
+  <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
+  <meta name="theme-color" content="#0f172a">
 
-  <!-- Tailwind CSS CDN を読み込み -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-<style>
-    /* ========== 既存のCSS ========== */
+  <style>
+    /* index_part1.txtのCSSをそのまま利用 */
     :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
     *{box-sizing:border-box}
-    /* font-familyをTailwindのデフォルト（system-uiベース）に上書きし、よりモダンな見た目にする */
     body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
     a{color:inherit;text-decoration:none}
-    main{min-height:40vh}
+    main{min-height:40vh;padding-bottom:80px;} /* フッターとの間隔を調整 */
     .container{max-width:var(--container);margin:0 auto;padding:0 16px}
     .hf-wrap{width:100%}
     .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
@@ -78,159 +59,522 @@
       #site-footer .hf-nav{display:none !important}
     }
 
-    /* index専用 (Tailwindと競合するため、一部を調整) */
+    /* ページ共通スタイル (index_part1.txtより) */
     section{margin:60px auto}
+    h1,h2,h3{margin:0 0 20px;font-weight:700}
     h1{font-size:36px;text-align:center}
-    /* 既存のh2スタイルを無効化し、TailwindベースのSectionTitleクラスを使用する */
-    h2{font-size:36px;text-align:center;font-weight:700;}
-    /* h3も同様にTailwindベースのクラスを使用する */
-    h3{font-size:20px;margin-bottom:10px;font-weight:700;} 
+    h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
+    h3{font-size:20px;margin-bottom:10px}
     p{margin:0 0 14px}
     .lead{font-size:20px;text-align:center;margin-bottom:30px;color:#374151}
-    .card{background:#fff;padding:32px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:30px}
-    .topics ul{list-style:none;padding:0}
-    .topics li{margin-bottom:12px;border-bottom:1px solid #e5e7eb;padding-bottom:8px}
-    .cta{text-align:center;margin-top:40px}
-    .cta a{display:inline-block;padding:12px 28px;background:#1976d2;color:#fff;border-radius:8px;text-decoration:none}
+    /* .card, .topics, .cta スタイルはabout.htmlではカスタム */
 
-    /* ========== WaJuコンテンツ用カスタムCSS ========== */
-    :root {
-        --accent-color: #6699CC; /* WaJuのキーカラー */
+    /* about.html 専用カスタムスタイル */
+    #page-title {
+        font-size: 42px;
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 60px;
+        font-weight: 900;
+        color: #1976d2;
+        letter-spacing: 2px;
+        position: relative;
     }
-    .accent-bg {
-        background-color: var(--accent-color);
-    }
-    .accent-color-text {
-        color: var(--accent-color);
-    }
-    .accent-text-border {
-        border-left-color: var(--accent-color);
-    }
-    .section-title::after {
+    #page-title::after {
         content: '';
         display: block;
-        width: 4rem;
-        height: 4px;
-        margin: 0.5rem auto 0;
-        border-radius: 9999px;
-        background-color: var(--accent-color);
+        width: 60px;
+        height: 3px;
+        background: #0f172a;
+        margin: 10px auto 0;
+        border-radius: 2px;
+    }
+
+    .section-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #0f172a;
+        text-align: center;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+    .section-subtitle {
+        font-size: 20px;
+        font-weight: 500;
+        color: #1976d2;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    /* Philosophy Section - 修正点: 画像とテキストの横並び配置 */
+    #philosophy .content-card {
+        background: linear-gradient(135deg, #e0f2fe 0%, #fff 100%); /* Light blue gradient */
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 15px 30px rgba(25, 118, 210, 0.1);
+        text-align: center;
+        overflow: hidden;
+    }
+    
+    #philosophy .philosophy-content-wrapper {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start; /* 上揃え */
+        text-align: left; /* テキストを左寄せに */
+    }
+
+    .philosophy-image {
+        max-width: 300px; /* 画像の最大サイズを制限 */
+        flex-shrink: 0; /* 縮まないように */
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 0; /* flexbox内のため margin-bottom を削除 */
+        box-shadow: 0 4px 12px rgba(0,0,0,.1);
+        display: block;
+        /* margin: 0 auto; は flexbox で不要に */
+    }
+    
+    #philosophy .philosophy-text-container {
+        flex: 1;
+    }
+
+    #philosophy .main-text {
+        font-size: 20px; /* 少し小さく */
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 20px;
+        line-height: 1.6;
+        border-bottom: 2px dashed #1976d2;
+        padding-bottom: 10px;
+        display: block; /* inline-blockから変更 */
+        max-width: none; /* max-width解除 */
+        text-align: left;
+    }
+    #philosophy p {
+        max-width: none;
+        margin: 0 0 14px;
+        font-size: 16px;
+        color: #374151;
+        text-align: left;
+    }
+    #philosophy .keywords {
+        margin-top: 30px;
+        font-weight: 700;
+        color: #1976d2;
+        font-size: 18px;
+        letter-spacing: 1px;
+        text-align: left;
+    }
+
+
+    /* Message Section */
+    #message {
+        background: #f8fafc; /* Light grey background */
+        padding: 80px 0;
+    }
+    #message .message-wrapper {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+    }
+    #message .profile-card {
+        flex: 0 0 300px; /* Fixed width for profile */
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,.08);
+        text-align: center;
+        position: sticky; /* スクロールしても追従 */
+        top: calc(80px + 20px); /* ヘッダーの高さ+余白を考慮 */
+    }
+    #message .profile-card img {
+        /* 修正点: 縦長比率を維持するよう修正 */
+        aspect-ratio: auto; /* 正方形強制を解除 */
+        width: 100%;
+        height: auto;
+        border-radius: 8px; /* HTMLインラインから移動 */
+        /* object-fit: cover; も削除し、元の比率を維持 */
+        
+        border: 4px solid #1976d2;
+        box-shadow: 0 0 0 6px rgba(25, 118, 210, 0.2); /* 外枠のシャドウ */
+    }
+    #message .profile-card .name {
+        font-size: 22px;
+        font-weight: 700;
+        margin-top: 10px;
+        color: #0f172a;
+    }
+    #message .profile-card .title {
+        font-size: 16px;
+        color: #1976d2;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+    #message .message-content {
+        flex: 1;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,.08);
+    }
+    #message .message-content p {
+        text-align: justify;
+        text-justify: inter-ideograph;
+        margin-bottom: 20px;
+    }
+    #message .message-content p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Company Profile Section */
+    #company-profile {
+        padding: 80px 0;
+    }
+    .profile-table {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        border-collapse: collapse;
+        box-shadow: 0 5px 15px rgba(0,0,0,.05);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .profile-table th, .profile-table td {
+        padding: 18px 25px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .profile-table th {
+        width: 30%;
+        background-color: #f1f5f9; /* Light gray background for headers */
+        color: #374151;
+        font-weight: 600;
+    }
+    .profile-table td {
+        background-color: #fff;
+        color: #0f172a;
+    }
+    .profile-table tr:last-child th, .profile-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+        #message .profile-card {
+            flex: 0 0 250px;
+        }
+    }
+    @media (max-width: 768px) {
+        #page-title {
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+        .section-title {
+            font-size: 28px;
+        }
+        .section-subtitle {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        /* 理念セクションのモバイルでの縦並び（修正点） */
+        #philosophy .philosophy-content-wrapper {
+            flex-direction: column; /* 縦並びに戻す */
+            gap: 20px;
+        }
+        .philosophy-image {
+            max-width: 80%; /* モバイルでは少し大きく表示 */
+            margin-left: auto; /* 中央寄せに戻す */
+            margin-right: auto;
+        }
+        #philosophy .main-text,
+        #philosophy p,
+        #philosophy .keywords {
+            text-align: center; /* 中央寄せに戻す */
+        }
+
+        /* 代表メッセージセクションのモバイルでの縦並び */
+        #message .message-wrapper {
+            flex-direction: column;
+            gap: 30px;
+        }
+        #message .profile-card {
+            flex: 1 1 auto;
+            width: 100%;
+            position: static; /* stickyを解除 */
+            top: auto;
+        }
+        #message .message-content {
+            padding: 30px;
+        }
+
+        /* その他モバイル調整 */
+        #philosophy .content-card {
+            padding: 30px 20px;
+        }
+        .profile-table th, .profile-table td {
+            padding: 14px 18px;
+        }
+        .profile-table th {
+            width: 40%; /* モバイルで項目名を広めに */
+        }
     }
   </style>
-  <style id="about-style">
-
-/* index_part1.txtのCSSをそのまま利用 */
-:root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
-*{box-sizing:border-box}
-@@ -408,22 +318,10 @@
-width: 40%; /* モバイルで項目名を広めに */
-}
-}
-  
-</style>
-
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-ZHLJ5K19ZE');
-  </script>
 
 </head>
 <body>
-  
-  <!-- index_part1.txtのヘッダー部分をそのまま利用 -->
-<header id="site-header" class="hf-wrap"></header>
+  <header id="site-header" class="hf-wrap"></header>
+  <main id="app-root">
 
-<main>
-@@ -519,6 +417,7 @@ <h1 id="page-title">会社概要</h1>
-</div>
-</main>
+  <!-- index_part1.txtのヘッダー部分をそのまま利用 -->
+  
+
+  <main>
+    <div class="container">
+      <h1 id="page-title">会社概要</h1>
+
+      <!-- ==================== Philosophy / 理念 ==================== -->
+      <section id="philosophy">
+        <div class="section-title">Philosophy</div>
+        <div class="section-subtitle">理念</div>
+        <div class="content-card">
+            <!-- PCでは画像とテキストを横並びにするラッパー -->
+            <div class="philosophy-content-wrapper">
+                <!-- 理念のイメージ (wjhp0004.png) -->
+                <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="WaJu 理念イメージ：挑戦と支援の光" class="philosophy-image">
+
+                <div class="philosophy-text-container">
+                    <p class="main-text">合同会社WaJuは、「できない」「わからない」を支援する会社です。</p>
+
+                    <p>「あんなことができたらいいな」「こんなものがあったら便利だな」という声を形にし、個人や企業の挑戦を後押しすることを目的に設立されました。</p>
+                    <p>社会福祉の一環として介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い分野で社会的支援ができる企業を目指しています。</p>
+                    <p>「できない・わからない」と足踏みしている方々に対して、指示を与えるのではなく、一緒に考え、一緒に問題解決をし、未来へと繋がる社会的意義のある事業を展開していきます。</p>
+                    
+                    <p class="keywords">常に前進する <strong>Walk</strong>、大きく躍進する <strong>Jump</strong> を心掛け、人と人をつなぐことで社会に貢献します。</p>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- ==================== Message / 代表メッセージ ==================== -->
+      <section id="message">
+        <div class="container">
+            <div class="section-title">Message</div>
+            <div class="section-subtitle">代表メッセージ</div>
+
+            <div class="message-wrapper">
+                <div class="profile-card">
+                    <!-- 代表社員の写真 (wjhp0007.png) - CSSで縦長比率を維持するように修正 -->
+                    <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0007.png" alt="代表社員 大野 洋">
+                    <p class="title">代表社員</p>
+                    <p class="name">大野 洋</p>
+                </div>
+                <div class="message-content">
+                    <p>私はこれまで15年以上にわたり、特別養護老人ホームや有料老人ホームで介護士として勤務し、サービス付き高齢者住宅の立ち上げ、サービス提供責任者、施設長といった役職も経験してきました。その中で常に直面したのは、慢性的な人手不足や賃金が上がらない厳しい現実でした。</p>
+                    <p>事業所の倒産は増え続け、採用しても定着せず、採用コストばかりが膨らんでいく。退職の多くは賃金や業務内容ではなく人間関係が原因で、現場と運営の意識の溝が大きな課題となっていました。</p>
+                    <p>現場では「上はわかってくれない」という声が多く聞かれる一方で、運営側も多忙で現場のフォローに十分に時間を割けない状況があります。記録ソフトや見守りサービスなど現場を支援するツールは数多くあっても、管理者や相談員、ケアマネを支える仕組みは少なく、さらに業種横断的に全事業所が共通で使えるものはほとんどありません。</p>
+                    <p>営業や連絡手段がいまだに電話やFAX中心で非効率なことも時間と費用を浪費する大きな要因です。コロナ禍で対面が制限された際も、もしオンラインでの仕組みが浸透していれば、よりスムーズに業務を続けられたはずです。</p>
+                    <p>だからこそ、私は「運営を支援するシステム」を作ることが業界改善に直結すると考え、独立してCARELAYを開発しました。CARELAYを通じて全国の高齢者介護サービス事業所や障害福祉事業所、関係機関をつなぎ、業務効率化とコスト削減を実現することで、現場をフォローできる運営体制を整え、利用者により良いサービスを届ける循環を目指しています。</p>
+                    <p>そして介護・福祉業界にとどまらず、今後は他の業界にも同様の仕組みを広げていきたい。作って終わりではなく、常にユーザーの声を聞きながら改善し、求められるサービスを提供し続けることを約束します。</p>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- ==================== Company Profile / 会社情報 ==================== -->
+      <section id="company-profile">
+        <div class="section-title">Company Profile</div>
+        <div class="section-subtitle">会社情報</div>
+        
+        <table class="profile-table" aria-label="会社情報">
+            <thead>
+                <tr>
+                    <th colspan="2" style="background-color: #1976d2; color: #fff; text-align: center; border-bottom: none;">
+                        合同会社WaJu 会社概要
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>法人名</th>
+                    <td>合同会社WaJu</td>
+                </tr>
+                <tr>
+                    <th>代表社員</th>
+                    <td>大野 洋</td>
+                </tr>
+                <tr>
+                    <th>設立年月日</th>
+                    <td>2023年4月27日</td>
+                </tr>
+                <tr>
+                    <th>所在地</th>
+                    <td>〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td>
+                </tr>
+                <tr>
+                    <th>事業内容</th>
+                    <td>介護福祉業界のオンラインプラットフォーム「CARELAY」の製作および販売</td>
+                </tr>
+            </tbody>
+        </table>
+      </section>
+
+    </div>
+  </main>
 
   <!-- index_part3.txtのフッターとスクリプト部分をそのまま利用 -->
-<footer id="site-footer" class="hf-wrap"></footer>
+  
 
-<!-- Mobile drawer -->
-@@ -535,15 +434,8 @@ <h1 id="page-title">会社概要</h1>
-</div>
-</div>
+  <!-- Mobile drawer -->
+  <div id="mobile-drawer" class="drawer" aria-hidden="true">
+    <div class="overlay" data-close></div>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      
+      <nav id="drawer-nav" aria-label="モバイルメニュー"></nav>
+    </div>
+  </div>
 
-  <!-- Lucide Icons (コンテンツ用) と ヘッダー/フッターロジック -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  
 
-<script type="module">
+  </main>
+  <footer id="site-footer" class="hf-wrap"></footer>
+
+  <script type="module">
+
     // ==============================================
     // 1. ヘッダー/フッターのロジック (index_part3.txtから)
     // ==============================================
-const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
     // データベース接続情報 (既存のファイルをそのまま利用)
-const sb = createClient(
-"https://htnmjsqgoapvuanrsuma.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-@@ -565,27 +457,33 @@ <h1 id="page-title">会社概要</h1>
-let allMenus = [];
+    const sb = createClient(
+      "https://htnmjsqgoapvuanrsuma.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+    );
 
-async function loadHF(){
+    const $ = s => document.querySelector(s);
+    const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
+    const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
+    const withFallback = s => !s ? "" : (/ (sans-serif|serif|monospace) /i.test(s) ? s : `${s}, sans-serif`);
+    const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
+    const bgParts = (row, def) => {
+      const grad = stripQuotes(row?.bg_gradient||"").trim();
+      if (grad){ return {bgColor:def, bgImage:grad}; }
+      const col = (row?.bg_color && row.bg_color.trim()) ? row.bg_color : def;
+      return {bgColor:col, bgImage:"none"};
+    };
+    const brandJustifyMargins = (align)=> align==='left'?'margin-right:auto':(align==='center'?'margin:0 auto':'margin-left:auto');
+
+    let allMenus = [];
+
+    async function loadHF(){
       // ヘッダーとフッターの設定を読み込み
-const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
-sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
-sb.from("hf_settings").select("*").eq("area","header").single(),
-sb.from("hf_settings").select("*").eq("area","footer").single()
-]);
-allMenus = menus||[];
+      const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
+        sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
+        sb.from("hf_settings").select("*").eq("area","header").single(),
+        sb.from("hf_settings").select("*").eq("area","footer").single()
+      ]);
+      allMenus = menus||[];
 
-      // =========================
-      // ヘッダー処理ここから
-      // =========================
-renderHeader(hdr||{}, allMenus);
-
-      // =========================
-      // フッター処理ここから
-      // =========================
-renderFooter(ftr||{}, allMenus);
-
-buildDrawer(allMenus);
-adjustOffsets(hdr||{}, ftr||{});
-addResizeObserver(hdr||{}, ftr||{});
+      renderHeader(hdr||{}, allMenus);
+      renderFooter(ftr||{}, allMenus);
+      buildDrawer(allMenus);
+      adjustOffsets(hdr||{}, ftr||{});
+      addResizeObserver(hdr||{}, ftr||{});
 
       // ヘッダー/フッター読み込み後、メインコンテンツをレンダリング
       renderApp();
-}
+    }
 
-function linkOf(m){ return (m.url ?? m.href ?? '#'); }
+    function linkOf(m){ return (m.url ?? m.href ?? '#'); }
 
-    // =========================
-// ヘッダー処理
-    // =========================
-function renderHeader(d, menus){
-const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
-.map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-@@ -620,7 +518,9 @@ <h1 id="page-title">会社概要</h1>
-$("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
-}
+    // ヘッダー処理
+    function renderHeader(d, menus){
+      const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
+        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      const {bgColor,bgImage} = bgParts(d, "#0f172a");
+      const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
+      const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
+      const paddingY = d.padding || "8px 0";
+      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
+      $("#site-header").innerHTML = `
+        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
+          <div class="container">
+            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
+              <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
+                <div class="hf-brand">
+                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||60,60)}px">`:""}
+                  <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
+                </div>
+              </div>
+              <div class="slot nav">
+                <nav class="hf-nav" id="desktop-nav" style="justify-content:${toJustify(d.nav_alignment)};color:${d.nav_color};font-weight:${d.nav_weight};font-size:${num(d.header_nav_size,14)}px">${items}</nav>
+              </div>
+              <button id="hamburger" class="hamburger" aria-controls="mobile-drawer" aria-expanded="false" aria-label="メニューを開く">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+              </button>
+            </div>
+          </div>
+        </div>`;
+      const bg = $("#hf-header-bg");
+      if(d.header_fixed && bg){
+        Object.assign(bg.style,{position:"fixed",top:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
+      }
+      $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
+    }
 
-    // =========================
-// フッター処理
-    // =========================
-function renderFooter(d, menus){
-const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
-.map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-@@ -661,8 +561,8 @@ <h1 id="page-title">会社概要</h1>
-function adjustOffsets(h,f){
-const headerEl=$("#hf-header-bg");
-const body=document.body;
+    // フッター処理
+    function renderFooter(d, menus){
+      const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
+        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      const {bgColor,bgImage} = bgParts(d, "#0f172a");
+      const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
+      const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
+      const paddingY = d.padding || "8px 0";
+      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
+      const inner = d.layout_mode==="nav-top"
+        ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
+           <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
+        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
+           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
+      $("#site-footer").innerHTML = `
+        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
+          <div class="container">
+            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
+              ${inner}
+            </div>
+          </div>
+        </div>`;
+      const bg = $("#hf-footer-bg");
+      if(d.footer_fixed && bg){
+        Object.assign(bg.style,{position:"fixed",bottom:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
+      }
+    }
+
+    function buildDrawer(menus){
+      const items = menus.filter(m=>m.is_active).map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
+      $("#drawer-nav").innerHTML = items;
+    }
+
+    function openDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","false");$("#hamburger").setAttribute("aria-expanded","true");}
+    function closeDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","true");$("#hamburger").setAttribute("aria-expanded","false");}
+    $("#drawer-close")?.addEventListener("click", closeDrawer);
+    $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
+
+    function adjustOffsets(h,f){
+      const headerEl=$("#hf-header-bg");
+      const body=document.body;
       // ヘッダーの高さ分、bodyの上部にパディングを設定 (固定ヘッダー対応)
-body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
-      // フッターのpaddingBottomは不要
-body.style.paddingBottom="0";
-}
+      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
+      body.style.paddingBottom="0";
+    }
 
-@@ -673,420 +573,6 @@ <h1 id="page-title">会社概要</h1>
-}
+    function addResizeObserver(h,f){
+      const ro=new ResizeObserver(()=>adjustOffsets(h,f));
+      const headerEl=$("#hf-header-bg");const footerEl=$("#hf-footer-bg");
+      if(headerEl) ro.observe(headerEl); if(footerEl) ro.observe(footerEl);
+    }
 
-loadHF();
+    loadHF();
 
 
     // ==============================================
@@ -645,7 +989,7 @@ loadHF();
 
     // NOTE: ヘッダー/フッターのJavaScript `loadHF()` の中で `renderApp()` が呼ばれるように修正済み。
     // `loadHF` の処理が完了次第、メインコンテンツが表示されます。
-    </script>
+    
   </script>
 </body>
 </html>
