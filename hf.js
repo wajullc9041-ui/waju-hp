@@ -50,3 +50,5 @@ setTimeout(() => {
   const body = document.getElementById("page-body");
   if (body) body.style.visibility = "visible";
 }, 3000);
+console.log("hf.js loaded");
+document.getElementById("page-body").style.visibility = "visible";
