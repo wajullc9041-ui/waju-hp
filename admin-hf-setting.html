@@ -388,7 +388,7 @@
 
     const h = await supabase.from('hf_settings').select('*').eq('area','header').single();
     const f = await supabase.from('hf_settings').select('*').eq('area','footer').single();
-    setHeader(h.data||{}); setFooter(f.data||{});
+    setHeader((h.data && h.data.data) || {}); setFooter((f.data && f.data.data) || {});
     renderHeaderPreview(getHeader(), menus);
     renderFooterPreview(getFooter(), menus);
 
