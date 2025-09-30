@@ -697,5 +697,51 @@
     // NOTE: ヘッダー/フッターのJavaScript `loadHF()` の中で `renderApp()` が呼ばれるように修正済み。
     // `loadHF` の処理が完了次第、メインコンテンツが表示されます。
     </script>
+
+<!-- HF bootstrap (stable) -->
+<script>
+(function(){
+  // Ensure Supabase client
+  var supabaseUrl = "https://htnmjsqgoapvuanrsuma.supabase.co";
+  var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA";
+  try{
+    if (!window.supabase || !window.supabase.createClient) return;
+  }catch(e){ return; }
+  var sb = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+  function setInner(id, html){
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = html || "";
+  }
+  function adjustOffsets(){
+    var headerEl = document.getElementById("site-header");
+    var footerEl = document.getElementById("site-footer");
+    var mainEl = document.querySelector("main");
+    if (!mainEl) return;
+    if (headerEl) mainEl.style.paddingTop = headerEl.offsetHeight + "px";
+    if (footerEl) mainEl.style.paddingBottom = footerEl.offsetHeight + "px";
+  }
+
+  async function loadHF(){
+    try{
+      var r1 = await sb.from("hf_settings").select("data").eq("area","header").single();
+      var r2 = await sb.from("hf_settings").select("data").eq("area","footer").single();
+      var hdr = r1 && r1.data ? r1.data : null;
+      var ftr = r2 && r2.data ? r2.data : null;
+      var headerHtml = hdr && (hdr.headerHtml || (hdr.data && hdr.data.headerHtml)) || "";
+      var footerHtml = ftr && (ftr.footerHtml || (ftr.data && ftr.data.footerHtml)) || "";
+      setInner("site-header", headerHtml);
+      setInner("site-footer", footerHtml);
+      adjustOffsets();
+      if (window.renderApp) { try { window.renderApp(); } catch(e){} }
+    }catch(e){
+      console.warn("HF load failed", e);
+    }
+  }
+  // Start
+  loadHF();
+})();
+</script>
+
 </body>
 </html>
