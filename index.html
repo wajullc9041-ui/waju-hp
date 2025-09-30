@@ -733,7 +733,7 @@
       setInner("site-header", headerHtml);
       setInner("site-footer", footerHtml);
       adjustOffsets();
-      if (window.renderApp) { try { window.renderApp(); } catch(e){} }
+      if (window.renderApp && location.pathname.endsWith("index.html")) { try { window.renderApp(); } catch(e){} }
     }catch(e){
       console.warn("HF load failed", e);
     }
