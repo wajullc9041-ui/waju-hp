@@ -125,6 +125,7 @@
   <header id="site-header" class="hf-wrap"></header>
 
   
+
 <main id="app-root">
   <!-- Hero Section -->
   <section id="hero">
@@ -180,6 +181,7 @@
     <p><a href="/contact.html">お問い合わせはこちら</a></p>
   </section>
 </main>
+
 
 
   <footer id="site-footer" class="hf-wrap"></footer>
@@ -787,7 +789,7 @@
       setInner("site-header", headerHtml);
       setInner("site-footer", footerHtml);
       adjustOffsets();
-      if (window.renderApp && location.pathname.endsWith("index.html")) { try { window.renderApp(); } catch(e){} }
+      
     }catch(e){
       console.warn("HF load failed", e);
     }
