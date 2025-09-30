@@ -34,26 +34,26 @@
 
   <!-- ページ専用スタイル -->
   <style>
-    #hero { position: relative; overflow: hidden; }
-    #news, #about, #service, #youtube, #sns, #company { padding: 4rem 1rem; }
-    #news { background: #f9fafb; }
-    #service { background: #f9fafb; }
-    #sns { background: #f9fafb; }
-    h2 { font-size: 1.875rem; font-weight: bold; margin-bottom: 2rem; text-align: center; }
-    .section-card { background: #fff; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    .btn { display: inline-block; padding: 0.75rem 1.5rem; background: #2563eb; color: #fff; border-radius: 0.5rem; text-decoration: none; }
-    .btn:hover { background: #1d4ed8; }
+    /* main 部分のスコープ */
+    main#page-main h2 { font-size: 1.875rem; font-weight: bold; margin-bottom: 2rem; text-align: center; }
+    main#page-main section { padding: 4rem 1rem; }
+    main#page-main #news { background: #f9fafb; }
+    main#page-main #service { background: #f9fafb; }
+    main#page-main #sns { background: #f9fafb; }
+    main#page-main .section-card { background: #fff; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    main#page-main .btn { display: inline-block; padding: 0.75rem 1.5rem; background: #2563eb; color: #fff; border-radius: 0.5rem; text-decoration: none; }
+    main#page-main .btn:hover { background: #1d4ed8; }
   </style>
 </head>
 
 <body id="page-body" style="visibility:hidden;">
-  <!-- ヘッダー -->
+  <!-- ヘッダー（Supabase JSONから読み込み） -->
   <header id="site-header"></header>
 
-  <!-- メイン -->
-  <main id="app-main" class="pt-20">
+  <!-- メインコンテンツ -->
+  <main id="page-main" class="pt-20">
 
-    <!-- Hero スライダー -->
+    <!-- Hero -->
     <section id="hero" class="relative w-full">
       <div class="swiper-container">
         <div class="swiper-wrapper"></div>
@@ -143,7 +143,7 @@
 
   </main>
 
-  <!-- フッター -->
+  <!-- フッター（Supabase JSONから読み込み） -->
   <footer id="site-footer"></footer>
 
   <!-- 共通JS -->
@@ -154,23 +154,10 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
   <script>
     const MAIN_VISUAL_SLIDES = [
-      { 
-        url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png", 
-        alt: "ビジュアル 1: 社会貢献のイメージ",
-        bgColorClass: "bg-gradient-to-br from-green-100 to-white"
-      },
-      { 
-        url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png", 
-        alt: "ビジュアル 2: チームワークのイメージ",
-        bgColorClass: "bg-gradient-to-br from-sky-100 to-white"
-      },
-      { 
-        url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png", 
-        alt: "ビジュアル 3: 未来への躍進",
-        bgColorClass: "bg-gradient-to-br from-orange-100 to-white"
-      },
+      { url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png", alt: "ビジュアル 1: 社会貢献のイメージ", bgColorClass: "bg-gradient-to-br from-green-100 to-white" },
+      { url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png", alt: "ビジュアル 2: チームワークのイメージ", bgColorClass: "bg-gradient-to-br from-sky-100 to-white" },
+      { url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png", alt: "ビジュアル 3: 未来への躍進", bgColorClass: "bg-gradient-to-br from-orange-100 to-white" },
     ];
-
     const wrapper = document.querySelector('.swiper-wrapper');
     MAIN_VISUAL_SLIDES.forEach(slide => {
       const div = document.createElement('div');
@@ -178,7 +165,6 @@
       div.innerHTML = `<img src="${slide.url}" alt="${slide.alt}" class="max-h-[500px] object-contain">`;
       wrapper.appendChild(div);
     });
-
     new Swiper('.swiper-container', {
       loop: true,
       pagination: { el: '.swiper-pagination', clickable: true },
@@ -186,6 +172,5 @@
       autoplay: { delay: 5000 },
     });
   </script>
-
 </body>
 </html>
