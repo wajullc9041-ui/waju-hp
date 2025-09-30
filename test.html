@@ -6,15 +6,14 @@
   <title>合同会社WaJu | 公式サイト</title>
 
   <!-- SEO / OGP -->
-  <meta name="description" content="合同会社WaJuの公式サイト。介護・福祉業界の課題を解決するCARELAYの紹介、会社概要や最新のお知らせを発信しています。">
-  <meta name="keywords" content="合同会社WaJu, CARELAY, 介護, 福祉, 求人, 営業, 地域連携">
+  <meta name="description" content="合同会社WaJuの公式サイト。">
+  <meta name="keywords" content="合同会社WaJu, CARELAY, 介護, 福祉">
   <meta property="og:title" content="合同会社WaJu | 公式サイト">
   <meta property="og:description" content="介護・福祉業界の課題を解決するCARELAYを中心に、社会貢献を目指すWaJuの公式サイト。">
   <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png">
   <meta property="og:url" content="https://www.waju.co.jp/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@waju_corp">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
@@ -32,145 +31,28 @@
     gtag('config', 'G-ZHLJ5K19ZE');
   </script>
 
-  <!-- ページ専用スタイル -->
+  <!-- ページ専用スタイル（最小限） -->
   <style>
-    /* main 部分のスコープ */
-    main#page-main h2 { font-size: 1.875rem; font-weight: bold; margin-bottom: 2rem; text-align: center; }
-    main#page-main section { padding: 4rem 1rem; }
-    main#page-main #news { background: #f9fafb; }
-    main#page-main #service { background: #f9fafb; }
-    main#page-main #sns { background: #f9fafb; }
-    main#page-main .section-card { background: #fff; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    main#page-main .btn { display: inline-block; padding: 0.75rem 1.5rem; background: #2563eb; color: #fff; border-radius: 0.5rem; text-decoration: none; }
-    main#page-main .btn:hover { background: #1d4ed8; }
+    body { visibility: hidden; }
+    #site-header, #site-footer { width: 100%; }
   </style>
 </head>
 
-<body id="page-body" style="visibility:hidden;">
-  <!-- ヘッダー（Supabase JSONから読み込み） -->
+<body id="page-body">
+  <!-- ヘッダー -->
   <header id="site-header"></header>
 
-  <!-- メインコンテンツ -->
+  <!-- メイン（まだ空） -->
   <main id="page-main" class="pt-20">
-
-    <!-- Hero -->
-    <section id="hero" class="relative w-full">
-      <div class="swiper-container">
-        <div class="swiper-wrapper"></div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </div>
-    </section>
-
-    <!-- News -->
-    <section id="news">
-      <div class="max-w-5xl mx-auto">
-        <h2>NEWS</h2>
-        <ul class="space-y-4 text-lg">
-          <li><time class="font-semibold">2024.09.27</time> ホームページをリニューアルしました</li>
-          <li><time class="font-semibold">2024.09.01</time> 新サービス「CARELAY」を開始しました</li>
-          <li><time class="font-semibold">2023.04.01</time> 合同会社WaJuを設立しました</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- About -->
-    <section id="about">
-      <div class="max-w-5xl mx-auto">
-        <h2>ABOUT US</h2>
-        <div class="section-card">
-          <p class="mb-4">社会福祉の一環として、介護業界の時間的・金銭的負担を軽減する事業からスタートしました。</p>
-          <p class="mb-4">絶えず前進する「Walk」、そして躍進する「Jump」を心掛け、社会に貢献していきます。</p>
-          <div class="text-center mt-6">
-            <a href="about.html" class="btn">詳しく見る</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Service -->
-    <section id="service">
-      <div class="max-w-5xl mx-auto">
-        <h2>SERVICE</h2>
-        <div class="section-card">
-          <p class="mb-4">介護・福祉業界の<b>求人・営業・連携</b>の問題をオンラインで解決するプラットフォーム「CARELAY」。</p>
-          <p class="mb-4">圧倒的な低コスト「月額5,500円」で提供しています。</p>
-          <div class="text-center mt-6">
-            <a href="service.html" class="btn">詳しく見る</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- YouTube -->
-    <section id="youtube">
-      <div class="max-w-6xl mx-auto">
-        <h2>YouTube</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-          <iframe width="100%" height="315" src="https://www.youtube.com/embed/CjgbFC64qOk" frameborder="0" allowfullscreen></iframe>
-          <iframe width="100%" height="315" src="https://www.youtube.com/embed/WqQh-Ok9kjo" frameborder="0" allowfullscreen></iframe>
-        </div>
-      </div>
-    </section>
-
-    <!-- SNS -->
-    <section id="sns">
-      <div class="max-w-6xl mx-auto">
-        <h2>SNS</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div class="section-card text-center">Instagram埋め込み予定</div>
-          <div class="section-card text-center">X（旧Twitter）埋め込み予定</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Company -->
-    <section id="company">
-      <div class="max-w-5xl mx-auto">
-        <h2>COMPANY</h2>
-        <div class="section-card">
-          <p>会社名：合同会社WaJu</p>
-          <p>代表社員：大野 洋</p>
-          <p>所在地：〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</p>
-          <p>連絡先：<a href="mailto:info@waju.co.jp" class="text-blue-600 hover:underline">info@waju.co.jp</a></p>
-          <div class="text-center mt-6">
-            <a href="contact.html" class="btn">お問い合わせ</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <div class="max-w-5xl mx-auto text-center text-gray-500">
+      （メインコンテンツ未配置）
+    </div>
   </main>
 
-  <!-- フッター（Supabase JSONから読み込み） -->
+  <!-- フッター -->
   <footer id="site-footer"></footer>
 
   <!-- 共通JS -->
   <script src="hf.js" type="module"></script>
-
-  <!-- Swiper.js -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-  <script>
-    const MAIN_VISUAL_SLIDES = [
-      { url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png", alt: "ビジュアル 1: 社会貢献のイメージ", bgColorClass: "bg-gradient-to-br from-green-100 to-white" },
-      { url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png", alt: "ビジュアル 2: チームワークのイメージ", bgColorClass: "bg-gradient-to-br from-sky-100 to-white" },
-      { url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png", alt: "ビジュアル 3: 未来への躍進", bgColorClass: "bg-gradient-to-br from-orange-100 to-white" },
-    ];
-    const wrapper = document.querySelector('.swiper-wrapper');
-    MAIN_VISUAL_SLIDES.forEach(slide => {
-      const div = document.createElement('div');
-      div.className = `swiper-slide flex items-center justify-center ${slide.bgColorClass}`;
-      div.innerHTML = `<img src="${slide.url}" alt="${slide.alt}" class="max-h-[500px] object-contain">`;
-      wrapper.appendChild(div);
-    });
-    new Swiper('.swiper-container', {
-      loop: true,
-      pagination: { el: '.swiper-pagination', clickable: true },
-      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-      autoplay: { delay: 5000 },
-    });
-  </script>
 </body>
 </html>
