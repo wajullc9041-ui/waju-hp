@@ -1,4 +1,4 @@
-// hf.js（完全版 + PC/スマホで高さを切り替え）
+// hf.js（完全版修正版）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -46,10 +46,7 @@ const CORE_CSS = `
 
 // ===== Responsive CSS =====
 const RESPONSIVE_CSS = `
-/* 初期は非表示（モバイルでのみ出す） */
-.hf-hamburger,.hf-drawer,.hf-overlay{display:none}
-
-/* PC用：769px以上は最低60pxを保証 */
+/* PC用フッターは最低60px確保 */
 @media (min-width:769px){
   #site-footer .hfbar {
     min-height: 60px !important;
@@ -57,10 +54,12 @@ const RESPONSIVE_CSS = `
   }
 }
 
-/* モバイル用：768px以下は高さ24pxに縮小 */
+/* モバイル専用 */
 @media (max-width:768px){
+  /* ヘッダー・フッターのナビは隠す */
   #site-header .hf-nav, #site-footer .hf-nav { display:none !important; }
 
+  /* ハンバーガー */
   .hf-hamburger{
     display:block;margin-left:auto;cursor:pointer;
     font-size:1.8rem;line-height:1;padding:8px;border-radius:8px;
@@ -68,18 +67,16 @@ const RESPONSIVE_CSS = `
     backdrop-filter:saturate(180%) blur(8px);
   }
 
-  .hf-overlay{
-    display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999;
-  }
+  /* オーバーレイ＆ドロワー */
+  .hf-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999;}
   .hf-overlay.open{display:block;}
-
   .hf-drawer{
     display:block;position:fixed;top:0;right:-280px;width:260px;height:100%;
     background:#fff;box-shadow:-2px 0 10px rgba(0,0,0,.25);
     transition:right .28s ease;z-index:1000;padding:16px 12px 24px 12px;
     overflow:auto;
   }
-  .hf-drawer.open{right:0;}
+  .hf-drawer.open{ right:0; }
   .hf-drawer .drawer-head{
     display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;
   }
@@ -90,7 +87,7 @@ const RESPONSIVE_CSS = `
   .hf-drawer a{display:block;padding:12px 8px;border-radius:10px;text-decoration:none;color:inherit}
   .hf-drawer a:active{opacity:.7}
 
-  /* フッターを強制的に24pxに縮小 */
+  /* フッターはコピーライトだけ・薄く */
   #site-footer,
   #site-footer .hfbar {
     height: 30px !important;
@@ -110,40 +107,45 @@ const RESPONSIVE_CSS = `
 }
 `;
 
-// ===== 固定と余白調整 =====
+// ===== 固定反映＆余白調整 =====
 function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
   const headerEl = document.getElementById("site-header");
   const footerEl = document.getElementById("site-footer");
   const mainEl   = document.querySelector("main");
 
-  if (hdrCfg?.header_fixed && headerEl) {
-    const bar = headerEl.querySelector(".hfbar");
-    if (bar) {
-      bar.style.position = "sticky";
+  function adjust() {
+    if (!mainEl) return;
+
+    // ヘッダー固定ONなら必ず反映
+    if (hdrCfg?.header_fixed && headerEl) {
+      const bar = headerEl.querySelector(".hfbar") || headerEl;
+      bar.style.position = "fixed";
       bar.style.top = "0";
-      bar.style.zIndex = "10";
+      bar.style.left = "0";
+      bar.style.right = "0";
+      bar.style.zIndex = "100";
       bar.style.width = "100%";
     }
-  }
+    // mainのpaddingTopは作らない（本文側で調整）
 
-  if (ftrCfg?.footer_fixed && footerEl) {
-    const bar = footerEl.querySelector(".hfbar");
-    if (bar) {
+    // フッター固定ONなら本文が隠れないように余白を確保
+    if (ftrCfg?.footer_fixed && footerEl) {
+      const bar = footerEl.querySelector(".hfbar") || footerEl;
       bar.style.position = "fixed";
       bar.style.left = "0";
       bar.style.right = "0";
       bar.style.bottom = "0";
-      bar.style.zIndex = "10";
+      bar.style.zIndex = "100";
       bar.style.width = "100%";
+
+      mainEl.style.paddingBottom = footerEl.offsetHeight + "px";
+    } else {
+      mainEl.style.paddingBottom = "";
     }
   }
 
-  if (mainEl) {
-    const headerH = hdrCfg?.header_fixed && headerEl ? headerEl.offsetHeight : 0;
-    const footerH = ftrCfg?.footer_fixed && footerEl ? footerEl.offsetHeight : 0;
-    mainEl.style.paddingTop = headerH ? `${headerH}px` : "";
-    mainEl.style.paddingBottom = footerH ? `${footerH}px` : "";
-  }
+  adjust();
+  window.addEventListener("resize", adjust);
 }
 
 // ===== ドロワーUI =====
@@ -152,14 +154,13 @@ function ensureResponsiveUI() {
   const footer = document.getElementById("site-footer");
   if (!header) return;
 
-  let burger = header.querySelector(".hf-hamburger");
+  let burger = header.querySelector(".hfbar .hf-hamburger");
   if (!burger) {
     burger = document.createElement("button");
     burger.className = "hf-hamburger";
     burger.setAttribute("aria-label", "メニュー");
     burger.innerHTML = "&#9776;";
-    const bar = header.querySelector(".hfbar") || header;
-    bar.appendChild(burger);
+    (header.querySelector(".hfbar") || header).appendChild(burger);
   }
 
   let overlay = document.querySelector(".hf-overlay");
@@ -196,8 +197,8 @@ function ensureResponsiveUI() {
     if (a) closeDrawer();
   });
 
-  document.addEventListener("keydown", onEscToClose);
-  window.addEventListener("resize", onResizeCloseIfWide);
+  document.addEventListener("keydown", (e)=>{ if (e.key === "Escape") closeDrawer(); });
+  window.addEventListener("resize", ()=>{ if (window.innerWidth > 768) closeDrawer(); });
 }
 
 function openDrawer() {
@@ -208,14 +209,8 @@ function closeDrawer() {
   document.querySelector(".hf-drawer")?.classList.remove("open");
   document.querySelector(".hf-overlay")?.classList.remove("open");
 }
-function onEscToClose(e) {
-  if (e.key === "Escape") closeDrawer();
-}
-function onResizeCloseIfWide() {
-  if (window.innerWidth > 768) closeDrawer();
-}
 
-// ===== エントリーポイント =====
+// ===== メイン処理 =====
 export async function loadHF() {
   try {
     const [hdrRes, ftrRes] = await Promise.all([
@@ -247,6 +242,7 @@ export async function loadHF() {
 
 window.addEventListener("DOMContentLoaded", loadHF);
 
+// FOUC保険
 setTimeout(() => {
   const body = document.getElementById("page-body");
   if (body && body.style.visibility !== "visible") {
