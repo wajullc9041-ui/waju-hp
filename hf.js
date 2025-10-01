@@ -1,73 +1,74 @@
-// hf.js (final version)
+// hf.js
+
+// 1. Supabaseクライアントの初期化 (管理画面と同じ認証情報を使用)
+// 注意: このファイルは「type="module"」で埋め込む必要があります。
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-const supabaseUrl = "https://htnmjsqgoapvuanrsuma.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA";
+// **公開ページの環境に合わせて、この認証情報を置き換えてください**
+const SUPABASE_URL = "https://htnmjsqgoapvuanrsuma.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA";
 
-const sb = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/**
+ * ページにヘッダーとフッターを適用する
+ */
+async function applyHeaderAndFooter() {
+    try {
+        // hf_settingsからヘッダーとフッターの両方を取得
+        const { data: settings, error } = await supabase
+            .from('hf_settings')
+            .select('area, data')
+            .in('area', ['header', 'footer']);
+
+        if (error || !settings || settings.length !== 2) {
+            console.error("Failed to load H&F settings:", error || "Data missing.");
+            return;
+        }
+
+        const headerData = settings.find(s => s.area === 'header')?.data;
+        const footerData = settings.find(s => s.area === 'footer')?.data;
+
+        // 2. CSSの挿入
+        // 共通のスタイルブロックを作成
+        const style = document.createElement('style');
+        style.textContent = '';
+        
+        if (headerData?.headerCss) {
+            style.textContent += headerData.headerCss;
+        }
+        if (footerData?.footerCss) {
+            style.textContent += footerData.footerCss;
+        }
+        document.head.appendChild(style);
 
 
-function injectStyle(cssText, id) {
-  if (!cssText) return;
-  let styleTag = document.getElementById(id);
-  if (!styleTag) {
-    styleTag = document.createElement("style");
-    styleTag.id = id;
-    document.head.appendChild(styleTag);
-  }
-  styleTag.innerHTML = cssText;
+        // 3. HTMLの挿入
+
+        // ヘッダーの挿入 (bodyの先頭)
+        if (headerData?.headerHtml) {
+            const headerEl = document.createElement('div');
+            headerEl.innerHTML = headerData.headerHtml;
+            // headerHtmlは単一の.hfbar要素なので、直接bodyの先頭に追加
+            if (headerEl.firstElementChild) {
+                document.body.prepend(headerEl.firstElementChild);
+            }
+        }
+        
+        // フッターの挿入 (bodyの末尾)
+        if (footerData?.footerHtml) {
+            const footerEl = document.createElement('div');
+            footerEl.innerHTML = footerData.footerHtml;
+            // footerHtmlは単一の.hfbar要素なので、直接bodyの末尾に追加
+            if (footerEl.firstElementChild) {
+                document.body.appendChild(footerEl.firstElementChild);
+            }
+        }
+
+    } catch (e) {
+        console.error("An error occurred during H&F application:", e);
+    }
 }
 
-
-function setInner(id, html) {
-  const el = document.getElementById(id);
-  if (el) el.innerHTML = html || "";
-}
-
-function adjustOffsets() {
-  const headerEl = document.getElementById("site-header");
-  const footerEl = document.getElementById("site-footer");
-  const mainEl = document.querySelector("main");
-  if (!mainEl) return;
-  if (headerEl) mainEl.style.paddingTop = headerEl.offsetHeight + "px";
-  if (footerEl) mainEl.style.paddingBottom = footerEl.offsetHeight + "px";
-}
-
-async function loadHF() {
-  try {
-    const [r1, r2] = await Promise.all([
-      sb.from("hf_settings").select("data").eq("area", "header").single(),
-      sb.from("hf_settings").select("data").eq("area", "footer").single()
-    ]);
-
-    const hdr = r1?.data?.data || {};
-    const ftr = r2?.data?.data || {};
-
-    const headerHtml = hdr.headerHtml || "";
-const footerHtml = ftr.footerHtml || "";
-const headerCss  = hdr.headerCss || "";
-const footerCss  = ftr.footerCss || "";
-
-    setInner("site-header", headerHtml);
-    setInner("site-footer", footerHtml);
-
-// CSSを挿入
-injectStyle(headerCss, "site-header-style");
-injectStyle(footerCss, "site-footer-style");
-    adjustOffsets();
-  } catch (e) {
-    console.warn("HF load failed", e);
-  } finally {
-    const body = document.getElementById("page-body");
-    if (body) body.style.visibility = "visible";
-  }
-}
-
-loadHF();
-
-setTimeout(() => {
-  const body = document.getElementById("page-body");
-  if (body) body.style.visibility = "visible";
-}, 3000);
-
-console.log("hf.js final loaded");
+// ページが完全にロードされた後に実行
+document.addEventListener('DOMContentLoaded', applyHeaderAndFooter);
