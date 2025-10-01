@@ -183,19 +183,20 @@
       }
 
       /* Philosophy Section */
-      /* ★修正: 背景を画面いっぱいに広げるため、セクション自体にパディングと背景を設定 */
+      /* ★修正: 背景を画面いっぱいに広げる */
       #philosophy {
           padding: 30px 0;
-          background: #fff; /* 白い背景を画面いっぱいに */
-          margin: 0 auto 20px auto; /* sectionのmarginは20pxを維持 */
+          background: #fff; 
+          margin: 0 auto 20px auto; 
       }
 
       #philosophy .content-card {
-          /* ★修正: コンテンツの最大幅を 1024px に統一し中央寄せ */
+          /* コンテンツの最大幅を 1024px に統一し中央寄せ */
           max-width: 1024px; 
           margin-left: auto;
           margin-right: auto;
-
+          
+          /* カードのスタイル */
           background: linear-gradient(135deg, #e0f2fe 0%, #fff 100%);
           padding: 40px;
           border-radius: 16px;
@@ -209,24 +210,56 @@
           align-items: flex-start;
           text-align: left;
       }
-      /* (Philosophyセクション内の残りのスタイルは省略) */
+      .philosophy-image {
+          max-width: 300px;
+          flex-shrink: 0;
+          height: auto;
+          border-radius: 8px;
+          margin-bottom: 0;
+          box-shadow: 0 4px 12px rgba(0,0,0,.1);
+          display: block;
+      }
+      #philosophy .philosophy-text-container {
+          flex: 1;
+      }
+      #philosophy .main-text {
+          font-size: 20px;
+          font-weight: 700;
+          color: #0f172a;
+          margin: 0 0 20px;
+          line-height: 1.6;
+          border-bottom: 2px dashed #1976d2;
+          padding-bottom: 10px;
+          display: block;
+          max-width: none;
+          text-align: left;
+      }
+      #philosophy p {
+          max-width: none;
+          margin: 0 0 14px;
+          font-size: 16px;
+          color: #374151;
+          text-align: left;
+      }
+      #philosophy .keywords {
+          margin-top: 30px;
+          font-weight: 700;
+          color: #1976d2;
+          font-size: 18px;
+          letter-spacing: 1px;
+          text-align: left;
+      }
 
 
       /* Message Section */
-      /* ★修正: 背景を画面いっぱいに広げるため、セクション自体にパディングと背景を設定 */
+      /* ★修正: 背景を画面いっぱいに広げる */
       #message {
-          /* ★修正: グレーの背景色をセクション自体に適用 */
           background: #f8fafc; 
-          /* ★修正: 上下のパディングをセクション自体に適用 */
           padding: 30px 0; 
-          margin: 0 auto 20px auto; /* sectionのmarginは20pxを維持 */
+          margin: 0 auto 20px auto;
       }
       #message .message-wrapper {
-          /* ★修正: 背景を親に移したため、背景・パディングを削除 */
-          background: none;
-          padding: 0;
-          
-          /* コンテンツの最大幅を 1024px に統一し中央寄せ */
+          /* ★修正: max-widthを設定し、中身を中央寄せ（背景は親要素で担当） */
           max-width: 1024px; 
           margin-left: auto;
           margin-right: auto;
@@ -237,9 +270,9 @@
           align-items: flex-start;
       }
       #message .profile-card {
+          /* ★修正: カードの固定幅とflex比率を調整 */
           flex: 0 0 300px; 
           align-self: flex-start;
-          /* ★修正: 個別のカードにも背景とパディングを設定し、はみ出しを防ぐ */
           background: #fff;
           padding: 30px;
           border-radius: 12px;
@@ -248,22 +281,64 @@
           position: sticky;
           top: calc(80px + 20px);
       }
+      #message .profile-card img {
+          /* ★修正: 画像が枠を超えるのを防ぐ */
+          max-width: 100%;
+          height: auto;
+          aspect-ratio: 1 / 1.1; /* 縦長の画像に合わせてアスペクト比を設定（例） */
+          object-fit: cover;
+          border-radius: 8px;
+          border: 4px solid #1976d2;
+          box-shadow: 0 0 0 6px rgba(25, 118, 210, 0.2);
+      }
+      #message .profile-card .name {
+          font-size: 22px;
+          font-weight: 700;
+          margin-top: 10px;
+          color: #0f172a;
+      }
+      #message .profile-card .title {
+          font-size: 16px;
+          color: #1976d2;
+          margin-bottom: 20px;
+          font-weight: 500;
+      }
       #message .message-content {
+          /* ★修正: Flex比率を調整し、残り幅を埋める */
           flex: 1; 
-          /* ★修正: 個別のカードにも背景とパディングを設定し、はみ出しを防ぐ */
           background: #fff;
           padding: 40px;
           border-radius: 12px;
           box-shadow: 0 5px 15px rgba(0,0,0,.08);
       }
-      /* (Messageセクション内の残りのスタイルは省略) */
+      #message .message-content p {
+          text-align: justify;
+          text-justify: inter-ideograph;
+          margin-bottom: 20px;
+      }
+      #message .message-content p:last-child {
+          margin-bottom: 0;
+      }
 
       /* Company Profile Section */
       #company-profile {
           /* PC用のセクション内上下パディング (30px) */
           padding: 30px 0; 
       }
-      /* (Company Profileの残りのスタイルは省略) */
+      .profile-table {
+          width: 100%;
+          max-width: 800px; 
+          margin: 0 auto;
+          border-collapse: collapse;
+          box-shadow: 0 5px 15px rgba(0,0,0,.05);
+          border-radius: 8px;
+          overflow: hidden;
+      }
+      .profile-table th, .profile-table td {
+          padding: 18px 25px;
+          text-align: left;
+          border-bottom: 1px solid #e5e7eb;
+      }
 
       /* Responsive adjustments */
       @media (max-width: 1024px) {
@@ -284,7 +359,7 @@
               margin-bottom: 20px;
           }
 
-          /* セクション内パディングを縮小 (30px -> 20px) */
+          /* セクション内パディングを縮小 (20px) */
           #philosophy {
               padding: 20px 0; 
           }
@@ -294,7 +369,7 @@
           #company-profile {
               padding: 20px 0; 
           }
-
+          
           /* モバイルでは固定幅を解除し、表示崩れを防ぐ */
           #philosophy .content-card,
           #message .message-wrapper {
@@ -310,12 +385,6 @@
               max-width: 80%;
               margin-left: auto;
               margin-right: auto;
-          }
-          /* 理念セクションのテキストアライメントは左揃えを維持 */
-          #philosophy .main-text,
-          #philosophy p,
-          #philosophy .keywords {
-              text-align: left; 
           }
 
           /* 代表メッセージセクションのモバイルでの縦並び */
