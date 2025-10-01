@@ -408,7 +408,19 @@
     $("#grad_apply_footer").addEventListener("click", function(){ $("#bg_gradient_footer").value = linear($("#grad_dir_footer").value,$("#grad_start_footer").value,$("#grad_end_footer").value); renderFooterPreview(getFooter(), menus); });
     $("#grad_reset_footer").addEventListener("click", function(){ $("#bg_gradient_footer").value = ""; renderFooterPreview(getFooter(), menus); });
 
-    $("#saveHeader").addEventListener("click", async function(){ const d=getHeader(); renderHeaderPreview(d,menus); await saveRow("header", d); });
-    $("#saveFooter").addEventListener("click", async function(){ const d=getFooter(); renderFooterPreview(d,menus); await saveRow("footer", d); });
+    $("#saveHeader").addEventListener("click", async function(){
+  const d = getHeader();
+  renderHeaderPreview(d, menus);
+  const dom = buildHeaderDOM(d, menus);
+  d.headerHtml = dom.outerHTML;
+  await saveRow("header", d);
+});
+    $("#saveFooter").addEventListener("click", async function(){
+  const d = getFooter();
+  renderFooterPreview(d, menus);
+  const dom = buildFooterDOM(d, menus);
+  d.footerHtml = dom.outerHTML;
+  await saveRow("footer", d);
+});
   })();
 </script>
