@@ -93,10 +93,10 @@ const RESPONSIVE_CSS = `
   /* フッターを強制的に24pxに縮小 */
   #site-footer,
   #site-footer .hfbar {
-    height: 24px !important;
-    min-height: 24px !important;
+    height: 30px !important;
+    min-height: 30px !important;
     padding: 0 !important;
-    line-height: 24px !important;
+    line-height: 30px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
