@@ -30,59 +30,64 @@
     gtag('config', 'G-ZHLJ5K19ZE');
   </script>
 
-  <!-- ページ専用CSS（main内にスコープ） -->
+  <!-- about専用CSS（main内にスコープ） -->
   <style>
     main#about-main {
       min-height: 60vh;
       padding: 2em 0;
     }
     #about-main .container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 0 20px;
     }
     #about-main h1 {
       font-size: 42px;
       text-align: center;
-      margin: 40px 0;
+      margin: 40px 0 60px;
       font-weight: 900;
       color: #1976d2;
     }
     #about-main h2 {
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 700;
-      margin: 30px 0 10px;
+      margin: 40px 0 20px;
       color: #0f172a;
       text-align: center;
     }
-    #about-main .card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 20px;
+    #about-main .flex-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 40px;
     }
-    #about-main .card img {
-      max-width: 100%;
-      border-radius: 6px;
-      display: block;
-      margin: 0 auto 20px;
+    #about-main .flex-box img {
+      max-width: 400px;
+      border-radius: 8px;
     }
-    #about-main .profile-table {
+    #about-main .flex-box .text {
+      flex: 1;
+      min-width: 280px;
+    }
+    #about-main table.profile-table {
       width: 100%;
+      max-width: 900px;
+      margin: 0 auto 60px;
       border-collapse: collapse;
-      margin: 20px auto;
-    }
-    #about-main .profile-table th,
-    #about-main .profile-table td {
       border: 1px solid #ddd;
-      padding: 12px 16px;
+    }
+    #about-main table.profile-table th,
+    #about-main table.profile-table td {
+      padding: 14px 18px;
+      border: 1px solid #ddd;
       text-align: left;
     }
-    #about-main .profile-table th {
-      background: #f5f5f5;
-      font-weight: 600;
+    #about-main table.profile-table th {
       width: 30%;
+      background: #f7f7f7;
+      font-weight: 600;
     }
   </style>
 </head>
@@ -93,47 +98,46 @@
   <!-- メイン -->
   <main id="about-main">
     <div class="container">
-
       <h1>会社概要</h1>
 
-      <!-- PHILOSOPHY -->
+      <!-- 理念 -->
       <section id="philosophy">
         <h2>PHILOSOPHY<br><small>理念</small></h2>
-        <div class="card">
+        <div class="flex-box">
           <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/about-philosophy.jpg" alt="理念イメージ">
-          <p>合同会社WaJuは、「できない」「わからない」を支援する会社です。</p>
-          <p>「あんなことができたらいいな」「こんなものがあったら便利だな」という声を形にし、個人や企業の挑戦を後押しすることを目的に設立されました。</p>
-          <p>社会福祉の一環として介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い分野で社会的支援ができる企業を目指しています。</p>
+          <div class="text">
+            <p>合同会社WaJuは、「できない」「わからない」を支援する会社です。</p>
+            <p>「あんなことができたらいいな」「こんなものがあったら便利だな」という声を形にし、個人や企業の挑戦を後押しすることを目的に設立されました。</p>
+            <p>社会福祉の一環として介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い分野で社会的支援ができる企業を目指しています。</p>
+          </div>
         </div>
       </section>
 
-      <!-- MESSAGE -->
+      <!-- 代表メッセージ -->
       <section id="message">
         <h2>MESSAGE<br><small>代表メッセージ</small></h2>
-        <div class="card">
+        <div class="flex-box">
           <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/about-ceo.jpg" alt="代表写真">
-          <p>私はこれまで15年以上にわたり、特別養護老人ホームや有料老人ホームで介護士として勤務し、サービス付き高齢者住宅の立ち上げ、サービス提供責任者、施設長といった役職も経験してきました。その中で常に直面したのは、慢性的な人手不足や賃金が上がらない厳しい現実でした。</p>
-          <p>事業所の倒産は増え続け、採用しても定着せず、採用コストばかりが膨らんでいく。退職の多くは賃金や業務内容ではなく人間関係が原因で、現場と運営の意識の溝が大きな課題となっていました。</p>
-          <p>だからこそ、私は「運営を支援するシステム」を作ることが業界改善に直結すると考え、独立してCARELAYを開発しました。</p>
+          <div class="text">
+            <p>私はこれまで15年以上にわたり、特別養護老人ホームや有料老人ホームで介護士として勤務し、サービス付き高齢者住宅の立ち上げ、サービス提供責任者、施設長といった役職も経験してきました。その中で常に直面したのは、慢性的な人手不足や賃金が上がらない厳しい現実でした。</p>
+            <p>だからこそ、私は「運営を支援するシステム」を作ることが業界改善に直結すると考え、独立してCARELAYを開発しました。</p>
+          </div>
         </div>
       </section>
 
-      <!-- COMPANY PROFILE -->
+      <!-- 会社情報 -->
       <section id="company-profile">
         <h2>COMPANY PROFILE<br><small>会社情報</small></h2>
-        <div class="card">
-          <table class="profile-table">
-            <tbody>
-              <tr><th>法人名</th><td>合同会社WaJu</td></tr>
-              <tr><th>代表社員</th><td>大野 洋</td></tr>
-              <tr><th>設立年月日</th><td>2023年4月27日</td></tr>
-              <tr><th>所在地</th><td>〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td></tr>
-              <tr><th>事業内容</th><td>介護福祉業界のオンラインプラットフォーム「CARELAY」の製作および販売</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <table class="profile-table">
+          <tbody>
+            <tr><th>法人名</th><td>合同会社WaJu</td></tr>
+            <tr><th>代表社員</th><td>大野 洋</td></tr>
+            <tr><th>設立年月日</th><td>2023年4月27日</td></tr>
+            <tr><th>所在地</th><td>〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td></tr>
+            <tr><th>事業内容</th><td>介護福祉業界のオンラインプラットフォーム「CARELAY」の製作および販売</td></tr>
+          </tbody>
+        </table>
       </section>
-
     </div>
   </main>
 
