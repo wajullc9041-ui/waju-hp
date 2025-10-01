@@ -1,4 +1,4 @@
-// hf.js（完全版+スマホ用フッター調整）
+// hf.js（完全版 + スマホ時フッター高さ調整）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -84,8 +84,9 @@ const RESPONSIVE_CSS = `
 
   /* --- スマホ時のフッター調整 --- */
   #site-footer .hfbar {
-    min-height: 20px;
-    padding: 0px 12px;
+    min-height: 24px !important;   /* 高さを今の半分程度に */
+    padding: 0 !important;         /* 上下の余白をゼロに */
+    line-height: 1.2 !important;   /* 行間を詰めて高さを抑える */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,6 +94,7 @@ const RESPONSIVE_CSS = `
   #site-footer .hf-copy {
     justify-content: center;
     width: auto;
+    font-size: 12px;               /* 小さめ文字 */
   }
 }
 `;
