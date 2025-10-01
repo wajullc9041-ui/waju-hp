@@ -1,199 +1,263 @@
-// hf.js
-// ヘッダー・フッター適用スクリプト (ESモジュール)
+// hf.js（完全版）
+// ヘッダー・フッター適用 + モバイルドロワー（ハンバーガー）対応
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-const supabaseUrl = "https://htnmjsqgoapvuanrsuma.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA";
+// ===== Supabase =====
+const supabase = createClient(
+  "https://htnmjsqgoapvuanrsuma.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+);
 
-const sb = createClient(supabaseUrl, supabaseKey);
-
-// 管理画面のCSS定義に合わせた最小限のコアCSS
-const CORE_CSS = `
-.hfbar {
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  gap: var(--gap, 16px);
-}
-.hf-row {
-  flex-direction: row;
-}
-.hf-column {
-  flex-direction: column;
-  align-items: stretch; /* 縦並びの場合は要素を伸ばす */
-}
-.slot {
-  display: flex;
-  align-items: center;
-}
-.slot.brand {
-  flex: 0 0 auto;
-}
-.slot.nav {
-  flex: 1 1 auto;
-}
-/* ヘッダーブランド */
-.hf-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px; /* 管理画面のJSロジックに合わせる */
-}
-.hf-brand img {
-  height: auto;
-  max-height: inherit;
-}
-/* ナビゲーション */
-.hf-nav {
-  display: flex;
-  gap: var(--gap, 16px);
-  flex-wrap: wrap;
-  width: 100%;
-}
-.hf-nav a {
-  color: inherit;
-  text-decoration: none;
-}
-.hf-nav a:hover {
-  opacity: .85;
-}
-/* コピーライト */
-.hf-copy {
-  display: flex;
-  width: 100%;
-}
-`;
-
-function injectStyle(cssText, id) {
-  if (!cssText) return;
-  let styleTag = document.getElementById(id);
-  if (!styleTag) {
-    styleTag = document.createElement("style");
-    styleTag.id = id;
-    document.head.appendChild(styleTag);
+// ===== Utils =====
+function injectStyle(id, css) {
+  if (!css) return;
+  let tag = document.getElementById(id);
+  if (!tag) {
+    tag = document.createElement("style");
+    tag.id = id;
+    document.head.appendChild(tag);
   }
-  // コアCSSは常に上書き、個別のCSSはコアCSSの下に追加
-  styleTag.textContent = cssText;
+  tag.textContent = css;
 }
 
 function setInner(id, html) {
   const el = document.getElementById(id);
-  // HTMLを挿入する際は、innerHTMLではなく、子要素を直接置き換えることでより安全に
-  if (el) {
-      el.innerHTML = ""; // 既存の内容をクリア
-      if(html){
-          // ヘッダー/フッターHTMLは単一のルート要素(.hfbar)を含むはず
-          const temp = document.createElement('div');
-          temp.innerHTML = html;
-          if (temp.firstElementChild) {
-              el.appendChild(temp.firstElementChild);
-          }
-      }
-  }
+  if (!el) return;
+  // 管理画面由来のHTMLをそのまま反映（複数ルートに対応）
+  el.innerHTML = html || "";
 }
 
-/**
- * 固定表示の設定に基づいて、ヘッダー/フッターのCSSを調整する
- */
-function applyFixedAndAdjustOffsets(hdr, ftr) {
+function safeParseMaybeJson(val) {
+  if (!val) return {};
+  if (typeof val === "object") return val;
+  try { return JSON.parse(val); } catch { return {}; }
+}
+
+// ===== Core CSS（最小限の共通部品） =====
+const CORE_CSS = `
+.hfbar{display:flex;align-items:center;box-sizing:border-box;gap:16px;}
+.hf-row{flex-direction:row;}
+.hf-column{flex-direction:column;align-items:stretch;}
+.hf-brand{display:flex;align-items:center;gap:8px;max-height:60px}
+.hf-brand img{height:auto;max-height:inherit}
+.hf-nav{display:flex;gap:16px;flex-wrap:wrap}
+.hf-nav a{text-decoration:none;color:inherit}
+.hf-copy{display:flex;width:100%}
+`;
+
+// ===== Responsive（ハンバーガー＋ドロワー） =====
+const RESPONSIVE_CSS = `
+/* 初期は非表示（モバイルでのみ出す） */
+.hf-hamburger,.hf-drawer,.hf-overlay{display:none}
+
+/* モバイル */
+@media (max-width:768px){
+  /* ヘッダー/フッターのナビはモバイルでは隠す */
+  #site-header .hf-nav, #site-footer .hf-nav { display:none !important; }
+
+  /* ハンバーガー */
+  .hf-hamburger{
+    display:block;margin-left:auto;cursor:pointer;
+    font-size:1.8rem;line-height:1;padding:8px;border-radius:8px;
+    border:1px solid rgba(0,0,0,.15);background:rgba(255,255,255,.6);
+    backdrop-filter:saturate(180%) blur(8px);
+  }
+
+  /* オーバーレイ */
+  .hf-overlay{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999;
+  }
+  .hf-overlay.open{display:block;}
+
+  /* ドロワー（右から） */
+  .hf-drawer{
+    display:block;position:fixed;top:0;right:-280px;width:260px;height:100%;
+    background:#fff;box-shadow:-2px 0 10px rgba(0,0,0,.25);
+    transition:right .28s ease;z-index:1000;padding:16px 12px 24px 12px;
+    overflow:auto;
+  }
+  .hf-drawer.open{right:0;}
+  .hf-drawer .drawer-head{
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;
+  }
+  .hf-drawer .drawer-close{
+    border:none;background:#f2f2f2;border-radius:8px;padding:6px 10px;font-size:1.1rem;cursor:pointer;
+  }
+  .hf-drawer nav, .hf-drawer ul{margin:0;padding:0;list-style:none}
+  .hf-drawer a{display:block;padding:12px 8px;border-radius:10px;text-decoration:none;color:inherit}
+  .hf-drawer a:active{opacity:.7}
+}
+`;
+
+// ===== 固定の反映と余白調整 =====
+function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
   const headerEl = document.getElementById("site-header");
   const footerEl = document.getElementById("site-footer");
-  const mainEl = document.querySelector("main");
+  const mainEl   = document.querySelector("main");
 
-  // 1. ヘッダーの固定設定適用
-  if (hdr?.header_fixed && headerEl) {
-    const headerBar = headerEl.querySelector(".hfbar");
-    if (headerBar) {
-      headerBar.style.position = "sticky";
-      headerBar.style.top = "0";
-      headerBar.style.zIndex = "5";
+  // ヘッダー固定（sticky）
+  if (hdrCfg?.header_fixed && headerEl) {
+    const bar = headerEl.querySelector(".hfbar");
+    if (bar) {
+      bar.style.position = "sticky";
+      bar.style.top = "0";
+      bar.style.zIndex = "10";
+      bar.style.width = "100%";
     }
   }
 
-  // 2. フッターの固定設定適用 (画面最下部固定のため fixed を使用)
-  if (ftr?.footer_fixed && footerEl) {
-    const footerBar = footerEl.querySelector(".hfbar");
-    if (footerBar) {
-      // position: fixed で画面最下部に固定
-      footerBar.style.position = "fixed";
-      footerBar.style.bottom = "0";
-      footerBar.style.left = "0";
-      footerBar.style.right = "0";
-      footerBar.style.zIndex = "5";
-      // 幅を100%に設定 (fixedのデフォルトはコンテンツ幅)
-      footerBar.style.width = "100%";
+  // フッター固定（fixed）
+  if (ftrCfg?.footer_fixed && footerEl) {
+    const bar = footerEl.querySelector(".hfbar");
+    if (bar) {
+      bar.style.position = "fixed";
+      bar.style.left = "0";
+      bar.style.right = "0";
+      bar.style.bottom = "0";
+      bar.style.zIndex = "10";
+      bar.style.width = "100%";
     }
   }
 
-  // 3. メインコンテンツのパディング調整 (固定要素との重複回避)
+  // 余白調整（main 基準）
   if (mainEl) {
-    // ヘッダーが固定されている場合
-    const headerBar = headerEl ? headerEl.querySelector(".hfbar") : null;
-    if (hdr?.header_fixed && headerBar) {
-      // 実際にはheaderEl（親）の高さを見るのが安全
-      mainEl.style.paddingTop = headerEl.offsetHeight + "px";
-    } else {
-      mainEl.style.paddingTop = ""; // 固定でない場合はリセット
-    }
-
-    // フッターが固定されている場合
-    const footerBar = footerEl ? footerEl.querySelector(".hfbar") : null;
-    if (ftr?.footer_fixed && footerBar) {
-      mainEl.style.paddingBottom = footerEl.offsetHeight + "px";
-    } else {
-      mainEl.style.paddingBottom = ""; // 固定でない場合はリセット
-    }
+    const headerH = hdrCfg?.header_fixed && headerEl ? headerEl.offsetHeight : 0;
+    const footerH = ftrCfg?.footer_fixed && footerEl ? footerEl.offsetHeight : 0;
+    mainEl.style.paddingTop = headerH ? `${headerH}px` : "";
+    mainEl.style.paddingBottom = footerH ? `${footerH}px` : "";
   }
 }
 
-async function loadHF() {
+// ===== ドロワーUI =====
+function ensureResponsiveUI() {
+  const header = document.getElementById("site-header");
+  const footer = document.getElementById("site-footer");
+  if (!header) return;
+
+  // ハンバーガー設置（重複防止）
+  let burger = header.querySelector(".hf-hamburger");
+  if (!burger) {
+    burger = document.createElement("button");
+    burger.className = "hf-hamburger";
+    burger.setAttribute("aria-label", "メニュー");
+    burger.innerHTML = "&#9776;"; // ≡
+    // .hfbar の末尾に追加（ロゴ・社名の右側）
+    const bar = header.querySelector(".hfbar") || header;
+    bar.appendChild(burger);
+  }
+
+  // オーバーレイ
+  let overlay = document.querySelector(".hf-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.className = "hf-overlay";
+    document.body.appendChild(overlay);
+  }
+
+  // ドロワー
+  let drawer = document.querySelector(".hf-drawer");
+  if (!drawer) {
+    drawer = document.createElement("aside");
+    drawer.className = "hf-drawer";
+    drawer.innerHTML = `
+      <div class="drawer-head">
+        <strong>メニュー</strong>
+        <button type="button" class="drawer-close" aria-label="閉じる">✕</button>
+      </div>
+      <nav class="drawer-nav"><ul class="drawer-menu"></ul></nav>
+    `;
+    document.body.appendChild(drawer);
+  }
+
+  // メニュー中身：フッターの .hf-nav をコピー（なければヘッダーの .hf-nav をフォールバック）
+  const srcNav =
+    footer?.querySelector(".hf-nav") ||
+    header.querySelector(".hf-nav");
+  const dstList = drawer.querySelector(".drawer-menu");
+
+  if (dstList && srcNav) {
+    dstList.innerHTML = srcNav.innerHTML; // a 要素群をそのまま流用
+  }
+
+  // イベント（重複バインドを避けるため一度外す → 付け直す）
+  burger.onclick = openDrawer;
+  overlay.onclick = closeDrawer;
+  drawer.querySelector(".drawer-close").onclick = closeDrawer;
+
+  // ドロワー内のリンクを押したら閉じる
+  drawer.addEventListener("click", (e) => {
+    const a = e.target.closest("a");
+    if (a) closeDrawer();
+  });
+
+  // Escapeで閉じる
+  document.addEventListener("keydown", onEscToClose);
+
+  // リサイズ時：PC幅に戻ったら強制的に閉じて状態リセット
+  window.addEventListener("resize", onResizeCloseIfWide);
+}
+
+function openDrawer() {
+  document.querySelector(".hf-drawer")?.classList.add("open");
+  document.querySelector(".hf-overlay")?.classList.add("open");
+}
+function closeDrawer() {
+  document.querySelector(".hf-drawer")?.classList.remove("open");
+  document.querySelector(".hf-overlay")?.classList.remove("open");
+}
+function onEscToClose(e) {
+  if (e.key === "Escape") closeDrawer();
+}
+function onResizeCloseIfWide() {
+  if (window.innerWidth > 768) closeDrawer();
+}
+
+// ===== 入口 =====
+export async function loadHF() {
   try {
-    // 1. データベースからデータを一括取得
-    const [r1, r2] = await Promise.all([
-      sb.from("hf_settings").select("data").eq("area", "header").single(),
-      sb.from("hf_settings").select("data").eq("area", "footer").single()
+    // 1) 取得（header/footer を同時並列）
+    const [hdrRes, ftrRes] = await Promise.all([
+      supabase.from("hf_settings").select("data").eq("area","header").single(),
+      supabase.from("hf_settings").select("data").eq("area","footer").single()
     ]);
 
-    const hdr = r1?.data?.data || {};
-    const ftr = r2?.data?.data || {};
+    const hdrObj = safeParseMaybeJson(hdrRes?.data?.data);
+    const ftrObj = safeParseMaybeJson(ftrRes?.data?.data);
 
-    const headerHtml = hdr.headerHtml || "";
-    const footerHtml = ftr.footerHtml || "";
-    const headerCss  = hdr.headerCss  || "";
-    const footerCss  = ftr.footerCss  || "";
-    
-    // 2. CSSの挿入 (CORE -> Header固有 -> Footer固有 の順で優先度を確保)
-    injectStyle(CORE_CSS, "hf-core-style");
-    injectStyle(headerCss, "site-header-style");
-    injectStyle(footerCss, "site-footer-style");
+    // 2) CSS 反映（順序：コア → headerCss → footerCss → レスポンシブ）
+    injectStyle("hf-core-style", CORE_CSS);
+    injectStyle("site-header-style", hdrObj.headerCss || "");
+    injectStyle("site-footer-style", ftrObj.footerCss || "");
+    injectStyle("hf-responsive-style", RESPONSIVE_CSS);
 
-    // 3. HTMLの挿入
-    setInner("site-header", headerHtml);
-    setInner("site-footer", footerHtml);
-    
-    // 4. 固定表示の適用とパディング調整
-    // DOM挿入後に、高さを取得してパディング調整するためここで実行
-    applyFixedAndAdjustOffsets(hdr, ftr);
+    // 3) HTML 反映
+    setInner("site-header", hdrObj.headerHtml || "");
+    setInner("site-footer", ftrObj.footerHtml || "");
+
+    // 4) 固定/余白
+    applyFixedAndAdjustOffsets(hdrObj, ftrObj);
+
+    // 5) モバイルUI（ハンバーガー/ドロワー）
+    ensureResponsiveUI();
 
   } catch (e) {
     console.warn("HF load failed:", e);
   } finally {
-    // 5. FOUC対策のvisibility: hiddenを解除
+    // 6) FOUC解除
     const body = document.getElementById("page-body");
     if (body) body.style.visibility = "visible";
   }
 }
 
-// ページロード時に実行
-document.addEventListener('DOMContentLoaded', loadHF);
+// DOMContentLoadedで実行
+window.addEventListener("DOMContentLoaded", loadHF);
 
-// Safety: 読み込みが遅延した場合に3秒後に強制的に表示（FOUC対策の解除）
+// タイムアウトで強制表示（最悪時の保険）
 setTimeout(() => {
   const body = document.getElementById("page-body");
-  if (body && body.style.visibility === "hidden") {
-      body.style.visibility = "visible";
-      console.warn("HF loading timed out. Forced page display after 3s.");
+  if (body && body.style.visibility !== "visible") {
+    body.style.visibility = "visible";
+    console.warn("HF timeout: forced visible.");
   }
 }, 3000);
-
-console.log("hf.js loaded and attempting to apply H&F.");
