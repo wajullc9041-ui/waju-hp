@@ -11,7 +11,7 @@
   <meta property="og:description" content="合同会社WaJuのプライバシーポリシー（個人情報保護方針）についてのご案内です。">
   <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://waju.co.jp/privacy.html"> <!-- URLを更新 -->
+  <meta property="og:url" content="https://waju.co.jp/">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
@@ -36,82 +36,12 @@
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
                    Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
       visibility: hidden; /* FOUC対策: JSで解除されるまで非表示 */
-      background: #fff;
+      background: #f8fafc; /* 背景をわずかにグレーに */
       color: #0f172a;
-      line-height: 1.7; /* privacypolicy.txtのスタイルを適用 */
     }
     main {
-      padding: 0; /* メインコンテンツ全体でpaddingを調整するため0にリセット */
+      padding: 2em;
       min-height: 60vh;
-    }
-    /* privacypolicy.txtから抽出した、本文のおしゃれCSSを適用 */
-    #page-content .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    .privacy-content {
-      line-height: 1.8;
-      color: #333;
-      font-size: 16px;
-    }
-    .privacy-content h1 {
-      margin: 0 0 40px;
-      padding-bottom: 10px;
-      font-size: 2.5rem;
-      font-weight: 700;
-      text-align: center;
-      color: #0f172a;
-      border-bottom: 2px solid #e0e0e0;
-    }
-    .privacy-content h2 {
-      margin: 40px 0 16px;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #1976d2;
-      padding-bottom: 5px;
-      border-bottom: 1px dashed #bbdefb;
-    }
-    .privacy-content p {
-      margin: 0 0 24px;
-      text-align: justify;
-    }
-    .privacy-content ul {
-      margin: 0 0 24px 20px;
-      padding-left: 0;
-      list-style-type: none;
-    }
-    .privacy-content ul li {
-      position: relative;
-      padding-left: 20px;
-      margin-bottom: 8px;
-    }
-    .privacy-content ul li::before {
-      content: '・';
-      color: #1976d2;
-      position: absolute;
-      left: 0;
-      top: 0;
-      font-weight: bold;
-    }
-    .signature{
-      margin-top: 50px;
-      padding-top: 15px;
-      text-align: right;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: #555;
-      border-top: 1px solid #e0e0e0;
-    }
-    @media (max-width: 768px) {
-      .privacy-content h1 {
-        font-size: 2rem;
-        margin-bottom: 30px;
-      }
-      .privacy-content h2 {
-        font-size: 1.3rem;
-        margin-top: 30px;
-      }
     }
   </style>
 </head>
@@ -120,212 +50,95 @@
 
   <main id="page-main">
     <!-- ▼ ページごとのメインコンテンツはこの範囲に記述 ▼ -->
-    <div id="page-content" aria-live="polite">
-      <div class="container">
-        <div class="privacy-content">
-          <h1>プライバシーポリシー</h1>
 
-          <p>合同会社WaJu（以下「当社」）は、個人情報保護の重要性を深く認識し、以下の方針に基づき個人情報の適切な取り扱いと保護に努めます。</p>
+    <!-- プライバシーポリシーコンテナ -->
+    <div class="max-w-4xl mx-auto p-4 sm:p-8 bg-white shadow-xl rounded-xl border border-gray-100">
 
-          <h2>個人情報の管理</h2>
-          <p>当社は、お客様の個人情報を正確かつ最新の状態に保ち、不正アクセス・紛失・破損・改ざん・漏洩等を防止するため、セキュリティシステムの維持、管理体制の整備、社員教育の徹底を実施します。</p>
+      <!-- タイトル -->
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-blue-800 border-b-4 border-blue-500 pb-2 mb-8">
+        プライバシーポリシー
+      </h1>
 
-          <h2>個人情報の利用目的</h2>
-          <p>お預かりした個人情報は、当社からのご連絡、業務のご案内、ご質問への回答、電子メールや資料送付などの目的で利用いたします。</p>
+      <!-- 導入文 -->
+      <p class="text-gray-700 leading-relaxed mb-6 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-300">
+        合同会社WaJu（以下「当社」）は、以下のとおり個人情報保護方針を定め、個人情報保護の仕組みを構築し、全従業員に個人情報保護の重要性の認識と取り組みを徹底させることにより、個人情報の保護を推進致します。
+      </p>
 
-          <h2>個人情報の第三者提供</h2>
-          <p>当社は、以下の場合を除き、お客様の同意なく第三者へ個人情報を開示・提供することはありません。</p>
-          <ul>
-            <li>法令に基づき開示が必要な場合</li>
-            <li>お客様の同意がある場合</li>
-          </ul>
-
-          <h2>安全対策</h2>
-          <p>個人情報の正確性および安全性を確保するために、最新のセキュリティ対策を講じています。</p>
-
-          <h2>ご本人からの照会</h2>
-          <p>お客様がご本人の個人情報の照会・修正・削除を希望される場合は、ご本人確認のうえで適切に対応いたします。</p>
-
-          <h2>法令の遵守と見直し</h2>
-          <p>当社は、適用される日本の法令や規範を遵守するとともに、本ポリシーを適宜見直し、改善に努めます。</p>
-
-          <div class="signature">
-            合同会社WaJu
-          </div>
-        </div>
+      <!-- 各項目セクション -->
+      
+      <!-- 1. 個人情報の管理 -->
+      <div class="mb-8">
+        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
+          個人情報の管理
+        </h2>
+        <p class="text-gray-600 leading-relaxed pl-4">
+          当社は、お客様の個人情報を正確かつ最新の状態に保ち、個人情報への不正アクセス・紛失・破損・改ざん・漏洩などを防止するため、セキュリティシステムの維持・管理体制の整備・社員教育の徹底等の必要な措置を講じ、安全対策を実施し、個人情報の厳重な管理を行ないます。
+        </p>
       </div>
+
+      <!-- 2. 個人情報の利用目的 -->
+      <div class="mb-8">
+        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
+          個人情報の利用目的
+        </h2>
+        <p class="text-gray-600 leading-relaxed pl-4">
+          お客様からお預かりした個人情報は、当社からのご連絡や業務のご案内やご質問に対する回答として、電子メールや資料のご送付に利用致します。
+        </p>
+      </div>
+      
+      <!-- 3. 個人情報の第三者への開示・提供の禁止 -->
+      <div class="mb-8">
+        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
+          個人情報の第三者への開示・提供の禁止
+        </h2>
+        <p class="text-gray-600 leading-relaxed pl-4">
+          当社は、お客様よりお預かりした個人情報を適切に管理し、次のいずれかに該当する場合を除き、個人情報を第三者に開示致しません。
+        </p>
+      </div>
+      
+      <!-- 4. 個人情報の安全対策 -->
+      <div class="mb-8">
+        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
+          個人情報の安全対策
+        </h2>
+        <p class="text-gray-600 leading-relaxed pl-4">
+          当社は、個人情報の正確性及び安全性確保のために、セキュリティに万全の対策を講じています。
+        </p>
+      </div>
+      
+      <!-- 5. ご本人の照会 -->
+      <div class="mb-8">
+        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
+          ご本人の照会
+        </h2>
+        <p class="text-gray-600 leading-relaxed pl-4">
+          お客様がご本人の個人情報の照会・修正・削除などをご希望される場合には、ご本人であることを確認の上、対応させていただきます。
+        </p>
+      </div>
+
+      <!-- 6. 法令、規範の遵守と見直し -->
+      <div class="mb-8">
+        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
+          法令、規範の遵守と見直し
+        </h2>
+        <p class="text-gray-600 leading-relaxed pl-4">
+          当社は、保有する個人情報に関して適用される日本の法令、その他規範を遵守するとともに、本ポリシーの内容を適宜見直し、その改善に努めます。
+        </p>
+      </div>
+
+      <!-- 最終更新日（ダミー） -->
+      <div class="mt-10 pt-4 border-t border-gray-200 text-sm text-gray-500 text-right">
+        制定日：2023年10月2日
+      </div>
+
     </div>
+    
     <!-- ▲ ページごとのメインコンテンツはこの範囲に記述 ▲ -->
   </main>
 
   <footer id="site-footer"></footer>
 
   <!-- ヘッダー／フッター反映 -->
-  <!-- privacypolicy.txt に含まれていた全てのスクリプト（ヘッダー/フッター/ドロワーのロジック）を統合してここに配置 -->
-  <script type="module">
-    // --- 必要な共通機能の定義 (privacypolicy.txtから) ---
-    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
-    const sb = createClient(
-      "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-    );
-
-    const $ = s => document.querySelector(s);
-    const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
-    const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/\b(sans-serif|serif|monospace)\b/i.test(s) ? s : `${s}, sans-serif`);
-    const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
-    const bgParts = (row, def) => {
-      const grad = stripQuotes(row?.bg_gradient||"").trim();
-      if (grad){ return {bgColor:def, bgImage:grad}; }
-      const col = (row?.bg_color && row.bg_color.trim()) ? row.bg_color : def;
-      return {bgColor:col, bgImage:"none"};
-    };
-    const brandJustifyMargins = (align)=> align==='left'?'margin-right:auto':(align==='center'?'margin:0 auto':'margin-left:auto');
-
-    let allMenus = [];
-
-    // --- ロジック関数 (privacypolicy.txtから) ---
-    async function loadHF(){
-      const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
-        sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
-        sb.from("hf_settings").select("*").eq("area","header").single(),
-        sb.from("hf_settings").select("*").eq("area","footer").single()
-      ]);
-      allMenus = menus||[];
-
-      renderHeader(hdr||{}, allMenus);
-      renderFooter(ftr||{}, allMenus);
-      buildDrawer(allMenus);
-      adjustOffsets(hdr||{}, ftr||{});
-      addResizeObserver(hdr||{}, ftr||{});
-    }
-
-    function linkOf(m){ return (m.url ?? m.href ?? '#'); }
-
-    function renderHeader(d, menus){
-      const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
-        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
-      const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
-      const paddingY = d.padding || "8px 0";
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      $("#site-header").innerHTML = `
-        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
-              <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
-                <div class="hf-brand">
-                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||60,60)}px">`:""}
-                  <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
-                </div>
-              </div>
-              <div class="slot nav">
-                <nav class="hf-nav" id="desktop-nav" style="justify-content:${toJustify(d.nav_alignment)};color:${d.nav_color};font-weight:${d.nav_weight};font-size:${num(d.header_nav_size,14)}px">${items}</nav>
-              </div>
-              <button id="hamburger" class="hamburger" aria-controls="mobile-drawer" aria-expanded="false" aria-label="メニューを開く">
-                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-              </button>
-            </div>
-          </div>
-        </div>`;
-      const bg = $("#hf-header-bg");
-      if(d.header_fixed && bg){
-        Object.assign(bg.style,{position:"fixed",top:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
-      }
-      $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
-    }
-
-    function renderFooter(d, menus){
-      const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
-        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
-      const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
-      const paddingY = d.padding || "8px 0";
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      const inner = d.layout_mode==="nav-top"
-        ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
-           <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
-        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
-
-      $("#site-footer").innerHTML = `
-        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
-              ${inner}
-            </div>
-          </div>
-        </div>`;
-      const bg = $("#hf-footer-bg");
-      if(d.footer_fixed && bg){
-        Object.assign(bg.style,{position:"fixed",bottom:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
-      }
-    }
-
-    function buildDrawer(menus){
-      const items = menus.filter(m=>m.is_active).map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      $("#drawer-nav").innerHTML = items;
-    }
-    function openDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","false");$("#hamburger").setAttribute("aria-expanded","true");}
-    function closeDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","true");$("#hamburger").setAttribute("aria-expanded","false");}
-    $("#drawer-close")?.addEventListener("click", closeDrawer);
-    $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
-
-    function adjustOffsets(h,f){
-      const headerEl=$("#hf-header-bg");
-      const body=document.body;
-      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
-      body.style.paddingBottom="0";
-    }
-
-    function addResizeObserver(h,f){
-      const ro=new ResizeObserver(()=>adjustOffsets(h,f));
-      const headerEl=$("#hf-header-bg");const footerEl=$("#hf-footer-bg");
-      if(headerEl) ro.observe(headerEl); if(footerEl) ro.observe(footerEl);
-    }
-
-    // --- 実行 ---
-    loadHF();
-
-    // FOUC対策のvisibilityを解除
-    document.addEventListener("DOMContentLoaded", function() {
-      document.body.style.visibility = "visible";
-    });
-  </script>
-
-  <!-- privacypolicy.txt に含まれていたドロワーのHTML構造も追記 -->
-  <div id="mobile-drawer" class="drawer" aria-hidden="true">
-    <div class="overlay" data-close></div>
-    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
-      <header>
-        <div class="title" id="drawer-title">メニュー</div>
-        <!-- base.txtの<style>にはハンバーガーのCSSがないため、ここでは<style>にあったものを使用 -->
-        <style>
-          .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
-          .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
-          .drawer{position:fixed;inset:0;pointer-events:none}
-          .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
-          .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
-          .drawer[aria-hidden="false"]{pointer-events:auto}
-          .drawer[aria-hidden="false"] .overlay{opacity:1}
-          .drawer[aria-hidden="false"] .panel{transform:none}
-          .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
-          .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
-          .drawer .panel nav a{padding:12px 10px;border-radius:10px}
-          .drawer .panel nav a:hover{background:#f1f5f9}
-          /* base.txtのCSSにcontainerの定義がなかったため、これも追加 */
-          :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
-          .container{max-width:var(--container);margin:0 auto;padding:0 16px}
-        </style>
-        <button class="hamburger" id="drawer-close" aria-label="閉じる">
-          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-        </button>
-      </header>
-      <nav id="drawer-nav" aria-label="モバイルメニュー"></nav>
-    </div>
-  </div>
+  <script type="module" src="hf.js"></script>
 </body>
 </html>
