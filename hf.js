@@ -1,4 +1,4 @@
-// hf.js
+// hf.js (final version)
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 const supabaseUrl = "https://htnmjsqgoapvuanrsuma.supabase.co";
@@ -39,19 +39,16 @@ async function loadHF() {
   } catch (e) {
     console.warn("HF load failed", e);
   } finally {
-    // FOUC対策：処理完了後に表示
     const body = document.getElementById("page-body");
     if (body) body.style.visibility = "visible";
   }
 }
 
-// ページロード時に必ず実行
 loadHF();
 
-// 念のための保険：3秒経過後には強制的に表示を復帰
 setTimeout(() => {
   const body = document.getElementById("page-body");
   if (body) body.style.visibility = "visible";
 }, 3000);
 
-console.log("hf.js loaded");
+console.log("hf.js final loaded");
