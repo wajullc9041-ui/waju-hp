@@ -1,4 +1,4 @@
-// hf.js（完全版：ヘッダー下の余白修正版）
+// hf.js（完全版：ヘッダー高さを常に反映して本文を直下から開始）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -124,14 +124,15 @@ function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
       bar.style.width = "100%";
     }
 
-    // ヘッダーの高さ分＋αの余白を main に確保
+    // ★ ヘッダーの高さ分を main の padding-top に反映（固定/非固定を問わず）
     if (headerEl) {
-      const headerHeight = headerEl.offsetHeight || 0;
-      mainEl.style.paddingTop = (headerHeight + 8) + "px";
-      setTimeout(() => {
-        const hh = headerEl.offsetHeight || 0;
-        mainEl.style.paddingTop = (hh + 8) + "px";
-      }, 50);
+      const setHeaderSpace = () => {
+        const h = headerEl.offsetHeight || 0;
+        mainEl.style.paddingTop = h + "px";
+      };
+      setHeaderSpace();
+      setTimeout(setHeaderSpace, 50);
+      window.addEventListener("resize", setHeaderSpace);
     }
 
     // フッター固定
