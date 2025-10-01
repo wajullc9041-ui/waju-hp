@@ -125,7 +125,8 @@
       .drawer .panel nav a{padding:12px 10px;border-radius:10px}
       .drawer .panel nav a:hover{background:#f1f5f9}
       @media (max-width:768px){
-        .container{padding:0 12px}
+        /* ★修正: モバイル左右余白を半減 (12px -> 6px) */
+        .container{padding:0 6px} 
         :root{--container:100%}
         .slot.nav{display:none}
         .hamburger{display:block;margin-left:auto}
@@ -133,7 +134,8 @@
       }
 
       /* ページ共通スタイル */
-      section{margin:60px auto}
+      /* ★修正: PC用のセクション余白を半減 (40px -> 20px) */
+      section{margin:20px auto} 
       h1,h2,h3{margin:0 0 20px;font-weight:700}
       h1{font-size:36px;text-align:center}
       h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
@@ -146,7 +148,8 @@
           font-size: 42px;
           text-align: center;
           margin-top: 40px;
-          margin-bottom: 60px;
+          /* ★修正: PC用のタイトル下余白を半減 (40px -> 20px) */
+          margin-bottom: 20px; 
           font-weight: 900;
           color: #1976d2;
           letter-spacing: 2px;
@@ -175,14 +178,15 @@
           font-weight: 500;
           color: #1976d2;
           text-align: center;
-          margin-bottom: 40px;
+          /* セクションサブタイトル下余白を縮小 (30px -> 20px) */
+          margin-bottom: 20px; 
       }
 
       /* Philosophy Section */
-      /* ★修正: メッセージセクションに合わせてセクション全体に背景色とパディングを追加 */
       #philosophy {
-          padding: 80px 0;
-          background: #fff; /* 背景色なし（白） */
+          /* ★修正: PC用のセクション内上下パディングを半減 (60px -> 30px) */
+          padding: 30px 0;
+          background: #fff; 
           margin: 0 auto;
       }
 
@@ -205,7 +209,6 @@
           align-items: flex-start;
           text-align: left;
       }
-
       .philosophy-image {
           max-width: 300px;
           flex-shrink: 0;
@@ -215,11 +218,9 @@
           box-shadow: 0 4px 12px rgba(0,0,0,.1);
           display: block;
       }
-      
       #philosophy .philosophy-text-container {
           flex: 1;
       }
-
       #philosophy .main-text {
           font-size: 20px;
           font-weight: 700;
@@ -251,23 +252,30 @@
 
       /* Message Section */
       #message {
-          /* 背景色とパディングはこのままで画面全体に広がる */
-          background: #f8fafc;
-          padding: 80px 0;
-          margin: 0 auto;
+          background: none; 
+          padding: 0;
+          /* ★修正: PC用のセクション余白を半減 (40px -> 20px) */
+          margin: 20px auto; 
       }
       #message .message-wrapper {
           /* 最大幅を 1024px に統一し中央寄せ */
           max-width: 1024px; 
           margin-left: auto;
           margin-right: auto;
-
+          
+          /* ★修正: PC用の背景付き部分の上下パディングを半減 (60px -> 30px) */
+          background: #f8fafc;
+          padding: 30px 0; 
+          
+          /* ★修正: Flexboxの定義を復旧 */
           display: flex;
           gap: 40px;
           align-items: flex-start;
       }
       #message .profile-card {
-          flex: 0 0 300px;
+          /* Flexboxのレイアウトを修正 */
+          flex: 0 0 300px; 
+          align-self: flex-start;
           background: #fff;
           padding: 30px;
           border-radius: 12px;
@@ -297,7 +305,7 @@
           font-weight: 500;
       }
       #message .message-content {
-          flex: 1;
+          flex: 1; 
           background: #fff;
           padding: 40px;
           border-radius: 12px;
@@ -314,7 +322,8 @@
 
       /* Company Profile Section */
       #company-profile {
-          padding: 80px 0;
+          /* ★修正: PC用のセクション内上下パディングを半減 (60px -> 30px) */
+          padding: 30px 0; 
       }
       .profile-table {
           width: 100%;
@@ -330,19 +339,6 @@
           text-align: left;
           border-bottom: 1px solid #e5e7eb;
       }
-      .profile-table th {
-          width: 30%;
-          background-color: #f1f5f9;
-          color: #374151;
-          font-weight: 600;
-      }
-      .profile-table td {
-          background-color: #fff;
-          color: #0f172a;
-      }
-      .profile-table tr:last-child th, .profile-table tr:last-child td {
-          border-bottom: none;
-      }
 
       /* Responsive adjustments */
       @media (max-width: 1024px) {
@@ -351,22 +347,34 @@
           }
       }
       @media (max-width: 768px) {
+          /* ★修正: モバイル時のセクション上下マージンを縮小 (30px -> 20px) */
+          section {
+              margin: 20px auto;
+          }
+          #page-title {
+              /* タイトル余白をさらに縮小 (25px -> 20px) */
+              margin-top: 20px; 
+              margin-bottom: 20px; 
+          }
+          .section-subtitle {
+              margin-bottom: 20px;
+          }
+
+          /* セクション内パディングを縮小 (30px -> 20px) */
+          #philosophy {
+              padding: 20px 0; 
+          }
+          #message .message-wrapper {
+              padding: 20px 0; 
+          }
+          #company-profile {
+              padding: 20px 0; 
+          }
+
           /* モバイルでは固定幅を解除し、表示崩れを防ぐ */
           #philosophy .content-card,
           #message .message-wrapper {
               max-width: 100%; 
-          }
-          
-          #page-title {
-              font-size: 32px;
-              margin-bottom: 40px;
-          }
-          .section-title {
-              font-size: 28px;
-          }
-          .section-subtitle {
-              font-size: 18px;
-              margin-bottom: 30px;
           }
           
           /* 理念セクションのモバイルでの縦並び */
@@ -379,14 +387,12 @@
               margin-left: auto;
               margin-right: auto;
           }
-
-          /* ★修正: モバイル時の中央揃えを左揃えに戻す */
+          /* 理念セクションのテキストアライメントは左揃えを維持 */
           #philosophy .main-text,
           #philosophy p,
           #philosophy .keywords {
-              text-align: left; /* ★修正: 中央揃えを左揃えに */
+              text-align: left; 
           }
-          /* ★修正ここまで */
 
           /* 代表メッセージセクションのモバイルでの縦並び */
           #message .message-wrapper {
@@ -396,8 +402,9 @@
           #message .profile-card {
               flex: 1 1 auto;
               width: 100%;
-              position: static;
+              position: static; 
               top: auto;
+              align-self: auto; 
           }
           #message .message-content {
               padding: 30px;
@@ -466,40 +473,42 @@
         </section>
 
         <section id="company-profile">
-          <div class="section-title">Company Profile</div>
-          <div class="section-subtitle">会社情報</div>
-          
-          <table class="profile-table" aria-label="会社情報">
-              <thead>
-                  <tr>
-                      <th colspan="2" style="background-color: #1976d2; color: #fff; text-align: center; border-bottom: none;">
-                          合同会社WaJu 会社概要
-                      </th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <th>法人名</th>
-                      <td>合同会社WaJu</td>
-                  </tr>
-                  <tr>
-                      <th>代表社員</th>
-                      <td>大野 洋</td>
-                  </tr>
-                  <tr>
-                      <th>設立年月日</th>
-                      <td>2023年4月27日</td>
-                  </tr>
-                  <tr>
-                      <th>所在地</th>
-                      <td>〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td>
-                  </tr>
-                  <tr>
-                      <th>事業内容</th>
-                      <td>介護福祉業界のオンラインプラットフォーム「CARELAY」の製作および販売</td>
-                  </tr>
-              </tbody>
-          </table>
+          <div class="container">
+              <div class="section-title">Company Profile</div>
+              <div class="section-subtitle">会社情報</div>
+              
+              <table class="profile-table" aria-label="会社情報">
+                  <thead>
+                      <tr>
+                          <th colspan="2" style="background-color: #1976d2; color: #fff; text-align: center; border-bottom: none;">
+                              合同会社WaJu 会社概要
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <th>法人名</th>
+                          <td>合同会社WaJu</td>
+                      </tr>
+                      <tr>
+                          <th>代表社員</th>
+                          <td>大野 洋</td>
+                      </tr>
+                      <tr>
+                          <th>設立年月日</th>
+                          <td>2023年4月27日</td>
+                      </tr>
+                      <tr>
+                          <th>所在地</th>
+                          <td>〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td>
+                      </tr>
+                      <tr>
+                          <th>事業内容</th>
+                          <td>介護福祉業界のオンラインプラットフォーム「CARELAY」の製作および販売</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
         </section>
 
       </div>
