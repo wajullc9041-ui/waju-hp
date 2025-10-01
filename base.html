@@ -45,20 +45,23 @@
     }
     /* フッター固定用 */
     body.footer-fixed main {
-      padding-bottom: 60px; /* JSで自動調整も可 */
+      padding-bottom: 60px; /* JSで自動調整 */
     }
 
-    /* --- レスポンシブ対応 --- */
     /* PC表示 */
     .hamburger, .drawer {
       display: none;
     }
 
-    /* SP表示 */
+    /* --- SP表示 --- */
     @media (max-width: 768px) {
+      .container { padding: 0 12px; }
+      :root { --container: 100%; }
+
       /* ヘッダー：ナビ非表示 → ハンバーガー表示 */
+      .slot.nav { display: none; }
       #site-header .hf-nav { display: none !important; }
-      .hamburger { display: block; cursor: pointer; }
+      .hamburger { display: block; margin-left: auto; cursor: pointer; }
 
       /* ドロワーメニュー */
       .drawer {
@@ -96,8 +99,20 @@
   <!-- ヘッダー／フッター反映 -->
   <script type="module" src="hf.js"></script>
 
-  <!-- ハンバーガー制御 -->
+  <!-- フッター高さに応じて余白を自動調整 -->
   <script>
+    function adjustFooterPadding() {
+      const footer = document.getElementById("site-footer");
+      const main = document.querySelector("main");
+      if (document.body.classList.contains("footer-fixed") && footer && main) {
+        main.style.paddingBottom = footer.offsetHeight + "px";
+      } else if (main) {
+        main.style.paddingBottom = "0";
+      }
+    }
+    window.addEventListener("load", adjustFooterPadding);
+    window.addEventListener("resize", adjustFooterPadding);
+
     function openDrawer() {
       document.querySelector(".drawer").classList.add("open");
     }
