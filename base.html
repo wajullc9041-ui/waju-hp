@@ -35,13 +35,49 @@
       margin: 0;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
                    Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-      visibility: hidden; /* FOUC対策: JSで解除されるまで非表示 */
+      visibility: hidden; /* FOUC対策 */
       background: #fff;
       color: #0f172a;
     }
     main {
       padding: 2em;
       min-height: 60vh;
+    }
+    /* フッター固定用 */
+    body.footer-fixed main {
+      padding-bottom: 60px; /* JSで自動調整も可 */
+    }
+
+    /* --- レスポンシブ対応 --- */
+    /* PC表示 */
+    .hamburger, .drawer {
+      display: none;
+    }
+
+    /* SP表示 */
+    @media (max-width: 768px) {
+      /* ヘッダー：ナビ非表示 → ハンバーガー表示 */
+      #site-header .hf-nav { display: none !important; }
+      .hamburger { display: block; cursor: pointer; }
+
+      /* ドロワーメニュー */
+      .drawer {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: -250px;
+        width: 250px;
+        height: 100%;
+        background: #fff;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+        transition: right 0.3s ease;
+        padding: 20px;
+        z-index: 1000;
+      }
+      .drawer.open { right: 0; }
+
+      /* フッター：ナビ非表示、コピーライトのみ */
+      #site-footer .hf-nav { display: none !important; }
     }
   </style>
 </head>
@@ -59,5 +95,15 @@
 
   <!-- ヘッダー／フッター反映 -->
   <script type="module" src="hf.js"></script>
+
+  <!-- ハンバーガー制御 -->
+  <script>
+    function openDrawer() {
+      document.querySelector(".drawer").classList.add("open");
+    }
+    function closeDrawer() {
+      document.querySelector(".drawer").classList.remove("open");
+    }
+  </script>
 </body>
 </html>
