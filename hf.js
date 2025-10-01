@@ -84,7 +84,7 @@ const RESPONSIVE_CSS = `
 
   /* --- スマホ時のフッター調整 --- */
   #site-footer .hfbar {
-    min-height: 48px;
+    min-height: 24px;
     padding: 8px 12px;
     display: flex;
     align-items: center;
