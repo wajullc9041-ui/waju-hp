@@ -104,14 +104,19 @@
       .container{max-width:var(--container);margin:0 auto;padding:0 16px}
       
       /* ページ共通スタイル */
-      /* PC用のセクション余白 (20px) */
       section{margin:20px auto} 
       h1,h2,h3{margin:0 0 20px;font-weight:700}
-      
-      /* Aboutページと共通のh2スタイル */
-      h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
-      h3{font-size:20px;margin-bottom:10px}
       p{margin:0 0 14px}
+      
+      /* Aboutページと共通のh2スタイル: 青いボーダーを適用 */
+      h2{
+          font-size:26px;
+          border-left:4px solid #1976d2;
+          padding-left:10px;
+          margin-bottom:20px;
+          /* スマホでの自然な改行を許可するため white-space: nowrap は適用しない */
+      }
+      h3{font-size:20px;margin-bottom:10px}
       
       /* ページタイトル（Aboutページと共通） */
       #page-title {
@@ -140,10 +145,12 @@
           max-width: 1024px; 
           margin-left: auto;
           margin-right: auto;
-          padding: 40px; /* 見やすさのためカードと同じパディングを適用 */
-          background: #fff;
-          border-radius: 12px;
-          box-shadow: 0 5px 15px rgba(0,0,0,.05);
+          padding: 40px; 
+          /* ★デザイン追加: わずかな背景色とシャドウを追加し、見栄えを良くする */
+          background: #fcfcfd; 
+          border-radius: 16px;
+          box-shadow: 0 10px 25px rgba(0,0,0,.08);
+          border: 1px solid #e0e7ff;
       }
 
       /* Policy specific styles */
@@ -151,26 +158,45 @@
           margin-bottom: 18px;
           line-height: 1.8;
           color: #374151;
+          text-align: justify;
       }
+      /* ★デザイン追加: リストをチェックマーク風のデザインにする */
       #policy-content-wrapper ul {
-          padding-left: 25px;
-          margin-bottom: 20px;
+          padding: 0;
+          margin: 0 0 25px 0;
+          list-style: none; /* デフォルトのリストスタイルを削除 */
       }
       #policy-content-wrapper ul li {
-          margin-bottom: 8px;
-          line-height: 1.6;
+          margin-bottom: 12px;
+          line-height: 1.7;
           color: #374151;
+          position: relative;
+          padding-left: 28px; /* アイコン分のスペースを確保 */
       }
-      .contact-info p, .date p {
+      #policy-content-wrapper ul li::before {
+          content: '✔'; /* チェックマーク */
+          color: #1976d2; /* 青色 */
+          font-weight: bold;
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-size: 1.1em;
+          line-height: inherit;
+      }
+      
+      .contact-info p {
           margin: 4px 0;
       }
+      /* ★デザイン追加: 連絡先情報を強調 */
       .contact-info {
-          margin-top: 30px;
-          padding-top: 15px;
-          border-top: 1px dashed #e0e0e0;
+          margin-top: 40px;
+          padding: 20px;
+          border-radius: 8px;
+          background: #e0f2fe;
+          border: 1px solid #90caf9;
       }
       .date {
-          margin-top: 20px;
+          margin-top: 30px;
           text-align: right;
           font-size: 0.95em;
           color: #555;
@@ -192,6 +218,16 @@
           #policy-content-wrapper {
               max-width: 100%; 
               padding: 30px 20px;
+              border-radius: 12px;
+          }
+          /* スマホでのh2のフォントサイズを微調整 */
+          h2 {
+              font-size: 24px;
+              margin-bottom: 15px;
+          }
+          /* リストのパディングをスマホ向けに微調整 */
+          #policy-content-wrapper ul li {
+              padding-left: 25px;
           }
       }
     </style>
@@ -232,7 +268,7 @@
               <p>当社の個人情報の取扱に関するお問い合せは下記までご連絡ください。</p>
 
               <div class="contact-info">
-                <p>合同会社WaJu</p>
+                <p><strong>合同会社WaJu</strong></p>
                 <p>〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</p>
                 <p>E-mail: <a href="mailto:info@waju.co.jp">info@waju.co.jp</a></p>
               </div>
