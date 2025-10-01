@@ -179,8 +179,15 @@
       }
 
       /* Philosophy Section */
+      /* ★修正: メッセージセクションに合わせてセクション全体に背景色とパディングを追加 */
+      #philosophy {
+          padding: 80px 0;
+          background: #fff; /* 背景色なし（白） */
+          margin: 0 auto;
+      }
+
       #philosophy .content-card {
-          /* ★修正: 最大幅を 1024px に統一し中央寄せ */
+          /* PCでの最大幅を 1024px に統一し中央寄せ */
           max-width: 1024px; 
           margin-left: auto;
           margin-right: auto;
@@ -244,11 +251,13 @@
 
       /* Message Section */
       #message {
+          /* 背景色とパディングはこのままで画面全体に広がる */
           background: #f8fafc;
           padding: 80px 0;
+          margin: 0 auto;
       }
       #message .message-wrapper {
-          /* ★修正: 最大幅を 1024px に統一し中央寄せ */
+          /* 最大幅を 1024px に統一し中央寄せ */
           max-width: 1024px; 
           margin-left: auto;
           margin-right: auto;
@@ -342,12 +351,11 @@
           }
       }
       @media (max-width: 768px) {
-          /* ★修正: モバイルでは固定幅を解除し、表示崩れを防ぐ */
+          /* モバイルでは固定幅を解除し、表示崩れを防ぐ */
           #philosophy .content-card,
           #message .message-wrapper {
               max-width: 100%; 
           }
-          /* ★修正ここまで */
           
           #page-title {
               font-size: 32px;
@@ -371,11 +379,14 @@
               margin-left: auto;
               margin-right: auto;
           }
+
+          /* ★修正: モバイル時の中央揃えを左揃えに戻す */
           #philosophy .main-text,
           #philosophy p,
           #philosophy .keywords {
-              text-align: center;
+              text-align: left; /* ★修正: 中央揃えを左揃えに */
           }
+          /* ★修正ここまで */
 
           /* 代表メッセージセクションのモバイルでの縦並び */
           #message .message-wrapper {
@@ -410,20 +421,22 @@
         <h1 id="page-title">会社概要</h1>
 
         <section id="philosophy">
-          <div class="section-title">Philosophy</div>
-          <div class="section-subtitle">理念</div>
-          <div class="content-card">
-              <div class="philosophy-content-wrapper">
-                  <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="WaJu 理念イメージ：挑戦と支援の光" class="philosophy-image">
+          <div class="container">
+              <div class="section-title">Philosophy</div>
+              <div class="section-subtitle">理念</div>
+              <div class="content-card">
+                  <div class="philosophy-content-wrapper">
+                      <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="WaJu 理念イメージ：挑戦と支援の光" class="philosophy-image">
 
-                  <div class="philosophy-text-container">
-                      <p class="main-text">合同会社WaJuは、「できない」「わからない」を支援する会社です。</p>
+                      <div class="philosophy-text-container">
+                          <p class="main-text">合同会社WaJuは、「できない」「わからない」を支援する会社です。</p>
 
-                      <p>「あんなことができたらいいな」「こんなものがあったら便利だな」という声を形にし、個人や企業の挑戦を後押しすることを目的に設立されました。</p>
-                      <p>社会福祉の一環として介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い分野で社会的支援ができる企業を目指しています。</p>
-                      <p>「できない・わからない」と足踏みしている方々に対して、指示を与えるのではなく、一緒に考え、一緒に問題解決をし、未来へと繋がる社会的意義のある事業を展開していきます。</p>
-                      
-                      <p class="keywords">常に前進する <strong>Walk</strong>、大きく躍進する <strong>Jump</strong> を心掛け、人と人をつなぐことで社会に貢献します。</p>
+                          <p>「あんなことができたらいいな」「こんなものがあったら便利だな」という声を形にし、個人や企業の挑戦を後押しすることを目的に設立されました。</p>
+                          <p>社会福祉の一環として介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い分野で社会的支援ができる企業を目指しています。</p>
+                          <p>「できない・わからない」と足踏みしている方々に対して、指示を与えるのではなく、一緒に考え、一緒に問題解決をし、未来へと繋がる社会的意義のある事業を展開していきます。</p>
+                          
+                          <p class="keywords">常に前進する <strong>Walk</strong>、大きく躍進する <strong>Jump</strong> を心掛け、人と人をつなぐことで社会に貢献します。</p>
+                      </div>
                   </div>
               </div>
           </div>
