@@ -1,4 +1,4 @@
-// hf.js（安定版：既存の挙動は維持しつつ、被り/余白だけ確実に解消）
+// hf.js（完全版 + PC/スマホで高さを切り替え）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -32,7 +32,7 @@ function safeParseMaybeJson(val) {
   try { return JSON.parse(val); } catch { return {}; }
 }
 
-// ===== Core CSS（既存の見た目を壊さない最小限） =====
+// ===== Core CSS =====
 const CORE_CSS = `
 .hfbar{display:flex;align-items:center;box-sizing:border-box;gap:16px;}
 .hf-row{flex-direction:row;}
@@ -44,12 +44,12 @@ const CORE_CSS = `
 .hf-copy{display:flex;width:100%}
 `;
 
-// ===== Responsive CSS（スマホはナビ非表示＋コピーライトだけを薄く） =====
+// ===== Responsive CSS =====
 const RESPONSIVE_CSS = `
-/* これらはモバイル時だけ表示/動作 */
+/* 初期は非表示（モバイルでのみ出す） */
 .hf-hamburger,.hf-drawer,.hf-overlay{display:none}
 
-/* PC：フッターは最低60px（2行でもつぶれない） */
+/* PC用：769px以上は最低60pxを保証 */
 @media (min-width:769px){
   #site-footer .hfbar {
     min-height: 60px !important;
@@ -57,12 +57,10 @@ const RESPONSIVE_CSS = `
   }
 }
 
-/* モバイル：768px以下 */
+/* モバイル用：768px以下は高さ24pxに縮小 */
 @media (max-width:768px){
-  /* ヘッダー/フッターのナビは隠す（ドロワーに集約） */
   #site-header .hf-nav, #site-footer .hf-nav { display:none !important; }
 
-  /* ハンバーガーはヘッダー右端に */
   .hf-hamburger{
     display:block;margin-left:auto;cursor:pointer;
     font-size:1.8rem;line-height:1;padding:8px;border-radius:8px;
@@ -70,18 +68,18 @@ const RESPONSIVE_CSS = `
     backdrop-filter:saturate(180%) blur(8px);
   }
 
-  /* ドロワーとオーバーレイ */
   .hf-overlay{
     display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999;
   }
   .hf-overlay.open{display:block;}
+
   .hf-drawer{
     display:block;position:fixed;top:0;right:-280px;width:260px;height:100%;
     background:#fff;box-shadow:-2px 0 10px rgba(0,0,0,.25);
     transition:right .28s ease;z-index:1000;padding:16px 12px 24px 12px;
     overflow:auto;
   }
-  .hf-drawer.open{ right:0; }
+  .hf-drawer.open{right:0;}
   .hf-drawer .drawer-head{
     display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;
   }
@@ -92,7 +90,7 @@ const RESPONSIVE_CSS = `
   .hf-drawer a{display:block;padding:12px 8px;border-radius:10px;text-decoration:none;color:inherit}
   .hf-drawer a:active{opacity:.7}
 
-  /* フッターはコピーライトだけ・薄く（高さは後で数字だけ変えればOK） */
+  /* フッターを強制的に24pxに縮小 */
   #site-footer,
   #site-footer .hfbar {
     height: 30px !important;
@@ -112,61 +110,58 @@ const RESPONSIVE_CSS = `
 }
 `;
 
-// ===== 余白（被り）だけを安全に調整する =====
+// ===== 固定と余白調整 =====
 function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
   const headerEl = document.getElementById("site-header");
   const footerEl = document.getElementById("site-footer");
   const mainEl   = document.querySelector("main");
 
-  // 管理ページのCSSが position を決める。JSは padding だけ。
-  const adjust = () => {
-    if (!mainEl) return;
-
-    // ヘッダー固定なら高さ分を main の上に確保
-    if (hdrCfg?.header_fixed && headerEl) {
-      const h = headerEl.offsetHeight || 0;
-      mainEl.style.paddingTop = h ? `${h}px` : "";
-    } else {
-      mainEl.style.paddingTop = "";
+  if (hdrCfg?.header_fixed && headerEl) {
+    const bar = headerEl.querySelector(".hfbar");
+    if (bar) {
+      bar.style.position = "sticky";
+      bar.style.top = "0";
+      bar.style.zIndex = "10";
+      bar.style.width = "100%";
     }
+  }
 
-    // フッター固定なら高さ分を main の下に確保
-    if (ftrCfg?.footer_fixed && footerEl) {
-      const f = footerEl.offsetHeight || 0;
-      mainEl.style.paddingBottom = f ? `${f}px` : "";
-    } else {
-      mainEl.style.paddingBottom = "";
+  if (ftrCfg?.footer_fixed && footerEl) {
+    const bar = footerEl.querySelector(".hfbar");
+    if (bar) {
+      bar.style.position = "fixed";
+      bar.style.left = "0";
+      bar.style.right = "0";
+      bar.style.bottom = "0";
+      bar.style.zIndex = "10";
+      bar.style.width = "100%";
     }
-  };
+  }
 
-  // 初期実行＋リサイズ/向き変更で追従
-  adjust();
-  window.addEventListener("resize", adjust);
-  window.addEventListener("orientationchange", adjust);
-
-  // ヘッダー/フッターの中身やCSSで高さが変わった場合にも追随
-  const mo = new MutationObserver(adjust);
-  if (headerEl) mo.observe(headerEl, { childList:true, subtree:true, attributes:true });
-  if (footerEl) mo.observe(footerEl, { childList:true, subtree:true, attributes:true });
+  if (mainEl) {
+    const headerH = hdrCfg?.header_fixed && headerEl ? headerEl.offsetHeight : 0;
+    const footerH = ftrCfg?.footer_fixed && footerEl ? footerEl.offsetHeight : 0;
+    mainEl.style.paddingTop = headerH ? `${headerH}px` : "";
+    mainEl.style.paddingBottom = footerH ? `${footerH}px` : "";
+  }
 }
 
-// ===== ドロワーUI（ヘッダー内に確実に設置） =====
+// ===== ドロワーUI =====
 function ensureResponsiveUI() {
   const header = document.getElementById("site-header");
   const footer = document.getElementById("site-footer");
   if (!header) return;
 
-  // ハンバーガー：ヘッダー .hfbar の末尾にだけ追加（重複ガード）
-  let burger = header.querySelector(".hfbar .hf-hamburger");
+  let burger = header.querySelector(".hf-hamburger");
   if (!burger) {
     burger = document.createElement("button");
     burger.className = "hf-hamburger";
     burger.setAttribute("aria-label", "メニュー");
     burger.innerHTML = "&#9776;";
-    (header.querySelector(".hfbar") || header).appendChild(burger);
+    const bar = header.querySelector(".hfbar") || header;
+    bar.appendChild(burger);
   }
 
-  // オーバーレイ（重複ガード）
   let overlay = document.querySelector(".hf-overlay");
   if (!overlay) {
     overlay = document.createElement("div");
@@ -174,7 +169,6 @@ function ensureResponsiveUI() {
     document.body.appendChild(overlay);
   }
 
-  // ドロワー（重複ガード）
   let drawer = document.querySelector(".hf-drawer");
   if (!drawer) {
     drawer = document.createElement("aside");
@@ -189,25 +183,21 @@ function ensureResponsiveUI() {
     document.body.appendChild(drawer);
   }
 
-  // メニューはフッターの .hf-nav を優先して複製（無ければヘッダー）
   const srcNav = footer?.querySelector(".hf-nav") || header.querySelector(".hf-nav");
   const dstList = drawer.querySelector(".drawer-menu");
   if (dstList && srcNav) dstList.innerHTML = srcNav.innerHTML;
 
-  // イベント（都度再代入なので多重バインドにならない）
   burger.onclick = openDrawer;
   overlay.onclick = closeDrawer;
   drawer.querySelector(".drawer-close").onclick = closeDrawer;
 
-  // ドロワー内リンクで自動クローズ
   drawer.addEventListener("click", (e) => {
     const a = e.target.closest("a");
     if (a) closeDrawer();
   });
 
-  // Escapeで閉じる / PC幅に戻ったら閉じる
-  document.addEventListener("keydown", (e)=>{ if (e.key === "Escape") closeDrawer(); });
-  window.addEventListener("resize", ()=>{ if (window.innerWidth > 768) closeDrawer(); });
+  document.addEventListener("keydown", onEscToClose);
+  window.addEventListener("resize", onResizeCloseIfWide);
 }
 
 function openDrawer() {
@@ -218,11 +208,16 @@ function closeDrawer() {
   document.querySelector(".hf-drawer")?.classList.remove("open");
   document.querySelector(".hf-overlay")?.classList.remove("open");
 }
+function onEscToClose(e) {
+  if (e.key === "Escape") closeDrawer();
+}
+function onResizeCloseIfWide() {
+  if (window.innerWidth > 768) closeDrawer();
+}
 
-// ===== メイン処理 =====
+// ===== エントリーポイント =====
 export async function loadHF() {
   try {
-    // header/footer を単発で取得
     const [hdrRes, ftrRes] = await Promise.all([
       supabase.from("hf_settings").select("data").eq("area","header").single(),
       supabase.from("hf_settings").select("data").eq("area","footer").single()
@@ -231,7 +226,6 @@ export async function loadHF() {
     const hdrObj = safeParseMaybeJson(hdrRes?.data?.data);
     const ftrObj = safeParseMaybeJson(ftrRes?.data?.data);
 
-    // スタイル → HTML の順で注入（管理ページ側の見た目を尊重）
     injectStyle("hf-core-style", CORE_CSS);
     injectStyle("site-header-style", hdrObj.headerCss || "");
     injectStyle("site-footer-style", ftrObj.footerCss || "");
@@ -240,10 +234,7 @@ export async function loadHF() {
     setInner("site-header", hdrObj.headerHtml || "");
     setInner("site-footer", ftrObj.footerHtml || "");
 
-    // 余白だけ調整（positionは触らない）
     applyFixedAndAdjustOffsets(hdrObj, ftrObj);
-
-    // モバイルUI（ヘッダー内にハンバーガー、フッターはコピーライトのみ）
     ensureResponsiveUI();
 
   } catch (e) {
@@ -254,10 +245,8 @@ export async function loadHF() {
   }
 }
 
-// 実行
 window.addEventListener("DOMContentLoaded", loadHF);
 
-// FOUC保険
 setTimeout(() => {
   const body = document.getElementById("page-body");
   if (body && body.style.visibility !== "visible") {
