@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>プライバシーポリシー | 合同会社WaJu</title>
+  <title>会社概要 | 合同会社WaJu</title>
 
   <!-- SEO / OGP -->
-  <meta name="description" content="合同会社WaJuのプライバシーポリシー。個人情報の管理・利用目的・第三者提供・安全対策・法令遵守について記載しています。">
-  <meta property="og:title" content="プライバシーポリシー | 合同会社WaJu">
-  <meta property="og:description" content="合同会社WaJuのプライバシーポリシー。個人情報の管理・利用目的・第三者提供・安全対策・法令遵守について記載しています。">
+  <meta name="description" content="合同会社WaJuの会社概要ページ。理念、代表メッセージ、会社情報をご紹介します。">
+  <meta property="og:title" content="会社概要 | 合同会社WaJu">
+  <meta property="og:description" content="合同会社WaJuの会社概要ページ。理念、代表メッセージ、会社情報をご紹介します。">
   <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://waju.co.jp/privacy.html">
+  <meta property="og:url" content="https://waju.co.jp/about.html">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
@@ -31,111 +31,131 @@
   </script>
 
   <style>
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-                   Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-      visibility: hidden; /* FOUC対策 */
-      background: #fff;
-      color: #0f172a;
-    }
     main {
       padding: 2em;
       min-height: 60vh;
     }
-    body.footer-fixed main {
-      padding-bottom: 80px;
-    }
-    /* プライバシーポリシー用装飾 */
     #page-content .container {
-      max-width: 900px;
-      margin: 40px auto;
+      max-width: 1000px;
+      margin: 0 auto;
       padding: 0 20px;
     }
-    .privacy-content { line-height: 1.8; color: #333; font-size: 16px; }
-    .privacy-content h1 {
-      margin: 0 0 40px;
-      padding-bottom: 10px;
-      font-size: 2.5rem;
-      font-weight: 700;
+    h1#page-title {
+      font-size: 42px;
       text-align: center;
+      margin: 40px 0 60px;
+      font-weight: 900;
+      color: #1976d2;
+      letter-spacing: 2px;
+      position: relative;
+    }
+    h1#page-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: #0f172a;
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+    .section-title {
+      font-size: 28px;
+      font-weight: 800;
       color: #0f172a;
-      border-bottom: 2px solid #e0e0e0;
+      text-align: center;
+      margin: 40px 0 10px;
     }
-    .privacy-content h2 {
-      margin: 40px 0 16px;
-      font-size: 1.5rem;
+    .section-subtitle {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1976d2;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .profile-table {
+      width: 100%;
+      max-width: 800px;
+      margin: 40px auto;
+      border-collapse: collapse;
+      box-shadow: 0 5px 15px rgba(0,0,0,.05);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .profile-table th, .profile-table td {
+      padding: 16px 20px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .profile-table th {
+      width: 30%;
+      background-color: #f1f5f9;
       font-weight: 600;
-      color: #1976d2;
-      padding-bottom: 5px;
-      border-bottom: 1px dashed #bbdefb;
+      color: #374151;
     }
-    .privacy-content p {
-      margin: 0 0 24px;
-      text-align: justify;
+    .profile-table td {
+      background-color: #fff;
+      color: #0f172a;
     }
-    .privacy-content ul { margin: 0 0 24px 20px; padding-left: 0; list-style-type: none; }
-    .privacy-content ul li { position: relative; padding-left: 20px; margin-bottom: 8px; }
-    .privacy-content ul li::before {
-      content: '・';
-      color: #1976d2;
-      position: absolute; left: 0; top: 0; font-weight: bold;
-    }
-    .signature {
-      margin-top: 50px;
-      padding-top: 15px;
-      text-align: right;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: #555;
-      border-top: 1px solid #e0e0e0;
-    }
-    @media (max-width: 768px) {
-      .privacy-content h1 { font-size: 2rem; margin-bottom: 30px; }
-      .privacy-content h2 { font-size: 1.3rem; margin-top: 30px; }
+    .profile-table tr:last-child th, 
+    .profile-table tr:last-child td {
+      border-bottom: none;
     }
   </style>
 </head>
-<body id="page-body">
+<body id="page-body" style="visibility:hidden;">
+  <!-- ヘッダー（共通パーツ） -->
   <header id="site-header"></header>
 
-  <main id="page-content" aria-live="polite">
-    <div class="container">
-      <div class="privacy-content">
-        <h1>プライバシーポリシー</h1>
+  <!-- メイン -->
+  <main>
+    <div id="page-content">
+      <div class="container">
+        <h1 id="page-title">会社概要</h1>
 
-        <p>合同会社WaJu（以下「当社」）は、個人情報保護の重要性を深く認識し、以下の方針に基づき個人情報の適切な取り扱いと保護に努めます。</p>
+        <!-- 理念 -->
+        <section id="philosophy">
+          <div class="section-title">Philosophy</div>
+          <div class="section-subtitle">理念</div>
+          <p class="mb-6">合同会社WaJuは、「できない」「わからない」を支援する会社です。</p>
+          <p class="mb-6">「あんなことができたらいいな」「こんなものがあったら便利だな」という声を形にし、個人や企業の挑戦を後押しすることを目的に設立されました。</p>
+          <p class="mb-6">社会福祉の一環として介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い分野で社会的支援ができる企業を目指しています。</p>
+          <p class="mb-6">「できない・わからない」と足踏みしている方々に対して、一緒に考え、一緒に問題解決をし、未来へと繋がる社会的意義のある事業を展開していきます。</p>
+          <p class="font-bold text-blue-600">常に前進する <strong>Walk</strong>、大きく躍進する <strong>Jump</strong> を心掛け、人と人をつなぐことで社会に貢献します。</p>
+        </section>
 
-        <h2>個人情報の管理</h2>
-        <p>当社は、お客様の個人情報を正確かつ最新の状態に保ち、不正アクセス・紛失・破損・改ざん・漏洩等を防止するため、セキュリティシステムの維持、管理体制の整備、社員教育の徹底を実施します。</p>
+        <!-- 代表メッセージ -->
+        <section id="message">
+          <div class="section-title">Message</div>
+          <div class="section-subtitle">代表メッセージ</div>
+          <p>私はこれまで15年以上にわたり、特別養護老人ホームや有料老人ホームで介護士として勤務し、サービス付き高齢者住宅の立ち上げ、サービス提供責任者、施設長といった役職も経験してきました。その中で常に直面したのは、慢性的な人手不足や賃金が上がらない厳しい現実でした。</p>
+          <p>事業所の倒産は増え続け、採用しても定着せず、採用コストばかりが膨らんでいく。退職の多くは賃金や業務内容ではなく人間関係が原因で、現場と運営の意識の溝が大きな課題となっていました。</p>
+          <p>現場では「上はわかってくれない」という声が多く聞かれる一方で、運営側も多忙で現場のフォローに十分に時間を割けない状況があります。記録ソフトや見守りサービスなど現場を支援するツールは数多くあっても、管理者や相談員、ケアマネを支える仕組みは少なく、さらに業種横断的に全事業所が共通で使えるものはほとんどありません。</p>
+          <p>だからこそ、私は「運営を支援するシステム」を作ることが業界改善に直結すると考え、独立してCARELAYを開発しました。CARELAYを通じて全国の高齢者介護サービス事業所や障害福祉事業所、関係機関をつなぎ、業務効率化とコスト削減を実現することで、現場をフォローできる運営体制を整え、利用者により良いサービスを届ける循環を目指しています。</p>
+          <p>そして介護・福祉業界にとどまらず、今後は他の業界にも同様の仕組みを広げていきたい。作って終わりではなく、常にユーザーの声を聞きながら改善し、求められるサービスを提供し続けることを約束します。</p>
+        </section>
 
-        <h2>個人情報の利用目的</h2>
-        <p>お預かりした個人情報は、当社からのご連絡、業務のご案内、ご質問への回答、電子メールや資料送付などの目的で利用いたします。</p>
-
-        <h2>個人情報の第三者提供</h2>
-        <p>当社は、以下の場合を除き、お客様の同意なく第三者へ個人情報を開示・提供することはありません。</p>
-        <ul>
-          <li>法令に基づき開示が必要な場合</li>
-          <li>お客様の同意がある場合</li>
-        </ul>
-
-        <h2>安全対策</h2>
-        <p>個人情報の正確性および安全性を確保するために、最新のセキュリティ対策を講じています。</p>
-
-        <h2>ご本人からの照会</h2>
-        <p>お客様がご本人の個人情報の照会・修正・削除を希望される場合は、ご本人確認のうえで適切に対応いたします。</p>
-
-        <h2>法令の遵守と見直し</h2>
-        <p>当社は、適用される日本の法令や規範を遵守するとともに、本ポリシーを適宜見直し、改善に努めます。</p>
-
-        <div class="signature">
-          合同会社WaJu
-        </div>
+        <!-- 会社情報 -->
+        <section id="company-profile">
+          <div class="section-title">Company Profile</div>
+          <div class="section-subtitle">会社情報</div>
+          <table class="profile-table">
+            <tbody>
+              <tr><th>法人名</th><td>合同会社WaJu</td></tr>
+              <tr><th>代表社員</th><td>大野 洋</td></tr>
+              <tr><th>設立年月日</th><td>2023年4月27日</td></tr>
+              <tr><th>所在地</th><td>〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td></tr>
+              <tr><th>事業内容</th><td>介護福祉業界のオンラインプラットフォーム「CARELAY」の製作および販売</td></tr>
+            </tbody>
+          </table>
+        </section>
       </div>
     </div>
   </main>
 
+  <!-- フッター（共通パーツ） -->
   <footer id="site-footer"></footer>
+
+  <!-- 共通JS -->
   <script type="module" src="hf.js"></script>
 </body>
 </html>
