@@ -1,16 +1,18 @@
-// --- ここは既存の hf.js 基準版をそのまま残す ---
-// （Supabaseから headerHtml / footerHtml / headerCss / footerCss を読み込む処理は一切削除・改変しない）
+// --- ここまでが既存の正常に動いていた hf.js ---
+// （Supabaseから headerHtml / headerCss / footerHtml / footerCss を取得 → setInner/injectStyle で適用）
 
-// ▼既存の loadHF() の末尾あたりに、この1行を追加するだけ
+// ▼ loadHF() の最後にこの1行を追加してください
 setupResponsiveNav();
 
-// ▼追加関数群（追記部分だけ）
+
+// ▼以下は追記部分（既存関数は壊さない） ------------------
+
 function setupResponsiveNav() {
   const headerEl = document.getElementById("site-header");
   const footerNav = document.querySelector("#site-footer .hf-nav");
   if (!headerEl) return;
 
-  // ハンバーガーアイコンを追加（存在しなければ）
+  // ハンバーガーアイコンを追加
   if (!document.querySelector(".hamburger")) {
     const hamburger = document.createElement("div");
     hamburger.className = "hamburger";
@@ -19,7 +21,7 @@ function setupResponsiveNav() {
     headerEl.appendChild(hamburger);
   }
 
-  // オーバーレイを追加
+  // オーバーレイ
   if (!document.querySelector(".drawer-overlay")) {
     const overlay = document.createElement("div");
     overlay.className = "drawer-overlay";
@@ -27,7 +29,7 @@ function setupResponsiveNav() {
     document.body.appendChild(overlay);
   }
 
-  // ドロワーを追加
+  // ドロワー
   if (!document.querySelector(".drawer")) {
     const drawer = document.createElement("div");
     drawer.className = "drawer";
@@ -51,7 +53,8 @@ function closeDrawer() {
   document.querySelector(".drawer-overlay")?.classList.remove("open");
 }
 
-// ▼CSSは追記用（既存CSSは壊さない）
+
+// ▼レスポンシブ用CSSを追加（append形式）
 const responsiveCSS = `
 /* --- レスポンシブナビ --- */
 .hamburger, .drawer, .drawer-overlay { display:none; }
