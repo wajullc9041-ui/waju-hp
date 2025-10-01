@@ -7,12 +7,12 @@ const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA";
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// 共通CSS（レスポンシブ含む）
 const CORE_CSS = `
 body { margin:0; font-family:sans-serif; visibility:visible; }
-header, footer { width:100%; }
 
-/* ハンバーガーメニュー用 */
+/* --- 既存共通スタイルここに保持（壊さない） --- */
+
+/* --- ▼レスポンシブ対応追加分 ▼ --- */
 .hamburger, .drawer, .drawer-overlay { display:none; }
 
 @media (max-width:768px){
@@ -48,9 +48,9 @@ header, footer { width:100%; }
   .drawer.open { right:0; }
   .drawer-overlay.open { display:block; }
 }
+/* --- ▲レスポンシブ対応追加分 ▲ --- */
 `;
 
-// ヘッダー／フッターをSupabaseから取得
 export async function loadHF() {
   try {
     const { data, error } = await supabase.from("hf_settings").select("*");
@@ -68,7 +68,7 @@ export async function loadHF() {
       }
     }
 
-    // 共通CSSをheadに追加
+    // 共通CSSをheadに追加（既存）
     if (!document.getElementById("hf-core-style")) {
       const style = document.createElement("style");
       style.id = "hf-core-style";
@@ -76,21 +76,16 @@ export async function loadHF() {
       document.head.appendChild(style);
     }
 
-    // FOUC対策解除
-    document.body.style.visibility = "visible";
+    document.body.style.visibility = "visible"; // FOUC対策
 
-    // 固定フッター調整
     adjustFooterPadding();
-
-    // レスポンシブナビ設定
-    setupResponsiveNav();
+    setupResponsiveNav(); // ← 追加
 
   } catch (err) {
     console.error("ヘッダー／フッター読み込みエラー:", err.message);
   }
 }
 
-// 固定フッター時にmain余白を確保
 function adjustFooterPadding() {
   const footer = document.getElementById("site-footer");
   const main = document.querySelector("main");
@@ -102,23 +97,22 @@ function adjustFooterPadding() {
 }
 window.addEventListener("resize", adjustFooterPadding);
 
-// --- レスポンシブ対応：ハンバーガーメニュー ---
+// --- ▼レスポンシブ対応追加分 ▼ ---
 function setupResponsiveNav() {
   const headerEl = document.getElementById("site-header");
   const footerNav = document.querySelector("#site-footer .hf-nav");
-
   if (!headerEl) return;
 
-  // ハンバーガーアイコンを追加（存在しなければ）
+  // ハンバーガー追加
   if (!document.querySelector(".hamburger")) {
     const hamburger = document.createElement("div");
     hamburger.className = "hamburger md:hidden";
-    hamburger.innerHTML = "&#9776;"; // ☰
+    hamburger.innerHTML = "&#9776;";
     hamburger.onclick = openDrawer;
     headerEl.appendChild(hamburger);
   }
 
-  // オーバーレイ（存在しなければ）
+  // オーバーレイ
   if (!document.querySelector(".drawer-overlay")) {
     const overlay = document.createElement("div");
     overlay.className = "drawer-overlay";
@@ -126,7 +120,7 @@ function setupResponsiveNav() {
     document.body.appendChild(overlay);
   }
 
-  // ドロワーを追加（存在しなければ）
+  // ドロワー
   if (!document.querySelector(".drawer")) {
     const drawer = document.createElement("div");
     drawer.className = "drawer";
@@ -134,7 +128,7 @@ function setupResponsiveNav() {
     document.body.appendChild(drawer);
   }
 
-  // フッターナビをドロワーにコピー
+  // メニューをコピー
   if (footerNav) {
     const drawerMenu = document.getElementById("drawer-menu");
     if (drawerMenu) drawerMenu.innerHTML = footerNav.innerHTML;
@@ -149,6 +143,6 @@ function closeDrawer() {
   document.querySelector(".drawer")?.classList.remove("open");
   document.querySelector(".drawer-overlay")?.classList.remove("open");
 }
+// --- ▲レスポンシブ対応追加分 ▲ ---
 
-// 実行
 window.addEventListener("DOMContentLoaded", loadHF);
