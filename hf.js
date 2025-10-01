@@ -1,5 +1,4 @@
-// hf.js（完全版）
-// ヘッダー・フッター適用 + モバイルドロワー（ハンバーガー）対応
+// hf.js（完全版+スマホ用フッター調整）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -24,7 +23,6 @@ function injectStyle(id, css) {
 function setInner(id, html) {
   const el = document.getElementById(id);
   if (!el) return;
-  // 管理画面由来のHTMLをそのまま反映（複数ルートに対応）
   el.innerHTML = html || "";
 }
 
@@ -34,7 +32,7 @@ function safeParseMaybeJson(val) {
   try { return JSON.parse(val); } catch { return {}; }
 }
 
-// ===== Core CSS（最小限の共通部品） =====
+// ===== Core CSS =====
 const CORE_CSS = `
 .hfbar{display:flex;align-items:center;box-sizing:border-box;gap:16px;}
 .hf-row{flex-direction:row;}
@@ -46,17 +44,15 @@ const CORE_CSS = `
 .hf-copy{display:flex;width:100%}
 `;
 
-// ===== Responsive（ハンバーガー＋ドロワー） =====
+// ===== Responsive CSS =====
 const RESPONSIVE_CSS = `
 /* 初期は非表示（モバイルでのみ出す） */
 .hf-hamburger,.hf-drawer,.hf-overlay{display:none}
 
 /* モバイル */
 @media (max-width:768px){
-  /* ヘッダー/フッターのナビはモバイルでは隠す */
   #site-header .hf-nav, #site-footer .hf-nav { display:none !important; }
 
-  /* ハンバーガー */
   .hf-hamburger{
     display:block;margin-left:auto;cursor:pointer;
     font-size:1.8rem;line-height:1;padding:8px;border-radius:8px;
@@ -64,13 +60,11 @@ const RESPONSIVE_CSS = `
     backdrop-filter:saturate(180%) blur(8px);
   }
 
-  /* オーバーレイ */
   .hf-overlay{
     display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999;
   }
   .hf-overlay.open{display:block;}
 
-  /* ドロワー（右から） */
   .hf-drawer{
     display:block;position:fixed;top:0;right:-280px;width:260px;height:100%;
     background:#fff;box-shadow:-2px 0 10px rgba(0,0,0,.25);
@@ -87,16 +81,28 @@ const RESPONSIVE_CSS = `
   .hf-drawer nav, .hf-drawer ul{margin:0;padding:0;list-style:none}
   .hf-drawer a{display:block;padding:12px 8px;border-radius:10px;text-decoration:none;color:inherit}
   .hf-drawer a:active{opacity:.7}
+
+  /* --- スマホ時のフッター調整 --- */
+  #site-footer .hfbar {
+    min-height: 48px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #site-footer .hf-copy {
+    justify-content: center;
+    width: auto;
+  }
 }
 `;
 
-// ===== 固定の反映と余白調整 =====
+// ===== 固定と余白調整 =====
 function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
   const headerEl = document.getElementById("site-header");
   const footerEl = document.getElementById("site-footer");
   const mainEl   = document.querySelector("main");
 
-  // ヘッダー固定（sticky）
   if (hdrCfg?.header_fixed && headerEl) {
     const bar = headerEl.querySelector(".hfbar");
     if (bar) {
@@ -107,7 +113,6 @@ function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
     }
   }
 
-  // フッター固定（fixed）
   if (ftrCfg?.footer_fixed && footerEl) {
     const bar = footerEl.querySelector(".hfbar");
     if (bar) {
@@ -120,7 +125,6 @@ function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
     }
   }
 
-  // 余白調整（main 基準）
   if (mainEl) {
     const headerH = hdrCfg?.header_fixed && headerEl ? headerEl.offsetHeight : 0;
     const footerH = ftrCfg?.footer_fixed && footerEl ? footerEl.offsetHeight : 0;
@@ -135,19 +139,16 @@ function ensureResponsiveUI() {
   const footer = document.getElementById("site-footer");
   if (!header) return;
 
-  // ハンバーガー設置（重複防止）
   let burger = header.querySelector(".hf-hamburger");
   if (!burger) {
     burger = document.createElement("button");
     burger.className = "hf-hamburger";
     burger.setAttribute("aria-label", "メニュー");
-    burger.innerHTML = "&#9776;"; // ≡
-    // .hfbar の末尾に追加（ロゴ・社名の右側）
+    burger.innerHTML = "&#9776;";
     const bar = header.querySelector(".hfbar") || header;
     bar.appendChild(burger);
   }
 
-  // オーバーレイ
   let overlay = document.querySelector(".hf-overlay");
   if (!overlay) {
     overlay = document.createElement("div");
@@ -155,7 +156,6 @@ function ensureResponsiveUI() {
     document.body.appendChild(overlay);
   }
 
-  // ドロワー
   let drawer = document.querySelector(".hf-drawer");
   if (!drawer) {
     drawer = document.createElement("aside");
@@ -170,31 +170,20 @@ function ensureResponsiveUI() {
     document.body.appendChild(drawer);
   }
 
-  // メニュー中身：フッターの .hf-nav をコピー（なければヘッダーの .hf-nav をフォールバック）
-  const srcNav =
-    footer?.querySelector(".hf-nav") ||
-    header.querySelector(".hf-nav");
+  const srcNav = footer?.querySelector(".hf-nav") || header.querySelector(".hf-nav");
   const dstList = drawer.querySelector(".drawer-menu");
+  if (dstList && srcNav) dstList.innerHTML = srcNav.innerHTML;
 
-  if (dstList && srcNav) {
-    dstList.innerHTML = srcNav.innerHTML; // a 要素群をそのまま流用
-  }
-
-  // イベント（重複バインドを避けるため一度外す → 付け直す）
   burger.onclick = openDrawer;
   overlay.onclick = closeDrawer;
   drawer.querySelector(".drawer-close").onclick = closeDrawer;
 
-  // ドロワー内のリンクを押したら閉じる
   drawer.addEventListener("click", (e) => {
     const a = e.target.closest("a");
     if (a) closeDrawer();
   });
 
-  // Escapeで閉じる
   document.addEventListener("keydown", onEscToClose);
-
-  // リサイズ時：PC幅に戻ったら強制的に閉じて状態リセット
   window.addEventListener("resize", onResizeCloseIfWide);
 }
 
@@ -213,10 +202,9 @@ function onResizeCloseIfWide() {
   if (window.innerWidth > 768) closeDrawer();
 }
 
-// ===== 入口 =====
+// ===== エントリーポイント =====
 export async function loadHF() {
   try {
-    // 1) 取得（header/footer を同時並列）
     const [hdrRes, ftrRes] = await Promise.all([
       supabase.from("hf_settings").select("data").eq("area","header").single(),
       supabase.from("hf_settings").select("data").eq("area","footer").single()
@@ -225,35 +213,27 @@ export async function loadHF() {
     const hdrObj = safeParseMaybeJson(hdrRes?.data?.data);
     const ftrObj = safeParseMaybeJson(ftrRes?.data?.data);
 
-    // 2) CSS 反映（順序：コア → headerCss → footerCss → レスポンシブ）
     injectStyle("hf-core-style", CORE_CSS);
     injectStyle("site-header-style", hdrObj.headerCss || "");
     injectStyle("site-footer-style", ftrObj.footerCss || "");
     injectStyle("hf-responsive-style", RESPONSIVE_CSS);
 
-    // 3) HTML 反映
     setInner("site-header", hdrObj.headerHtml || "");
     setInner("site-footer", ftrObj.footerHtml || "");
 
-    // 4) 固定/余白
     applyFixedAndAdjustOffsets(hdrObj, ftrObj);
-
-    // 5) モバイルUI（ハンバーガー/ドロワー）
     ensureResponsiveUI();
 
   } catch (e) {
     console.warn("HF load failed:", e);
   } finally {
-    // 6) FOUC解除
     const body = document.getElementById("page-body");
     if (body) body.style.visibility = "visible";
   }
 }
 
-// DOMContentLoadedで実行
 window.addEventListener("DOMContentLoaded", loadHF);
 
-// タイムアウトで強制表示（最悪時の保険）
 setTimeout(() => {
   const body = document.getElementById("page-body");
   if (body && body.style.visibility !== "visible") {
