@@ -125,7 +125,7 @@
       .drawer .panel nav a{padding:12px 10px;border-radius:10px}
       .drawer .panel nav a:hover{background:#f1f5f9}
       @media (max-width:768px){
-        .container{padding:0 12px} /* モバイル左右余白: 12px に縮小 */
+        .container{padding:0 12px} /* ★モバイル左右余白: 12px に縮小 */
         :root{--container:100%}
         .slot.nav{display:none}
         .hamburger{display:block;margin-left:auto}
@@ -133,8 +133,7 @@
       }
 
       /* ページ共通スタイル */
-      /* PC用のセクション余白を縮小 (60px -> 40px) */
-      section{margin:40px auto} 
+      section{margin:60px auto} /* PC用のセクション余白 */
       h1,h2,h3{margin:0 0 20px;font-weight:700}
       h1{font-size:36px;text-align:center}
       h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
@@ -147,8 +146,7 @@
           font-size: 42px;
           text-align: center;
           margin-top: 40px;
-          /* PC用のタイトル下余白を縮小 (60px -> 40px) */
-          margin-bottom: 40px; 
+          margin-bottom: 60px;
           font-weight: 900;
           color: #1976d2;
           letter-spacing: 2px;
@@ -177,14 +175,13 @@
           font-weight: 500;
           color: #1976d2;
           text-align: center;
-          /* セクションサブタイトル下余白を縮小 (40px -> 30px) */
-          margin-bottom: 30px; 
+          margin-bottom: 40px;
       }
 
       /* Philosophy Section */
       #philosophy {
-          /* PC用のセクション内上下パディングを縮小 (80px -> 60px) */
-          padding: 60px 0;
+          /* ★修正: 背景色なし（白）とし、上下パディングをPC用として設定 */
+          padding: 80px 0;
           background: #fff; 
           margin: 0 auto;
       }
@@ -203,33 +200,18 @@
           overflow: hidden;
       }
       #philosophy .philosophy-content-wrapper {
-          /* ★確認: Flexboxの定義は正しい */
           display: flex;
           gap: 40px;
           align-items: flex-start;
           text-align: left;
       }
-      .philosophy-image {
-          max-width: 300px;
-          flex-shrink: 0;
-          height: auto;
-          border-radius: 8px;
-          margin-bottom: 0;
-          box-shadow: 0 4px 12px rgba(0,0,0,.1);
-          display: block;
-      }
-      #philosophy .philosophy-text-container {
-          flex: 1;
-      }
-      /* (中略: Philosophyセクション内の残りのスタイルは省略) */
-
-
+      
       /* Message Section */
       #message {
+          /* ★修正: 背景色とパディングを.container内に収めるため削除 */
           background: none; 
           padding: 0;
-          /* PC用のセクション余白を縮小 (60px -> 40px) */
-          margin: 40px auto; 
+          margin: 60px auto; /* PC用セクション余白 */
       }
       #message .message-wrapper {
           /* 最大幅を 1024px に統一し中央寄せ */
@@ -237,41 +219,21 @@
           margin-left: auto;
           margin-right: auto;
           
-          /* PC用の背景付き部分の上下パディングを縮小 (80px -> 60px) */
+          /* ★追加: この要素に背景色とパディングを設定し、カードの背景幅を固定 */
           background: #f8fafc;
-          padding: 60px 0; 
-          
-          /* ★修正: Flexboxの定義を再確認・復旧 */
+          padding: 80px 0; 
+
           display: flex;
           gap: 40px;
           align-items: flex-start;
       }
-      #message .profile-card {
-          /* ★修正: Flexの比率を固定し、高さが引き伸ばされないように調整 */
-          flex: 0 0 300px; /* PCでの幅を固定 */
-          align-self: flex-start; /* ★追加: 自身の高さを要素の高さに合わせる */
-          background: #fff;
-          padding: 30px;
-          border-radius: 12px;
-          box-shadow: 0 5px 15px rgba(0,0,0,.08);
-          text-align: center;
-          position: sticky;
-          top: calc(80px + 20px);
-      }
-      #message .message-content {
-          flex: 1; /* ★修正: メッセージ本文が残りの幅を埋める */
-          background: #fff;
-          padding: 40px;
-          border-radius: 12px;
-          box-shadow: 0 5px 15px rgba(0,0,0,.08);
-      }
+      /* (その他の Message セクションのスタイルは省略) */
 
       /* Company Profile Section */
       #company-profile {
-          /* PC用のセクション内上下パディングを縮小 (80px -> 60px) */
-          padding: 60px 0; 
+          padding: 80px 0; /* PC用セクション余白 */
       }
-      /* (Company Profileの残りのスタイルは省略) */
+      /* (その他の Company Profile のスタイルは省略) */
 
       /* Responsive adjustments */
       @media (max-width: 1024px) {
@@ -280,24 +242,22 @@
           }
       }
       @media (max-width: 768px) {
-          /* モバイル時のセクション上下余白をさらに縮小 (40px -> 30px) */
+          /* ★修正: モバイル時のセクション上下余白を縮小 (60px -> 40px) */
           section {
-              margin: 30px auto;
+              margin: 40px auto;
           }
-          #page-title {
-              margin-top: 25px; 
-              margin-bottom: 25px; 
-          }
-
-          /* セクション内パディングを縮小 (40px -> 30px) */
           #philosophy {
-              padding: 30px 0; 
+              padding: 40px 0; /* セクション内パディングを縮小 */
           }
           #message .message-wrapper {
-              padding: 30px 0; 
+              padding: 40px 0; /* セクション内パディングを縮小 */
           }
           #company-profile {
-              padding: 30px 0; 
+              padding: 40px 0; /* セクション内パディングを縮小 */
+          }
+          #page-title {
+              margin-top: 30px; /* タイトル上余白を縮小 */
+              margin-bottom: 30px; /* タイトル下余白を縮小 */
           }
 
           /* モバイルでは固定幅を解除し、表示崩れを防ぐ */
@@ -332,9 +292,8 @@
           #message .profile-card {
               flex: 1 1 auto;
               width: 100%;
-              position: static; /* stickyを解除し縦に並ぶように */
+              position: static;
               top: auto;
-              align-self: auto; /* align-selfもautoに戻す */
           }
           #message .message-content {
               padding: 30px;
