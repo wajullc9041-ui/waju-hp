@@ -1,7 +1,5 @@
 <!-- 管理: ヘッダー＆フッター設定（完全修正版：プレビュー維持＋HTMLも保存） -->
-<!-- 既存のCSS/HTML構造はそのまま -->
-
-<!-- 中略: CSSとHTML部分は元のコードをそのまま利用 -->
+<!-- CSS・HTML・関数定義部（buildHeaderDOM, buildFooterDOM, getHeader, getFooter, setHeader, setFooter など）は元のまま保持してください -->
 
 <script type="module">
   let supabase;
@@ -17,9 +15,6 @@
   const $ = (q, r=document)=> r.querySelector(q);
   const $$ = (q, r=document)=> Array.from(r.querySelectorAll(q));
   const toast = (m, ok=true)=>{const n=document.createElement('div');n.className='toast '+(ok?'':'err');n.textContent=m;(document.querySelector('#toast')||document.body).appendChild(n);setTimeout(()=>n.remove(),2200);};
-
-  // ====== ここまで既存の buildHeaderDOM / buildFooterDOM / getHeader / getFooter / setHeader / setFooter など全て残す ======
-  // （省略はしているが、元の admin-hf-setting.txt の関数群は全て残してください）
 
   async function saveRow(area, payload){
     const { error } = await supabase.from('hf_settings').update({ data: payload }).eq('area', area);
@@ -39,22 +34,22 @@
     renderHeaderPreview(getHeader(), menus);
     renderFooterPreview(getFooter(), menus);
 
-    // 入力変更イベントは従来通り
+    // 入力変更イベントは元のまま
 
-    // 保存処理（修正版）
+    // 保存処理を修正（プレビュー維持＋HTMLも保存）
     $("#saveHeader").addEventListener("click", async function(){
       const d = getHeader();
-      renderHeaderPreview(d, menus);              // プレビュー維持
-      const dom = buildHeaderDOM(d, menus);
-      d.headerHtml = dom.outerHTML;               // HTML文字列も保存
+      renderHeaderPreview(d, menus);              // プレビューは従来通り
+      const dom = buildHeaderDOM(d, menus);       // DOMを生成
+      d.headerHtml = dom.outerHTML;               // HTML文字列を追加
       await saveRow("header", d);
     });
 
     $("#saveFooter").addEventListener("click", async function(){
       const d = getFooter();
-      renderFooterPreview(d, menus);              // プレビュー維持
-      const dom = buildFooterDOM(d, menus);
-      d.footerHtml = dom.outerHTML;               // HTML文字列も保存
+      renderFooterPreview(d, menus);              // プレビューは従来通り
+      const dom = buildFooterDOM(d, menus);       // DOMを生成
+      d.footerHtml = dom.outerHTML;               // HTML文字列を追加
       await saveRow("footer", d);
     });
   })();
