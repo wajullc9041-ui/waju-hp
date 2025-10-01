@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>会社概要 | 合同会社WaJu</title>
+  <title>ページタイトル | 合同会社WaJu</title>
 
   <!-- SEO / OGP -->
-  <meta name="description" content="合同会社WaJuの会社概要ページ。理念、代表メッセージ、会社情報をご紹介します。">
-  <meta property="og:title" content="会社概要 | 合同会社WaJu">
-  <meta property="og:description" content="合同会社WaJuの会社概要ページ。理念、代表メッセージ、会社情報をご紹介します。">
+  <meta name="description" content="ここにページごとの説明を記載します。">
+  <meta property="og:title" content="ページタイトル | 合同会社WaJu">
+  <meta property="og:description" content="ここにページごとの説明を記載します。">
   <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://waju.co.jp/about.html">
+  <meta property="og:url" content="https://waju.co.jp/">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
@@ -30,121 +30,501 @@
     gtag('config', 'G-ZHLJ5K19ZE');
   </script>
 
-  <!-- about専用CSS（#page-main にスコープ） -->
   <style>
-    #page-main {
-      min-height: 60vh;
-      padding: 2em 0;
-    }
-    #page-main .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    #page-main h1 {
-      font-size: 42px;
-      text-align: center;
-      margin: 40px 0 60px;
-      font-weight: 900;
-      color: #1976d2;
-    }
-    #page-main h2 {
-      font-size: 28px;
-      font-weight: 700;
-      margin: 40px 0 20px;
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+                   Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      visibility: hidden; /* FOUC対策 */
+      background: #fff;
       color: #0f172a;
-      text-align: center;
     }
-    #page-main .flex-box {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 40px;
+    main {
+      padding: 2em;
+      min-height: 60vh;
     }
-    #page-main .flex-box img {
-      max-width: 400px;
-      border-radius: 8px;
+    /* フッター固定用 */
+    body.footer-fixed main {
+      padding-bottom: 60px; /* JSで自動調整 */
     }
-    #page-main .flex-box .text {
-      flex: 1;
-      min-width: 280px;
+
+    /* PC表示 */
+    .hamburger, .drawer {
+      display: none;
     }
-    #page-main table.profile-table {
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto 60px;
-      border-collapse: collapse;
-      border: 1px solid #ddd;
-    }
-    #page-main table.profile-table th,
-    #page-main table.profile-table td {
-      padding: 14px 18px;
-      border: 1px solid #ddd;
-      text-align: left;
-    }
-    #page-main table.profile-table th {
-      width: 30%;
-      background: #f7f7f7;
-      font-weight: 600;
+
+    /* --- SP表示 --- */
+    @media (max-width: 768px) {
+      .container { padding: 0 12px; }
+      :root { --container: 100%; }
+
+      /* ヘッダー：ナビ非表示 → ハンバーガー表示 */
+      .slot.nav { display: none; }
+      #site-header .hf-nav { display: none !important; }
+      .hamburger { display: block; margin-left: auto; cursor: pointer; }
+
+      /* ドロワーメニュー */
+      .drawer {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: -250px;
+        width: 250px;
+        height: 100%;
+        background: #fff;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+        transition: right 0.3s ease;
+        padding: 20px;
+        z-index: 1000;
+      }
+      .drawer.open { right: 0; }
+
+      /* フッター：ナビ非表示、コピーライトのみ */
+      #site-footer .hf-nav { display: none !important; }
     }
   </style>
 </head>
-<body id="page-body" style="visibility:hidden;">
-  <!-- ヘッダー（共通パーツ） -->
+<body id="page-body">
   <header id="site-header"></header>
 
-  <!-- メイン -->
   <main id="page-main">
-    <div class="container">
-      <h1>会社概要</h1>
+  <div id="about-shadow-host"></div>
+  
+  <template id="about-shadow-template">
+    <style>
+      /* about.txt に記述されていたスタイル定義を全てここにコピーします。 */
+      /* これにより、スタイルが Shadow DOM 内部にカプセル化され、 */
+      /* base.txt のグローバルなヘッダー/フッターのCSSと干渉しません。 */
+      
+      /* ========== 既存のCSS (about.txtより) ========== */
+      /* ※ base.txt には既に類似の共通CSSがある可能性がありますが、 */
+      /* ページ固有のスタイルを確実に適用するため、about.txt のCSSをそのまま移植します。 */
+      :root{--container:1120px;
+        --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
+      *{box-sizing:border-box}
+      body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
+      a{color:inherit;text-decoration:none}
+      main{min-height:40vh;} /* フッターとの間隔を調整 */
+      .container{max-width:var(--container);margin:0 auto;padding:0 16px}
+      .hf-wrap{width:100%}
+      .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
+      .hfbar.hf-row{justify-content:flex-start}
+      .hfbar.hf-column{flex-direction:column;align-items:stretch}
+      .hf-brand{display:flex;align-items:center;gap:8px}
+      .hf-nav{display:flex;gap:var(--gap);flex-wrap:wrap;width:100%}
+      .slot{display:flex;align-items:center}
+      .slot.brand{flex:0 0 auto}
+      .slot.nav{flex:1 1 auto}
+      .hf-copy{display:flex;width:100%}
+      .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+      .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
+      .drawer{position:fixed;inset:0;pointer-events:none}
+      .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
+      .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
+      .drawer[aria-hidden="false"]{pointer-events:auto}
+      .drawer[aria-hidden="false"] .overlay{opacity:1}
+      .drawer[aria-hidden="false"] .panel{transform:none}
+      .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
+      .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
+      .drawer .panel nav a{padding:12px 10px;border-radius:10px}
+      .drawer .panel nav a:hover{background:#f1f5f9}
+      @media (max-width:768px){
+        .container{padding:0 12px}
+        :root{--container:100%}
+        .slot.nav{display:none}
+        .hamburger{display:block;margin-left:auto}
+        #site-footer .hf-nav{display:none !important}
+      }
 
-      <!-- 理念 -->
-      <section id="philosophy">
-        <h2>PHILOSOPHY<br><small>理念</small></h2>
-        <div class="flex-box">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="WaJu 理念イメージ：挑戦と支援の光" class="philosophy-image">
-          <div class="text">
-            <p>合同会社WaJuは、「できない」「わからない」を支援する会社です。</p>
-            <p>「あんなことができたらいいな」「こんなものがあったら便利だな」という声を形にし、個人や企業の挑戦を後押しすることを目的に設立されました。</p>
-            <p>社会福祉の一環として介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い分野で社会的支援ができる企業を目指しています。</p>
+      /* ページ共通スタイル (about.txtより) */
+      section{margin:60px auto}
+      h1,h2,h3{margin:0 0 20px;font-weight:700}
+      h1{font-size:36px;text-align:center}
+      h2{font-size:26px;border-left:4px solid #1976d2;padding-left:10px;margin-bottom:20px}
+      h3{font-size:20px;margin-bottom:10px}
+      p{margin:0 0 14px}
+      .lead{font-size:20px;text-align:center;margin-bottom:30px;color:#374151}
+
+      /* about.html 専用カスタムスタイル (about.txtより) */
+      #page-title {
+          font-size: 42px;
+          text-align: center;
+          margin-top: 40px;
+          margin-bottom: 60px;
+          font-weight: 900;
+          color: #1976d2;
+          letter-spacing: 2px;
+          position: relative;
+      }
+      #page-title::after {
+          content: '';
+          display: block;
+          width: 60px;
+          height: 3px;
+          background: #0f172a;
+          margin: 10px auto 0;
+          border-radius: 2px;
+      }
+
+      .section-title {
+          font-size: 32px;
+          font-weight: 800;
+          color: #0f172a;
+          text-align: center;
+          margin-bottom: 10px;
+          text-transform: uppercase;
+      }
+      .section-subtitle {
+          font-size: 20px;
+          font-weight: 500;
+          color: #1976d2;
+          text-align: center;
+          margin-bottom: 40px;
+      }
+
+      /* Philosophy Section */
+      #philosophy .content-card {
+          background: linear-gradient(135deg, #e0f2fe 0%, #fff 100%);
+          padding: 40px;
+          border-radius: 16px;
+          box-shadow: 0 15px 30px rgba(25, 118, 210, 0.1);
+          text-align: center;
+          overflow: hidden;
+      }
+      #philosophy .philosophy-content-wrapper {
+          display: flex;
+          gap: 40px;
+          align-items: flex-start;
+          text-align: left;
+      }
+
+      .philosophy-image {
+          max-width: 300px;
+          flex-shrink: 0;
+          height: auto;
+          border-radius: 8px;
+          margin-bottom: 0;
+          box-shadow: 0 4px 12px rgba(0,0,0,.1);
+          display: block;
+      }
+      
+      #philosophy .philosophy-text-container {
+          flex: 1;
+      }
+
+      #philosophy .main-text {
+          font-size: 20px;
+          font-weight: 700;
+          color: #0f172a;
+          margin: 0 0 20px;
+          line-height: 1.6;
+          border-bottom: 2px dashed #1976d2;
+          padding-bottom: 10px;
+          display: block;
+          max-width: none;
+          text-align: left;
+      }
+      #philosophy p {
+          max-width: none;
+          margin: 0 0 14px;
+          font-size: 16px;
+          color: #374151;
+          text-align: left;
+      }
+      #philosophy .keywords {
+          margin-top: 30px;
+          font-weight: 700;
+          color: #1976d2;
+          font-size: 18px;
+          letter-spacing: 1px;
+          text-align: left;
+      }
+
+
+      /* Message Section */
+      #message {
+          background: #f8fafc;
+          padding: 80px 0;
+      }
+      #message .message-wrapper {
+          display: flex;
+          gap: 40px;
+          align-items: flex-start;
+      }
+      #message .profile-card {
+          flex: 0 0 300px;
+          background: #fff;
+          padding: 30px;
+          border-radius: 12px;
+          box-shadow: 0 5px 15px rgba(0,0,0,.08);
+          text-align: center;
+          position: sticky;
+          top: calc(80px + 20px);
+      }
+      #message .profile-card img {
+          aspect-ratio: auto;
+          width: 100%;
+          height: auto;
+          border-radius: 8px;
+          border: 4px solid #1976d2;
+          box-shadow: 0 0 0 6px rgba(25, 118, 210, 0.2);
+      }
+      #message .profile-card .name {
+          font-size: 22px;
+          font-weight: 700;
+          margin-top: 10px;
+          color: #0f172a;
+      }
+      #message .profile-card .title {
+          font-size: 16px;
+          color: #1976d2;
+          margin-bottom: 20px;
+          font-weight: 500;
+      }
+      #message .message-content {
+          flex: 1;
+          background: #fff;
+          padding: 40px;
+          border-radius: 12px;
+          box-shadow: 0 5px 15px rgba(0,0,0,.08);
+      }
+      #message .message-content p {
+          text-align: justify;
+          text-justify: inter-ideograph;
+          margin-bottom: 20px;
+      }
+      #message .message-content p:last-child {
+          margin-bottom: 0;
+      }
+
+      /* Company Profile Section */
+      #company-profile {
+          padding: 80px 0;
+      }
+      .profile-table {
+          width: 100%;
+          max-width: 800px;
+          margin: 0 auto;
+          border-collapse: collapse;
+          box-shadow: 0 5px 15px rgba(0,0,0,.05);
+          border-radius: 8px;
+          overflow: hidden;
+      }
+      .profile-table th, .profile-table td {
+          padding: 18px 25px;
+          text-align: left;
+          border-bottom: 1px solid #e5e7eb;
+      }
+      .profile-table th {
+          width: 30%;
+          background-color: #f1f5f9;
+          color: #374151;
+          font-weight: 600;
+      }
+      .profile-table td {
+          background-color: #fff;
+          color: #0f172a;
+      }
+      .profile-table tr:last-child th, .profile-table tr:last-child td {
+          border-bottom: none;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 1024px) {
+          #message .profile-card {
+              flex: 0 0 250px;
+          }
+      }
+      @media (max-width: 768px) {
+          #page-title {
+              font-size: 32px;
+              margin-bottom: 40px;
+          }
+          .section-title {
+              font-size: 28px;
+          }
+          .section-subtitle {
+              font-size: 18px;
+              margin-bottom: 30px;
+          }
+          
+          /* 理念セクションのモバイルでの縦並び */
+          #philosophy .philosophy-content-wrapper {
+              flex-direction: column;
+              gap: 20px;
+          }
+          .philosophy-image {
+              max-width: 80%;
+              margin-left: auto;
+              margin-right: auto;
+          }
+          #philosophy .main-text,
+          #philosophy p,
+          #philosophy .keywords {
+              text-align: center;
+          }
+
+          /* 代表メッセージセクションのモバイルでの縦並び */
+          #message .message-wrapper {
+              flex-direction: column;
+              gap: 30px;
+          }
+          #message .profile-card {
+              flex: 1 1 auto;
+              width: 100%;
+              position: static;
+              top: auto;
+          }
+          #message .message-content {
+              padding: 30px;
+          }
+
+          /* その他モバイル調整 */
+          #philosophy .content-card {
+              padding: 30px 20px;
+          }
+          .profile-table th, .profile-table td {
+              padding: 14px 18px;
+          }
+          .profile-table th {
+              width: 40%;
+          }
+      }
+    </style>
+    
+    <div id="about-root">
+      <div class="container">
+        <h1 id="page-title">会社概要</h1>
+
+        <section id="philosophy">
+          <div class="section-title">Philosophy</div>
+          <div class="section-subtitle">理念</div>
+          <div class="content-card">
+              <div class="philosophy-content-wrapper">
+                  <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="WaJu 理念イメージ：挑戦と支援の光" class="philosophy-image">
+
+                  <div class="philosophy-text-container">
+                      <p class="main-text">合同会社WaJuは、「できない」「わからない」を支援する会社です。</p>
+
+                      <p>「あんなことができたらいいな」「こんなものがあったら便利だな」という声を形にし、個人や企業の挑戦を後押しすることを目的に設立されました。</p>
+                      <p>社会福祉の一環として介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い分野で社会的支援ができる企業を目指しています。</p>
+                      <p>「できない・わからない」と足踏みしている方々に対して、指示を与えるのではなく、一緒に考え、一緒に問題解決をし、未来へと繋がる社会的意義のある事業を展開していきます。</p>
+                      
+                      <p class="keywords">常に前進する <strong>Walk</strong>、大きく躍進する <strong>Jump</strong> を心掛け、人と人をつなぐことで社会に貢献します。</p>
+                  </div>
+              </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- 代表メッセージ -->
-      <section id="message">
-        <h2>MESSAGE<br><small>代表メッセージ</small></h2>
-        <div class="flex-box">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0007.png" alt="代表社員 大野 洋">
-          <div class="text">
-            <p>私はこれまで15年以上にわたり、特別養護老人ホームや有料老人ホームで介護士として勤務し、サービス付き高齢者住宅の立ち上げ、サービス提供責任者、施設長といった役職も経験してきました。その中で常に直面したのは、慢性的な人手不足や賃金が上がらない厳しい現実でした。</p>
-            <p>だからこそ、私は「運営を支援するシステム」を作ることが業界改善に直結すると考え、独立してCARELAYを開発しました。</p>
+        <section id="message">
+          <div class="container">
+              <div class="section-title">Message</div>
+              <div class="section-subtitle">代表メッセージ</div>
+
+              <div class="message-wrapper">
+                  <div class="profile-card">
+                      <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0007.png" alt="代表社員 大野 洋">
+                      <p class="title">代表社員</p>
+                      <p class="name">大野 洋</p>
+                  </div>
+                  <div class="message-content">
+                      <p>私はこれまで15年以上にわたり、特別養護老人ホームや有料老人ホームで介護士として勤務し、サービス付き高齢者住宅の立ち上げ、サービス提供責任者、施設長といった役職も経験してきました。その中で常に直面したのは、慢性的な人手不足や賃金が上がらない厳しい現実でした。</p>
+                      <p>事業所の倒産は増え続け、採用しても定着せず、採用コストばかりが膨らんでいく。退職の多くは賃金や業務内容ではなく人間関係が原因で、現場と運営の意識の溝が大きな課題となっていました。</p>
+                      <p>現場では「上はわかってくれない」という声が多く聞かれる一方で、運営側も多忙で現場のフォローに十分に時間を割けない状況があります。記録ソフトや見守りサービスなど現場を支援するツールは数多くあっても、管理者や相談員、ケアマネを支える仕組みは少なく、さらに業種横断的に全事業所が共通で使えるものはほとんどありません。</p>
+                      <p>営業や連絡手段がいまだに電話やFAX中心で非効率なことも時間と費用を浪費する大きな要因です。コロナ禍で対面が制限された際も、もしオンラインでの仕組みが浸透していれば、よりスムーズに業務を続けられたはずです。</p>
+                      <p>だからこそ、私は「運営を支援するシステム」を作ることが業界改善に直結すると考え、独立してCARELAYを開発しました。CARELAYを通じて全国の高齢者介護サービス事業所や障害福祉事業所、関係機関をつなぎ、業務効率化とコスト削減を実現することで、現場をフォローできる運営体制を整え、利用者により良いサービスを届ける循環を目指しています。</p>
+                      <p>そして介護・福祉業界にとどまらず、今後は他の業界にも同様の仕組みを広げていきたい。作って終わりではなく、常にユーザーの声を聞きながら改善し、求められるサービスを提供し続けることを約束します。</p>
+                  </div>
+              </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- 会社情報 -->
-      <section id="company-profile">
-        <h2>COMPANY PROFILE<br><small>会社情報</small></h2>
-        <table class="profile-table">
-          <tbody>
-            <tr><th>法人名</th><td>合同会社WaJu</td></tr>
-            <tr><th>代表社員</th><td>大野 洋</td></tr>
-            <tr><th>設立年月日</th><td>2023年4月27日</td></tr>
-            <tr><th>所在地</th><td>〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td></tr>
-            <tr><th>事業内容</th><td>介護福祉業界のオンラインプラットフォーム「CARELAY」の製作および販売</td></tr>
-          </tbody>
-        </table>
-      </section>
+        <section id="company-profile">
+          <div class="section-title">Company Profile</div>
+          <div class="section-subtitle">会社情報</div>
+          
+          <table class="profile-table" aria-label="会社情報">
+              <thead>
+                  <tr>
+                      <th colspan="2" style="background-color: #1976d2; color: #fff; text-align: center; border-bottom: none;">
+                          合同会社WaJu 会社概要
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <th>法人名</th>
+                      <td>合同会社WaJu</td>
+                  </tr>
+                  <tr>
+                      <th>代表社員</th>
+                      <td>大野 洋</td>
+                  </tr>
+                  <tr>
+                      <th>設立年月日</th>
+                      <td>2023年4月27日</td>
+                  </tr>
+                  <tr>
+                      <th>所在地</th>
+                      <td>〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td>
+                  </tr>
+                  <tr>
+                      <th>事業内容</th>
+                      <td>介護福祉業界のオンラインプラットフォーム「CARELAY」の製作および販売</td>
+                  </tr>
+              </tbody>
+          </table>
+        </section>
+
+      </div>
     </div>
+  </template>
+
+  <script>
+    (function(){
+      try {
+        var host = document.getElementById('about-shadow-host');
+        var tpl  = document.getElementById('about-shadow-template');
+        // host があり、template があり、まだ Shadow Root がアタッチされていなければ実行
+        if (host && tpl && !host.shadowRoot) {
+          // Shadow DOM を 'open' モードでアタッチ
+          var root = host.attachShadow({mode:'open'});
+          // template の内容（スタイルとコンテンツ）をクローンして挿入
+          root.appendChild(tpl.content.cloneNode(true));
+        }
+      } catch (e) { 
+        console.error('about content attach error', e); 
+      }
+    })();
+  </script>
+  
   </main>
 
-  <!-- フッター（共通パーツ） -->
   <footer id="site-footer"></footer>
 
-  <!-- 共通JS -->
+  <!-- ヘッダー／フッター反映 -->
   <script type="module" src="hf.js"></script>
+
+  <!-- フッター高さに応じて余白を自動調整 -->
+  <script>
+    function adjustFooterPadding() {
+      const footer = document.getElementById("site-footer");
+      const main = document.querySelector("main");
+      if (document.body.classList.contains("footer-fixed") && footer && main) {
+        main.style.paddingBottom = footer.offsetHeight + "px";
+      } else if (main) {
+        main.style.paddingBottom = "0";
+      }
+    }
+    window.addEventListener("load", adjustFooterPadding);
+    window.addEventListener("resize", adjustFooterPadding);
+
+    function openDrawer() {
+      document.querySelector(".drawer").classList.add("open");
+    }
+    function closeDrawer() {
+      document.querySelector(".drawer").classList.remove("open");
+    }
+  </script>
 </body>
 </html>
