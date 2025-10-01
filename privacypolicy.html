@@ -21,20 +21,24 @@
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
+  <!-- Google Analytics (baseから共通) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7K94Q6J64F"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-ZHLJ5K19ZE');
+    gtag('config', 'G-7K94Q6J64F');
   </script>
 
-  <!-- プライバシーポリシー専用CSS -->
+  <!-- ページ固有スタイル -->
   <style>
-    #page-content {
+    main {
+      min-height: 40vh;
+      padding: 2em 0; /* 上下余白 */
+    }
+    #page-content .container {
       max-width: 900px;
-      margin: 40px auto;
+      margin: 0 auto;
       padding: 0 20px;
     }
     .privacy-content {
@@ -90,18 +94,16 @@
       color: #555;
       border-top: 1px solid #e0e0e0;
     }
-    @media (max-width: 768px) {
-      .privacy-content h1 { font-size: 2rem; margin-bottom: 30px; }
-      .privacy-content h2 { font-size: 1.3rem; margin-top: 30px; }
-    }
   </style>
 </head>
-<body id="page-body">
+<body id="page-body" style="visibility:hidden;">
+  <!-- ヘッダー（共通パーツ：hf.jsで動的読込） -->
   <header id="site-header"></header>
 
-  <main id="page-main">
+  <!-- メイン -->
+  <main>
     <div id="page-content">
-      <div class="privacy-content">
+      <div class="container privacy-content">
         <h1>プライバシーポリシー</h1>
 
         <p>合同会社WaJu（以下「当社」）は、個人情報保護の重要性を深く認識し、以下の方針に基づき個人情報の適切な取り扱いと保護に努めます。</p>
@@ -133,24 +135,10 @@
     </div>
   </main>
 
+  <!-- フッター（共通パーツ：hf.jsで動的読込） -->
   <footer id="site-footer"></footer>
 
-  <!-- ヘッダー／フッター反映 -->
+  <!-- 共通JS（ヘッダー/フッター読み込み） -->
   <script type="module" src="hf.js"></script>
-
-  <!-- フッター高さに応じて余白を自動調整 -->
-  <script>
-    function adjustFooterPadding() {
-      const footer = document.getElementById("site-footer");
-      const main = document.querySelector("main");
-      if (document.body.classList.contains("footer-fixed") && footer && main) {
-        main.style.paddingBottom = footer.offsetHeight + "px";
-      } else if (main) {
-        main.style.paddingBottom = "0";
-      }
-    }
-    window.addEventListener("load", adjustFooterPadding);
-    window.addEventListener("resize", adjustFooterPadding);
-  </script>
 </body>
 </html>
