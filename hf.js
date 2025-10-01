@@ -1,4 +1,4 @@
-// hf.js（完全版：ヘッダー固定／スマホ安定／PCフッター補正）
+// hf.js（完全版：ヘッダー下の余白修正版）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -46,7 +46,6 @@ const CORE_CSS = `
 
 // ===== Responsive CSS =====
 const RESPONSIVE_CSS = `
-/* PC用フッターは最低60px確保 */
 @media (min-width:769px){
   .hf-hamburger, .hf-overlay, .hf-drawer { display:none !important; }
   #site-footer .hfbar {
@@ -56,7 +55,6 @@ const RESPONSIVE_CSS = `
   }
 }
 
-/* モバイル専用 */
 @media (max-width:768px){
   #site-header .hf-nav, #site-footer .hf-nav { display:none !important; }
 
@@ -86,7 +84,6 @@ const RESPONSIVE_CSS = `
   .hf-drawer a{display:block;padding:12px 8px;border-radius:10px;text-decoration:none;color:inherit}
   .hf-drawer a:active{opacity:.7}
 
-  /* フッターはコピーライトだけ・幅全体に広げる */
   #site-footer,
   #site-footer .hfbar {
     width: 100% !important;
@@ -127,8 +124,15 @@ function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
       bar.style.width = "100%";
     }
 
-    // mainのpaddingTopは本文CSSに任せる
-    mainEl.style.paddingTop = "";
+    // ヘッダーの高さ分＋αの余白を main に確保
+    if (headerEl) {
+      const headerHeight = headerEl.offsetHeight || 0;
+      mainEl.style.paddingTop = (headerHeight + 8) + "px";
+      setTimeout(() => {
+        const hh = headerEl.offsetHeight || 0;
+        mainEl.style.paddingTop = (hh + 8) + "px";
+      }, 50);
+    }
 
     // フッター固定
     if (ftrCfg?.footer_fixed && footerEl) {
@@ -140,14 +144,11 @@ function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
       bar.style.zIndex = "100";
       bar.style.width = "100%";
 
-      // 高さを取得してpaddingBottomに適用（PCは最低60px）
       let h = footerEl.offsetHeight;
       if (window.innerWidth > 768) {
         h = Math.max(h, 60);
       }
       mainEl.style.paddingBottom = h + "px";
-
-      // レイアウト確定後に再補正
       setTimeout(() => {
         let hh = footerEl.offsetHeight;
         if (window.innerWidth > 768) {
@@ -155,7 +156,6 @@ function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
         }
         mainEl.style.paddingBottom = hh + "px";
       }, 50);
-
     } else {
       mainEl.style.paddingBottom = "";
     }
