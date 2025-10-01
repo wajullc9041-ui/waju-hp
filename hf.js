@@ -1,4 +1,4 @@
-// hf.js（完全版 + PC/スマホで高さを切り替え）
+// hf.js（完全版・ヘッダー／フッター余白調整修正版）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -32,118 +32,49 @@ function safeParseMaybeJson(val) {
   try { return JSON.parse(val); } catch { return {}; }
 }
 
-// ===== Core CSS =====
-const CORE_CSS = `
-.hfbar{display:flex;align-items:center;box-sizing:border-box;gap:16px;}
-.hf-row{flex-direction:row;}
-.hf-column{flex-direction:column;align-items:stretch;}
-.hf-brand{display:flex;align-items:center;gap:8px;max-height:60px}
-.hf-brand img{height:auto;max-height:inherit}
-.hf-nav{display:flex;gap:16px;flex-wrap:wrap}
-.hf-nav a{text-decoration:none;color:inherit}
-.hf-copy{display:flex;width:100%}
-`;
-
-// ===== Responsive CSS =====
-const RESPONSIVE_CSS = `
-/* 初期は非表示（モバイルでのみ出す） */
-.hf-hamburger,.hf-drawer,.hf-overlay{display:none}
-
-/* PC用：769px以上は最低60pxを保証 */
-@media (min-width:769px){
-  #site-footer .hfbar {
-    min-height: 60px !important;
-    line-height: 1.5 !important;
-  }
-}
-
-/* モバイル用：768px以下は高さ24pxに縮小 */
-@media (max-width:768px){
-  #site-header .hf-nav, #site-footer .hf-nav { display:none !important; }
-
-  .hf-hamburger{
-    display:block;margin-left:auto;cursor:pointer;
-    font-size:1.8rem;line-height:1;padding:8px;border-radius:8px;
-    border:1px solid rgba(0,0,0,.15);background:rgba(255,255,255,.6);
-    backdrop-filter:saturate(180%) blur(8px);
-  }
-
-  .hf-overlay{
-    display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999;
-  }
-  .hf-overlay.open{display:block;}
-
-  .hf-drawer{
-    display:block;position:fixed;top:0;right:-280px;width:260px;height:100%;
-    background:#fff;box-shadow:-2px 0 10px rgba(0,0,0,.25);
-    transition:right .28s ease;z-index:1000;padding:16px 12px 24px 12px;
-    overflow:auto;
-  }
-  .hf-drawer.open{right:0;}
-  .hf-drawer .drawer-head{
-    display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;
-  }
-  .hf-drawer .drawer-close{
-    border:none;background:#f2f2f2;border-radius:8px;padding:6px 10px;font-size:1.1rem;cursor:pointer;
-  }
-  .hf-drawer nav, .hf-drawer ul{margin:0;padding:0;list-style:none}
-  .hf-drawer a{display:block;padding:12px 8px;border-radius:10px;text-decoration:none;color:inherit}
-  .hf-drawer a:active{opacity:.7}
-
-  /* フッターを強制的に24pxに縮小 */
-  #site-footer,
-  #site-footer .hfbar {
-    height: 30px !important;
-    min-height: 30px !important;
-    padding: 0 !important;
-    line-height: 30px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-  #site-footer .hf-copy {
-    font-size: 12px !important;
-    margin: 0 !important;
-    justify-content: center !important;
-    width: auto !important;
-  }
-}
-`;
-
-// ===== 固定と余白調整 =====
+// ===== 固定と余白調整（修正版） =====
 function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
   const headerEl = document.getElementById("site-header");
   const footerEl = document.getElementById("site-footer");
   const mainEl   = document.querySelector("main");
 
-  if (hdrCfg?.header_fixed && headerEl) {
-    const bar = headerEl.querySelector(".hfbar");
-    if (bar) {
-      bar.style.position = "sticky";
-      bar.style.top = "0";
-      bar.style.zIndex = "10";
-      bar.style.width = "100%";
+  function adjust() {
+    if (!mainEl) return;
+
+    // ヘッダー固定
+    if (hdrCfg?.header_fixed && headerEl) {
+      const bar = headerEl.querySelector(".hfbar");
+      if (bar) {
+        bar.style.position = "sticky";
+        bar.style.top = "0";
+        bar.style.zIndex = "10";
+        bar.style.width = "100%";
+      }
+      mainEl.style.paddingTop = headerEl.offsetHeight + "px";
+    } else {
+      mainEl.style.paddingTop = "0";
+    }
+
+    // フッター固定
+    if (ftrCfg?.footer_fixed && footerEl) {
+      const bar = footerEl.querySelector(".hfbar");
+      if (bar) {
+        bar.style.position = "fixed";
+        bar.style.left = "0";
+        bar.style.right = "0";
+        bar.style.bottom = "0";
+        bar.style.zIndex = "10";
+        bar.style.width = "100%";
+      }
+      mainEl.style.paddingBottom = footerEl.offsetHeight + "px";
+    } else {
+      mainEl.style.paddingBottom = "0";
     }
   }
 
-  if (ftrCfg?.footer_fixed && footerEl) {
-    const bar = footerEl.querySelector(".hfbar");
-    if (bar) {
-      bar.style.position = "fixed";
-      bar.style.left = "0";
-      bar.style.right = "0";
-      bar.style.bottom = "0";
-      bar.style.zIndex = "10";
-      bar.style.width = "100%";
-    }
-  }
-
-  if (mainEl) {
-    const headerH = hdrCfg?.header_fixed && headerEl ? headerEl.offsetHeight : 0;
-    const footerH = ftrCfg?.footer_fixed && footerEl ? footerEl.offsetHeight : 0;
-    mainEl.style.paddingTop = headerH ? `${headerH}px` : "";
-    mainEl.style.paddingBottom = footerH ? `${footerH}px` : "";
-  }
+  // 初期実行 & リサイズ時にも追従
+  adjust();
+  window.addEventListener("resize", adjust);
 }
 
 // ===== ドロワーUI =====
@@ -215,7 +146,7 @@ function onResizeCloseIfWide() {
   if (window.innerWidth > 768) closeDrawer();
 }
 
-// ===== エントリーポイント =====
+// ===== メイン処理 =====
 export async function loadHF() {
   try {
     const [hdrRes, ftrRes] = await Promise.all([
@@ -226,10 +157,8 @@ export async function loadHF() {
     const hdrObj = safeParseMaybeJson(hdrRes?.data?.data);
     const ftrObj = safeParseMaybeJson(ftrRes?.data?.data);
 
-    injectStyle("hf-core-style", CORE_CSS);
     injectStyle("site-header-style", hdrObj.headerCss || "");
     injectStyle("site-footer-style", ftrObj.footerCss || "");
-    injectStyle("hf-responsive-style", RESPONSIVE_CSS);
 
     setInner("site-header", hdrObj.headerHtml || "");
     setInner("site-footer", ftrObj.footerHtml || "");
