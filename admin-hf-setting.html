@@ -238,7 +238,7 @@
     nav.style.fontSize = (num(d.header_nav_size,14)) + "px";
     nav.style.justifyContent = toJustify(d.nav_alignment); // ← nav 内で揃える
     (menus||[]).filter(m=>m.is_active && m.show_in_header).forEach(m=>{
-      const a = document.createElement("a"); a.textContent = m.title; a.href = m.href || "#"; nav.appendChild(a);
+      const a = document.createElement("a"); a.textContent = m.title; a.href = m.url || "#"; nav.appendChild(a);
     });
     navSlot.appendChild(nav); bar.appendChild(navSlot);
 
@@ -269,7 +269,7 @@
     nav.style.fontWeight = d.nav_weight_footer || "normal";
     nav.style.fontSize = (num(d.footer_nav_size,14)) + "px";
     (menus||[]).filter(m=>m.is_active && m.show_in_footer).forEach(m=>{
-      const a = document.createElement("a"); a.textContent = m.title; a.href = m.href || "#"; nav.appendChild(a);
+      const a = document.createElement("a"); a.textContent = m.title; a.href = m.url || "#"; nav.appendChild(a);
     });
 
     if(d.layout_mode==="row"){ bar.appendChild(copy); bar.appendChild(nav); }
