@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
   <style>
     /* ----------------------------------------------------- */
-    /* 1. 共通・リセットCSS (bodyタグ自体への適用) */
+    /* 【修正箇所1】FOUC対策のvisibility: hiddenを追加 */
     /* ----------------------------------------------------- */
     body {
       margin: 0;
@@ -28,60 +28,53 @@
       font-family: 'Noto Sans JP', sans-serif;
       color: #333;
       background-color: #fff;
-      /* HF適用までのFOUC対策（hf.jsで解除されます） */
+      /* ページ全体を非表示にし、hf.jsでの反映完了後に表示を切り替える */
       visibility: hidden; 
       min-height: 100vh;
     }
     
     /* ----------------------------------------------------- */
-    /* 2. メインコンテンツ領域の調整 */
+    /* 【修正箇所2】メインコンテンツへの干渉防止とHF固定への対応 */
     /* ----------------------------------------------------- */
-    /* main要素自体は、HF固定時にJSによってpaddingが設定されます。 */
+    /* main要素自体は、HF固定時にJSによってpaddingが設定されます。*/
+    /* main要素へのpadding/marginなどの空間設定はhf.jsに任せるのがベストです。*/
     main {
-      box-sizing: border-box; 
-      flex-grow: 1; /* bodyをflexにしている場合 */
+      box-sizing: border-box; /* paddingを含めたサイズ計算 */
+      /* min-heightは、コンテンツが少ないページでフッターを画面下部に表示するために役立ちます */
+      min-height: calc(100vh - 100px); /* 暫定値。HFの高さを見積もって調整 */
     }
 
-    /* ----------------------------------------------------- */
-    /* 3. 【最重要】メインコンテンツ固有のCSS（干渉防止） */
-    /* #main-content-wrapper の子孫に限定することで詳細度を上げる */
-    /* ----------------------------------------------------- */
-    #main-content-wrapper {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    
-    #main-content-wrapper .hero {
+    /* 以下、元のindex.txtにあったCSSをそのまま維持 */
+    .hero {
       background-color: #f0f0f0;
       padding: 60px 20px;
       text-align: center;
     }
     
-    #main-content-wrapper .hero h2 {
+    .hero h2 {
       font-size: 2.5em;
       color: #007bff;
     }
     
-    #main-content-wrapper .carelay {
-      padding: 40px 0;
+    .carelay {
+      padding: 40px 20px;
     }
     
-    #main-content-wrapper .carelay h3 {
+    .carelay h3 {
       text-align: center;
       margin-bottom: 30px;
       font-size: 1.8em;
       color: #007bff;
     }
     
-    #main-content-wrapper .service-cards {
+    .service-cards {
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
       justify-content: center;
     }
     
-    #main-content-wrapper .card {
+    .card {
       background: #fff;
       border: 1px solid #ddd;
       border-radius: 8px;
@@ -91,21 +84,21 @@
       transition: transform 0.3s;
     }
     
-    #main-content-wrapper .card:hover {
+    .card:hover {
       transform: translateY(-5px);
     }
     
-    #main-content-wrapper .card h4 {
+    .card h4 {
       color: #007bff;
       margin-top: 0;
     }
     
-    /* レスポンシブ対応 (既存のCSSを#main-content-wrapperで囲む) */
+    /* レスポンシブ対応 */
     @media (max-width: 768px) {
-      #main-content-wrapper .service-cards {
+      .service-cards {
         flex-direction: column;
       }
-      #main-content-wrapper .card {
+      .card {
         width: 100%;
       }
     }
@@ -117,39 +110,37 @@
   <header id="site-header"></header>
 
   <main>
-    <div id="main-content-wrapper">
 
-      <section class="hero">
-        <h2>介護・福祉業界を支える</h2>
-        <p>地域連携とIT技術で、現場の課題を解決します。</p>
-        <a href="#carelay" class="btn-primary">CARELAYについて</a>
-      </section>
+    <section class="hero">
+      <h2>介護・福祉業界を支える</h2>
+      <p>地域連携とIT技術で、現場の課題を解決します。</p>
+      <a href="#carelay" class="btn-primary">CARELAYについて</a>
+    </section>
 
-      <section class="carelay" id="carelay">
-        <h3>CARELAYの提供サービス</h3>
-        <div class="service-cards">
-          <div class="card">
-            <h4>地域連携サポート</h4>
-            <p>地域の病院や施設との情報共有をスムーズにし、多職種連携を強化します。</p>
-          </div>
-          <div class="card">
-            <h4>採用支援コンサルティング</h4>
-            <p>介護・福祉に特化した求人戦略と定着支援で、人材不足の解消をサポートします。</p>
-          </div>
-          <div class="card">
-            <h4>業務効率化ITツール</h4>
-            <p>記録や請求業務を自動化し、職員が利用者様へのケアに専念できる環境を提供します。</p>
-          </div>
+    <section class="carelay" id="carelay">
+      <h3>CARELAYの提供サービス</h3>
+      <div class="service-cards">
+        <div class="card">
+          <h4>地域連携サポート</h4>
+          <p>地域の病院や施設との情報共有をスムーズにし、多職種連携を強化します。</p>
         </div>
-      </section>
+        <div class="card">
+          <h4>採用支援コンサルティング</h4>
+          <p>介護・福祉に特化した求人戦略と定着支援で、人材不足の解消をサポートします。</p>
+        </div>
+        <div class="card">
+          <h4>業務効率化ITツール</h4>
+          <p>記録や請求業務を自動化し、職員が利用者様へのケアに専念できる環境を提供します。</p>
+        </div>
+      </div>
+    </section>
 
-      <section style="padding: 40px 0; text-align: center;">
-        <h3>会社概要</h3>
-        <p>合同会社WaJuは、日本の福祉社会の持続的な発展に貢献します。</p>
-        <div style="height: 500px; background: #e9ecef; margin-top: 20px; padding: 20px; border-radius: 8px;">ダミーのコンテンツ</div>
-      </section>
-      
-    </div>
+    <section style="padding: 40px 20px; text-align: center;">
+      <h3>会社概要</h3>
+      <p>合同会社WaJuは、日本の福祉社会の持続的な発展に貢献します。</p>
+      <div style="height: 500px; background: #e9ecef; margin-top: 20px; padding: 20px; border-radius: 8px;">ダミーのコンテンツ</div>
+    </section>
+    
   </main>
 
   <footer id="site-footer"></footer>
