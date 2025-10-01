@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>プライバシーポリシー | 合同会社WaJu</title>
+  <title>ページタイトル | 合同会社WaJu</title>
 
   <!-- SEO / OGP -->
-  <meta name="description" content="合同会社WaJuのプライバシーポリシー（個人情報保護方針）についてのご案内です。">
-  <meta property="og:title" content="プライバシーポリシー | 合同会社WaJu">
-  <meta property="og:description" content="合同会社WaJuのプライバシーポリシー（個人情報保護方針）についてのご案内です。">
+  <meta name="description" content="ここにページごとの説明を記載します。">
+  <meta property="og:title" content="ページタイトル | 合同会社WaJu">
+  <meta property="og:description" content="ここにページごとの説明を記載します。">
   <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://waju.co.jp/">
@@ -35,13 +35,17 @@
       margin: 0;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
                    Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-      visibility: hidden; /* FOUC対策: JSで解除されるまで非表示 */
-      background: #f8fafc; /* 背景をわずかにグレーに */
+      visibility: hidden; /* FOUC対策 */
+      background: #fff;
       color: #0f172a;
     }
     main {
       padding: 2em;
       min-height: 60vh;
+    }
+    /* 固定フッター用クラスが付与された場合にmainに余白を確保 */
+    body.footer-fixed main {
+      padding-bottom: 80px; /* ← フッターの高さに合わせる */
     }
   </style>
 </head>
@@ -50,89 +54,8 @@
 
   <main id="page-main">
     <!-- ▼ ページごとのメインコンテンツはこの範囲に記述 ▼ -->
-
-    <!-- プライバシーポリシーコンテナ -->
-    <div class="max-w-4xl mx-auto p-4 sm:p-8 bg-white shadow-xl rounded-xl border border-gray-100">
-
-      <!-- タイトル -->
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-blue-800 border-b-4 border-blue-500 pb-2 mb-8">
-        プライバシーポリシー
-      </h1>
-
-      <!-- 導入文 -->
-      <p class="text-gray-700 leading-relaxed mb-6 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-300">
-        合同会社WaJu（以下「当社」）は、以下のとおり個人情報保護方針を定め、個人情報保護の仕組みを構築し、全従業員に個人情報保護の重要性の認識と取り組みを徹底させることにより、個人情報の保護を推進致します。
-      </p>
-
-      <!-- 各項目セクション -->
-      
-      <!-- 1. 個人情報の管理 -->
-      <div class="mb-8">
-        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
-          個人情報の管理
-        </h2>
-        <p class="text-gray-600 leading-relaxed pl-4">
-          当社は、お客様の個人情報を正確かつ最新の状態に保ち、個人情報への不正アクセス・紛失・破損・改ざん・漏洩などを防止するため、セキュリティシステムの維持・管理体制の整備・社員教育の徹底等の必要な措置を講じ、安全対策を実施し、個人情報の厳重な管理を行ないます。
-        </p>
-      </div>
-
-      <!-- 2. 個人情報の利用目的 -->
-      <div class="mb-8">
-        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
-          個人情報の利用目的
-        </h2>
-        <p class="text-gray-600 leading-relaxed pl-4">
-          お客様からお預かりした個人情報は、当社からのご連絡や業務のご案内やご質問に対する回答として、電子メールや資料のご送付に利用致します。
-        </p>
-      </div>
-      
-      <!-- 3. 個人情報の第三者への開示・提供の禁止 -->
-      <div class="mb-8">
-        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
-          個人情報の第三者への開示・提供の禁止
-        </h2>
-        <p class="text-gray-600 leading-relaxed pl-4">
-          当社は、お客様よりお預かりした個人情報を適切に管理し、次のいずれかに該当する場合を除き、個人情報を第三者に開示致しません。
-        </p>
-      </div>
-      
-      <!-- 4. 個人情報の安全対策 -->
-      <div class="mb-8">
-        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
-          個人情報の安全対策
-        </h2>
-        <p class="text-gray-600 leading-relaxed pl-4">
-          当社は、個人情報の正確性及び安全性確保のために、セキュリティに万全の対策を講じています。
-        </p>
-      </div>
-      
-      <!-- 5. ご本人の照会 -->
-      <div class="mb-8">
-        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
-          ご本人の照会
-        </h2>
-        <p class="text-gray-600 leading-relaxed pl-4">
-          お客様がご本人の個人情報の照会・修正・削除などをご希望される場合には、ご本人であることを確認の上、対応させていただきます。
-        </p>
-      </div>
-
-      <!-- 6. 法令、規範の遵守と見直し -->
-      <div class="mb-8">
-        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 border-b-2 border-gray-200 pb-1">
-          法令、規範の遵守と見直し
-        </h2>
-        <p class="text-gray-600 leading-relaxed pl-4">
-          当社は、保有する個人情報に関して適用される日本の法令、その他規範を遵守するとともに、本ポリシーの内容を適宜見直し、その改善に努めます。
-        </p>
-      </div>
-
-      <!-- 最終更新日（ダミー） -->
-      <div class="mt-10 pt-4 border-t border-gray-200 text-sm text-gray-500 text-right">
-        合同会社WaJu
-      </div>
-
-    </div>
-    
+    <h1>仮タイトル</h1>
+    <p>この部分を各ページで編集します。</p>
     <!-- ▲ ページごとのメインコンテンツはこの範囲に記述 ▲ -->
   </main>
 
