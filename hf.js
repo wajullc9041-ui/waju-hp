@@ -6,6 +6,19 @@ const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 const sb = createClient(supabaseUrl, supabaseKey);
 
+
+function injectStyle(cssText, id) {
+  if (!cssText) return;
+  let styleTag = document.getElementById(id);
+  if (!styleTag) {
+    styleTag = document.createElement("style");
+    styleTag.id = id;
+    document.head.appendChild(styleTag);
+  }
+  styleTag.innerHTML = cssText;
+}
+
+
 function setInner(id, html) {
   const el = document.getElementById(id);
   if (el) el.innerHTML = html || "";
@@ -31,10 +44,16 @@ async function loadHF() {
     const ftr = r2?.data?.data || {};
 
     const headerHtml = hdr.headerHtml || "";
-    const footerHtml = ftr.footerHtml || "";
+const footerHtml = ftr.footerHtml || "";
+const headerCss  = hdr.headerCss || "";
+const footerCss  = ftr.footerCss || "";
 
     setInner("site-header", headerHtml);
     setInner("site-footer", footerHtml);
+
+// CSSを挿入
+injectStyle(headerCss, "site-header-style");
+injectStyle(footerCss, "site-footer-style");
     adjustOffsets();
   } catch (e) {
     console.warn("HF load failed", e);
