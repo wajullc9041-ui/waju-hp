@@ -133,7 +133,7 @@
       }
 
       /* ページ共通スタイル */
-      /* ★修正: PC用のセクション余白を縮小 (60px -> 40px) */
+      /* PC用のセクション余白を縮小 (60px -> 40px) */
       section{margin:40px auto} 
       h1,h2,h3{margin:0 0 20px;font-weight:700}
       h1{font-size:36px;text-align:center}
@@ -147,7 +147,7 @@
           font-size: 42px;
           text-align: center;
           margin-top: 40px;
-          /* ★修正: PC用のタイトル下余白を縮小 (60px -> 40px) */
+          /* PC用のタイトル下余白を縮小 (60px -> 40px) */
           margin-bottom: 40px; 
           font-weight: 900;
           color: #1976d2;
@@ -177,13 +177,13 @@
           font-weight: 500;
           color: #1976d2;
           text-align: center;
-          /* ★修正: セクションサブタイトル下余白を縮小 (40px -> 30px) */
+          /* セクションサブタイトル下余白を縮小 (40px -> 30px) */
           margin-bottom: 30px; 
       }
 
       /* Philosophy Section */
       #philosophy {
-          /* ★修正: PC用のセクション内上下パディングを縮小 (80px -> 60px) */
+          /* PC用のセクション内上下パディングを縮小 (80px -> 60px) */
           padding: 60px 0;
           background: #fff; 
           margin: 0 auto;
@@ -202,14 +202,33 @@
           text-align: center;
           overflow: hidden;
       }
-      /* (Philosophyセクション内の残りのスタイルは省略) */
+      #philosophy .philosophy-content-wrapper {
+          /* ★確認: Flexboxの定義は正しい */
+          display: flex;
+          gap: 40px;
+          align-items: flex-start;
+          text-align: left;
+      }
+      .philosophy-image {
+          max-width: 300px;
+          flex-shrink: 0;
+          height: auto;
+          border-radius: 8px;
+          margin-bottom: 0;
+          box-shadow: 0 4px 12px rgba(0,0,0,.1);
+          display: block;
+      }
+      #philosophy .philosophy-text-container {
+          flex: 1;
+      }
+      /* (中略: Philosophyセクション内の残りのスタイルは省略) */
 
 
       /* Message Section */
       #message {
           background: none; 
           padding: 0;
-          /* ★修正: PC用のセクション余白を縮小 (60px -> 40px) */
+          /* PC用のセクション余白を縮小 (60px -> 40px) */
           margin: 40px auto; 
       }
       #message .message-wrapper {
@@ -218,19 +237,38 @@
           margin-left: auto;
           margin-right: auto;
           
-          /* ★修正: PC用の背景付き部分の上下パディングを縮小 (80px -> 60px) */
+          /* PC用の背景付き部分の上下パディングを縮小 (80px -> 60px) */
           background: #f8fafc;
           padding: 60px 0; 
-
+          
+          /* ★修正: Flexboxの定義を再確認・復旧 */
           display: flex;
           gap: 40px;
           align-items: flex-start;
       }
-      /* (Messageセクション内の残りのスタイルは省略) */
+      #message .profile-card {
+          /* ★修正: Flexの比率を固定し、高さが引き伸ばされないように調整 */
+          flex: 0 0 300px; /* PCでの幅を固定 */
+          align-self: flex-start; /* ★追加: 自身の高さを要素の高さに合わせる */
+          background: #fff;
+          padding: 30px;
+          border-radius: 12px;
+          box-shadow: 0 5px 15px rgba(0,0,0,.08);
+          text-align: center;
+          position: sticky;
+          top: calc(80px + 20px);
+      }
+      #message .message-content {
+          flex: 1; /* ★修正: メッセージ本文が残りの幅を埋める */
+          background: #fff;
+          padding: 40px;
+          border-radius: 12px;
+          box-shadow: 0 5px 15px rgba(0,0,0,.08);
+      }
 
       /* Company Profile Section */
       #company-profile {
-          /* ★修正: PC用のセクション内上下パディングを縮小 (80px -> 60px) */
+          /* PC用のセクション内上下パディングを縮小 (80px -> 60px) */
           padding: 60px 0; 
       }
       /* (Company Profileの残りのスタイルは省略) */
@@ -247,8 +285,8 @@
               margin: 30px auto;
           }
           #page-title {
-              margin-top: 25px; /* タイトル上余白をさらに縮小 */
-              margin-bottom: 25px; /* タイトル下余白をさらに縮小 */
+              margin-top: 25px; 
+              margin-bottom: 25px; 
           }
 
           /* セクション内パディングを縮小 (40px -> 30px) */
@@ -294,8 +332,9 @@
           #message .profile-card {
               flex: 1 1 auto;
               width: 100%;
-              position: static;
+              position: static; /* stickyを解除し縦に並ぶように */
               top: auto;
+              align-self: auto; /* align-selfもautoに戻す */
           }
           #message .message-content {
               padding: 30px;
