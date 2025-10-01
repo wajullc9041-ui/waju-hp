@@ -5,65 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>合同会社WaJu | 公式サイト</title>
 
-  <!-- SEO / OGP -->
+  <!-- SEO -->
   <meta name="description" content="合同会社WaJuの公式サイト。介護・福祉業界の課題を解決するCARELAYの紹介、会社概要や最新のお知らせを発信しています。">
   <meta name="keywords" content="合同会社WaJu, CARELAY, 介護, 福祉, 求人, 営業, 地域連携">
 
+  <!-- OGP -->
   <meta property="og:title" content="合同会社WaJu | 公式サイト">
   <meta property="og:description" content="介護・福祉業界の課題を解決するCARELAYを中心に、社会貢献を目指すWaJuの公式サイト。">
   <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png">
   <meta property="og:url" content="https://waju.co.jp/">
   <meta property="og:type" content="website">
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@waju_corp">
-
-  <meta name="language" content="ja">
-  <meta name="geo.placename" content="Kobe, Japan">
-  <!-- /SEO / OGP -->
-
-  <!-- Favicon / PWA -->
+  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
-  <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
-  <meta name="theme-color" content="#0f172a">
 
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-      color: #0f172a;
-      background: #fff;
-      line-height: 1.7;
-    }
-    main {
-      padding: 2em 1em;
-      min-height: 60vh;
-    }
-    section { margin: 60px auto; }
-    h1 { font-size: 36px; text-align: center; }
-    h2 { font-size: 30px; text-align: center; font-weight: 700; margin-bottom: 1em; }
-    h3 { font-size: 20px; margin-bottom: 10px; font-weight: 700; }
-    p { margin-bottom: 1em; }
-    .lead { font-size: 20px; text-align: center; margin-bottom: 30px; color: #374151; }
-    .card { background: #fff; padding: 32px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08); margin-bottom: 30px; }
-    .topics ul { list-style: none; padding: 0; }
-    .topics li { margin-bottom: 12px; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; }
-    .cta { text-align: center; margin-top: 40px; }
-    .cta a { display: inline-block; padding: 12px 28px; background: #1976d2; color: #fff; border-radius: 8px; text-decoration: none; }
+    body { margin:0; font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif; background:#fff; color:#0f172a; line-height:1.7; }
+    main { padding:2em 1em; min-height:60vh; }
+    section { margin:60px auto; }
+    h1 { font-size:36px; text-align:center; }
+    h2 { font-size:30px; text-align:center; font-weight:700; margin-bottom:1em; }
+    h3 { font-size:20px; font-weight:700; margin-bottom:10px; }
+    p { margin-bottom:1em; }
+    .topics ul { list-style:none; padding:0; }
+    .topics li { margin-bottom:12px; border-bottom:1px solid #e5e7eb; padding-bottom:8px; }
+    /* Heroスライド */
+    .carousel { position:relative; width:100%; height:400px; overflow:hidden; }
+    .carousel .slide { position:absolute; inset:0; opacity:0; transition:opacity 1s ease-in-out; }
+    .carousel .slide.active { opacity:1; }
+    .carousel img { width:100%; height:100%; object-fit:cover; }
   </style>
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
+    window.dataLayer=window.dataLayer||[];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-ZHLJ5K19ZE');
+    gtag('js', new Date()); gtag('config', 'G-ZHLJ5K19ZE');
   </script>
 </head>
 <body>
@@ -82,11 +64,13 @@
     <!-- News Section -->
     <section id="news">
       <h2>お知らせ</h2>
-      <ul>
-        <li><a href="blog.html">【重要】ホームページをリニューアルしました</a></li>
-        <li><a href="blog.html">新サービス「CARELAY」の提供を開始しました。</a></li>
-        <li><a href="blog.html">夏季休業のお知らせとご協力のお願い</a></li>
-      </ul>
+      <div class="topics">
+        <ul>
+          <li><a href="blog.html">【重要】ホームページをリニューアルしました</a></li>
+          <li><a href="blog.html">新サービス「CARELAY」の提供を開始しました。</a></li>
+          <li><a href="blog.html">夏季休業のお知らせとご協力のお願い</a></li>
+        </ul>
+      </div>
     </section>
 
     <!-- About Section -->
@@ -112,27 +96,43 @@
     <!-- SNS Section -->
     <section id="sns">
       <h2>SNS</h2>
+      <p>最新投稿の埋め込みエリア（今後改修予定）</p>
       <ul>
-        <li><a href="https://x.com/waju_corp">X（旧Twitter）</a></li>
-        <li><a href="https://instagram.com/waju_official">Instagram</a></li>
+        <li><a href="https://x.com/waju_corp">X公式</a></li>
+        <li><a href="https://instagram.com/waju_official">Instagram公式</a></li>
       </ul>
     </section>
 
     <!-- Company Info Section -->
     <section id="company-info">
       <h2>会社情報</h2>
-      <p>会社名：合同会社WaJu<br>
-         代表社員：大野 洋<br>
-         所在地：〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102<br>
-         設立：2023年4月<br>
-         連絡先：<a href="mailto:info@waju.co.jp">info@waju.co.jp</a></p>
+      <p>
+        会社名：合同会社WaJu<br>
+        代表社員：大野 洋<br>
+        所在地：〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102<br>
+        設立：2023年4月<br>
+        連絡先：<a href="mailto:info@waju.co.jp">info@waju.co.jp</a>
+      </p>
       <p><a href="contact.html">お問い合わせはこちら</a></p>
     </section>
   </main>
 
   <footer id="site-footer"></footer>
 
-  <!-- ヘッダー／フッター読込 -->
+  <!-- ヘッダー／フッター -->
   <script type="module" src="hf.js"></script>
+
+  <!-- Heroスライド切替 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const slides=document.querySelectorAll(".carousel .slide");
+      let idx=0;
+      setInterval(()=>{
+        slides[idx].classList.remove("active");
+        idx=(idx+1)%slides.length;
+        slides[idx].classList.add("active");
+      },5000);
+    });
+  </script>
 </body>
 </html>
