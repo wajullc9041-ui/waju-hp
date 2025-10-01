@@ -412,6 +412,7 @@
   const d = getHeader(); 
   renderHeaderPreview(d, menus); 
 
+  // 完成したDOMを生成
   const dom = buildHeaderDOM(d, menus);
   d.headerHtml = dom.outerHTML;
   d.headerCss = buildHeaderCss(d);
@@ -422,6 +423,7 @@
   const d = getFooter(); 
   renderFooterPreview(d, menus); 
 
+  // 完成したDOMを生成
   const dom = buildFooterDOM(d, menus);
   d.footerHtml = dom.outerHTML;
   d.footerCss = buildFooterCss(d);
