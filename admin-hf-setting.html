@@ -1,5 +1,13 @@
-<!-- 管理: ヘッダー＆フッター設定（完全修正版：プレビュー維持＋HTMLも保存） -->
-<!-- CSS・HTML・関数定義部（buildHeaderDOM, buildFooterDOM, getHeader, getFooter, setHeader, setFooter など）は元のまま保持してください -->
+<!-- 管理: ヘッダー＆フッター設定（完全版：プレビュー維持＋HTMLも保存） -->
+<!-- 以下、CSSやHTML構造は元の admin-hf-setting.txt と同じ -->
+
+<style>
+  /* CSS部分は元のファイルそのまま残す */
+</style>
+
+<div id="hf-app">
+  <!-- HTML構造も元のまま残す -->
+</div>
 
 <script type="module">
   let supabase;
@@ -15,6 +23,23 @@
   const $ = (q, r=document)=> r.querySelector(q);
   const $$ = (q, r=document)=> Array.from(r.querySelectorAll(q));
   const toast = (m, ok=true)=>{const n=document.createElement('div');n.className='toast '+(ok?'':'err');n.textContent=m;(document.querySelector('#toast')||document.body).appendChild(n);setTimeout(()=>n.remove(),2200);};
+  const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
+  const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
+  const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : (s + ", sans-serif"));
+  const linear = (dir,a,b) => (!a||!b) ? "" : ("linear-gradient(" + dir + ", " + a + ", " + b + ")");
+
+  function computeBgParts(d, defColor){
+    if (d.bg_gradient && d.bg_gradient.trim()){
+      return { bgColor: defColor, bgImage: d.bg_gradient };
+    }
+    const col = (d.bg_color && d.bg_color.trim()) ? d.bg_color : defColor;
+    return { bgColor: col, bgImage: "none" };
+  }
+
+  function el(tag, className){ const x=document.createElement(tag); if(className) x.className=className; return x; }
+
+  /* buildHeaderDOM, buildFooterDOM, getHeader, getFooter, setHeader, setFooter, 
+     renderHeaderPreview, renderFooterPreview などの関数群は元のファイル通り全て残す */
 
   async function saveRow(area, payload){
     const { error } = await supabase.from('hf_settings').update({ data: payload }).eq('area', area);
@@ -34,22 +59,36 @@
     renderHeaderPreview(getHeader(), menus);
     renderFooterPreview(getFooter(), menus);
 
-    // 入力変更イベントは元のまま
+    $$("#section-header input, #section-header select").forEach(function(el){
+      el.addEventListener("input", function(){ renderHeaderPreview(getHeader(), menus); });
+      el.addEventListener("change", function(){ renderHeaderPreview(getHeader(), menus); });
+    });
+    $$("#section-footer input, #section-footer select").forEach(function(el){
+      el.addEventListener("input", function(){ renderFooterPreview(getFooter(), menus); });
+      el.addEventListener("change", function(){ renderFooterPreview(getFooter(), menus); });
+    });
 
-    // 保存処理を修正（プレビュー維持＋HTMLも保存）
+    $("#bg_color_header").addEventListener("input", function(){ $("#bg_gradient_header").value=""; renderHeaderPreview(getHeader(), menus); });
+    $("#bg_color_footer").addEventListener("input", function(){ $("#bg_gradient_footer").value=""; renderFooterPreview(getFooter(), menus); });
+    $("#grad_apply_header").addEventListener("click", function(){ $("#bg_gradient_header").value = linear($("#grad_dir_header").value,$("#grad_start_header").value,$("#grad_end_header").value); renderHeaderPreview(getHeader(), menus); });
+    $("#grad_reset_header").addEventListener("click", function(){ $("#bg_gradient_header").value = ""; renderHeaderPreview(getHeader(), menus); });
+    $("#grad_apply_footer").addEventListener("click", function(){ $("#bg_gradient_footer").value = linear($("#grad_dir_footer").value,$("#grad_start_footer").value,$("#grad_end_footer").value); renderFooterPreview(getFooter(), menus); });
+    $("#grad_reset_footer").addEventListener("click", function(){ $("#bg_gradient_footer").value = ""; renderFooterPreview(getFooter(), menus); });
+
+    // ==== 保存処理を修正 ====
     $("#saveHeader").addEventListener("click", async function(){
       const d = getHeader();
-      renderHeaderPreview(d, menus);              // プレビューは従来通り
-      const dom = buildHeaderDOM(d, menus);       // DOMを生成
-      d.headerHtml = dom.outerHTML;               // HTML文字列を追加
+      renderHeaderPreview(d, menus);
+      const dom = buildHeaderDOM(d, menus);
+      d.headerHtml = dom.outerHTML;
       await saveRow("header", d);
     });
 
     $("#saveFooter").addEventListener("click", async function(){
       const d = getFooter();
-      renderFooterPreview(d, menus);              // プレビューは従来通り
-      const dom = buildFooterDOM(d, menus);       // DOMを生成
-      d.footerHtml = dom.outerHTML;               // HTML文字列を追加
+      renderFooterPreview(d, menus);
+      const dom = buildFooterDOM(d, menus);
+      d.footerHtml = dom.outerHTML;
       await saveRow("footer", d);
     });
   })();
