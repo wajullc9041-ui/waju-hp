@@ -1,4 +1,4 @@
-// hf.js（完全版：ヘッダー高さを常に反映して本文を直下から開始）
+// hf.js（完全版：ヘッダー高さを確実に反映して本文を直下から開始）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -124,14 +124,19 @@ function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
       bar.style.width = "100%";
     }
 
-    // ★ ヘッダーの高さ分を main の padding-top に反映（固定/非固定を問わず）
-    if (headerEl) {
-      const setHeaderSpace = () => {
-        const h = headerEl.offsetHeight || 0;
+    // ★ ヘッダーの高さ分を main に反映（固定/非固定を問わず）
+    if (headerEl && mainEl) {
+      const bar = headerEl.querySelector(".hfbar") || headerEl;
+
+      function setHeaderSpace() {
+        const h = bar.offsetHeight || 0;
         mainEl.style.paddingTop = h + "px";
-      };
+      }
+
       setHeaderSpace();
       setTimeout(setHeaderSpace, 50);
+      setTimeout(setHeaderSpace, 200);
+
       window.addEventListener("resize", setHeaderSpace);
     }
 
