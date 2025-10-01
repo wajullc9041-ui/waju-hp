@@ -1,4 +1,4 @@
-// hf.js（完全版 + スマホ時フッター高さ調整）
+// hf.js（完全版 + スマホ時フッター高さ24pxで強制上書き）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -82,19 +82,19 @@ const RESPONSIVE_CSS = `
   .hf-drawer a{display:block;padding:12px 8px;border-radius:10px;text-decoration:none;color:inherit}
   .hf-drawer a:active{opacity:.7}
 
-  /* --- スマホ時のフッター調整 --- */
+  /* --- スマホ時のフッター調整（強制上書き） --- */
   #site-footer .hfbar {
-    min-height: 24px !important;   /* 高さを今の半分程度に */
-    padding: 0 !important;         /* 上下の余白をゼロに */
-    line-height: 1.2 !important;   /* 行間を詰めて高さを抑える */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-height: 24px !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
   #site-footer .hf-copy {
-    justify-content: center;
-    width: auto;
-    font-size: 12px;               /* 小さめ文字 */
+    justify-content: center !important;
+    width: auto !important;
+    font-size: 12px !important;
   }
 }
 `;
