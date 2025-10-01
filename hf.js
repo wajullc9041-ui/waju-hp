@@ -1,4 +1,4 @@
-// hf.js（完全版：ヘッダー固定・フッター幅修正対応）
+// hf.js（完全版：ヘッダー固定／スマホ安定／PCフッター補正）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -58,10 +58,8 @@ const RESPONSIVE_CSS = `
 
 /* モバイル専用 */
 @media (max-width:768px){
-  /* ヘッダー・フッターのナビは隠す */
   #site-header .hf-nav, #site-footer .hf-nav { display:none !important; }
 
-  /* ハンバーガー */
   .hf-hamburger{
     display:block;margin-left:auto;cursor:pointer;
     font-size:1.8rem;line-height:1;padding:8px;border-radius:8px;
@@ -69,7 +67,6 @@ const RESPONSIVE_CSS = `
     backdrop-filter:saturate(180%) blur(8px);
   }
 
-  /* オーバーレイ＆ドロワー */
   .hf-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:999;}
   .hf-overlay.open{display:block;}
   .hf-drawer{
@@ -92,7 +89,7 @@ const RESPONSIVE_CSS = `
   /* フッターはコピーライトだけ・幅全体に広げる */
   #site-footer,
   #site-footer .hfbar {
-    width: 100% !important;       /* ← 横幅を常に全幅にする */
+    width: 100% !important;
     height: 30px !important;
     min-height: 30px !important;
     padding: 0 !important;
@@ -119,7 +116,7 @@ function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
   function adjust() {
     if (!mainEl) return;
 
-    // ヘッダー固定ONなら必ず反映
+    // ヘッダー固定
     if (hdrCfg?.header_fixed && headerEl) {
       const bar = headerEl.querySelector(".hfbar") || headerEl;
       bar.style.position = "fixed";
@@ -129,9 +126,11 @@ function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
       bar.style.zIndex = "100";
       bar.style.width = "100%";
     }
-    // mainのpaddingTopは作らない（本文側で調整）
 
-    // フッター固定ONなら本文が隠れないように余白を確保
+    // mainのpaddingTopは本文CSSに任せる
+    mainEl.style.paddingTop = "";
+
+    // フッター固定
     if (ftrCfg?.footer_fixed && footerEl) {
       const bar = footerEl.querySelector(".hfbar") || footerEl;
       bar.style.position = "fixed";
@@ -141,7 +140,22 @@ function applyFixedAndAdjustOffsets(hdrCfg, ftrCfg) {
       bar.style.zIndex = "100";
       bar.style.width = "100%";
 
-      mainEl.style.paddingBottom = footerEl.offsetHeight + "px";
+      // 高さを取得してpaddingBottomに適用（PCは最低60px）
+      let h = footerEl.offsetHeight;
+      if (window.innerWidth > 768) {
+        h = Math.max(h, 60);
+      }
+      mainEl.style.paddingBottom = h + "px";
+
+      // レイアウト確定後に再補正
+      setTimeout(() => {
+        let hh = footerEl.offsetHeight;
+        if (window.innerWidth > 768) {
+          hh = Math.max(hh, 60);
+        }
+        mainEl.style.paddingBottom = hh + "px";
+      }, 50);
+
     } else {
       mainEl.style.paddingBottom = "";
     }
