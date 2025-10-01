@@ -60,10 +60,10 @@ export async function loadHF() {
       const headerData = data.find((d) => d.area === "header");
       const footerData = data.find((d) => d.area === "footer");
 
-      if (headerData) {
+      if (headerData && headerData.data) {
         document.getElementById("site-header").innerHTML = headerData.data;
       }
-      if (footerData) {
+      if (footerData && footerData.data) {
         document.getElementById("site-footer").innerHTML = footerData.data;
       }
     }
