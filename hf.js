@@ -1,4 +1,4 @@
-// hf.js（完全版 + スマホ時フッター高さ24pxで強制上書き）
+// hf.js（完全版 + PC/スマホで高さを切り替え）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -49,7 +49,15 @@ const RESPONSIVE_CSS = `
 /* 初期は非表示（モバイルでのみ出す） */
 .hf-hamburger,.hf-drawer,.hf-overlay{display:none}
 
-/* モバイル */
+/* PC用：769px以上は最低60pxを保証 */
+@media (min-width:769px){
+  #site-footer .hfbar {
+    min-height: 60px !important;
+    line-height: 1.5 !important;
+  }
+}
+
+/* モバイル用：768px以下は高さ24pxに縮小 */
 @media (max-width:768px){
   #site-header .hf-nav, #site-footer .hf-nav { display:none !important; }
 
@@ -82,19 +90,22 @@ const RESPONSIVE_CSS = `
   .hf-drawer a{display:block;padding:12px 8px;border-radius:10px;text-decoration:none;color:inherit}
   .hf-drawer a:active{opacity:.7}
 
-  /* --- スマホ時のフッター調整（強制上書き） --- */
+  /* フッターを強制的に24pxに縮小 */
+  #site-footer,
   #site-footer .hfbar {
+    height: 24px !important;
     min-height: 24px !important;
     padding: 0 !important;
-    line-height: 1.2 !important;
+    line-height: 24px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
   }
   #site-footer .hf-copy {
+    font-size: 12px !important;
+    margin: 0 !important;
     justify-content: center !important;
     width: auto !important;
-    font-size: 12px !important;
   }
 }
 `;
