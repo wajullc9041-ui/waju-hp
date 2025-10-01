@@ -1,4 +1,4 @@
-// hf.js（完全版修正版）
+// hf.js（完全版：ヘッダー固定・フッター幅修正対応）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -48,9 +48,11 @@ const CORE_CSS = `
 const RESPONSIVE_CSS = `
 /* PC用フッターは最低60px確保 */
 @media (min-width:769px){
+  .hf-hamburger, .hf-overlay, .hf-drawer { display:none !important; }
   #site-footer .hfbar {
     min-height: 60px !important;
     line-height: 1.5 !important;
+    width: 100% !important;
   }
 }
 
@@ -87,9 +89,10 @@ const RESPONSIVE_CSS = `
   .hf-drawer a{display:block;padding:12px 8px;border-radius:10px;text-decoration:none;color:inherit}
   .hf-drawer a:active{opacity:.7}
 
-  /* フッターはコピーライトだけ・薄く */
+  /* フッターはコピーライトだけ・幅全体に広げる */
   #site-footer,
   #site-footer .hfbar {
+    width: 100% !important;       /* ← 横幅を常に全幅にする */
     height: 30px !important;
     min-height: 30px !important;
     padding: 0 !important;
