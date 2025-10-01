@@ -376,10 +376,17 @@
   }
 
   async function saveRow(area, payload){
-    const { error } = await supabase.from('hf_settings').update({ data: payload }).eq('area', area);
-    if (error){ console.error(error); toast('保存失敗', false); return; }
-    toast('保存しました', true);
+  console.log("saving", area, payload); // ← デバッグ用にログ追加
+  const { error } = await supabase
+    .from("hf_settings")
+    .upsert({ area: area, data: payload }, { onConflict: ["area"] });
+  if (error){
+    console.error(error);
+    toast("保存失敗", false);
+    return;
   }
+  toast("保存しました", true);
+}
 
   let menus = [];
   (async function init(){
