@@ -376,10 +376,17 @@
   }
 
   async function saveRow(area, payload){
-    const { error } = await supabase.from('hf_settings').update({ data: payload }).eq('area', area);
-    if (error){ console.error(error); toast('保存失敗', false); return; }
-    toast('保存しました', true);
+  console.log("saving", area, payload); // ← デバッグ用にログ追加
+  const { error } = await supabase
+    .from("hf_settings")
+    .upsert({ area: area, data: payload }, { onConflict: ["area"] });
+  if (error){
+    console.error(error);
+    toast("保存失敗", false);
+    return;
   }
+  toast("保存しました", true);
+}
 
   let menus = [];
   (async function init(){
@@ -415,7 +422,7 @@
   const dom = buildHeaderDOM(d, menus);
   d.headerHtml = dom.outerHTML;
 
-  const css = document.querySelector("#headerPreview style")?.outerHTML || "";
+  const css = buildHeaderCss(d);
   d.headerCss = css;
 
   await saveRow("header", d);
@@ -427,10 +434,60 @@
   const dom = buildFooterDOM(d, menus);
   d.footerHtml = dom.outerHTML;
 
-  const css = document.querySelector("#footerPreview style")?.outerHTML || "";
+  const css = buildFooterCss(d);
   d.footerCss = css;
 
   await saveRow("footer", d);
 });
   })();
 </script>
+
+
+function buildHeaderCss(d) {
+  return `
+    .hfbar {
+      font-family: ${d.header_font_family};
+      background-color: ${d.bg_color || "transparent"} !important;
+      background-image: ${d.bg_gradient || "none"} !important;
+      height: ${d.bar_height}px;
+      padding: ${d.padding};
+    }
+    .hf-brand span {
+      color: ${d.company_color};
+      font-weight: ${d.company_weight};
+      font-size: ${d.header_company_size}px;
+    }
+    .hf-nav {
+      color: ${d.nav_color};
+      font-weight: ${d.nav_weight};
+      font-size: ${d.header_nav_size}px;
+      justify-content: ${d.nav_alignment === "right" ? "flex-end" :
+                         d.nav_alignment === "left" ? "flex-start" : "center"};
+    }
+  `;
+}
+
+function buildFooterCss(d) {
+  return `
+    .hfbar-footer {
+      font-family: ${d.footer_font_family};
+      background-color: ${d.bg_color || "transparent"} !important;
+      background-image: ${d.bg_gradient || "none"} !important;
+      height: ${d.bar_height}px;
+      padding: ${d.padding};
+    }
+    .hf-footer-text {
+      color: ${d.footer_color};
+      font-weight: ${d.footer_weight};
+      font-size: ${d.footer_copy_size}px;
+      text-align: ${d.footer_alignment};
+    }
+    .hf-footer-nav {
+      color: ${d.nav_color_footer};
+      font-weight: ${d.nav_weight_footer};
+      font-size: ${d.footer_nav_size}px;
+      justify-content: ${d.nav_alignment_footer === "right" ? "flex-end" :
+                         d.nav_alignment_footer === "left" ? "flex-start" : "center"};
+    }
+  `;
+}
