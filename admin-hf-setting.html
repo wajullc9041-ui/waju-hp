@@ -376,17 +376,10 @@
   }
 
   async function saveRow(area, payload){
-  console.log("saving", area, payload); // ← デバッグ用にログ追加
-  const { error } = await supabase
-    .from("hf_settings")
-    .upsert({ area: area, data: payload }, { onConflict: ["area"] });
-  if (error){
-    console.error(error);
-    toast("保存失敗", false);
-    return;
+    const { error } = await supabase.from('hf_settings').update({ data: payload }).eq('area', area);
+    if (error){ console.error(error); toast('保存失敗', false); return; }
+    toast('保存しました', true);
   }
-  toast("保存しました", true);
-}
 
   let menus = [];
   (async function init(){
@@ -418,15 +411,25 @@
     $("#saveHeader").addEventListener("click", async function(){
   const d = getHeader();
   renderHeaderPreview(d, menus);
+
   const dom = buildHeaderDOM(d, menus);
   d.headerHtml = dom.outerHTML;
+
+  const css = document.querySelector("#headerPreview style")?.outerHTML || "";
+  d.headerCss = css;
+
   await saveRow("header", d);
 });
     $("#saveFooter").addEventListener("click", async function(){
   const d = getFooter();
   renderFooterPreview(d, menus);
+
   const dom = buildFooterDOM(d, menus);
   d.footerHtml = dom.outerHTML;
+
+  const css = document.querySelector("#footerPreview style")?.outerHTML || "";
+  d.footerCss = css;
+
   await saveRow("footer", d);
 });
   })();
