@@ -376,17 +376,10 @@
   }
 
   async function saveRow(area, payload){
-  console.log("saving", area, payload); // ← デバッグ用にログ追加
-  const { error } = await supabase
-    .from("hf_settings")
-    .upsert({ area: area, data: payload }, { onConflict: ["area"] });
-  if (error){
-    console.error(error);
-    toast("保存失敗", false);
-    return;
+    const { error } = await supabase.from('hf_settings').update({ data: payload }).eq('area', area);
+    if (error){ console.error(error); toast('保存失敗', false); return; }
+    toast('保存しました', true);
   }
-  toast("保存しました", true);
-}
 
   let menus = [];
   (async function init(){
@@ -415,34 +408,12 @@
     $("#grad_apply_footer").addEventListener("click", function(){ $("#bg_gradient_footer").value = linear($("#grad_dir_footer").value,$("#grad_start_footer").value,$("#grad_end_footer").value); renderFooterPreview(getFooter(), menus); });
     $("#grad_reset_footer").addEventListener("click", function(){ $("#bg_gradient_footer").value = ""; renderFooterPreview(getFooter(), menus); });
 
-    $("#saveHeader").addEventListener("click", async function(){
-  const d = getHeader();
-  renderHeaderPreview(d, menus);
-
-  const dom = buildHeaderDOM(d, menus);
-  d.headerHtml = dom.outerHTML;
-
-  const css = buildHeaderCss(d);
-  d.headerCss = css;
-
-  await saveRow("header", d);
-});
-    $("#saveFooter").addEventListener("click", async function(){
-  const d = getFooter();
-  renderFooterPreview(d, menus);
-
-  const dom = buildFooterDOM(d, menus);
-  d.footerHtml = dom.outerHTML;
-
-  const css = buildFooterCss(d);
-  d.footerCss = css;
-
-  await saveRow("footer", d);
-});
+    $("#saveHeader").addEventListener("click", async function(){ const d=getHeader(); renderHeaderPreview(d,menus); await saveRow("header", d); });
+    $("#saveFooter").addEventListener("click", async function(){ const d=getFooter(); renderFooterPreview(d,menus); await saveRow("footer", d); });
   })();
 </script>
 
-
+<script>
 function buildHeaderCss(d) {
   return `
     .hfbar {
@@ -491,3 +462,4 @@ function buildFooterCss(d) {
     }
   `;
 }
+</script>
