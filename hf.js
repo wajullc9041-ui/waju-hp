@@ -26,10 +26,13 @@ async function loadHF() {
       sb.from("hf_settings").select("data").eq("area", "header").single(),
       sb.from("hf_settings").select("data").eq("area", "footer").single()
     ]);
-    const hdr = r1?.data || null;
-    const ftr = r2?.data || null;
-    const headerHtml = hdr?.headerHtml || hdr?.data?.headerHtml || "";
-    const footerHtml = ftr?.footerHtml || ftr?.data?.footerHtml || "";
+
+    const hdr = r1?.data?.data || {};
+    const ftr = r2?.data?.data || {};
+
+    const headerHtml = hdr.headerHtml || "";
+    const footerHtml = ftr.footerHtml || "";
+
     setInner("site-header", headerHtml);
     setInner("site-footer", footerHtml);
     adjustOffsets();
@@ -50,5 +53,5 @@ setTimeout(() => {
   const body = document.getElementById("page-body");
   if (body) body.style.visibility = "visible";
 }, 3000);
+
 console.log("hf.js loaded");
-document.getElementById("page-body").style.visibility = "visible";
