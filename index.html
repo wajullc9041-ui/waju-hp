@@ -5,799 +5,156 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>合同会社WaJu | 公式サイト</title>
 
-  <!-- SEO / OGP -->
   <meta name="description" content="合同会社WaJuの公式サイト。介護・福祉業界の課題を解決するCARELAYの紹介、会社概要や最新のお知らせを発信しています。">
   <meta name="keywords" content="合同会社WaJu, CARELAY, 介護, 福祉, 求人, 営業, 地域連携">
-
   <meta property="og:title" content="合同会社WaJu | 公式サイト">
   <meta property="og:description" content="介護・福祉業界の課題を解決するCARELAYを中心に、社会貢献を目指すWaJuの公式サイト。">
   <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png">
   <meta property="og:url" content="https://waju.co.jp/">
   <meta property="og:type" content="website">
-
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@waju_corp">
-
   <meta name="language" content="ja">
   <meta name="geo.placename" content="Kobe, Japan">
-  <!-- /SEO / OGP -->
-
-  <!-- Favicon / PWA -->
-  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
-  <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
-  <meta name="theme-color" content="#0f172a">
-
-  <!-- Tailwind CSS CDN を読み込み -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
+  <link rel="icon" type="image/png" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* ========== 既存のCSS ========== */
-    :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
-    *{box-sizing:border-box}
-    /* font-familyをTailwindのデフォルト（system-uiベース）に上書きし、よりモダンな見た目にする */
-    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
-    a{color:inherit;text-decoration:none}
-    main{min-height:40vh}
-    .container{max-width:var(--container);margin:0 auto;padding:0 16px}
-    .hf-wrap{width:100%}
-    .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
-    .hfbar.hf-row{justify-content:flex-start}
-    .hfbar.hf-column{flex-direction:column;align-items:stretch}
-    .hf-brand{display:flex;align-items:center;gap:8px}
-    .hf-nav{display:flex;gap:var(--gap);flex-wrap:wrap;width:100%}
-    .slot{display:flex;align-items:center}
-    .slot.brand{flex:0 0 auto}
-    .slot.nav{flex:1 1 auto}
-    .hf-copy{display:flex;width:100%}
-    .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
-    .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
-    .drawer{position:fixed;inset:0;pointer-events:none}
-    .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
-    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
-    .drawer[aria-hidden="false"]{pointer-events:auto}
-    .drawer[aria-hidden="false"] .overlay{opacity:1}
-    .drawer[aria-hidden="false"] .panel{transform:none}
-    .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
-    .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
-    .drawer .panel nav a{padding:12px 10px;border-radius:10px}
-    .drawer .panel nav a:hover{background:#f1f5f9}
-    @media (max-width:768px){
-      .container{padding:0 12px}
-      :root{--container:100%}
-      .slot.nav{display:none}
-      .hamburger{display:block;margin-left:auto}
-      #site-footer .hf-nav{display:none !important}
+    /* ----------------------------------------------------- */
+    /* 1. 共通・リセットCSS (bodyタグ自体への適用) */
+    /* ----------------------------------------------------- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: #333;
+      background-color: #fff;
+      /* HF適用までのFOUC対策（hf.jsで解除されます） */
+      visibility: hidden; 
+      min-height: 100vh;
+    }
+    
+    /* ----------------------------------------------------- */
+    /* 2. メインコンテンツ領域の調整 */
+    /* ----------------------------------------------------- */
+    /* main要素自体は、HF固定時にJSによってpaddingが設定されます。 */
+    main {
+      box-sizing: border-box; 
+      flex-grow: 1; /* bodyをflexにしている場合 */
     }
 
-    /* index専用 (Tailwindと競合するため、一部を調整) */
-    section{margin:60px auto}
-    h1{font-size:36px;text-align:center}
-    /* 既存のh2スタイルを無効化し、TailwindベースのSectionTitleクラスを使用する */
-    h2{font-size:36px;text-align:center;font-weight:700;}
-    /* h3も同様にTailwindベースのクラスを使用する */
-    h3{font-size:20px;margin-bottom:10px;font-weight:700;} 
-    p{margin:0 0 14px}
-    .lead{font-size:20px;text-align:center;margin-bottom:30px;color:#374151}
-    .card{background:#fff;padding:32px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:30px}
-    .topics ul{list-style:none;padding:0}
-    .topics li{margin-bottom:12px;border-bottom:1px solid #e5e7eb;padding-bottom:8px}
-    .cta{text-align:center;margin-top:40px}
-    .cta a{display:inline-block;padding:12px 28px;background:#1976d2;color:#fff;border-radius:8px;text-decoration:none}
-
-    /* ========== WaJuコンテンツ用カスタムCSS ========== */
-    :root {
-        --accent-color: #6699CC; /* WaJuのキーカラー */
+    /* ----------------------------------------------------- */
+    /* 3. 【最重要】メインコンテンツ固有のCSS（干渉防止） */
+    /* #main-content-wrapper の子孫に限定することで詳細度を上げる */
+    /* ----------------------------------------------------- */
+    #main-content-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
     }
-    .accent-bg {
-        background-color: var(--accent-color);
+    
+    #main-content-wrapper .hero {
+      background-color: #f0f0f0;
+      padding: 60px 20px;
+      text-align: center;
     }
-    .accent-color-text {
-        color: var(--accent-color);
+    
+    #main-content-wrapper .hero h2 {
+      font-size: 2.5em;
+      color: #007bff;
     }
-    .accent-text-border {
-        border-left-color: var(--accent-color);
+    
+    #main-content-wrapper .carelay {
+      padding: 40px 0;
     }
-    .section-title::after {
-        content: '';
-        display: block;
-        width: 4rem;
-        height: 4px;
-        margin: 0.5rem auto 0;
-        border-radius: 9999px;
-        background-color: var(--accent-color);
+    
+    #main-content-wrapper .carelay h3 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.8em;
+      color: #007bff;
+    }
+    
+    #main-content-wrapper .service-cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    #main-content-wrapper .card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      width: calc(33% - 20px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+    
+    #main-content-wrapper .card:hover {
+      transform: translateY(-5px);
+    }
+    
+    #main-content-wrapper .card h4 {
+      color: #007bff;
+      margin-top: 0;
+    }
+    
+    /* レスポンシブ対応 (既存のCSSを#main-content-wrapperで囲む) */
+    @media (max-width: 768px) {
+      #main-content-wrapper .service-cards {
+        flex-direction: column;
+      }
+      #main-content-wrapper .card {
+        width: 100%;
+      }
     }
   </style>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-ZHLJ5K19ZE');
-  </script>
-
 </head>
-<body>
+<body id="page-body">
   
-  <header id="site-header" class="hf-wrap"></header>
+  <header id="site-header"></header>
 
-  
+  <main>
+    <div id="main-content-wrapper">
 
-<main id="app-root">
-  <!-- Hero Section -->
-  <section id="hero">
-    <div class="carousel">
-      <div class="slide active"><img src="images/hero1.jpg" alt="Hero 1"></div>
-      <div class="slide"><img src="images/hero2.jpg" alt="Hero 2"></div>
-      <div class="slide"><img src="images/hero3.jpg" alt="Hero 3"></div>
-    </div>
-  </section>
+      <section class="hero">
+        <h2>介護・福祉業界を支える</h2>
+        <p>地域連携とIT技術で、現場の課題を解決します。</p>
+        <a href="#carelay" class="btn-primary">CARELAYについて</a>
+      </section>
 
-  <!-- News Section -->
-  <section id="news">
-    <h2>お知らせ</h2>
-    <ul>
-      <li><a href="#">ニュース1</a></li>
-      <li><a href="#">ニュース2</a></li>
-      <li><a href="#">ニュース3</a></li>
-    </ul>
-  </section>
-
-  <!-- About Section -->
-  <section id="about">
-    <h2>会社概要</h2>
-    <p>弊社は…（ここに会社概要の説明が入ります）</p>
-  </section>
-
-  <!-- Service Section -->
-  <section id="service">
-    <h2>事業内容</h2>
-    <p>弊社の事業内容は…（ここに説明が入ります）</p>
-  </section>
-
-  <!-- YouTube Section -->
-  <section id="youtube">
-    <h2>動画紹介</h2>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/xxxxx" frameborder="0" allowfullscreen></iframe>
-  </section>
-
-  <!-- SNS Section -->
-  <section id="sns">
-    <h2>SNS</h2>
-    <ul>
-      <li><a href="https://twitter.com/">X</a></li>
-      <li><a href="https://facebook.com/">Facebook</a></li>
-      <li><a href="https://instagram.com/">Instagram</a></li>
-    </ul>
-  </section>
-
-  <!-- Company Info Section -->
-  <section id="company-info">
-    <h2>会社情報</h2>
-    <p>所在地: 神戸市…<br>代表: ○○</p>
-    <p><a href="/contact.html">お問い合わせはこちら</a></p>
-  </section>
-</main>
-
-
-
-  <footer id="site-footer" class="hf-wrap"></footer>
-
-  <!-- Mobile drawer -->
-  <div id="mobile-drawer" class="drawer" aria-hidden="true">
-    <div class="overlay" data-close></div>
-    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
-      <header>
-        <div class="title" id="drawer-title">メニュー</div>
-        <button class="hamburger" id="drawer-close" aria-label="閉じる">
-          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-        </button>
-      </header>
-      <nav id="drawer-nav" aria-label="モバイルメニュー"></nav>
-    </div>
-  </div>
-
-  <!-- Lucide Icons (コンテンツ用) と ヘッダー/フッターロジック -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <script type="module">
-    // ==============================================
-    // 1. ヘッダー/フッターのロジック (index_part3.txtから)
-    // ==============================================
-    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
-    // データベース接続情報 (既存のファイルをそのまま利用)
-    const sb = createClient(
-      "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-    );
-
-    const $ = s => document.querySelector(s);
-    const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
-    const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/ (sans-serif|serif|monospace) /i.test(s) ? s : `${s}, sans-serif`);
-    const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
-    const bgParts = (row, def) => {
-      const grad = stripQuotes(row?.bg_gradient||"").trim();
-      if (grad){ return {bgColor:def, bgImage:grad}; }
-      const col = (row?.bg_color && row.bg_color.trim()) ? row.bg_color : def;
-      return {bgColor:col, bgImage:"none"};
-    };
-    const brandJustifyMargins = (align)=> align==='left'?'margin-right:auto':(align==='center'?'margin:0 auto':'margin-left:auto');
-
-    let allMenus = [];
-
-    async function loadHF(){
-      // ヘッダーとフッターの設定を読み込み
-      const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
-        sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
-        sb.from("hf_settings").select("*").eq("area","header").single(),
-        sb.from("hf_settings").select("*").eq("area","footer").single()
-      ]);
-      allMenus = menus||[];
-
-      renderHeader(hdr||{}, allMenus);
-      renderFooter(ftr||{}, allMenus);
-      buildDrawer(allMenus);
-      adjustOffsets(hdr||{}, ftr||{});
-      addResizeObserver(hdr||{}, ftr||{});
-
-      // ヘッダー/フッター読み込み後、メインコンテンツをレンダリング
-      renderApp();
-    }
-
-    function linkOf(m){ return (m.url ?? m.href ?? '#'); }
-
-    // ヘッダー処理
-    function renderHeader(d, menus){
-      const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
-        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
-      const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
-      const paddingY = d.padding || "8px 0";
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      $("#site-header").innerHTML = `
-        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
-              <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
-                <div class="hf-brand">
-                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||60,60)}px">`:""}
-                  <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
-                </div>
-              </div>
-              <div class="slot nav">
-                <nav class="hf-nav" id="desktop-nav" style="justify-content:${toJustify(d.nav_alignment)};color:${d.nav_color};font-weight:${d.nav_weight};font-size:${num(d.header_nav_size,14)}px">${items}</nav>
-              </div>
-              <button id="hamburger" class="hamburger" aria-controls="mobile-drawer" aria-expanded="false" aria-label="メニューを開く">
-                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-              </button>
-            </div>
+      <section class="carelay" id="carelay">
+        <h3>CARELAYの提供サービス</h3>
+        <div class="service-cards">
+          <div class="card">
+            <h4>地域連携サポート</h4>
+            <p>地域の病院や施設との情報共有をスムーズにし、多職種連携を強化します。</p>
           </div>
-        </div>`;
-      const bg = $("#hf-header-bg");
-      if(d.header_fixed && bg){
-        Object.assign(bg.style,{position:"fixed",top:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
-      }
-      $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
-    }
-
-    // フッター処理
-    function renderFooter(d, menus){
-      const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
-        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
-      const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
-      const paddingY = d.padding || "8px 0";
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      const inner = d.layout_mode==="nav-top"
-        ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
-           <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
-        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
-      $("#site-footer").innerHTML = `
-        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
-              ${inner}
-            </div>
+          <div class="card">
+            <h4>採用支援コンサルティング</h4>
+            <p>介護・福祉に特化した求人戦略と定着支援で、人材不足の解消をサポートします。</p>
           </div>
-        </div>`;
-      const bg = $("#hf-footer-bg");
-      if(d.footer_fixed && bg){
-        Object.assign(bg.style,{position:"fixed",bottom:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
-      }
-    }
+          <div class="card">
+            <h4>業務効率化ITツール</h4>
+            <p>記録や請求業務を自動化し、職員が利用者様へのケアに専念できる環境を提供します。</p>
+          </div>
+        </div>
+      </section>
 
-    function buildDrawer(menus){
-      const items = menus.filter(m=>m.is_active).map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      $("#drawer-nav").innerHTML = items;
-    }
-
-    function openDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","false");$("#hamburger").setAttribute("aria-expanded","true");}
-    function closeDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","true");$("#hamburger").setAttribute("aria-expanded","false");}
-    $("#drawer-close")?.addEventListener("click", closeDrawer);
-    $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
-
-    function adjustOffsets(h,f){
-      const headerEl=$("#hf-header-bg");
-      const body=document.body;
-      // ヘッダーの高さ分、bodyの上部にパディングを設定 (固定ヘッダー対応)
-      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
-      body.style.paddingBottom="0";
-    }
-
-    function addResizeObserver(h,f){
-      const ro=new ResizeObserver(()=>adjustOffsets(h,f));
-      const headerEl=$("#hf-header-bg");const footerEl=$("#hf-footer-bg");
-      if(headerEl) ro.observe(headerEl); if(footerEl) ro.observe(footerEl);
-    }
-
-    loadHF();
-
-
-    // ==============================================
-    // 2. メインコンテンツのデータとロジック (Reactからの移行)
-    // ==============================================
-
-    const ACCENT_COLOR_HEX = '#6699CC'; // WaJuのキーカラー
-
-    const MAIN_VISUAL_SLIDES = [
-        { 
-            url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png", 
-            alt: "ビジュアル 1: 社会貢献のイメージ",
-            bgColorClass: "bg-gradient-to-br from-green-100 to-white"
-        },
-        { 
-            url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png", 
-            alt: "ビジュアル 2: チームワークのイメージ",
-            bgColorClass: "bg-gradient-to-br from-sky-100 to-white"
-        },
-        { 
-            url: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png", 
-            alt: "ビジュアル 3: 未来への躍進",
-            bgColorClass: "bg-gradient-to-br from-orange-100 to-white"
-        },
-    ];
-
-    // 修正指示2: NEWSセクションのリンク修正
-    const NEWS_ITEMS = [
-        { date: "2024.09.27", title: "【重要】ホームページをリニューアルしました", link: "blog.html" },
-        { date: "2024.09.01", title: "新サービス「CARELAY」の提供を開始しました。", link: "blog.html" },
-        { date: "2024.08.15", title: "夏季休業のお知らせとご協力のお願い", link: "blog.html" },
-        { date: "2023.04.01", title: "合同会社WaJuを設立しました。", link: "blog.html" },
-    ];
-
-    const COMPANY_INFO = [
-        { term: "会社名", description: "合同会社WaJu" },
-        { term: "代表社員", description: "大野 洋" },
-        { term: "所在地", description: "〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102" },
-        { term: "連絡先", description: '<a href="mailto:info@waju.co.jp" class="text-blue-600 hover:underline">info@waju.co.jp</a>' },
-        { term: "設立", description: "2023年4月" },
-    ];
-
-    // Lucideアイコンのヘルパー関数
-    const getIconSVG = (name, size = 24, classes = "", color = "currentColor") => {
-        const iconData = lucide.icons[name];
-        if (!iconData) return '';
-        const [attrs, contents] = iconData;
-        return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-${name} ${classes}" ${Object.entries(attrs).map(([key, value]) => `${key}="${value}"`).join(' ')}>${contents.map(([tag, attr]) => `<${tag} ${Object.entries(attr).map(([k, v]) => `${k}="${v}"`).join(' ')}></${tag}>`).join('')}</svg>`;
-    };
-
-    // ==============================================
-    // 3. 共通コンポーネント (HTML文字列生成関数)
-    // ==============================================
-
-    /**
-     * 汎用セクションタイトルコンポーネント
-     */
-    const SectionTitle = (title) => `
-        <h2 class="section-title text-3xl md:text-4xl font-extrabold text-center mb-10 relative pb-4 text-gray-900">
-            ${title}
-        </h2>
-    `;
-
-    /**
-     * 汎用セクションラッパーコンポーネント
-     */
-    const SectionLayout = (id, title, content, bgColorClass = 'bg-white') => `
-        <section id="${id}" class="py-12 md:py-20 ${bgColorClass}">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                ${title ? SectionTitle(title) : ''}
-                ${content}
-            </div>
-        </section>
-    `;
-
-    /**
-     * 画像とテキストのコンテンツブロック (About & Service)
-     */
-    const ContentBlock = ({ title, contentHtml, imageUrl, linkUrl, isReverse = false, isService = false }) => {
-        const mediaContent = `
-            <div class="w-full md:w-1/2 p-4">
-                <img 
-                    src="${imageUrl}" 
-                    alt="${title}" 
-                    class="rounded-xl shadow-2xl object-cover w-full h-auto"
-                    loading="lazy"
-                />
-            </div>
-        `;
-
-        const textContent = `
-            <div class="w-full md:w-1/2 p-4">
-                <h3 
-                    class="text-2xl font-bold mb-4 border-l-4 pl-3 accent-text-border"
-                >
-                    ${title}
-                </h3>
-                <div class="text-gray-700 space-y-4">
-                    ${contentHtml}
-                    ${isService ? `<p class="font-extrabold text-2xl" style="color: ${ACCENT_COLOR_HEX};">
-                        圧倒的な低コスト「5,500円」
-                    </p>` : ''}
-                </div>
-                <div class="mt-8">
-                    <a 
-                        href="${linkUrl}"
-                        class="inline-block px-8 py-3 text-white font-bold rounded-full transition duration-300 shadow-md hover:shadow-lg accent-bg"
-                    >
-                        詳しく見る
-                    </a>
-                </div>
-            </div>
-        `;
-
-        const contentOrder = isReverse ? [textContent, mediaContent] : [mediaContent, textContent];
-
-        return `
-            <div class="flex flex-col ${isReverse ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-8">
-                ${contentOrder.join('')}
-            </div>
-        `;
-    };
-
-
-    // ==============================================
-    // 4. セクションのロジック
-    // ==============================================
-    
-    let currentIndex = 0;
-    let interval;
-
-    const nextSlide = () => {
-        currentIndex = (currentIndex + 1) % MAIN_VISUAL_SLIDES.length;
-        updateCarousel();
-    };
-
-    const prevSlide = () => {
-        currentIndex = (currentIndex - 1 + MAIN_VISUAL_SLIDES.length) % MAIN_VISUAL_SLIDES.length;
-        updateCarousel();
-    };
-
-    window.goToSlide = (index) => { // グローバルスコープでアクセス可能にする
-        currentIndex = index;
-        updateCarousel();
-    };
-
-    const startCarousel = () => {
-        if (interval) clearInterval(interval);
-        interval = setInterval(nextSlide, 5000);
-    };
-
-    const updateCarousel = () => {
-        const container = document.getElementById('carousel-container');
-        if (container) {
-            container.style.transform = `translateX(-${currentIndex * 100}%)`;
-        }
-        
-        const indicators = document.querySelectorAll('.carousel-indicator');
-        indicators.forEach((indicator, index) => {
-            indicator.classList.remove('bg-white', 'scale-110');
-            indicator.classList.add('bg-gray-400', 'opacity-70');
-            if (index === currentIndex) {
-                indicator.classList.add('bg-white', 'scale-110');
-                indicator.classList.remove('bg-gray-400', 'opacity-70');
-            }
-        });
-    };
-
-    const renderMainVisual = () => {
-        const slidesHtml = MAIN_VISUAL_SLIDES.map((slide, index) => `
-            <div 
-                class="w-full flex-shrink-0 h-full flex items-center justify-center ${slide.bgColorClass}"
-                aria-label="${slide.alt}"
-            >
-                <img
-                    src="${slide.url}"
-                    alt="${slide.alt}"
-                    class="h-full w-full object-contain"
-                    loading="lazy"
-                />
-            </div>
-        `).join('');
-
-        const indicatorsHtml = MAIN_VISUAL_SLIDES.map((_, index) => `
-            <button
-                class="carousel-indicator w-3 h-3 rounded-full transition-colors duration-300 ${index === 0 ? 'bg-white scale-110' : 'bg-gray-400 opacity-70'}"
-                aria-label="Go to slide ${index + 1}"
-                onclick="goToSlide(${index})"
-            ></button>
-        `).join('');
-
-        return `
-            <div class="relative w-full overflow-hidden h-[45vh] md:h-[65vh] shadow-xl">
-                <!-- スライドコンテナ -->
-                <div 
-                    id="carousel-container"
-                    class="flex h-full transition-transform duration-700 ease-in-out"
-                    style="transform: translateX(0%);"
-                >
-                    ${slidesHtml}
-                </div>
-
-                <!-- 左右ナビゲーションボタン -->
-                <button 
-                    onclick="prevSlide()"
-                    class="absolute top-1/2 left-4 transform -translate-y-1/2 p-3 rounded-full bg-black bg-opacity-30 text-white hover:bg-opacity-50 transition duration-300 z-10"
-                    aria-label="Previous slide"
-                >
-                    ${getIconSVG('chevron-left', 24)}
-                </button>
-                <button 
-                    onclick="nextSlide()"
-                    class="absolute top-1/2 right-4 transform -translate-y-1/2 p-3 rounded-full bg-black bg-opacity-30 text-white hover:bg-opacity-50 transition duration-300 z-10"
-                    aria-label="Next slide"
-                >
-                    ${getIconSVG('chevron-right', 24)}
-                </button>
-
-                <!-- インジケーター -->
-                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-                    ${indicatorsHtml}
-                </div>
-            </div>
-        `;
-    };
-    
-    const renderNewsSection = () => {
-        const newsList = NEWS_ITEMS.map(item => `
-            <a 
-                href="${item.link}"
-                class="flex flex-col md:flex-row items-start md:items-center py-4 border-b last:border-b-0 group transition duration-200 hover:bg-gray-50 rounded-lg px-2"
-            >
-                <time class="text-sm font-semibold w-full md:w-32 text-gray-500 md:text-left mb-1 md:mb-0">
-                    ${item.date}
-                </time>
-                <p class="flex-1 text-base group-hover:text-gray-700 transition duration-200 group-hover:font-semibold">
-                    ${item.title}
-                </p>
-            </a>
-        `).join('');
-
-        const content = `
-            <div class="max-w-3xl mx-auto">
-                ${newsList}
-                <div class="text-center mt-8">
-                    <!-- 修正指示2: 「Read More」リンクをblog.htmlに修正 -->
-                    <a href="blog.html" class="font-semibold text-sm hover:underline accent-color-text">
-                        Read More &rarr;
-                    </a>
-                </div>
-            </div>
-        `;
-        return SectionLayout('news', 'NEWS', content, 'bg-white');
-    };
-
-    const renderAboutSection = () => {
-        const contentHtml = `
-            <p>
-                社会福祉の一環として、介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い社会的支援ができる企業を目指しています。
-            </p>
-            <p>
-                絶えず前進するための <b>Walk</b>、そして躍進するための <b>Jump</b> を心掛け、社会に貢献していきます。
-            </p>
-        `;
-        return SectionLayout('about', 'ABOUT US', ContentBlock({ 
-            title: "社会に貢献する、新たな価値創造へ",
-            imageUrl: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png",
-            // 修正指示3: ABOUTセクションのリンクをabout.htmlに修正
-            linkUrl: "about.html",
-            contentHtml: contentHtml,
-            isReverse: false,
-            isService: false
-        }), 'bg-gray-100');
-    };
-
-    const renderServiceSection = () => {
-        const contentHtml = `
-            <p>
-                高齢者介護サービス事業者や障害福祉サービス事業者の<b>求人・営業・連携</b>の問題をオンラインで解決するプラットフォームです。
-            </p>
-            <p>
-                このサービスは、業界の持続可能な発展をサポートするため、他にはない圧倒的な低コストでご提供しています。
-            </p>
-        `;
-        return SectionLayout('service', 'SERVICE', ContentBlock({ 
-            title: "介護・福祉業界の課題をオンラインで解決「CARELAY（ケアレイ）」",
-            imageUrl: "https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png",
-            // 修正指示4: SERVICEセクションのリンクをservice.htmlに修正
-            linkUrl: "service.html",
-            contentHtml: contentHtml,
-            isReverse: true,
-            isService: true
-        }), 'bg-white');
-    };
-
-    const renderYouTubeSection = () => {
-        const videos = [
-            { title: "会社概要", id: "CjgbFC64qOk" },
-            { title: "サービス概要", id: "WqQh-Ok9kjo" },
-        ];
-
-        const videoCards = videos.map(video => `
-            <div class="rounded-xl overflow-hidden shadow-lg transform hover:scale-[1.01] transition duration-300">
-                <h3 class="text-center text-lg font-semibold py-3 bg-gray-100 border-b">
-                    ${video.title}
-                </h3>
-                <div class="relative pt-[56.25%]">
-                    <iframe
-                        class="absolute top-0 left-0 w-full h-full"
-                        src="https://www.youtube.com/embed/${video.id}"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                        title="${video.title} - WaJu YouTube"
-                    ></iframe>
-                </div>
-            </div>
-        `).join('');
-
-        const content = `
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                ${videoCards}
-            </div>
-        `;
-        return SectionLayout('youtube', 'YouTube', content, 'bg-white');
-    };
-
-    const renderSNSSecion = () => {
-        const SNSSquare = ({ iconName, title, handle, color }) => `
-            <div class="p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                <div class="flex items-center justify-center mb-4">
-                    <div class="p-3 rounded-full text-white" style="background-color: ${color};">
-                        ${getIconSVG(iconName, 32, '', 'white')}
-                    </div>
-                </div>
-                <h4 class="text-xl font-bold text-center mb-1">${title}</h4>
-                <p class="text-center text-sm text-gray-500 mb-4">${handle}</p>
-                <div class="h-24 bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-sm text-gray-400">
-                    最新投稿の埋め込みエリア
-                </div>
-            </div>
-        `;
-
-        const content = `
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                ${SNSSquare({ iconName: 'instagram', title: 'Instagram', handle: '@waju_official', color: '#E1306C' })}
-                ${SNSSquare({ iconName: 'twitter', title: 'X (旧Twitter)', handle: '@waju_corp', color: '#1DA1F2' })}
-            </div>
-            <p class="text-center mt-6 text-sm text-gray-500">
-                ※実際の埋め込みコードをここに挿入することでリアルタイム投稿が表示されます。
-            </p>
-        `;
-        return SectionLayout('sns', 'SNS', content, 'bg-gray-50');
-    };
-
-    const renderCompanySection = () => {
-        const infoRows = COMPANY_INFO.map((item, index) => `
-            <div class="grid grid-cols-1 md:grid-cols-3 p-4 
-                ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} 
-                ${index !== COMPANY_INFO.length - 1 ? 'border-b border-gray-200' : ''}"
-            >
-                <dt class="font-bold text-gray-700 md:col-span-1">${item.term}</dt>
-                <dd class="text-gray-800 md:col-span-2 pt-1 md:pt-0">${item.description}</dd>
-            </div>
-        `).join('');
-
-        const content = `
-            <div class="max-w-3xl mx-auto border rounded-xl shadow-lg overflow-hidden">
-                ${infoRows}
-            </div>
-            <div class="text-center mt-12">
-                ${getIconSVG('mail', 20, 'inline-block mr-2 align-text-bottom', ACCENT_COLOR_HEX)}
-                <!-- 修正指示5: 「お問い合わせ」リンクをcontact.htmlに修正 -->
-                <a href="contact.html" class="text-lg font-semibold hover:underline accent-color-text">
-                    お問い合わせ
-                </a>
-            </div>
-        `;
-        return SectionLayout('company', 'COMPANY', content, 'bg-white');
-    };
-
-    // ==============================================
-    // 5. メインコンテンツのレンダリング
-    // ==============================================
-    
-    const renderApp = () => {
-        const main = document.getElementById('app-root');
-        if (main) {
-            // すべてのセクションを結合してinnerHTMLに設定
-            main.innerHTML = [
-                renderMainVisual(),
-                renderNewsSection(),
-                renderAboutSection(),
-                renderServiceSection(),
-                renderYouTubeSection(),
-                renderSNSSecion(),
-                renderCompanySection()
-            ].join('');
-            
-            // カルーセル自動スライド開始
-            startCarousel();
-
-            // カルーセルボタンにイベントリスナーを追加 (DOMレンダリング後)
-            document.querySelector('#app-root').querySelectorAll('button[onclick="prevSlide()"]').forEach(btn => {
-                btn.onclick = prevSlide;
-            });
-            document.querySelector('#app-root').querySelectorAll('button[onclick="nextSlide()"]').forEach(btn => {
-                btn.onclick = nextSlide;
-            });
-        }
-    };
-
-    // NOTE: ヘッダー/フッターのJavaScript `loadHF()` の中で `renderApp()` が呼ばれるように修正済み。
-    // `loadHF` の処理が完了次第、メインコンテンツが表示されます。
-    </script>
-
-<!-- HF bootstrap (stable) -->
-<script>
-(function(){
-  // Ensure Supabase client
-  var supabaseUrl = "https://htnmjsqgoapvuanrsuma.supabase.co";
-  var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA";
-  try{
-    if (!window.supabase || !window.supabase.createClient) return;
-  }catch(e){ return; }
-  var sb = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-  function setInner(id, html){
-    var el = document.getElementById(id);
-    if (el) el.innerHTML = html || "";
-  }
-  function adjustOffsets(){
-    var headerEl = document.getElementById("site-header");
-    var footerEl = document.getElementById("site-footer");
-    var mainEl = document.querySelector("main");
-    if (!mainEl) return;
-    if (headerEl) mainEl.style.paddingTop = headerEl.offsetHeight + "px";
-    if (footerEl) mainEl.style.paddingBottom = footerEl.offsetHeight + "px";
-  }
-
-  async function loadHF(){
-    try{
-      var r1 = await sb.from("hf_settings").select("data").eq("area","header").single();
-      var r2 = await sb.from("hf_settings").select("data").eq("area","footer").single();
-      var hdr = r1 && r1.data ? r1.data : null;
-      var ftr = r2 && r2.data ? r2.data : null;
-      var headerHtml = hdr && (hdr.headerHtml || (hdr.data && hdr.data.headerHtml)) || "";
-      var footerHtml = ftr && (ftr.footerHtml || (ftr.data && ftr.data.footerHtml)) || "";
-      setInner("site-header", headerHtml);
-      setInner("site-footer", footerHtml);
-      adjustOffsets();
+      <section style="padding: 40px 0; text-align: center;">
+        <h3>会社概要</h3>
+        <p>合同会社WaJuは、日本の福祉社会の持続的な発展に貢献します。</p>
+        <div style="height: 500px; background: #e9ecef; margin-top: 20px; padding: 20px; border-radius: 8px;">ダミーのコンテンツ</div>
+      </section>
       
-    }catch(e){
-      console.warn("HF load failed", e);
-    }
-  }
-  // Start
-  loadHF();
-})();
-</script>
+    </div>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script type="module" src="hf.js"></script>
 
 </body>
 </html>
