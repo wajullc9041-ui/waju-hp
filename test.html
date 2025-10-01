@@ -1,58 +1,37 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>合同会社WaJu | 公式サイト</title>
-
-  <!-- SEO / OGP -->
-  <meta name="description" content="合同会社WaJuの公式サイト。">
-  <meta name="keywords" content="合同会社WaJu, CARELAY, 介護, 福祉">
-  <meta property="og:title" content="合同会社WaJu | 公式サイト">
-  <meta property="og:description" content="介護・福祉業界の課題を解決するCARELAYを中心に、社会貢献を目指すWaJuの公式サイト。">
-  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png">
-  <meta property="og:url" content="https://www.waju.co.jp/">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
-  <meta name="theme-color" content="#0f172a">
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-ZHLJ5K19ZE');
-  </script>
-
-  <!-- ページ専用スタイル（最小限） -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ヘッダー／フッターテストページ</title>
   <style>
-    body { visibility: hidden; }
-    #site-header, #site-footer { width: 100%; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      visibility: hidden; /* FOUC対策 */
+    }
+    header, footer {
+      background: #f0f0f0;
+      padding: 1em;
+      text-align: center;
+    }
+    main {
+      padding: 2em;
+      min-height: 60vh;
+    }
   </style>
 </head>
-
 <body id="page-body">
-  <!-- ヘッダー -->
   <header id="site-header"></header>
 
-  <!-- メイン（まだ空） -->
-  <main id="page-main" class="pt-20">
-    <div class="max-w-5xl mx-auto text-center text-gray-500">
-      （メインコンテンツ未配置）
-    </div>
+  <main>
+    <h1>テストページ</h1>
+    <p>ここがメインコンテンツです。Supabaseのヘッダー／フッターが正しく反映されるか確認してください。</p>
   </main>
 
-  <!-- フッター -->
   <footer id="site-footer"></footer>
 
-  <!-- 共通JS -->
-  <script src="hf.js" type="module"></script>
+  <!-- 修正版 hf.js を読み込み -->
+  <script type="module" src="hf_fixed.js.txt"></script>
 </body>
 </html>
