@@ -8,7 +8,7 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      visibility: hidden; /* FOUC対策 */
+      visibility: hidden; /* FOUC対策: JSで解除されるまで非表示 */
     }
     main {
       padding: 2em;
@@ -22,11 +22,11 @@
   <main>
     <h1>テストページ</h1>
     <p>ここがメインコンテンツです。管理ページで保存したヘッダー／フッターが正しく反映されるか確認してください。</p>
+    <div style="height: 1000px; background: #f0f4f8; padding: 20px; margin-top: 20px;">スクロール用ダミーコンテンツ</div>
   </main>
 
   <footer id="site-footer"></footer>
 
-  <!-- 最終版 hf.js を読み込み -->
   <script type="module" src="hf.js"></script>
 </body>
 </html>
