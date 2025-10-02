@@ -3,38 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ブログ詳細 | 合同会社WaJu</title>
-
-  <!-- SEO -->
-  <meta name="description" content="CARELAYや介護・福祉業界に関する最新情報、コラム、イベントなどの詳細ページです。">
-  <meta property="og:title" content="ブログ詳細 | 合同会社WaJu">
-  <meta property="og:description" content="CARELAYや介護・福祉業界に関する最新情報、コラム、イベントなどの詳細ページです。">
-  <meta property="og:type" content="article">
-  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png">
-  <meta property="og:url" content="https://waju.co.jp/blog-detail.html">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png">
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R49H9DTN70"></script>
+  <meta name="description" content="CARELAYブログ記事詳細ページ">
+  <title>ブログ記事詳細 | 合同会社WaJu</title>
+  <!-- Google Analytics 共通タグ -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-R49H9DTN70');
+    gtag('config', 'G-XXXXXXXXXX');
   </script>
-
-  <!-- TailwindCSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="/hf.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body id="page-body">
+<body>
   <header id="site-header"></header>
 
   <main id="page-main">
     <section class="max-w-3xl mx-auto px-6 py-12">
+
       <!-- タイトル & サムネイル -->
       <div class="flex items-start gap-4 mb-6">
         <img id="post-thumbnail" src="" alt="" 
@@ -46,98 +33,71 @@
         </div>
       </div>
 
-      <!-- タグ -->
-      <div id="post-tags" class="flex flex-wrap gap-2 mb-4"></div>
+      <!-- ナビゲーション（上部） -->
+      <div class="post-nav flex justify-between items-center gap-4 my-6 text-sm">
+        <a id="prev-article" class="flex items-center gap-2 text-blue-600 hover:underline">
+          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M15 6l-6 6 6 6"/>
+            </svg>
+          </span>
+          前の記事
+        </a>
+        <a href="/blog/" class="flex items-center gap-2 text-gray-900 hover:underline">
+          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+          </span>
+          一覧に戻る
+        </a>
+        <a id="next-article" class="flex items-center gap-2 text-blue-600 hover:underline">
+          次の記事
+          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M9 6l6 6-6 6"/>
+            </svg>
+          </span>
+        </a>
+      </div>
 
       <!-- 本文（枠付きカード風） -->
       <div id="post-content" class="prose max-w-none border rounded p-6 bg-white shadow-sm"></div>
 
+      <!-- タグ -->
+      <div id="post-tags" class="flex flex-wrap gap-2 my-6"></div>
+
       <!-- シェアボタン -->
-      <div class="mt-8 flex gap-4 items-center flex-wrap">
+      <div class="mt-6 flex gap-4 items-center flex-wrap">
         <span class="text-gray-600 text-sm">シェアする：</span>
-
-        <!-- X -->
-        <a id="share-x" target="_blank" rel="noopener" 
-           class="w-10 h-10 flex items-center justify-center rounded-full bg-black text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.36 2H21l-7.5 9.5L21.5 22H18.5l-6-7.5L6 22H3l7.5-10L2.5 2H5.5l6 7.5L18.36 2Z"/></svg>
+        <a id="share-x" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.18 4.18 0 001.84-2.31 8.27 8.27 0 01-2.64 1.02A4.13 4.13 0 0016.11 4c-2.27 0-4.11 1.85-4.11 4.13 0 .32.04.63.1.93-3.42-.17-6.45-1.81-8.48-4.3a4.18 4.18 0 00-.56 2.07c0 1.43.72 2.7 1.83 3.44a4.1 4.1 0 01-1.86-.52v.05c0 2 1.42 3.66 3.3 4.04a4.15 4.15 0 01-1.85.07c.52 1.63 2.04 2.82 3.83 2.85A8.29 8.29 0 012 19.54 11.7 11.7 0 008.29 21c7.55 0 11.68-6.28 11.68-11.73 0-.18-.01-.35-.02-.53A8.37 8.37 0 0022.46 6z"/></svg>
         </a>
-
-        <!-- Facebook -->
-        <a id="share-fb" target="_blank" rel="noopener"
-           class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.2l-.4 3h-1.8v7A10 10 0 0 0 22 12"/></svg>
+        <a id="share-fb" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.5 9.9v-7H8v-3h2.5V9.5c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.3.2 2.3.2v2.5h-1.3c-1.3 0-1.7.8-1.7 1.6V12H16l-.5 3h-2.5v7A10 10 0 0022 12"/></svg>
         </a>
-
-        <!-- LINE -->
-        <a id="share-line" target="_blank" rel="noopener"
-           class="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.7 4.3C18.1 2.7 15.6 2 12 2S5.9 2.7 4.3 4.3 2 8.4 2 12c0 3.6.7 6.1 2.3 7.7S8.4 22 12 22c3.6 0 6.1-.7 7.7-2.3S22 15.6 22 12c0-3.6-.7-6.1-2.3-7.7ZM8.8 7.5h1.5v5h-1.5v-5Zm2.5 0h1.5v5h-1.5v-5Zm2.5 0h1.5v5h-1.5v-5Zm2.5 0h1.5v5h-1.5v-5Z"/></svg>
+        <a id="share-line" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24"><path d="M20.667 3.333H3.333A2.333 2.333 0 001 5.667v12.666a2.333 2.333 0 002.333 2.334h17.334A2.333 2.333 0 0023 18.333V5.667a2.333 2.333 0 00-2.333-2.334zM12 18.25c-3.467 0-6.25-2.333-6.25-5.25 0-1.017.433-1.95 1.15-2.65A4.2 4.2 0 006 9.333c0-2.333 2.467-4.25 5.5-4.25s5.5 1.917 5.5 4.25c0 1.033-.4 2-1.067 2.733.683.7 1.117 1.633 1.117 2.65 0 2.917-2.783 5.25-6.25 5.25z"/></svg>
         </a>
-
-        <!-- Instagram -->
-        <a id="share-ig" target="_blank" rel="noopener"
-           class="w-10 h-10 flex items-center justify-center rounded-full bg-pink-500 text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7Zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10Zm-5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm4.8-.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0Z"/></svg>
+        <a id="share-ig" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm4.5-3a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>
         </a>
-
-        <!-- メール -->
-        <a id="share-mail" target="_blank" rel="noopener"
-           class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-600 text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2Zm0 2v.01L12 13 20 6.01V6H4Zm0 12h16V8l-8 7-8-7v10Z"/></svg>
+        <a id="share-mail" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 7L4.5 6h15L12 11z"/></svg>
         </a>
+      </div>
+
+      <!-- ナビゲーション（下部） -->
+      <div class="post-nav flex justify-between items-center gap-4 my-6 text-sm">
+        <a id="prev-article" class="flex items-center gap-2 text-blue-600 hover:underline">… 前の記事</a>
+        <a href="/blog/" class="flex items-center gap-2 text-gray-900 hover:underline">一覧に戻る</a>
+        <a id="next-article" class="flex items-center gap-2 text-blue-600 hover:underline">次の記事 …</a>
       </div>
     </section>
   </main>
 
   <footer id="site-footer"></footer>
-  <script type="module" src="/hf.js"></script>
 
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-    const sb = createClient(
-      "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-    );
-
-    const $ = s => document.querySelector(s);
-
-    async function loadArticle() {
-      const params = new URLSearchParams(location.search);
-      const slug = params.get("slug");
-      if (!slug) return;
-
-      const { data, error } = await sb.from("articles").select("*").eq("slug", slug).single();
-      if (error || !data) return console.error(error);
-
-      $("#post-title").textContent = data.title;
-      $("#post-date").textContent = new Date(data.created_at).toLocaleDateString();
-      $("#post-thumbnail").src = data.thumbnail_url || "";
-      $("#post-category").textContent = data.category || "";
-      $("#post-content").innerHTML = data.content || "";
-
-      // タグ表示
-      const tagsEl = $("#post-tags");
-      tagsEl.innerHTML = "";
-      if (Array.isArray(data.tags)) {
-        data.tags.forEach(tag => {
-          const span = document.createElement("span");
-          span.textContent = "#" + tag;
-          span.className = "text-sm text-gray-600 bg-gray-100 rounded px-2 py-1";
-          tagsEl.appendChild(span);
-        });
-      }
-
-      // シェアリンク設定
-      const url = encodeURIComponent(location.href);
-      const title = encodeURIComponent(data.title || document.title);
-      $("#share-x").href = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
-      $("#share-fb").href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-      $("#share-line").href = `https://social-plugins.line.me/lineit/share?url=${url}`;
-      $("#share-ig").href = `https://www.instagram.com/?url=${url}`;
-      $("#share-mail").href = `mailto:?subject=${title}&body=${title}%0D%0A${url}`;
-    }
-
-    loadArticle();
-  </script>
+  <script type="module" src="/blog-detail.js"></script>
 </body>
 </html>
