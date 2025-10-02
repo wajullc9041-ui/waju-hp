@@ -3,133 +3,133 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ブログ一覧 | 合同会社WaJu</title>
-
-  <!-- SEO -->
-  <meta name="description" content="CARELAYや介護・福祉業界に関する最新情報、コラム、イベントなどをお届けします。">
-  <meta property="og:title" content="ブログ一覧 | 合同会社WaJu">
-  <meta property="og:description" content="CARELAYや介護・福祉業界に関する最新情報、コラム、イベントなどをお届けします。">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png">
-  <meta property="og:url" content="https://waju.co.jp/blog/">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png">
+  <title>ブログ詳細 | 合同会社WaJu</title>
+  <meta name="description" content="合同会社WaJuのブログ詳細ページです。介護・福祉業界を支えるCARELAYの情報や最新記事をご覧いただけます。">
 
   <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R49H9DTN70"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-R49H9DTN70');
+    gtag('config', 'G-XXXXXXXXXX');
   </script>
 
-  <!-- TailwindCSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{font-family:"Noto Sans JP",sans-serif;margin:0;padding:0;background:#f8f9fa;}
+    main{max-width:900px;margin:80px auto;padding:20px;}
+    h1{font-size:1.8rem;margin-bottom:10px;}
+    .meta{color:#555;font-size:0.9rem;margin-bottom:20px;}
+    .thumbnail{width:100px;height:100px;object-fit:cover;border-radius:6px;margin-bottom:10px;}
+    .content{background:#fff;border:1px solid #ddd;border-radius:8px;padding:20px;margin:20px 0;}
+    .tags{margin-top:15px;}
+    .tag{display:inline-block;background:#e9ecef;color:#333;padding:4px 10px;border-radius:12px;font-size:0.8rem;margin-right:6px;}
+    .nav-links{display:flex;justify-content:space-between;align-items:center;margin:20px 0;}
+    .nav-btn{display:flex;align-items:center;gap:6px;background:#0d6efd;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-size:0.9rem;}
+    .nav-btn:hover{opacity:0.8;}
+    .share{margin:20px 0;display:flex;align-items:center;gap:10px;}
+    .share span{font-size:0.9rem;}
+    .share a{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;color:#fff;text-decoration:none;font-size:1rem;}
+    .x{background:#000;}
+    .fb{background:#1877f2;}
+    .line{background:#06c755;}
+    .ig{background:#e1306c;}
+    .mail{background:#fbbc05;color:#000;}
+  </style>
 </head>
-<body id="page-body">
+<body>
   <header id="site-header"></header>
 
   <main id="page-main">
-    <section class="max-w-5xl mx-auto px-6 py-12">
-      <h1 class="text-3xl font-bold text-center mb-8 text-blue-800">ブログ一覧</h1>
+    <div class="nav-links top-nav">
+      <a href="#" id="prevArticle" class="nav-btn">⬅ 前の記事</a>
+      <a href="/blog/" class="nav-btn">🏠 一覧に戻る</a>
+      <a href="#" id="nextArticle" class="nav-btn">次の記事 ➡</a>
+    </div>
 
-      <!-- カテゴリフィルタ -->
-      <div class="flex flex-wrap gap-4 mb-6 items-center">
-        <select id="categoryFilter" class="border rounded px-3 py-2">
-          <option value="">すべてのカテゴリ</option>
-        </select>
-      </div>
+    <img id="thumbnail" class="thumbnail" alt="サムネイル">
+    <h1 id="title"></h1>
+    <div class="meta">
+      <span id="category"></span> | <span id="date"></span>
+    </div>
+    <div id="content" class="content"></div>
 
-      <!-- 記事一覧 -->
-      <div id="articles" class="flex flex-col gap-6"></div>
+    <div class="tags" id="tags"></div>
 
-      <!-- ページネーション -->
-      <div class="flex justify-center items-center gap-4 mt-8">
-        <button id="prevBtn" class="px-4 py-2 bg-gray-200 rounded">前へ</button>
-        <span id="pageInfo"></span>
-        <button id="nextBtn" class="px-4 py-2 bg-gray-200 rounded">次へ</button>
-      </div>
-    </section>
+    <div class="share">
+      <span>シェアする：</span>
+      <a id="shareX" class="x" target="_blank">X</a>
+      <a id="shareFb" class="fb" target="_blank">f</a>
+      <a id="shareLine" class="line" target="_blank">L</a>
+      <a id="shareIg" class="ig" target="_blank">IG</a>
+      <a id="shareMail" class="mail" target="_blank">@</a>
+    </div>
+
+    <div class="nav-links bottom-nav">
+      <a href="#" id="prevArticle2" class="nav-btn">⬅ 前の記事</a>
+      <a href="/blog/" class="nav-btn">🏠 一覧に戻る</a>
+      <a href="#" id="nextArticle2" class="nav-btn">次の記事 ➡</a>
+    </div>
   </main>
 
   <footer id="site-footer"></footer>
-  <script type="module" src="/hf.js"></script>
 
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-    const sb = createClient(
+
+    const supabase = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0"
     );
 
-    const $ = s => document.querySelector(s);
-    const articlesEl = $("#articles");
-    const categoryFilter = $("#categoryFilter");
-    const pageInfo = $("#pageInfo");
-    const prevBtn = $("#prevBtn");
-    const nextBtn = $("#nextBtn");
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get("slug");
 
-    let currentPage = 1;
-    const pageSize = 10;
-    let currentCategory = "";
+    async function loadArticle(){
+      const { data, error } = await supabase.from("articles").select("*").eq("slug", slug).single();
+      if(error){ console.error(error); return; }
+      if(!data){ return; }
 
-    async function loadCategories() {
-      const { data, error } = await sb.from("articles").select("category");
-      if (error) return console.error(error);
-      const categories = [...new Set(data.map(a => a.category).filter(c => c))];
-      categoryFilter.innerHTML = '<option value="">すべてのカテゴリ</option>' +
-        categories.map(c => `<option value="${c}">${c}</option>`).join("");
+      document.getElementById("title").textContent = data.title;
+      document.getElementById("date").textContent = new Date(data.created_at).toLocaleDateString();
+      document.getElementById("category").textContent = data.category || "";
+      document.getElementById("content").innerHTML = data.content;
+      const thumb = document.getElementById("thumbnail");
+      if(data.thumbnail_url){ thumb.src = data.thumbnail_url; }
+
+      const tagsDiv = document.getElementById("tags");
+      if(data.tags && data.tags.length>0){
+        tagsDiv.innerHTML = data.tags.map(t=>`<span class="tag">${t}</span>`).join("");
+      }
+
+      const url = window.location.href;
+      document.getElementById("shareX").href = "https://twitter.com/share?url="+encodeURIComponent(url);
+      document.getElementById("shareFb").href = "https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
+      document.getElementById("shareLine").href = "https://social-plugins.line.me/lineit/share?url="+encodeURIComponent(url);
+      document.getElementById("shareIg").href = "https://www.instagram.com/"; // Instagramは直接シェア不可
+      document.getElementById("shareMail").href = "mailto:?subject="+encodeURIComponent(data.title)+"&body="+encodeURIComponent(url);
+
+      // 前後記事リンク
+      const { data: allArticles } = await supabase.from("articles").select("id, slug, title, created_at").order("created_at",{ascending:false});
+      const idx = allArticles.findIndex(a => a.slug===slug);
+      if(idx>0){
+        const prev = allArticles[idx-1];
+        document.getElementById("prevArticle").href = "/blog-detail.html?slug="+prev.slug;
+        document.getElementById("prevArticle2").href = "/blog-detail.html?slug="+prev.slug;
+      } else {
+        document.getElementById("prevArticle").style.visibility="hidden";
+        document.getElementById("prevArticle2").style.visibility="hidden";
+      }
+      if(idx<allArticles.length-1){
+        const next = allArticles[idx+1];
+        document.getElementById("nextArticle").href = "/blog-detail.html?slug="+next.slug;
+        document.getElementById("nextArticle2").href = "/blog-detail.html?slug="+next.slug;
+      } else {
+        document.getElementById("nextArticle").style.visibility="hidden";
+        document.getElementById("nextArticle2").style.visibility="hidden";
+      }
     }
-
-    async function loadArticles() {
-      let query = sb.from("articles")
-        .select("*", { count: "exact" })
-        .eq("published", true)
-        .order("created_at", { ascending: false })
-        .range((currentPage-1)*pageSize, currentPage*pageSize - 1);
-
-      if (currentCategory) query = query.eq("category", currentCategory);
-
-      const { data, count, error } = await query;
-      if (error) return console.error(error);
-
-      articlesEl.innerHTML = data.map(a => `
-        <div class="flex items-start gap-4 border-b pb-4">
-          <img src="${a.thumbnail_url || ''}" alt="" 
-               class="w-24 h-24 object-contain rounded bg-gray-50 border">
-          <div class="flex-1">
-            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">${a.category || ""}</span>
-            <h2 class="text-lg font-semibold mt-1">
-              <a href="/blog-detail.html?slug=${a.slug}" class="hover:underline">${a.title}</a>
-            </h2>
-            <p class="text-gray-500 text-sm">${new Date(a.created_at).toLocaleDateString()}</p>
-            <p class="mt-1 text-gray-700 text-sm">
-              ${a.description || (a.content ? a.content.replace(/<[^>]+>/g,"").substring(0,80)+"…" : "")}
-            </p>
-          </div>
-        </div>
-      `).join("");
-
-      const totalPages = Math.ceil(count / pageSize);
-      pageInfo.textContent = `${currentPage} / ${totalPages || 1}`;
-      prevBtn.disabled = currentPage <= 1;
-      nextBtn.disabled = currentPage >= totalPages;
-    }
-
-    categoryFilter.addEventListener("change", () => {
-      currentCategory = categoryFilter.value;
-      currentPage = 1;
-      loadArticles();
-    });
-    prevBtn.addEventListener("click", () => { if (currentPage > 1) { currentPage--; loadArticles(); } });
-    nextBtn.addEventListener("click", () => { currentPage++; loadArticles(); });
-
-    loadCategories();
-    loadArticles();
+    loadArticle();
   </script>
 </body>
 </html>
