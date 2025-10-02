@@ -84,6 +84,7 @@
       .confirm-label { font-weight:600; color:#1f2937; display:block; margin-bottom:4px; }
       .confirm-value { padding:8px 12px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; }
       .actions { display:flex; gap:16px; justify-content:center; margin-top:20px; }
+
       @media (max-width:768px){
         .contact-intro-text { text-align: left; } /* スマホでは左揃え */
 
@@ -106,6 +107,16 @@
         textarea {
           height: 200px;    /* 本文欄を広めに */
         }
+
+        /* 確認画面も同じ幅に統一 */
+        .confirm-row {
+          width: 90%;
+          margin: 0 auto 15px;
+        }
+        .confirm-value {
+          width: 100%;
+        }
+
         .submit-btn {
           width: auto;      /* PCと同じ中央寄せサイズ */
           padding: 14px 36px;
