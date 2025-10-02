@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="CARELAYブログ記事詳細ページ">
-  <title>ブログ記事詳細 | 合同会社WaJu</title>
-  <!-- Google Analytics 共通タグ -->
+  <title>ブログ詳細 | 合同会社WaJu</title>
+  <meta name="description" content="合同会社WaJuのブログ詳細ページです。介護・福祉業界を支えるCARELAYの情報や最新記事をご覧いただけます。">
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,160 +14,119 @@
     gtag('js', new Date());
     gtag('config', 'G-XXXXXXXXXX');
   </script>
-  <script type="module" src="/hf.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <style>
+    body{font-family:"Noto Sans JP",sans-serif;margin:0;padding:0;background:#f8f9fa;}
+    main{max-width:900px;margin:80px auto;padding:20px;}
+    h1{font-size:1.8rem;margin-bottom:10px;}
+    .meta{color:#555;font-size:0.9rem;margin-bottom:20px;}
+    .thumbnail{width:100px;height:100px;object-fit:cover;border-radius:6px;margin-bottom:10px;}
+    .content{background:#fff;border:1px solid #ddd;border-radius:8px;padding:20px;margin:20px 0;}
+    .tags{margin-top:15px;}
+    .tag{display:inline-block;background:#e9ecef;color:#333;padding:4px 10px;border-radius:12px;font-size:0.8rem;margin-right:6px;}
+    .nav-links{display:flex;justify-content:space-between;align-items:center;margin:20px 0;}
+    .nav-btn{display:flex;align-items:center;gap:6px;background:#0d6efd;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-size:0.9rem;}
+    .nav-btn:hover{opacity:0.8;}
+    .share{margin:20px 0;display:flex;align-items:center;gap:10px;}
+    .share span{font-size:0.9rem;}
+    .share a{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;color:#fff;text-decoration:none;font-size:1rem;}
+    .x{background:#000;}
+    .fb{background:#1877f2;}
+    .line{background:#06c755;}
+    .ig{background:#e1306c;}
+    .mail{background:#fbbc05;color:#000;}
+  </style>
 </head>
 <body>
   <header id="site-header"></header>
 
   <main id="page-main">
-    <section class="max-w-3xl mx-auto px-6 py-12">
+    <div class="nav-links top-nav">
+      <a href="#" id="prevArticle" class="nav-btn">⬅ 前の記事</a>
+      <a href="/blog/" class="nav-btn">🏠 一覧に戻る</a>
+      <a href="#" id="nextArticle" class="nav-btn">次の記事 ➡</a>
+    </div>
 
-      <!-- タイトル & サムネイル -->
-      <div class="flex items-start gap-4 mb-6">
-        <img id="post-thumbnail" src="" alt="" class="w-24 h-24 object-contain rounded bg-gray-50 border">
-        <div>
-          <h1 id="post-title" class="text-2xl font-bold mb-2"></h1>
-          <p id="post-date" class="text-gray-500 text-sm"></p>
-          <span id="post-category" class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mt-1"></span>
-        </div>
-      </div>
+    <img id="thumbnail" class="thumbnail" alt="サムネイル">
+    <h1 id="title"></h1>
+    <div class="meta">
+      <span id="category"></span> | <span id="date"></span>
+    </div>
+    <div id="content" class="content"></div>
 
-      <!-- ナビゲーション（上部） -->
-      <div class="post-nav flex justify-between items-center gap-4 my-6 text-sm">
-        <a id="prev-article" class="flex items-center gap-2 text-blue-600 hover:underline">
-          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M15 6l-6 6 6 6"/>
-            </svg>
-          </span>
-          前の記事
-        </a>
-        <a href="/blog/" class="flex items-center gap-2 text-gray-900 hover:underline">
-          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-            </svg>
-          </span>
-          一覧に戻る
-        </a>
-        <a id="next-article" class="flex items-center gap-2 text-blue-600 hover:underline">
-          次の記事
-          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M9 6l6 6-6 6"/>
-            </svg>
-          </span>
-        </a>
-      </div>
+    <div class="tags" id="tags"></div>
 
-      <!-- 本文 -->
-      <div id="post-content" class="prose max-w-none border rounded p-6 bg-white shadow-sm"></div>
+    <div class="share">
+      <span>シェアする：</span>
+      <a id="shareX" class="x" target="_blank">X</a>
+      <a id="shareFb" class="fb" target="_blank">f</a>
+      <a id="shareLine" class="line" target="_blank">L</a>
+      <a id="shareIg" class="ig" target="_blank">IG</a>
+      <a id="shareMail" class="mail" target="_blank">@</a>
+    </div>
 
-      <!-- タグ -->
-      <div id="post-tags" class="flex flex-wrap gap-2 my-6"></div>
-
-      <!-- シェアボタン -->
-      <div class="mt-6 flex gap-4 items-center flex-wrap">
-        <span class="text-gray-600 text-sm">シェアする：</span>
-        <a id="share-x" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">X</a>
-        <a id="share-fb" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">F</a>
-        <a id="share-line" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">L</a>
-        <a id="share-ig" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">IG</a>
-        <a id="share-mail" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">@</a>
-      </div>
-
-      <!-- ナビゲーション（下部：上と完全統一） -->
-      <div class="post-nav flex justify-between items-center gap-4 my-6 text-sm">
-        <a id="prev-article" class="flex items-center gap-2 text-blue-600 hover:underline">
-          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M15 6l-6 6 6 6"/>
-            </svg>
-          </span>
-          前の記事
-        </a>
-        <a href="/blog/" class="flex items-center gap-2 text-gray-900 hover:underline">
-          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-            </svg>
-          </span>
-          一覧に戻る
-        </a>
-        <a id="next-article" class="flex items-center gap-2 text-blue-600 hover:underline">
-          次の記事
-          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M9 6l6 6-6 6"/>
-            </svg>
-          </span>
-        </a>
-      </div>
-    </section>
+    <div class="nav-links bottom-nav">
+      <a href="#" id="prevArticle2" class="nav-btn">⬅ 前の記事</a>
+      <a href="/blog/" class="nav-btn">🏠 一覧に戻る</a>
+      <a href="#" id="nextArticle2" class="nav-btn">次の記事 ➡</a>
+    </div>
   </main>
 
   <footer id="site-footer"></footer>
 
-  <!-- JS -->
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-    const sb = createClient(
+
+    const supabase = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // ← 実際のanonキーを記載
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0"
     );
 
-    const $ = s => document.querySelector(s);
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get("slug");
 
-    async function loadArticle() {
-      const params = new URLSearchParams(location.search);
-      const slug = params.get("slug");
-      if (!slug) return;
+    async function loadArticle(){
+      const { data, error } = await supabase.from("articles").select("*").eq("slug", slug).single();
+      if(error){ console.error(error); return; }
+      if(!data){ return; }
 
-      const { data, error } = await sb.from("articles").select("*").eq("slug", slug).single();
-      if (error || !data) return console.error(error);
+      document.getElementById("title").textContent = data.title;
+      document.getElementById("date").textContent = new Date(data.created_at).toLocaleDateString();
+      document.getElementById("category").textContent = data.category || "";
+      document.getElementById("content").innerHTML = data.content;
+      const thumb = document.getElementById("thumbnail");
+      if(data.thumbnail_url){ thumb.src = data.thumbnail_url; }
 
-      $("#post-title").textContent = data.title;
-      $("#post-date").textContent = new Date(data.created_at).toLocaleDateString();
-      $("#post-thumbnail").src = data.thumbnail_url || "";
-      $("#post-category").textContent = data.category || "";
-      $("#post-content").innerHTML = data.content || "";
-
-      // タグ表示
-      const tagsEl = $("#post-tags");
-      tagsEl.innerHTML = "";
-      if (Array.isArray(data.tags)) {
-        data.tags.forEach(tag => {
-          const span = document.createElement("span");
-          span.textContent = "#" + tag;
-          span.className = "text-sm text-gray-600 bg-gray-100 rounded px-2 py-1";
-          tagsEl.appendChild(span);
-        });
+      const tagsDiv = document.getElementById("tags");
+      if(data.tags && data.tags.length>0){
+        tagsDiv.innerHTML = data.tags.map(t=>`<span class="tag">${t}</span>`).join("");
       }
 
-      // シェアリンク
-      const url = location.href;
-      $("#share-x").href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(data.title)}`;
-      $("#share-fb").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-      $("#share-line").href = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}`;
-      $("#share-ig").href = `https://www.instagram.com/`; // IG公式シェアは不可
-      $("#share-mail").href = `mailto:?subject=${encodeURIComponent(data.title)}&body=${encodeURIComponent(url)}`;
+      const url = window.location.href;
+      document.getElementById("shareX").href = "https://twitter.com/share?url="+encodeURIComponent(url);
+      document.getElementById("shareFb").href = "https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(url);
+      document.getElementById("shareLine").href = "https://social-plugins.line.me/lineit/share?url="+encodeURIComponent(url);
+      document.getElementById("shareIg").href = "https://www.instagram.com/"; // Instagramは直接シェア不可
+      document.getElementById("shareMail").href = "mailto:?subject="+encodeURIComponent(data.title)+"&body="+encodeURIComponent(url);
 
-      // 前後記事
-      const { data: newer } = await sb.from("articles").select("title,slug").gt("created_at", data.created_at).order("created_at", { ascending: true }).limit(1);
-      const { data: older } = await sb.from("articles").select("title,slug").lt("created_at", data.created_at).order("created_at", { ascending: false }).limit(1);
-
-      if (older && older.length > 0) {
-        document.querySelectorAll("#prev-article").forEach(el => {
-          el.href = "/blog-detail.html?slug=" + older[0].slug;
-          el.title = older[0].title;
-        });
+      // 前後記事リンク
+      const { data: allArticles } = await supabase.from("articles").select("id, slug, title, created_at").order("created_at",{ascending:false});
+      const idx = allArticles.findIndex(a => a.slug===slug);
+      if(idx>0){
+        const prev = allArticles[idx-1];
+        document.getElementById("prevArticle").href = "/blog-detail.html?slug="+prev.slug;
+        document.getElementById("prevArticle2").href = "/blog-detail.html?slug="+prev.slug;
+      } else {
+        document.getElementById("prevArticle").style.visibility="hidden";
+        document.getElementById("prevArticle2").style.visibility="hidden";
       }
-      if (newer && newer.length > 0) {
-        document.querySelectorAll("#next-article").forEach(el => {
-          el.href = "/blog-detail.html?slug=" + newer[0].slug;
-          el.title = newer[0].title;
-        });
+      if(idx<allArticles.length-1){
+        const next = allArticles[idx+1];
+        document.getElementById("nextArticle").href = "/blog-detail.html?slug="+next.slug;
+        document.getElementById("nextArticle2").href = "/blog-detail.html?slug="+next.slug;
+      } else {
+        document.getElementById("nextArticle").style.visibility="hidden";
+        document.getElementById("nextArticle2").style.visibility="hidden";
       }
     }
     loadArticle();
