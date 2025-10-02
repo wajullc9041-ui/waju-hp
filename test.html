@@ -92,7 +92,7 @@
   
   <template id="privacy-shadow-template">
     <style>
-      /* ========== Aboutページからの統一スタイル定義 ========== */
+      /* ========== Aboutページからの統一スタイル定義（ベース） ========== */
       
       /* 共通・基盤スタイル */
       :root{--container:1120px;
@@ -108,7 +108,7 @@
       h1,h2,h3{margin:0 0 20px;font-weight:700}
       p{margin:0 0 14px}
       
-      /* ページタイトル（Aboutページと共通） */
+      /* ページタイトル（Aboutページと統一） */
       #page-title {
           font-size: 42px;
           text-align: center;
@@ -138,9 +138,9 @@
           padding: 30px 0; 
       }
 
-      /* H2見出し: Aboutページと同じ青いボーダーで、サイズを小さく */
+      /* H2見出し: Aboutページと同じ青いボーダーで、サイズを小さく統一 */
       h2{
-          /* ★修正: 見出しの文字サイズを小さくし、スマホでも一行に収まりやすくする */
+          /* ★修正: 見出しの文字サイズを20pxに固定し、スマホで一行表示を確保 */
           font-size: 20px; 
           border-left: 4px solid #1976d2;
           padding-left: 10px;
@@ -156,7 +156,8 @@
           color: #374151;
           text-align: justify;
       }
-      /* リストのスタイルをシンプルに戻す */
+      
+      /* リスト（元のスタイルを再現） */
       #policy-content-wrapper ul {
           padding-left: 25px;
           margin-bottom: 20px;
@@ -168,14 +169,13 @@
           list-style-type: disc; 
       }
       
-      /* 最後のフッター的なテキスト（会社名）を調整 */
-      .footer-text {
+      /* 署名部分（元の.signatureを再現） */
+      .signature {
           margin-top: 40px;
           text-align: right;
           font-weight: 700;
           font-size: 1.05em;
           color: #0f172a; 
-          /* ★修正: 元のデザイン（privacypolicy.txtのsignatureクラス）に倣い、上線を追加 */
           border-top: 1px solid #e5e7eb; 
           padding-top: 15px;
       }
@@ -194,11 +194,7 @@
           /* コンテンツ幅をモバイル幅いっぱいに */
           #policy-content-wrapper {
               max-width: 100%; 
-              padding: 20px 0; 
-          }
-          /* h2の左ボーダーのためのパディングをモバイルのcontainer外側から調整 */
-          #policy-content-wrapper {
-              padding: 20px 10px;
+              padding: 20px 10px; /* H2の左線が画面端に近すぎないように調整 */
           }
           h2 {
               font-size: 20px;
@@ -237,7 +233,7 @@
               <h2>法令の遵守と見直し</h2>
               <p>当社は、適用される日本の法令や規範を遵守するとともに、本ポリシーを適宜見直し、改善に努めます。</p>
 
-              <p class="footer-text">合同会社WaJu</p>
+              <p class="signature">合同会社WaJu</p>
           </div>
         </section>
       </div>
