@@ -51,39 +51,40 @@
   <header id="site-header"></header>
 
   <main id="page-main">
-    <section class="max-w-6xl mx-auto px-6 py-16">
-      <!-- 見出しを「ブログ一覧」に戻し、スタイルを統一 -->
-      <h1 class="text-4xl font-extrabold text-center mb-12 text-waju-primary relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">ブログ一覧</h1>
+    <section class="max-w-6xl mx-auto px-6 py-16 sm:py-20">
+      <!-- 見出し: モバイルでは text-3xl に縮小 -->
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-center mb-10 sm:mb-12 text-waju-primary relative after:content-[''] after:block after:w-12 after:h-1 after:bg-waju-accent after:mx-auto after:mt-1">ブログ一覧</h1>
 
       <!-- カテゴリフィルタと検索 -->
-      <!-- 横幅をw-fit max-w-fullにして、コンテンツ幅に制限 -->
-      <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-10 p-4 bg-white rounded-xl shadow-lg w-fit max-w-full mx-auto">
-        <div class="text-lg font-semibold text-gray-700 flex-shrink-0">
+      <!-- モバイルでは p-3, gap-3 に縮小し、selectのw-40で2行化を防ぐ -->
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 mb-8 sm:mb-10 p-3 sm:p-4 bg-white rounded-xl shadow-lg w-fit max-w-full mx-auto">
+        <div class="text-base sm:text-lg font-semibold text-gray-700 flex-shrink-0">
             カテゴリで絞り込む:
         </div>
-        <select id="categoryFilter" class="border border-gray-300 rounded-lg px-4 py-2 w-48 focus:ring-waju-primary focus:border-waju-primary transition duration-150">
+        <!-- モバイルでは w-40 に縮小 -->
+        <select id="categoryFilter" class="border border-gray-300 rounded-lg px-3 py-1.5 w-40 sm:w-48 focus:ring-waju-primary focus:border-waju-primary transition duration-150">
           <option value="">すべてのカテゴリ</option>
           <!-- カテゴリはJSで挿入されます -->
         </select>
       </div>
 
       <!-- 記事一覧 (リスト形式を維持しつつ、カードスタイルを適用) -->
-      <div id="articles" class="flex flex-col gap-6">
+      <div id="articles" class="flex flex-col gap-5 sm:gap-6">
         <!-- 記事はJSで挿入されます -->
       </div>
 
       <!-- ページネーション -->
-      <div class="flex justify-center items-center gap-4 mt-12">
-        <button id="prevBtn" class="flex items-center space-x-2 px-6 py-2 bg-white text-waju-primary font-bold rounded-full shadow-md hover:bg-waju-light disabled:opacity-50 disabled:cursor-not-allowed transition duration-150">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <div class="flex justify-center items-center gap-4 mt-10 sm:mt-12">
+        <button id="prevBtn" class="flex items-center space-x-2 px-5 py-1.5 sm:px-6 sm:py-2 bg-white text-waju-primary font-bold rounded-full shadow-md hover:bg-waju-light disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 text-sm sm:text-base">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
             </svg>
             <span>前へ</span>
         </button>
-        <span id="pageInfo" class="text-xl font-bold text-gray-700">1 / 1</span>
-        <button id="nextBtn" class="flex items-center space-x-2 px-6 py-2 bg-white text-waju-primary font-bold rounded-full shadow-md hover:bg-waju-light disabled:opacity-50 disabled:cursor-not-allowed transition duration-150">
+        <span id="pageInfo" class="text-base sm:text-xl font-bold text-gray-700">1 / 1</span>
+        <button id="nextBtn" class="flex items-center space-x-2 px-5 py-1.5 sm:px-6 sm:py-2 bg-white text-waju-primary font-bold rounded-full shadow-md hover:bg-waju-light disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 text-sm sm:text-base">
             <span>次へ</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
             </svg>
         </button>
@@ -143,30 +144,30 @@
         const thumbnailUrl = a.thumbnail_url || 'https://placehold.co/150x150/1e40af/ffffff?text=BLOG'; 
 
         return `
-          <a href="/blog-detail.html?slug=${a.slug}" class="block p-4 bg-white rounded-xl shadow-lg hover:shadow-xl hover:ring-2 hover:ring-waju-primary transition duration-300 group">
-            <div class="flex flex-col sm:flex-row gap-4 items-start">
+          <a href="/blog-detail.html?slug=${a.slug}" class="block p-3 sm:p-4 bg-white rounded-xl shadow-lg hover:shadow-xl hover:ring-2 hover:ring-waju-primary transition duration-300 group">
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
               <!-- サムネイル（左側） - 正方形、画像をcontainで表示、余白をbg-gray-200で埋める -->
-              <!-- w-28 と aspect-square で幅と高さを固定し、flex-shrink-0でサイズを維持 -->
-              <div class="flex-shrink-0 w-full sm:w-28 aspect-square overflow-hidden rounded-lg bg-gray-200">
+              <!-- モバイルでは w-20 (80px) に縮小し、PCでは w-28 (112px) を使用 -->
+              <div class="flex-shrink-0 w-20 sm:w-28 aspect-square overflow-hidden rounded-lg bg-gray-200">
                 <img src="${thumbnailUrl}" alt="${a.title}" 
                      class="w-full h-full object-contain transition duration-300 group-hover:scale-105"
-                     onerror="this.onerror=null; this.src='https://placehold.co/112x112/1e40af/ffffff?text=WaJu+Blog';">
+                     onerror="this.onerror=null; this.src='https://placehold.co/80x80/1e40af/ffffff?text=WaJu';">
               </div>
               
               <!-- 詳細情報（右側） -->
               <div class="flex-1 min-w-0">
                 <div class="flex justify-between items-center mb-1">
                     <!-- カテゴリタグ -->
-                    <span class="inline-block bg-waju-light text-waju-primary text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">${a.category || "コラム"}</span>
+                    <span class="inline-block bg-waju-light text-waju-primary text-xs font-semibold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider">${a.category || "コラム"}</span>
                     <!-- 公開日 -->
-                    <span class="text-sm text-gray-500 flex-shrink-0">公開日: ${date}</span>
+                    <span class="text-xs sm:text-sm text-gray-500 flex-shrink-0">公開日: ${date}</span>
                 </div>
-                <!-- タイトル -->
-                <h2 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-waju-accent transition duration-150 line-clamp-2">
+                <!-- タイトル: モバイルでは text-lg に縮小 -->
+                <h2 class="text-base sm:text-xl font-bold text-gray-800 mb-1 sm:mb-2 group-hover:text-waju-accent transition duration-150 line-clamp-2">
                   ${a.title}
                 </h2>
-                <!-- 概要 -->
-                <p class="text-gray-600 text-sm line-clamp-2">
+                <!-- 概要: モバイルでは line-clamp-2 を維持 -->
+                <p class="text-xs sm:text-sm text-gray-600 line-clamp-2">
                   ${description}
                 </p>
               </div>
