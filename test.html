@@ -35,7 +35,7 @@
 
   <main id="page-main">
     <style>
-      /* 見出しスタイル（会社概要・プライバシーポリシーと統一） */
+      /* 見出しスタイル */
       #page-title {
         font-size: 42px;
         text-align: center;
@@ -90,13 +90,19 @@
         .form-group input,
         .form-group select,
         .form-group textarea {
-          width: 100%;
-          max-width: 100%;
+          width: 90%;       /* 横幅90%にして左右5%余白 */
+          max-width: 90%;
+          margin: 0 auto;
         }
         textarea {
-          height: 200px;  /* スマホでは本文欄を広めに */
+          height: 200px;    /* 本文欄を広めに */
         }
-        .submit-btn { width:100%; padding:14px 20px; }
+        .submit-btn {
+          width: auto;      /* PCと同じ中央寄せサイズ */
+          padding: 14px 36px;
+          margin: 30px auto 10px;
+          display: block;
+        }
       }
     </style>
 
