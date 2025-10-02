@@ -20,139 +20,220 @@
 
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind Config for Inter font and custom colors (Home Pageと共通) -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            'waju-primary': '#1e40af', // Blue-700 equivalent
+            'waju-light': '#eff6ff',   // Blue-50 equivalent
+            'waju-accent': '#f59e0b',  // Amber-500
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body id="page-body">
+<body id="page-body" class="font-sans bg-gray-50">
   <header id="site-header"></header>
 
   <main id="page-main">
-    <!-- Hero Section -->
-    <section class="relative bg-gray-100 py-16">
-      <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+    <!-- Hero Section (CARELAY Overview) -->
+    <section class="relative bg-waju-light py-16">
+      <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
         <div>
-          <h1 class="text-4xl font-bold mb-4 text-blue-800">ケアレイで、もっと楽に繋がろう。</h1>
-          <p class="text-lg mb-6">介護・福祉業界を支える業務支援プラットフォーム</p>
-          <p class="text-gray-700 mb-6">CARELAY サービス画面イメージ<br>現場経験から生まれた、「運営側」の負担を軽減するシステム<br><strong>30日間 無料で試す</strong></p>
+          <h1 class="text-5xl font-extrabold mb-4 text-waju-primary leading-tight">ケアレイで、もっと楽に繋がろう。</h1>
+          <p class="text-xl mb-6 text-gray-700 font-medium border-l-4 border-waju-accent pl-3">介護・福祉業界を支える業務支援プラットフォーム</p>
+          <p class="text-lg text-gray-800 mb-6 leading-relaxed">現場経験から生まれた、「運営側」の負担を軽減するシステムです。非効率な連絡手段や高額なコスト負担といった業界の課題を根本から解決します。</p>
+          <!-- リンクを https://carelay.net/ に修正 -->
+          <a href="https://carelay.net/" class="inline-block px-8 py-3 bg-waju-accent text-white font-bold rounded-full shadow-lg hover:bg-amber-600 transition duration-300 transform hover:translate-y-[-2px]">
+            <span class="text-lg">今すぐ30日間無料体験を始める &rarr;</span>
+          </a>
         </div>
-        <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="CARELAY Hero" class="rounded-lg shadow-lg"/>
+        <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="CARELAY Hero" class="rounded-2xl shadow-2xl transform rotate-1 transition duration-500 hover:rotate-0"/>
       </div>
     </section>
 
-    <!-- STOP THE WASTE -->
-    <section class="py-16 bg-white">
+    <!-- STOP THE WASTE (Problem/Challenge Section) -->
+    <section class="py-20 bg-white">
       <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-center text-blue-800 mb-10">STOP THE WASTE.</h2>
-        <div class="grid md:grid-cols-3 gap-8 mb-8">
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-3">非効率な連絡手段</h3>
-            <p>営業や連絡手段が未だに電話やFAXが中心。送信ミスや確認漏れが多く、時間と費用を浪費しています。</p>
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">STOP THE WASTE. (課題)</h2>
+        <p class="text-center text-lg text-gray-700 mb-10">介護現場を15年以上経験した代表の実体験に基づき、運営側の「ムダ」を徹底的に排除します。</p>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Card 1: 非効率な連絡手段 -->
+          <div class="p-8 border-t-4 border-red-500 bg-gray-50 rounded-xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1">
+            <div class="text-4xl mb-4 text-red-500">📞</div>
+            <h3 class="font-bold text-2xl mb-3 text-gray-800">非効率な連絡手段</h3>
+            <p class="text-gray-600 leading-relaxed">営業や連絡手段が未だに電話やFAXが中心で、送信ミスや確認漏れが多く、時間と費用を浪費しています。</p>
           </div>
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-3">運営側の慢性的な課題</h3>
-            <p>多くのICTシステムは「現場」の効率化が目的。管理者や相談員、ケアマネなど「運営側」を支える仕組みが不足しています。</p>
+
+          <!-- Card 2: 運営側の慢性的な課題 -->
+          <div class="p-8 border-t-4 border-red-500 bg-gray-50 rounded-xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1">
+            <div class="text-4xl mb-4 text-red-500">⚙️</div>
+            <h3 class="font-bold text-2xl mb-3 text-gray-800">運営側の慢性的な課題</h3>
+            <p class="text-gray-600 leading-relaxed">多くのシステムは「現場」の効率化が目的。「管理者や相談員など運営側」を支える仕組みが不足しています。</p>
           </div>
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-3">高額なコスト負担</h3>
-            <p>複雑なシステムの導入コストや、求人・利用者獲得にかかる高額な紹介料が事業所の経営を圧迫しています。</p>
+
+          <!-- Card 3: 高額なコスト負担 -->
+          <div class="p-8 border-t-4 border-red-500 bg-gray-50 rounded-xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1">
+            <div class="text-4xl mb-4 text-red-500">💰</div>
+            <h3 class="font-bold text-2xl mb-3 text-gray-800">高額なコスト負担</h3>
+            <p class="text-gray-600 leading-relaxed">複雑なシステムの導入コストや、求人・利用者獲得にかかる高額な紹介料が事業所の経営を圧迫しています。</p>
           </div>
         </div>
-        <p class="text-center text-gray-700">CARELAYは、15年以上の介護現場を経験した代表の実体験に基づき、これらの課題解決のために開発されました。</p>
       </div>
     </section>
 
-    <!-- What is CARELAY? -->
-    <section class="py-16 bg-gray-50">
-      <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
-        <div>
-          <h2 class="text-3xl font-bold text-blue-800 mb-6">What is CARELAY?</h2>
-          <p class="mb-4">誰でも直感的に使える、業務支援プラットフォーム</p>
-          <p class="text-gray-700 mb-4">介護事業所の連携を、もっとスムーズに。<br>CARELAYは、高齢者介護サービス事業所、障害福祉事業所、および関係機関（病院、薬局、ケアマネ等）をオンラインで繋ぐ<strong>業界特化型プラットフォーム</strong>です。</p>
-          <p class="text-gray-700 mb-4">「必要な機能に絞り、誰でも直感的に使えるUI」を採用することで、ITが苦手な方でも簡単に導入・運用が可能。複雑な操作や高額な導入費用は一切不要で、運営側の時間とコストの負担を大幅に軽減します。</p>
-          <p class="text-gray-700">これにより運営に<strong>“余裕”</strong>が生まれ、そのゆとりがスタッフ・利用者に還元される好循環を目指します。</p>
+    <!-- What is CARELAY? (Solution Section) -->
+    <section class="py-20 bg-waju-light">
+      <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+        <div class="md:order-2">
+          <h2 class="text-4xl font-extrabold text-waju-primary mb-6">What is CARELAY?</h2>
+          <h3 class="text-2xl font-bold text-gray-800 mb-4">誰でも直感的に使える、業務支援プラットフォーム</h3>
+          <p class="text-lg text-gray-700 mb-4 leading-relaxed">介護事業所の連携を、もっとスムーズに。<br>CARELAYは、高齢者介護・障害福祉事業所、および関係機関（病院、薬局、ケアマネ等）をオンラインで繋ぐ**業界特化型プラットフォーム**です。</p>
+          <p class="text-lg text-gray-700 mb-4 leading-relaxed">「必要な機能に絞り、誰でも直感的に使えるUI」を採用。ITが苦手な方でも簡単に導入・運用が可能で、**複雑な操作や高額な導入費用は一切不要**です。</p>
+          <p class="text-xl font-semibold text-waju-accent italic">運営に生まれた“余裕”が、スタッフと利用者様へ還元されます。</p>
         </div>
-        <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0010.png" alt="CARELAY Image" class="rounded-lg shadow-md"/>
+        <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0010.png" alt="CARELAY Image" class="rounded-2xl shadow-2xl md:order-1"/>
       </div>
     </section>
 
     <!-- Key Features -->
-    <section class="py-16 bg-white">
+    <section class="py-20 bg-white">
       <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-center text-blue-800 mb-10">Key Features</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-2">メッセージ&ファイル送信機能</h3>
-            <p>提供票や実績などをスムーズに共有。電話やFAXではなくメッセージで記録を残せるため、送信ミスや確認漏れを防ぎます。</p>
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">Key Features (主な機能)</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Feature 1: メッセージ&ファイル送信機能 -->
+          <div class="p-6 bg-gray-50 rounded-xl shadow-lg border-l-4 border-waju-primary hover:shadow-xl transition duration-300">
+            <div class="text-3xl mb-3 text-waju-primary">💬</div>
+            <h3 class="font-bold text-xl mb-2 text-gray-800">メッセージ&ファイル送信機能</h3>
+            <p class="text-gray-600">提供票や実績などをスムーズに共有。電話やFAXではなくメッセージで記録を残せます。</p>
           </div>
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-2">Q&A機能（コミュニティ）</h3>
-            <p>事業所同士で質疑応答や情報交換が可能。業界特有の悩みを解決し、知識を共有して業務の質を向上します。</p>
+          <!-- Feature 2: Q&A機能（コミュニティ） -->
+          <div class="p-6 bg-gray-50 rounded-xl shadow-lg border-l-4 border-waju-primary hover:shadow-xl transition duration-300">
+            <div class="text-3xl mb-3 text-waju-primary">❓</div>
+            <h3 class="font-bold text-xl mb-2 text-gray-800">Q&A機能（コミュニティ）</h3>
+            <p class="text-gray-600">事業所同士で質疑応答や情報交換が可能。業界特有の悩みを解決し、知識を共有して業務の質を向上します。</p>
           </div>
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-2">イベント発信機能</h3>
-            <p>一般公開したいイベントや採用情報の告知を簡単に行え、集客や広報コストを削減します。</p>
+          <!-- Feature 3: イベント発信機能 -->
+          <div class="p-6 bg-gray-50 rounded-xl shadow-lg border-l-4 border-waju-primary hover:shadow-xl transition duration-300">
+            <div class="text-3xl mb-3 text-waju-primary">📢</div>
+            <h3 class="font-bold text-xl mb-2 text-gray-800">イベント発信機能</h3>
+            <p class="text-gray-600">一般公開したいイベントや採用情報の告知を簡単に行え、集客や広報コストを削減します。</p>
           </div>
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-2">業界製品・サービス紹介</h3>
-            <p>必要な情報を効率的に収集。業界の製品やサービス情報を集約して提供します。</p>
+          <!-- Feature 4: 業界製品・サービス紹介 -->
+          <div class="p-6 bg-gray-50 rounded-xl shadow-lg border-l-4 border-waju-primary hover:shadow-xl transition duration-300">
+            <div class="text-3xl mb-3 text-waju-primary">🛒</div>
+            <h3 class="font-bold text-xl mb-2 text-gray-800">業界製品・サービス紹介</h3>
+            <p class="text-gray-600">必要な情報を効率的に収集。業界の製品やサービス情報を集約して提供します。</p>
           </div>
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-2">おすすめコラム</h3>
-            <p>業務改善や法改正情報など、運営に役立つ専門的なコラムを提供。知識のアップデートを支援します。</p>
+          <!-- Feature 5: おすすめコラム -->
+          <div class="p-6 bg-gray-50 rounded-xl shadow-lg border-l-4 border-waju-primary hover:shadow-xl transition duration-300">
+            <div class="text-3xl mb-3 text-waju-primary">📰</div>
+            <h3 class="font-bold text-xl mb-2 text-gray-800">おすすめコラム</h3>
+            <p class="text-gray-600">業務改善や法改正情報など、運営に役立つ専門的なコラムを提供し、知識のアップデートを支援します。</p>
           </div>
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-2">求人情報ページ</h3>
-            <p>求人ページを提供。高額な紹介料なしで採用活動を支援します。</p>
+          <!-- Feature 6: 求人情報ページ -->
+          <div class="p-6 bg-gray-50 rounded-xl shadow-lg border-l-4 border-waju-primary hover:shadow-xl transition duration-300">
+            <div class="text-3xl mb-3 text-waju-primary">💼</div>
+            <h3 class="font-bold text-xl mb-2 text-gray-800">求人情報ページ</h3>
+            <p class="text-gray-600">事業所ごとの求人ページを提供。高額な紹介料なしで採用活動を支援します。</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Benefits -->
-    <section class="py-16 bg-gray-50">
+    <section class="py-20 bg-waju-light">
       <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-center text-blue-800 mb-10">The Benefits</h2>
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">The Benefits (導入効果)</h2>
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-2">時間短縮とペーパーレス化</h3>
-            <p>電話、FAX、対面でのやりとりを大幅に短縮。送信ミスや印刷ミスを防ぎ、本来の業務に集中できます。</p>
+          <!-- Benefit 1: 時間短縮とペーパーレス化 -->
+          <div class="p-6 bg-white rounded-xl shadow-lg border-l-4 border-waju-accent flex items-start space-x-4">
+            <div class="text-4xl text-waju-accent flex-shrink-0">⏱️</div>
+            <div>
+              <h3 class="font-bold text-xl mb-2 text-gray-800">時間短縮とペーパーレス化</h3>
+              <p class="text-gray-600">電話、FAX、対面でのやりとりを大幅に短縮。送信ミスや印刷ミスを防ぎ、本来の業務に集中できます。</p>
+            </div>
           </div>
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-2">圧倒的な投資対効果（ROI）</h3>
-            <p>月額5,500円の定額制で非効率な業務を解消。他の高額システムと比較し、高い費用対効果を実現します。</p>
+          <!-- Benefit 2: 圧倒的な投資対効果（ROI） -->
+          <div class="p-6 bg-white rounded-xl shadow-lg border-l-4 border-waju-accent flex items-start space-x-4">
+            <div class="text-4xl text-waju-accent flex-shrink-0">📈</div>
+            <div>
+              <h3 class="font-bold text-xl mb-2 text-gray-800">圧倒的な投資対効果（ROI）</h3>
+              <p class="text-gray-600">月額5,500円の定額制で非効率な業務を解消。他の高額システムと比較し、高い費用対効果を実現します。</p>
+            </div>
           </div>
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-2">スタッフの負担軽減と定着率向上</h3>
-            <p>運営効率化で時間に余裕が生まれ、現場スタッフのサポートが充実。満足度と定着率の向上につながります。</p>
+          <!-- Benefit 3: スタッフの負担軽減と定着率向上 -->
+          <div class="p-6 bg-white rounded-xl shadow-lg border-l-4 border-waju-accent flex items-start space-x-4">
+            <div class="text-4xl text-waju-accent flex-shrink-0">🧑‍⚕️</div>
+            <div>
+              <h3 class="font-bold text-xl mb-2 text-gray-800">スタッフの負担軽減と定着率向上</h3>
+              <p class="text-gray-600">運営効率化で時間に余裕が生まれ、現場スタッフのサポートが充実。定着率の向上につながります。</p>
+            </div>
           </div>
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-2">情報収集と共有の効率化</h3>
-            <p>必要な情報が一元化され、質の高い情報共有がスムーズに行えます。</p>
+          <!-- Benefit 4: 情報収集と共有の効率化 -->
+          <div class="p-6 bg-white rounded-xl shadow-lg border-l-4 border-waju-accent flex items-start space-x-4">
+            <div class="text-4xl text-waju-accent flex-shrink-0">🔗</div>
+            <div>
+              <h3 class="font-bold text-xl mb-2 text-gray-800">情報収集と共有の効率化</h3>
+              <p class="text-gray-600">必要な情報が一元化され、質の高い情報共有がスムーズに行えるため、判断スピードが向上します。</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Pricing & Flow -->
-    <section class="py-16 bg-white">
+    <section class="py-20 bg-white">
       <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-center text-blue-800 mb-10">Pricing & Flow</h2>
-        <div class="grid md:grid-cols-2 gap-8 items-start">
-          <div class="p-6 border rounded shadow">
-            <h3 class="font-semibold text-xl mb-4">シンプルで安心な料金体系</h3>
-            <p class="text-xl font-bold mb-2">¥5,500 / 月額（税込）</p>
-            <p>初期費用・登録料：¥0<br>追加料金：¥0 (機能制限・従量課金なし)<br><strong>30日間無料</strong>でお試し可能。</p>
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">Pricing & Flow (料金と導入手順)</h2>
+        <div class="grid md:grid-cols-2 gap-12 items-start">
+          
+          <!-- Pricing -->
+          <div class="p-8 border-4 border-waju-accent bg-waju-light rounded-2xl shadow-2xl text-center">
+            <h3 class="font-bold text-2xl mb-4 text-gray-800">シンプルで安心な料金体系</h3>
+            <p class="text-6xl font-black text-waju-primary mb-4">
+              ¥5,500
+            </p>
+            <p class="text-2xl font-bold text-gray-700 mb-6">/ 月額（税込）</p>
+            <ul class="text-lg text-gray-700 space-y-2 mb-6 border-t pt-4 border-gray-300">
+              <li>✅ 初期費用・登録料：<strong class="text-red-600">¥0</strong></li>
+              <li>✅ 追加料金：<strong class="text-red-600">¥0</strong> (機能制限・従量課金なし)</li>
+            </ul>
+            <div class="bg-waju-accent text-white p-3 rounded-lg font-bold shadow-md">
+              <span class="text-xl">安心の30日間無料お試し可能！</span>
+            </div>
           </div>
-          <div class="space-y-6">
-            <div>
-              <h4 class="font-semibold">01 お申込み</h4>
-              <p>WEBフォームから事業所情報を入力し送信。</p>
+
+          <!-- Flow -->
+          <div class="space-y-8 p-6 bg-gray-50 rounded-2xl shadow-xl">
+            <h3 class="font-bold text-2xl text-gray-800 border-b pb-3 border-gray-300">導入までの流れ</h3>
+            <div class="flex items-start space-x-4">
+              <div class="text-4xl font-black text-waju-primary flex-shrink-0">01</div>
+              <div>
+                <h4 class="font-bold text-xl mb-1 text-gray-800">お申込み (無料体験)</h4>
+                <p class="text-gray-600">WEBフォームから事業所情報を入力し送信してください。支払い情報登録は不要です。</p>
+              </div>
             </div>
-            <div>
-              <h4 class="font-semibold">02 アカウント登録</h4>
-              <p>確認後、支払い情報確認メールを送付。</p>
+            <div class="flex items-start space-x-4">
+              <div class="text-4xl font-black text-waju-primary flex-shrink-0">02</div>
+              <div>
+                <h4 class="font-bold text-xl mb-1 text-gray-800">アカウント登録・利用開始</h4>
+                <p class="text-gray-600">すぐに全機能が利用可能なアカウントを登録。30日間の無料期間が始まります。</p>
+              </div>
             </div>
-            <div>
-              <h4 class="font-semibold">03 利用開始</h4>
-              <p>問題なければ、すぐに全機能を利用可能。</p>
+            <div class="flex items-start space-x-4">
+              <div class="text-4xl font-black text-waju-primary flex-shrink-0">03</div>
+              <div>
+                <h4 class="font-bold text-xl mb-1 text-gray-800">本契約・継続利用</h4>
+                <p class="text-gray-600">無料期間終了後、ご納得いただければ簡単な手続きで本契約・継続利用へ移行できます。</p>
+              </div>
             </div>
           </div>
         </div>
@@ -160,11 +241,14 @@
     </section>
 
     <!-- Final CTA -->
-    <section class="py-16 bg-blue-800 text-white text-center">
+    <section class="py-16 bg-waju-primary text-white text-center rounded-t-xl shadow-inner">
       <div class="max-w-4xl mx-auto px-6">
-        <h2 class="text-3xl font-bold mb-6">介護・福祉業界の未来は、CARELAYから。</h2>
-        <p class="mb-6">非効率な業務に終止符を打ち、利用者とスタッフに最高のサービスを提供するための第一歩を踏み出しましょう。</p>
-        <a href="/contact.html" class="inline-block px-8 py-4 bg-red-600 text-white font-bold rounded-lg shadow hover:bg-red-700">今すぐ30日間無料体験を始める</a>
+        <h2 class="text-4xl font-extrabold mb-4">介護・福祉業界の未来は、CARELAYから。</h2>
+        <p class="text-xl mb-8 opacity-90">非効率な業務に終止符を打ち、利用者とスタッフに最高のサービスを提供するための第一歩を踏み出しましょう。</p>
+        <!-- リンクを https://carelay.net/ に修正 -->
+        <a href="https://carelay.net/" class="inline-block px-10 py-4 bg-waju-accent text-white font-black text-2xl rounded-full shadow-2xl hover:bg-amber-600 transition duration-300 transform hover:scale-105">
+          今すぐ30日間無料体験を始める！
+        </a>
       </div>
     </section>
   </main>
