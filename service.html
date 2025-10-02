@@ -1,236 +1,175 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>事業内容 | 合同会社WaJu</title>
 
   <!-- SEO / OGP -->
-  <meta name="description" content="合同会社WaJuの事業内容ページ。提供サービス CARELAY を中心に、課題解決の仕組みを紹介します。">
+  <meta name="description" content="CARELAYは介護・福祉業界の業務を効率化する業界特化型プラットフォームです。非効率な業務の無駄を省き、運営側の負担を軽減します。">
   <meta property="og:title" content="事業内容 | 合同会社WaJu">
-  <meta property="og:description" content="合同会社WaJuの事業内容、サービス概要、料金などを紹介します。">
-  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png">
+  <meta property="og:description" content="CARELAYは介護・福祉業界の業務を効率化する業界特化型プラットフォームです。">
+  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png">
+  <meta property="og:type" content="website">
   <meta property="og:url" content="https://waju.co.jp/service.html">
-  <meta property="og:type" content="article">
 
-  <!-- Favicon / PWA -->
-  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
-  <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
-  <meta name="theme-color" content="#0f172a">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png">
 
-  <!-- Tailwind CSS -->
+  <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <style>
-    /* 共通CSS（index準拠） */
-    :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
-    a{color:inherit;text-decoration:none}
-    main{min-height:40vh}
-    .container{max-width:var(--container);margin:0 auto;padding:0 16px}
-    .hf-wrap{width:100%}
-    .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
-    .hfbar.hf-row{justify-content:flex-start}
-    .hfbar.hf-column{flex-direction:column;align-items:stretch}
-    .hf-brand{display:flex;align-items:center;gap:8px}
-    .hf-nav{display:flex;gap:var(--gap);flex-wrap:wrap;width:100%}
-    .slot{display:flex;align-items:center}
-    .slot.brand{flex:0 0 auto}
-    .slot.nav{flex:1 1 auto}
-    .hf-copy{display:flex;width:100%}
-    .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
-    .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
-    .drawer{position:fixed;inset:0;pointer-events:none}
-    .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
-    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
-    .drawer[aria-hidden="false"]{pointer-events:auto}
-    .drawer[aria-hidden="false"] .overlay{opacity:1}
-    .drawer[aria-hidden="false"] .panel{transform:none}
-    .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
-    .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
-    .drawer .panel nav a{padding:12px 10px;border-radius:10px}
-    .drawer .panel nav a:hover{background:#f1f5f9}
-    @media (max-width:768px){
-      .container{padding:0 12px}
-      :root{--container:100%}
-      .slot.nav{display:none}
-      .hamburger{display:block;margin-left:auto}
-      #site-footer .hf-nav{display:none !important}
-    }
-
-    /* service専用スタイル */
-    h1{font-size:36px;text-align:center;font-weight:900;margin:40px 0;color:#1976d2}
-    section{margin:60px auto}
-    .section-title{font-size:28px;font-weight:700;margin-bottom:20px;text-align:center}
-    .section-subtitle{font-size:18px;font-weight:500;color:#1976d2;text-align:center;margin-bottom:40px}
-  </style>
 </head>
-<body>
-  <header id="site-header" class="hf-wrap"></header>
-  <main id="app-root"></main>
-  <footer id="site-footer" class="hf-wrap"></footer>
+<body id="page-body">
+  <header id="site-header"></header>
 
-  <!-- Mobile drawer -->
-  <div id="mobile-drawer" class="drawer" aria-hidden="true">
-    <div class="overlay" data-close></div>
-    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
-      <header>
-        <div class="title" id="drawer-title">メニュー</div>
-        <button class="hamburger" id="drawer-close" aria-label="閉じる">
-          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-        </button>
-      </header>
-      <nav id="drawer-nav" aria-label="モバイルメニュー"></nav>
-    </div>
-  </div>
-
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <script type="module">
-    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
-    const sb = createClient(
-      "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-    );
-
-    const $ = s => document.querySelector(s);
-    const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
-    const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/ (sans-serif|serif|monospace) /i.test(s) ? s : `${s}, sans-serif`);
-    const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
-    const bgParts = (row, def) => {
-      const grad = stripQuotes(row?.bg_gradient||"").trim();
-      if (grad){ return {bgColor:def, bgImage:grad}; }
-      const col = (row?.bg_color && row.bg_color.trim()) ? row.bg_color : def;
-      return {bgColor:col, bgImage:"none"};
-    };
-    const brandJustifyMargins = (align)=> align==='left'?'margin-right:auto':(align==='center'?'margin:0 auto':'margin-left:auto');
-
-    let allMenus = [];
-
-    async function loadHF(){
-      const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
-        sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
-        sb.from("hf_settings").select("*").eq("area","header").single(),
-        sb.from("hf_settings").select("*").eq("area","footer").single()
-      ]);
-      allMenus = menus||[];
-      renderHeader(hdr||{}, allMenus);
-      renderFooter(ftr||{}, allMenus);
-      buildDrawer(allMenus);
-      adjustOffsets(hdr||{}, ftr||{});
-      addResizeObserver(hdr||{}, ftr||{});
-      renderApp();
-    }
-
-    function linkOf(m){ return (m.url ?? m.href ?? '#'); }
-
-    function renderHeader(d, menus){
-      const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
-        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
-      const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
-      const paddingY = d.padding || "8px 0";
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      $("#site-header").innerHTML = `
-        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
-              <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
-                <div class="hf-brand">
-                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||60,60)}px">`:""}
-                  <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
-                </div>
-              </div>
-              <div class="slot nav">
-                <nav class="hf-nav" id="desktop-nav" style="justify-content:${toJustify(d.nav_alignment)};color:${d.nav_color};font-weight:${d.nav_weight};font-size:${num(d.header_nav_size,14)}px">${items}</nav>
-              </div>
-              <button id="hamburger" class="hamburger" aria-controls="mobile-drawer" aria-expanded="false" aria-label="メニューを開く">
-                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-              </button>
-            </div>
-          </div>
-        </div>`;
-      const bg = $("#hf-header-bg");
-      if(d.header_fixed && bg){
-        Object.assign(bg.style,{position:"fixed",top:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
-      }
-      $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
-    }
-
-    function renderFooter(d, menus){
-      const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
-        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
-      const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
-      const paddingY = d.padding || "8px 0";
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      const inner = d.layout_mode==="nav-top"
-        ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
-           <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
-        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
-      $("#site-footer").innerHTML = `
-        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
-              ${inner}
-            </div>
-          </div>
-        </div>`;
-      const bg = $("#hf-footer-bg");
-      if(d.footer_fixed && bg){
-        Object.assign(bg.style,{position:"fixed",bottom:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
-      }
-    }
-
-    function buildDrawer(menus){
-      const items = menus.filter(m=>m.is_active).map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      $("#drawer-nav").innerHTML = items;
-    }
-
-    function openDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","false");$("#hamburger").setAttribute("aria-expanded","true");}
-    function closeDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","true");$("#hamburger").setAttribute("aria-expanded","false");}
-    $("#drawer-close")?.addEventListener("click", closeDrawer);
-    $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
-
-    function adjustOffsets(h,f){
-      const headerEl=$("#hf-header-bg");
-      const body=document.body;
-      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
-      body.style.paddingBottom="0";
-    }
-
-    function addResizeObserver(h,f){
-      const ro=new ResizeObserver(()=>adjustOffsets(h,f));
-      const headerEl=$("#hf-header-bg");const footerEl=$("#hf-footer-bg");
-      if(headerEl) ro.observe(headerEl); if(footerEl) ro.observe(footerEl);
-    }
-
-    loadHF();
-
-    /* ========== メイン部分 ========== */
-    function renderApp(){
-      document.querySelector("#app-root").innerHTML = `
-        <div class="container">
-          <h1>事業内容</h1>
-          <section>
-            <div class="section-title">CARELAY</div>
-            <div class="section-subtitle">介護・福祉業界の課題をオンラインで解決</div>
-            <p>CARELAYは「求人」「営業」「地域連携」を一つにまとめたオンラインプラットフォームです。</p>
-            <p>人手不足や業務負担の増大といった課題を効率的に解決し、業界の持続可能な発展を支援します。</p>
-            <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png" alt="CARELAYサービスイメージ" style="max-width:100%;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);margin:30px 0">
-            <p class="text-xl font-bold text-blue-700">月額 5,500円（税込）</p>
-          </section>
+  <main id="page-main">
+    <!-- Hero Section -->
+    <section class="relative bg-gray-100 py-16">
+      <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+        <div>
+          <h1 class="text-4xl font-bold mb-4 text-blue-800">ケアレイで、もっと楽に繋がろう。</h1>
+          <p class="text-lg mb-6">介護・福祉業界を支える業務支援プラットフォーム</p>
+          <p class="text-gray-700 mb-6">CARELAY サービス画面イメージ<br>現場経験から生まれた、「運営側」の負担を軽減するシステム<br><strong>30日間 無料で試す</strong></p>
         </div>
-      `;
-    }
-  </script>
+        <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="CARELAY Hero" class="rounded-lg shadow-lg"/>
+      </div>
+    </section>
+
+    <!-- STOP THE WASTE -->
+    <section class="py-16 bg-white">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center text-blue-800 mb-10">STOP THE WASTE.</h2>
+        <div class="grid md:grid-cols-3 gap-8 mb-8">
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-3">非効率な連絡手段</h3>
+            <p>営業や連絡手段が未だに電話やFAXが中心。送信ミスや確認漏れが多く、時間と費用を浪費しています。</p>
+          </div>
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-3">運営側の慢性的な課題</h3>
+            <p>多くのICTシステムは「現場」の効率化が目的。管理者や相談員、ケアマネなど「運営側」を支える仕組みが不足しています。</p>
+          </div>
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-3">高額なコスト負担</h3>
+            <p>複雑なシステムの導入コストや、求人・利用者獲得にかかる高額な紹介料が事業所の経営を圧迫しています。</p>
+          </div>
+        </div>
+        <p class="text-center text-gray-700">CARELAYは、15年以上の介護現場を経験した代表の実体験に基づき、これらの課題解決のために開発されました。</p>
+      </div>
+    </section>
+
+    <!-- What is CARELAY? -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+        <div>
+          <h2 class="text-3xl font-bold text-blue-800 mb-6">What is CARELAY?</h2>
+          <p class="mb-4">誰でも直感的に使える、業務支援プラットフォーム</p>
+          <p class="text-gray-700 mb-4">介護事業所の連携を、もっとスムーズに。<br>CARELAYは、高齢者介護サービス事業所、障害福祉事業所、および関係機関（病院、薬局、ケアマネ等）をオンラインで繋ぐ<strong>業界特化型プラットフォーム</strong>です。</p>
+          <p class="text-gray-700 mb-4">「必要な機能に絞り、誰でも直感的に使えるUI」を採用することで、ITが苦手な方でも簡単に導入・運用が可能。複雑な操作や高額な導入費用は一切不要で、運営側の時間とコストの負担を大幅に軽減します。</p>
+          <p class="text-gray-700">これにより運営に<strong>“余裕”</strong>が生まれ、そのゆとりがスタッフ・利用者に還元される好循環を目指します。</p>
+        </div>
+        <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0010.png" alt="CARELAY Image" class="rounded-lg shadow-md"/>
+      </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="py-16 bg-white">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center text-blue-800 mb-10">Key Features</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-2">メッセージ&ファイル送信機能</h3>
+            <p>提供票や実績などをスムーズに共有。電話やFAXではなくメッセージで記録を残せるため、送信ミスや確認漏れを防ぎます。</p>
+          </div>
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-2">Q&A機能（コミュニティ）</h3>
+            <p>事業所同士で質疑応答や情報交換が可能。業界特有の悩みを解決し、知識を共有して業務の質を向上します。</p>
+          </div>
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-2">イベント発信機能</h3>
+            <p>一般公開したいイベントや採用情報の告知を簡単に行え、集客や広報コストを削減します。</p>
+          </div>
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-2">業界製品・サービス紹介</h3>
+            <p>必要な情報を効率的に収集。業界の製品やサービス情報を集約して提供します。</p>
+          </div>
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-2">おすすめコラム</h3>
+            <p>業務改善や法改正情報など、運営に役立つ専門的なコラムを提供。知識のアップデートを支援します。</p>
+          </div>
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-2">求人情報ページ</h3>
+            <p>求人ページを提供。高額な紹介料なしで採用活動を支援します。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center text-blue-800 mb-10">The Benefits</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-2">時間短縮とペーパーレス化</h3>
+            <p>電話、FAX、対面でのやりとりを大幅に短縮。送信ミスや印刷ミスを防ぎ、本来の業務に集中できます。</p>
+          </div>
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-2">圧倒的な投資対効果（ROI）</h3>
+            <p>月額5,500円の定額制で非効率な業務を解消。他の高額システムと比較し、高い費用対効果を実現します。</p>
+          </div>
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-2">スタッフの負担軽減と定着率向上</h3>
+            <p>運営効率化で時間に余裕が生まれ、現場スタッフのサポートが充実。満足度と定着率の向上につながります。</p>
+          </div>
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-2">情報収集と共有の効率化</h3>
+            <p>必要な情報が一元化され、質の高い情報共有がスムーズに行えます。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing & Flow -->
+    <section class="py-16 bg-white">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center text-blue-800 mb-10">Pricing & Flow</h2>
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+          <div class="p-6 border rounded shadow">
+            <h3 class="font-semibold text-xl mb-4">シンプルで安心な料金体系</h3>
+            <p class="text-xl font-bold mb-2">¥5,500 / 月額（税込）</p>
+            <p>初期費用・登録料：¥0<br>追加料金：¥0 (機能制限・従量課金なし)<br><strong>30日間無料</strong>でお試し可能。</p>
+          </div>
+          <div class="space-y-6">
+            <div>
+              <h4 class="font-semibold">01 お申込み</h4>
+              <p>WEBフォームから事業所情報を入力し送信。</p>
+            </div>
+            <div>
+              <h4 class="font-semibold">02 アカウント登録</h4>
+              <p>確認後、支払い情報確認メールを送付。</p>
+            </div>
+            <div>
+              <h4 class="font-semibold">03 利用開始</h4>
+              <p>問題なければ、すぐに全機能を利用可能。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="py-16 bg-blue-800 text-white text-center">
+      <div class="max-w-4xl mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-6">介護・福祉業界の未来は、CARELAYから。</h2>
+        <p class="mb-6">非効率な業務に終止符を打ち、利用者とスタッフに最高のサービスを提供するための第一歩を踏み出しましょう。</p>
+        <a href="/contact.html" class="inline-block px-8 py-4 bg-red-600 text-white font-bold rounded-lg shadow hover:bg-red-700">今すぐ30日間無料体験を始める</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script type="module" src="hf.js"></script>
 </body>
 </html>
