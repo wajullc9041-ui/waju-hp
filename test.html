@@ -85,8 +85,17 @@
       .confirm-value { padding:8px 12px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; }
       .actions { display:flex; gap:16px; justify-content:center; margin-top:20px; }
       @media (max-width:768px){
+        .contact-intro-text { text-align: left; } /* スマホでは左揃え */
+
         .form-group { flex-direction:column; gap:8px; margin-bottom:15px; }
-        .form-group label { width:100%; margin-bottom:0; padding-top:0; }
+
+        /* ラベルもフォームと同じ余白を確保 */
+        .form-group label {
+          width: 90%;
+          margin: 0 auto;
+          padding-top: 0;
+        }
+
         .form-group input,
         .form-group select,
         .form-group textarea {
