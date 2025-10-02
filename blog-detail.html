@@ -69,20 +69,39 @@
       <!-- シェアボタン -->
       <div class="mt-6 flex gap-4 items-center flex-wrap">
         <span class="text-gray-600 text-sm">シェアする：</span>
-        <a id="share-x" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.18 4.18 0 001.84-2.31..."/></svg>
-        </a>
-        <a id="share-fb" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">FB</a>
-        <a id="share-line" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">LINE</a>
+        <a id="share-x" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">X</a>
+        <a id="share-fb" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">F</a>
+        <a id="share-line" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">L</a>
         <a id="share-ig" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">IG</a>
         <a id="share-mail" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300" target="_blank">@</a>
       </div>
 
-      <!-- ナビゲーション（下部） -->
+      <!-- ナビゲーション（下部：上と完全統一） -->
       <div class="post-nav flex justify-between items-center gap-4 my-6 text-sm">
-        <a id="prev-article" class="flex items-center gap-2 text-blue-600 hover:underline">… 前の記事</a>
-        <a href="/blog/" class="flex items-center gap-2 text-gray-900 hover:underline">一覧に戻る</a>
-        <a id="next-article" class="flex items-center gap-2 text-blue-600 hover:underline">次の記事 …</a>
+        <a id="prev-article" class="flex items-center gap-2 text-blue-600 hover:underline">
+          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M15 6l-6 6 6 6"/>
+            </svg>
+          </span>
+          前の記事
+        </a>
+        <a href="/blog/" class="flex items-center gap-2 text-gray-900 hover:underline">
+          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+          </span>
+          一覧に戻る
+        </a>
+        <a id="next-article" class="flex items-center gap-2 text-blue-600 hover:underline">
+          次の記事
+          <span class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M9 6l6 6-6 6"/>
+            </svg>
+          </span>
+        </a>
       </div>
     </section>
   </main>
@@ -94,7 +113,7 @@
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
     const sb = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "YOUR_SUPABASE_ANON_KEY"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // ← 実際のanonキーを記載
     );
 
     const $ = s => document.querySelector(s);
@@ -130,7 +149,7 @@
       $("#share-x").href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(data.title)}`;
       $("#share-fb").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
       $("#share-line").href = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}`;
-      $("#share-ig").href = `https://www.instagram.com/`; // IG公式シェアは不可、代替リンク
+      $("#share-ig").href = `https://www.instagram.com/`; // IG公式シェアは不可
       $("#share-mail").href = `mailto:?subject=${encodeURIComponent(data.title)}&body=${encodeURIComponent(url)}`;
 
       // 前後記事
