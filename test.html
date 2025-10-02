@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>お問い合わせ | 合同会社WaJu</title>
+  <title>合同会社WaJu | 公式ホームページ</title>
 
   <!-- SEO / OGP -->
-  <meta name="description" content="合同会社WaJuへのお問い合わせページです。サービス導入相談、業務提携、取材依頼などはこちらからご連絡ください。">
-  <meta property="og:title" content="お問い合わせ | 合同会社WaJu">
-  <meta property="og:description" content="合同会社WaJuへのお問い合わせページです。サービス導入相談、業務提携、取材依頼などはこちらからご連絡ください。">
+  <meta name="description" content="合同会社WaJuの公式ホームページです。介護・福祉業界のICT活用を推進し、CARELAYを中心としたサービスを提供しています。">
+  <meta property="og:title" content="合同会社WaJu | 公式ホームページ">
+  <meta property="og:description" content="合同会社WaJuの公式ホームページです。介護・福祉業界のICT活用を推進し、CARELAYを中心としたサービスを提供しています。">
   <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://waju.co.jp/contact.html">
+  <meta property="og:url" content="https://waju.co.jp/index.html">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
@@ -20,6 +20,23 @@
 
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind Config for Inter font and custom colors -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            'waju-primary': '#1e40af', // Blue-700 equivalent
+            'waju-light': '#eff6ff',   // Blue-50 equivalent
+            'waju-accent': '#f59e0b',  // Amber-500
+          }
+        }
+      }
+    }
+  </script>
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
@@ -30,244 +47,210 @@
     gtag('config', 'G-ZHLJ5K19ZE');
   </script>
 </head>
-<body id="page-body">
+<body id="page-body" class="font-sans bg-gray-50">
   <header id="site-header"></header>
 
   <main id="page-main">
-    <style>
-      /* 見出しスタイル */
-      #page-title {
-        font-size: 42px;
-        text-align: center;
-        margin-top: 40px;
-        margin-bottom: 60px;
-        font-weight: 900;
-        color: #1976d2;
-        letter-spacing: 2px;
-        position: relative;
-      }
-      #page-title::after {
-        content: '';
-        display: block;
-        width: 60px;
-        height: 3px;
-        background: #0f172a;
-        margin: 10px auto 0;
-        border-radius: 2px;
-      }
-      @media (max-width: 768px) {
-        #page-title {
-          font-size: 26px;
-          letter-spacing: 1px;
-          margin-bottom: 40px;
-        }
-      }
-
-      /* フォーム専用スタイル */
-      .contact-intro-text { text-align: center; margin-bottom: 20px; padding: 16px 20px; background: #f9fafb; border-radius: 8px; }
-      .privacy-notice { max-width: 800px; margin: 0 auto 20px; padding: 16px 20px; background: #f9fafb; border-radius: 8px; }
-      .form-container { max-width:800px; width:100%; margin:0 auto; }
-      .form-group { display:flex; align-items:flex-start; margin-bottom:20px; gap:24px; }
-      .form-group label { width:180px; font-weight:600; padding-top:12px; line-height:1.5; color:#1f2937; }
-      .form-group input,.form-group select,.form-group textarea { flex:1; padding:12px; border:1px solid #d1d5db; border-radius:8px; transition:border-color 0.2s, box-shadow 0.2s; }
-      .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color:#3b82f6; outline:none; box-shadow:0 0 0 3px rgba(59,130,246,0.2); }
-      textarea { resize:vertical; height:140px; max-width:600px; }
-      .submit-btn { display:block; margin:30px auto 10px; padding:14px 36px; background:linear-gradient(180deg, #3b82f6, #1d4ed8); color:#fff; border:none; border-radius:10px; font-size:18px; font-weight:700; cursor:pointer; box-shadow:0 4px 10px rgba(29,78,216,0.3); transition:transform 0.15s ease, box-shadow 0.15s ease; }
-      .submit-btn:hover { background:linear-gradient(180deg, #60a5fa, #3b82f6); transform:translateY(-1px); box-shadow:0 6px 12px rgba(29,78,216,0.4); }
-      .msg { margin-top:20px; text-align:center; font-size:16px; }
-      .msg.success { color:#0a7f3f; }
-      .msg.error { color:#b91c1c; }
-      .hidden { display:none; }
-      .privacy { text-align:center; margin-top:20px; }
-      .privacy label { display:inline-block; }
-      .confirm-row { margin-bottom:12px; }
-      .confirm-label { font-weight:600; color:#1f2937; display:block; margin-bottom:4px; }
-      .confirm-value { padding:8px 12px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; }
-      .actions { display:flex; gap:16px; justify-content:center; margin-top:20px; }
-
-      @media (max-width:768px){
-        .contact-intro-text { text-align: left; } /* スマホでは左揃え */
-
-        .form-group { flex-direction:column; gap:8px; margin-bottom:15px; }
-
-        /* ラベルもフォームと同じ余白を確保 */
-        .form-group label {
-          width: 90%;
-          margin: 0 auto;
-          padding-top: 0;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-          width: 90%;       /* 横幅90%にして左右5%余白 */
-          max-width: 90%;
-          margin: 0 auto;
-        }
-        textarea {
-          height: 200px;    /* 本文欄を広めに */
-        }
-
-        /* 確認画面も同じ幅に統一 */
-        .confirm-row {
-          width: 90%;
-          margin: 0 auto 15px;
-        }
-        .confirm-value {
-          width: 100%;
-        }
-
-        .submit-btn {
-          width: auto;      /* PCと同じ中央寄せサイズ */
-          padding: 14px 36px;
-          margin: 30px auto 10px;
-          display: block;
-        }
-      }
-    </style>
-
-    <div id="page-content">
-      <div class="container contact-content-area">
-        <h1 id="page-title">お問い合わせ</h1>
-
-        <!-- 入力フォーム -->
-        <form id="contact-form" novalidate>
-          <div class="form-container" id="form-section">
-            <div class="contact-intro-text">
-              <p>必須項目（<span style="color:red;">※</span>）をご記入の上、「確認画面へ」のボタンを押してください。</p>
-              <p>いただいた内容を確認でき次第、ご連絡させていただきます。</p>
-              <p>なお、営業メールにはご返信できない場合もございますのでご了承ください。</p>
-            </div>
-
-            <div class="form-group"><label for="name">お名前 <span style="color:red;">*</span></label><input id="name" name="name" type="text" required></div>
-            <div class="form-group"><label for="organization">所属</label><input id="organization" name="organization" type="text"></div>
-            <div class="form-group"><label for="email">メール <span style="color:red;">*</span></label><input id="email" name="email" type="email" required></div>
-            <div class="form-group"><label for="phone">電話番号</label><input id="phone" name="phone" type="tel"></div>
-            <div class="form-group"><label for="category">お問い合わせ種類 <span style="color:red;">*</span></label>
-              <select id="category" name="category" required>
-                <option value="">選択してください</option>
-                <option value="サービス導入相談">サービス導入相談</option>
-                <option value="業務提携・連携・協業">業務提携・連携・協業</option>
-                <option value="取材・メディア">取材・メディア</option>
-                <option value="その他">その他</option>
-              </select>
-            </div>
-            <div class="form-group"><label for="subject">件名 <span style="color:red;">*</span></label><input id="subject" name="subject" type="text" required></div>
-            <div class="form-group"><label for="message">本文 <span style="color:red;">*</span></label><textarea id="message" name="message" required></textarea></div>
-
-            <div class="privacy-notice">
-              <p><strong>個人情報の収集について</strong></p>
-              <p>当サイトは、お客様の個人情報について、お客様の承諾が無い限り第三者に開示、提供を一切致しません。</p>
-              <p>お客様から個人情報をご提供して頂く際には、その利用目的を明示し、その目的以外には利用致しません。</p>
-              <p>そして、ご提供頂いた個人情報を取り扱うにあたり管理責任者を置き、適切な管理を行っております。</p>
-            </div>
-
-            <div class="privacy">
-              <label><input id="agree" name="agree" type="checkbox" required>
-                <a href="privacy.html" target="_blank" style="color:#1976d2; text-decoration:underline;">プライバシーポリシー</a>に同意します
-              </label>
-            </div>
-
-            <button type="button" class="submit-btn" id="submit-btn">確認画面へ</button>
-          </div>
-        </form>
-
-        <!-- 確認画面 -->
-        <div id="confirm-section" class="form-container hidden">
-          <div class="confirm-row"><span class="confirm-label">お名前</span><div id="c-name" class="confirm-value"></div></div>
-          <div class="confirm-row"><span class="confirm-label">所属</span><div id="c-organization" class="confirm-value"></div></div>
-          <div class="confirm-row"><span class="confirm-label">メール</span><div id="c-email" class="confirm-value"></div></div>
-          <div class="confirm-row"><span class="confirm-label">電話番号</span><div id="c-phone" class="confirm-value"></div></div>
-          <div class="confirm-row"><span class="confirm-label">お問い合わせ種類</span><div id="c-category" class="confirm-value"></div></div>
-          <div class="confirm-row"><span class="confirm-label">件名</span><div id="c-subject" class="confirm-value"></div></div>
-          <div class="confirm-row"><span class="confirm-label">本文</span><div id="c-message" class="confirm-value"></div></div>
-          <div class="g-recaptcha" data-sitekey="6Le17NcrAAAAACXZT9WCPcjAv3wLsuceh-nIryuJ" style="margin-bottom:20px; display:flex; justify-content:center;"></div>
-          <div class="actions">
-            <button id="back-btn" class="submit-btn" type="button" style="background:#9ca3af">戻る</button>
-            <button id="send-btn" class="submit-btn" type="button">送信する</button>
-          </div>
-        </div>
-
-        <!-- 完了画面 -->
-        <div id="thanks-section" class="form-container hidden">
-          <p class="msg success">送信ありがとうございました。<br>内容を確認の上、ご連絡いたします。<br>数秒後にトップページへ戻ります。</p>
+    <!-- Hero Section -->
+    <!-- 背景をグラデーションにし、中央のコンテンツエリアを max-w-6xl に設定 -->
+    <section id="hero" class="relative w-full py-0 bg-gradient-to-b from-waju-light to-blue-100">
+      <div class="max-w-6xl mx-auto overflow-hidden shadow-2xl rounded-b-xl">
+        <!-- h-[500px] を削除し、画像のアスペクト比に高さを依存させる (h-auto) -->
+        <div id="hero-slider" class="relative flex transition-transform duration-700 ease-in-out h-auto">
+          <!-- 画像はコンテナ内でアスペクト比を維持しつつ幅100%で表示 (object-contain は object-cover に変更) -->
+          <!-- object-coverでアスペクト比を維持しつつ要素を埋め、h-fullで高さを維持します。 -->
+          <!-- 画像はもともと100%幅で設定されており、高さ指定がなくなったため、アスペクト比が維持されます -->
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" alt="Hero1" class="w-full h-auto object-cover flex-shrink-0"/>
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" alt="Hero2" class="w-full h-auto object-cover flex-shrink-0"/>
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="Hero3" class="w-full h-auto object-cover flex-shrink-0"/>
         </div>
       </div>
-    </div>
+      <!-- テキストオーバーレイを削除 -->
+      <!-- Slider dots will be dynamically added here -->
+    </section>
 
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script type="module">
-      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-      const sb = createClient(
-        "https://htnmjsqgoapvuanrsuma.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-      );
+    <!-- NEWS Section -->
+    <section id="news" class="py-16 bg-white border-b border-gray-100 shadow-inner">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">NEWS</h2>
+        <div class="space-y-4 max-w-3xl mx-auto">
+          <a href="#" class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300 mr-4">2024.09.27</span>
+              <p class="text-gray-800 font-semibold group-hover:text-white transition duration-300">【重要】ホームページをリニューアルしました</p>
+            </div>
+          </a>
+          <a href="#" class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300 mr-4">2024.09.01</span>
+              <p class="text-gray-800 font-semibold group-hover:text-white transition duration-300">新サービス「CARELAY」の提供を開始しました。</p>
+            </div>
+          </a>
+          <a href="#" class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300 mr-4">2024.08.15</span>
+              <p class="text-gray-800 font-semibold group-hover:text-white transition duration-300">夏季休業のお知らせとご協力のお願い</p>
+            </div>
+          </a>
+          <a href="#" class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300 mr-4">2023.04.01</span>
+              <p class="text-gray-800 font-semibold group-hover:text-white transition duration-300">合同会社WaJuを設立しました。</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
 
-      const form = document.getElementById("contact-form");
-      const formSec = document.getElementById("form-section");
-      const confirmSec = document.getElementById("confirm-section");
-      const thanksSec = document.getElementById("thanks-section");
+    <!-- ABOUT Section -->
+    <section id="about" class="py-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">ABOUT US</h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center bg-white p-8 md:p-12 rounded-2xl shadow-2xl">
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="About" class="rounded-xl shadow-lg transform hover:scale-[1.01] transition duration-500"/>
+          <div>
+            <h3 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-waju-accent pl-3">社会に貢献する、新たな価値創造へ</h3>
+            <p class="text-lg text-gray-700 leading-relaxed mb-6">
+              社会福祉の一環として、介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い社会的支援ができる企業を目指しています。
+            </p>
+            <p class="text-lg text-gray-700 leading-relaxed mb-8 italic">
+              絶えず前進するための <strong>Walk</strong>、そして躍進するための <strong>Jump</strong> を心掛け、社会に貢献していきます。
+            </p>
+            <a href="/about.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transform hover:translate-y-[-2px] transition duration-300 ease-in-out">
+              企業理念を詳しく見る
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      const cName = document.getElementById("c-name");
-      const cOrganization = document.getElementById("c-organization");
-      const cEmail = document.getElementById("c-email");
-      const cPhone = document.getElementById("c-phone");
-      const cCategory = document.getElementById("c-category");
-      const cSubject = document.getElementById("c-subject");
-      const cMessage = document.getElementById("c-message");
+    <!-- SERVICE Section -->
+    <section id="service" class="py-20 bg-waju-light">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SERVICE</h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center bg-white p-8 md:p-12 rounded-2xl shadow-2xl border-4 border-waju-primary">
+          <div class="md:order-2">
+            <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png" alt="Service" class="rounded-xl shadow-lg transform hover:scale-[1.01] transition duration-500"/>
+          </div>
+          <div class="md:order-1">
+            <h3 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-waju-accent pl-3">介護・福祉業界の課題をオンラインで解決「CARELAY（ケアレイ）」</h3>
+            <p class="text-lg text-gray-700 leading-relaxed mb-6">
+              高齢者介護サービス事業者や障害福祉サービス事業者の求人・営業・連携の問題をオンラインで解決するプラットフォームです。
+            </p>
+            <p class="text-lg text-gray-700 leading-relaxed mb-6">
+              このサービスは、業界の持続可能な発展をサポートするため、他にはない圧倒的な低コストでご提供しています。
+            </p>
+            <div class="bg-waju-accent text-white p-4 rounded-lg inline-block shadow-lg mb-8 transform rotate-[-2deg] hover:rotate-0 transition duration-300">
+              <p class="text-2xl font-black">圧倒的な低コスト <span class="text-4xl">5,500円</span>/月</p>
+            </div>
+            <a href="/service.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transform hover:translate-y-[-2px] transition duration-300 ease-in-out">
+              サービス詳細を見る
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      let payload = {};
+    <!-- VIDEO Section -->
+    <section id="video" class="py-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">YouTube</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white rounded-xl shadow-2xl overflow-hidden p-4">
+            <p class="text-lg font-semibold text-gray-800 mb-3 text-center">会社概要動画</p>
+            <iframe class="w-full h-[300px] rounded-lg shadow-inner" src="https://www.youtube.com/embed/CjgbFC64qOk" title="会社概要動画" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <div class="bg-white rounded-xl shadow-2xl overflow-hidden p-4">
+            <p class="text-lg font-semibold text-gray-800 mb-3 text-center">サービス概要動画</p>
+            <iframe class="w-full h-[300px] rounded-lg shadow-inner" src="https://www.youtube.com/embed/WqQh-Ok9kjo" title="サービス概要動画" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      document.getElementById("submit-btn").addEventListener("click", e => {
-        e.preventDefault();
-        if(!form.reportValidity()) return;
+    <!-- SNS Section -->
+    <section id="sns" class="py-20 bg-waju-light">
+      <div class="max-w-6xl mx-auto px-6 text-center">
+        <h2 class="text-4xl font-extrabold text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SNS</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500 hover:shadow-3xl transition duration-300">
+            <p class="text-3xl mb-2">📸</p>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Instagram <span class="text-pink-500">@waju_official</span></h3>
+            <p class="text-gray-600">最新投稿の埋め込みエリア</p>
+            <a href="#" class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold transition duration-300">Instagramを見る &rarr;</a>
+          </div>
+          <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500 hover:shadow-3xl transition duration-300">
+            <p class="text-3xl mb-2">🐦</p>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">X（旧Twitter） <span class="text-blue-500">@waju_corp</span></h3>
+            <p class="text-gray-600">最新投稿の埋め込みエリア</p>
+            <a href="#" class="mt-4 inline-block text-blue-600 hover:text-blue-700 font-semibold transition duration-300">X（Twitter）を見る &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        payload = {
-          name: document.getElementById("name").value.trim(),
-          organization: document.getElementById("organization").value.trim(),
-          email: document.getElementById("email").value.trim(),
-          phone: document.getElementById("phone").value.trim(),
-          category: document.getElementById("category").value,
-          subject: document.getElementById("subject").value.trim(),
-          message: document.getElementById("message").value.trim(),
-          agree: document.getElementById("agree").checked,
-          meta_user_agent: navigator.userAgent,
-          meta_path: location.pathname
-        };
-        cName.textContent = payload.name;
-        cOrganization.textContent = payload.organization || "-";
-        cEmail.textContent = payload.email;
-        cPhone.textContent = payload.phone || "-";
-        cCategory.textContent = payload.category;
-        cSubject.textContent = payload.subject;
-        cMessage.innerHTML = payload.message.replace(/\n/g, "<br>");
-
-        formSec.classList.add("hidden");
-        confirmSec.classList.remove("hidden");
-      });
-
-      document.getElementById("back-btn").addEventListener("click", ()=>{
-        confirmSec.classList.add("hidden");
-        formSec.classList.remove("hidden");
-      });
-
-      document.getElementById("send-btn").addEventListener("click", async ()=>{
-        const token = grecaptcha.getResponse();
-        if(!token){ alert("reCAPTCHAを完了してください。"); return; }
-        const { error } = await sb.from("contact_messages").insert(payload);
-        confirmSec.classList.add("hidden");
-        if(error){
-          alert("送信に失敗しました。時間をおいて再度お試しください。");
-          formSec.classList.remove("hidden");
-          return;
-        }
-        thanksSec.classList.remove("hidden");
-        setTimeout(()=>location.href="/index.html",5000);
-      });
-    </script>
+    <!-- COMPANY Section -->
+    <section id="company" class="py-20 bg-white">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">COMPANY</h2>
+        <div class="w-full max-w-4xl mx-auto p-6 bg-gray-50 rounded-2xl shadow-2xl">
+          <table class="w-full text-lg">
+            <tbody>
+              <tr class="border-b border-gray-200">
+                <th class="text-left p-4 bg-waju-light font-bold w-1/4 rounded-tl-xl">会社名</th>
+                <td class="p-4 bg-white rounded-tr-xl">合同会社WaJu</td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                <th class="text-left p-4 bg-waju-light font-bold">代表社員</th>
+                <td class="p-4 bg-white">大野 洋</td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                <th class="text-left p-4 bg-waju-light font-bold">所在地</th>
+                <td class="p-4 bg-white">〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td>
+              </tr>
+              <tr class="border-b border-gray-200">
+                <th class="text-left p-4 bg-waju-light font-bold">連絡先</th>
+                <td class="p-4 bg-white"><a href="mailto:info@waju.co.jp" class="text-waju-primary hover:underline font-semibold">info@waju.co.jp</a></td>
+              </tr>
+              <tr>
+                <th class="text-left p-4 bg-waju-light font-bold rounded-bl-xl">設立</th>
+                <td class="p-4 bg-white rounded-br-xl">2023年4月</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer id="site-footer"></footer>
+  <script>
+    // Hero Slider Script
+    const slider = document.getElementById('hero-slider');
+    const slides = slider.children;
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    const updateSlider = () => {
+      // 100% / totalSlides は CSS で各スライドに適用されているため、ここでは 100% 単位で移動
+      slider.style.transform = `translateX(-${currentIndex * 100 / totalSlides}%)`;
+    };
+
+    const nextSlide = () => {
+      currentIndex = (currentIndex + 1) % totalSlides;
+      updateSlider();
+    };
+
+    // Initialize layout for smooth transition calculation (each slide is 100% / totalSlides)
+    slider.style.width = `${totalSlides * 100}%`;
+    for(let i = 0; i < totalSlides; i++) {
+        // 画像は w-full h-auto object-cover flex-shrink-0 でアスペクト比を維持しつつ幅に合わせる
+        slides[i].style.width = `${100 / totalSlides}%`;
+    }
+
+    setInterval(nextSlide, 5000); // Change image every 5 seconds
+    updateSlider(); // Initial display setup
+  </script>
   <script type="module" src="hf.js"></script>
 </body>
 </html>
