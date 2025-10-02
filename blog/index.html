@@ -6,9 +6,9 @@
   <title>ブログ一覧 | 合同会社WaJu</title>
 
   <!-- SEO -->
-  <meta name="description" content="CARELAYや介護・福祉業界に関する最新情報、コラム、イベントなどをお届けします。">
+  <meta name="description" content="介護・福祉業界に関する最新情報、コラム、イベントなどをお届けします。">
   <meta property="og:title" content="ブログ一覧 | 合同会社WaJu">
-  <meta property="og:description" content="CARELAYや介護・福祉業界に関する最新情報、コラム、イベントなどをお届けします。">
+  <meta property="og:description" content="介護・福祉業界に関する最新情報、コラム、イベントなどをお届けします。">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png">
   <meta property="og:url" content="https://waju.co.jp/blog/">
@@ -18,6 +18,26 @@
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png">
   <link rel="apple-touch-icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png">
 
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind Config for Inter font and custom colors (Home Pageと共通) -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            'waju-primary': '#1e40af', // Blue-700 equivalent
+            'waju-light': '#eff6ff',   // Blue-50 equivalent
+            'waju-accent': '#f59e0b',  // Amber-500
+          }
+        }
+      }
+    }
+  </script>
+
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R49H9DTN70"></script>
   <script>
@@ -26,32 +46,50 @@
     gtag('js', new Date());
     gtag('config', 'G-R49H9DTN70');
   </script>
-
-  <!-- TailwindCSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body id="page-body">
+<body id="page-body" class="font-sans bg-gray-50">
   <header id="site-header"></header>
 
   <main id="page-main">
-    <section class="max-w-5xl mx-auto px-6 py-12">
-      <h1 class="text-3xl font-bold text-center mb-8 text-blue-800">ブログ一覧</h1>
+    <!-- py-16 sm:py-20 から py-8 sm:py-16 に変更してモバイルの余白を削減 -->
+    <section class="max-w-6xl mx-auto px-6 py-8 sm:py-16">
+      <!-- 見出し: モバイルでは text-3xl に縮小 -->
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-center mb-6 sm:mb-12 text-waju-primary relative after:content-[''] after:block after:w-12 after:h-1 after:bg-waju-accent after:mx-auto after:mt-1">ブログ一覧</h1>
 
-      <!-- カテゴリフィルタ -->
-      <div class="flex flex-wrap gap-4 mb-6 items-center">
-        <select id="categoryFilter" class="border rounded px-3 py-2">
+      <!-- カテゴリフィルタと検索 -->
+      <!-- w-fit max-w-full mx-autoを維持しつつ、モバイルでは flex-nowrap に変更して1行表示を強制 -->
+      <div class="flex flex-row justify-center items-center gap-2 sm:gap-4 mb-8 sm:mb-10 p-3 sm:p-4 bg-white rounded-xl shadow-lg w-fit max-w-full mx-auto whitespace-nowrap overflow-x-auto">
+        <!-- モバイルでは表示テキストを「絞り込み」に変更し、サイズを text-sm に -->
+        <div class="text-sm sm:text-lg font-semibold text-gray-700 flex-shrink-0">
+            絞り込む:
+        </div>
+        <!-- モバイルでは w-auto にして内容に合わせる -->
+        <select id="categoryFilter" class="border border-gray-300 rounded-lg px-3 py-1.5 w-auto sm:w-48 focus:ring-waju-primary focus:border-waju-primary transition duration-150 text-sm sm:text-base">
           <option value="">すべてのカテゴリ</option>
+          <!-- カテゴリはJSで挿入されます -->
         </select>
       </div>
 
-      <!-- 記事一覧 -->
-      <div id="articles" class="flex flex-col gap-6"></div>
+      <!-- 記事一覧 (リスト形式を維持しつつ、カードスタイルを適用) -->
+      <div id="articles" class="flex flex-col gap-5 sm:gap-6">
+        <!-- 記事はJSで挿入されます -->
+      </div>
 
       <!-- ページネーション -->
-      <div class="flex justify-center items-center gap-4 mt-8">
-        <button id="prevBtn" class="px-4 py-2 bg-gray-200 rounded">前へ</button>
-        <span id="pageInfo"></span>
-        <button id="nextBtn" class="px-4 py-2 bg-gray-200 rounded">次へ</button>
+      <div class="flex justify-center items-center gap-4 mt-10 sm:mt-12">
+        <button id="prevBtn" class="flex items-center space-x-2 px-5 py-1.5 sm:px-6 sm:py-2 bg-white text-waju-primary font-bold rounded-full shadow-md hover:bg-waju-light disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 text-sm sm:text-base">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            <span>前へ</span>
+        </button>
+        <span id="pageInfo" class="text-base sm:text-xl font-bold text-gray-700">1 / 1</span>
+        <button id="nextBtn" class="flex items-center space-x-2 px-5 py-1.5 sm:px-6 sm:py-2 bg-white text-waju-primary font-bold rounded-full shadow-md hover:bg-waju-light disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 text-sm sm:text-base">
+            <span>次へ</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
       </div>
     </section>
   </main>
@@ -60,6 +98,7 @@
   <script type="module" src="/hf.js"></script>
 
   <script type="module">
+    // Supabaseのクライアント設定（変更なし）
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
     const sb = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
@@ -74,9 +113,10 @@
     const nextBtn = $("#nextBtn");
 
     let currentPage = 1;
-    const pageSize = 10;
+    const pageSize = 9; 
     let currentCategory = "";
 
+    // カテゴリ読み込み関数（変更なし）
     async function loadCategories() {
       const { data, error } = await sb.from("articles").select("category");
       if (error) return console.error(error);
@@ -85,7 +125,9 @@
         categories.map(c => `<option value="${c}">${c}</option>`).join("");
     }
 
+    // 記事読み込みとレンダリング関数 (リスト形式のカードデザインに刷新)
     async function loadArticles() {
+      // クエリ構築（変更なし）
       let query = sb.from("articles")
         .select("*", { count: "exact" })
         .eq("published", true)
@@ -97,29 +139,56 @@
       const { data, count, error } = await query;
       if (error) return console.error(error);
 
-      articlesEl.innerHTML = data.map(a => `
-        <div class="flex items-start gap-4 border-b pb-4">
-          <img src="${a.thumbnail_url || ''}" alt="" 
-               class="w-24 h-24 object-contain rounded bg-gray-50 border">
-          <div class="flex-1">
-            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">${a.category || ""}</span>
-            <h2 class="text-lg font-semibold mt-1">
-              <a href="/blog-detail.html?slug=${a.slug}" class="hover:underline">${a.title}</a>
-            </h2>
-            <p class="text-gray-500 text-sm">${new Date(a.created_at).toLocaleDateString()}</p>
-            <p class="mt-1 text-gray-700 text-sm">
-              ${a.description || (a.content ? a.content.replace(/<[^>]+>/g,"").substring(0,80)+"…" : "")}
-            </p>
-          </div>
-        </div>
-      `).join("");
+      // 記事のHTMLレンダリング部分をリスト形式のカードデザインに刷新
+      articlesEl.innerHTML = data.map(a => {
+        const date = new Date(a.created_at).toLocaleDateString('ja-JP');
+        // 記事本文の文字サイズを text-xs から text-sm に変更
+        const description = a.description || (a.content ? a.content.replace(/<[^>]+>/g,"").substring(0, 80) + "…" : "詳細を見る"); 
+        const thumbnailUrl = a.thumbnail_url || 'https://placehold.co/150x150/1e40af/ffffff?text=BLOG'; 
 
+        return `
+          <a href="/blog-detail.html?slug=${a.slug}" class="block p-3 sm:p-4 bg-white rounded-xl shadow-lg hover:shadow-xl hover:ring-2 hover:ring-waju-primary transition duration-300 group">
+            <!-- モバイルでも flex-row でサムネイルと情報を横並びにする -->
+            <div class="flex flex-row gap-3 sm:gap-4 items-start">
+              
+              <!-- サムネイル（左側） - 正方形、画像をcontainで表示、余白をbg-gray-200で埋める -->
+              <!-- w-20 (80px) に固定し、PCでは w-28 (112px) を使用 -->
+              <div class="flex-shrink-0 w-20 sm:w-28 aspect-square overflow-hidden rounded-lg bg-gray-200">
+                <img src="${thumbnailUrl}" alt="${a.title}" 
+                     class="w-full h-full object-contain transition duration-300 group-hover:scale-105"
+                     onerror="this.onerror=null; this.src='https://placehold.co/80x80/1e40af/ffffff?text=WaJu';">
+              </div>
+              
+              <!-- 詳細情報（右側） -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center mb-1">
+                    <!-- カテゴリタグ -->
+                    <span class="inline-block bg-waju-light text-waju-primary text-xs font-semibold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider mr-3">${a.category || "コラム"}</span>
+                    <!-- 公開日: text-xs から text-sm に変更 -->
+                    <span class="text-sm text-gray-500 flex-shrink-0">公開日: ${date}</span>
+                </div>
+                <!-- タイトル: モバイルでは text-base に縮小 -->
+                <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-1 sm:mb-2 group-hover:text-waju-accent transition duration-150 line-clamp-2">
+                  ${a.title}
+                </h2>
+                <!-- 概要: text-xs から text-sm に変更 -->
+                <p class="text-sm text-gray-600 line-clamp-2">
+                  ${description}
+                </p>
+              </div>
+            </div>
+          </a>
+        `;
+      }).join("");
+
+      // ページネーションロジック（変更なし）
       const totalPages = Math.ceil(count / pageSize);
       pageInfo.textContent = `${currentPage} / ${totalPages || 1}`;
       prevBtn.disabled = currentPage <= 1;
       nextBtn.disabled = currentPage >= totalPages;
     }
 
+    // イベントリスナー（変更なし）
     categoryFilter.addEventListener("change", () => {
       currentCategory = categoryFilter.value;
       currentPage = 1;
@@ -128,8 +197,11 @@
     prevBtn.addEventListener("click", () => { if (currentPage > 1) { currentPage--; loadArticles(); } });
     nextBtn.addEventListener("click", () => { currentPage++; loadArticles(); });
 
-    loadCategories();
-    loadArticles();
+    // 初期実行
+    window.onload = function() {
+        loadCategories();
+        loadArticles();
+    }
   </script>
 </body>
 </html>
