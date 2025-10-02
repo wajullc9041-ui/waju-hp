@@ -1,244 +1,123 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ブログ一覧 | 合同会社WaJu</title>
 
-  <!-- Favicon / PWA -->
-  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
-  <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
-  <meta name="theme-color" content="#0f172a">
+  <!-- SEO -->
+  <meta name="description" content="CARELAYや介護・福祉業界に関する最新情報、コラム、イベントなどをお届けします。">
+  <meta property="og:title" content="ブログ一覧 | 合同会社WaJu">
+  <meta property="og:description" content="CARELAYや介護・福祉業界に関する最新情報、コラム、イベントなどをお届けします。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png">
+  <meta property="og:url" content="https://waju.co.jp/blog/">
 
-  <style>
-    :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
-    a{color:inherit;text-decoration:none}
-    main{min-height:40vh}
-    .container{max-width:var(--container);margin:0 auto;padding:0 16px}
-    .hf-wrap{width:100%}
-    .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
-    .hfbar.hf-row{justify-content:flex-start}
-    .hfbar.hf-column{flex-direction:column;align-items:stretch}
-    .hf-brand{display:flex;align-items:center;gap:8px}
-    .hf-nav{display:flex;gap:var(--gap);flex-wrap:wrap;width:100%}
-    .slot{display:flex;align-items:center}
-    .slot.brand{flex:0 0 auto}
-    .slot.nav{flex:1 1 auto}
-    .hf-copy{display:flex;width:100%}
-    .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
-    .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
-    .drawer{position:fixed;inset:0;pointer-events:none}
-    .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
-    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
-    .drawer[aria-hidden="false"]{pointer-events:auto}
-    .drawer[aria-hidden="false"] .overlay{opacity:1}
-    .drawer[aria-hidden="false"] .panel{transform:none}
-    .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
-    .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
-    .drawer .panel nav a{padding:12px 10px;border-radius:10px}
-    .drawer .panel nav a:hover{background:#f1f5f9}
-    @media (max-width:768px){
-      .container{padding:0 12px}
-      :root{--container:100%}
-      .slot.nav{display:none}
-      .hamburger{display:block;margin-left:auto}
-      #site-footer .hf-nav{display:none !important}
-    }
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png">
 
-    /* blog専用 */
-    .blog-list { list-style:none; padding:0; margin:40px auto; max-width:var(--container);}
-    .blog-list li { display:flex; gap:16px; border-bottom:1px solid #e5e7eb; padding:16px 0; align-items:flex-start; }
-    .blog-list img { width:160px; height:100px; object-fit:cover; border-radius:8px; background:#f3f4f6;}
-    .blog-list .info { flex:1; }
-    .blog-list .title { font-size:18px; font-weight:700; margin-bottom:6px; color:#1976d2;}
-    .blog-list .date { font-size:14px; color:#6b7280; margin-bottom:8px;}
-    .blog-list .desc { font-size:15px; color:#374151; }
-
-    /* カード型に切り替える場合 */
-    .blog-cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:20px; list-style:none; padding:0; margin:40px auto; max-width:var(--container);}
-    .blog-cards li { background:#fff; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.06);}
-    .blog-cards img { width:100%; height:180px; object-fit:cover; background:#f3f4f6;}
-    .blog-cards .info { padding:14px;}
-    .blog-cards .title { font-size:18px; font-weight:700; margin-bottom:6px; color:#1976d2;}
-    .blog-cards .date { font-size:14px; color:#6b7280; margin-bottom:8px;}
-    .blog-cards .desc { font-size:15px; color:#374151; }
-  </style>
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <header id="site-header" class="hf-wrap"></header>
+<body id="page-body">
+  <header id="site-header"></header>
 
-  <main class="container">
-    <h1>ブログ一覧</h1>
-    <ul id="blog-list" class="blog-list"></ul>
+  <main id="page-main">
+    <section class="max-w-6xl mx-auto px-6 py-12">
+      <h1 class="text-3xl font-bold text-center mb-8 text-blue-800">ブログ一覧</h1>
+
+      <!-- カテゴリフィルタ -->
+      <div class="flex flex-wrap gap-4 mb-6 items-center">
+        <select id="categoryFilter" class="border rounded px-3 py-2">
+          <option value="">すべてのカテゴリ</option>
+        </select>
+      </div>
+
+      <!-- 記事一覧 -->
+      <div id="articles" class="grid md:grid-cols-2 gap-8"></div>
+
+      <!-- ページネーション -->
+      <div class="flex justify-center items-center gap-4 mt-8">
+        <button id="prevBtn" class="px-4 py-2 bg-gray-200 rounded">前へ</button>
+        <span id="pageInfo"></span>
+        <button id="nextBtn" class="px-4 py-2 bg-gray-200 rounded">次へ</button>
+      </div>
+    </section>
   </main>
 
-  <footer id="site-footer" class="hf-wrap"></footer>
-
-  <!-- Mobile drawer -->
-  <div id="mobile-drawer" class="drawer" aria-hidden="true">
-    <div class="overlay" data-close></div>
-    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
-      <header>
-        <div class="title" id="drawer-title">メニュー</div>
-        <button class="hamburger" id="drawer-close" aria-label="閉じる">
-          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-        </button>
-      </header>
-      <nav id="drawer-nav" aria-label="モバイルメニュー"></nav>
-    </div>
-  </div>
+  <footer id="site-footer"></footer>
+  <script type="module" src="/hf.js"></script>
 
   <script type="module">
-    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
     const sb = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
     );
 
     const $ = s => document.querySelector(s);
+    const articlesEl = $("#articles");
+    const categoryFilter = $("#categoryFilter");
+    const pageInfo = $("#pageInfo");
+    const prevBtn = $("#prevBtn");
+    const nextBtn = $("#nextBtn");
 
-    async function loadArticles(){
-      const { data, error } = await sb.from("articles").select("*").eq("published", true).order("created_at", { ascending: false });
-      if(error){ console.error(error); return; }
+    let currentPage = 1;
+    const pageSize = 10;
+    let currentCategory = "";
 
-      const ul = document.getElementById("blog-list");
-      ul.innerHTML = data.map(a => `
-        <li>
-          <a href="/blog/${a.slug}">
-            <img src="${a.thumbnail_url || '/images/noimage.png'}" alt="${a.title}">
-          </a>
-          <div class="info">
-            <a href="/blog/${a.slug}" class="title">${a.title}</a>
-            <div class="date">${new Date(a.created_at).toLocaleDateString()}</div>
-            <p class="desc">${a.description || ""}</p>
+    async function loadCategories() {
+      const { data, error } = await sb.from("articles").select("category");
+      if (error) return console.error(error);
+      const categories = [...new Set(data.map(a => a.category).filter(c => c))];
+      categoryFilter.innerHTML = '<option value="">すべてのカテゴリ</option>' +
+        categories.map(c => `<option value="${c}">${c}</option>`).join("");
+    }
+
+    async function loadArticles() {
+      let query = sb.from("articles")
+        .select("*", { count: "exact" })
+        .eq("published", true)
+        .order("created_at", { ascending: false })
+        .range((currentPage-1)*pageSize, currentPage*pageSize - 1);
+
+      if (currentCategory) query = query.eq("category", currentCategory);
+
+      const { data, count, error } = await query;
+      if (error) return console.error(error);
+
+      articlesEl.innerHTML = data.map(a => `
+        <div class="border rounded shadow-sm overflow-hidden">
+          <img src="${a.thumbnail_url || ''}" alt="" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">${a.category || ""}</span>
+            <h2 class="text-xl font-semibold mt-2">
+              <a href="/blog-detail.html?slug=${a.slug}" class="hover:underline">${a.title}</a>
+            </h2>
+            <p class="text-gray-500 text-sm">${new Date(a.created_at).toLocaleDateString()}</p>
+            <p class="mt-2 text-gray-700">${a.description || (a.content ? a.content.replace(/<[^>]+>/g,"").substring(0,50)+"…" : "")}</p>
           </div>
-        </li>
+        </div>
       `).join("");
+
+      const totalPages = Math.ceil(count / pageSize);
+      pageInfo.textContent = `${currentPage} / ${totalPages || 1}`;
+      prevBtn.disabled = currentPage <= 1;
+      nextBtn.disabled = currentPage >= totalPages;
     }
 
+    categoryFilter.addEventListener("change", () => {
+      currentCategory = categoryFilter.value;
+      currentPage = 1;
+      loadArticles();
+    });
+    prevBtn.addEventListener("click", () => { if (currentPage > 1) { currentPage--; loadArticles(); } });
+    nextBtn.addEventListener("click", () => { currentPage++; loadArticles(); });
+
+    loadCategories();
     loadArticles();
-
-    // ===== ヘッダー・フッター読み込み =====
-    const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
-    const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : `${s}, sans-serif`);
-    const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
-    const bgParts = (row, def) => {
-      const grad = stripQuotes(row?.bg_gradient||"").trim();
-      if (grad){ return {bgColor:def, bgImage:grad}; }
-      const col = (row?.bg_color && row.bg_color.trim()) ? row.bg_color : def;
-      return {bgColor:col, bgImage:"none"};
-    };
-    const brandJustifyMargins = (align)=> align==='left'?'margin-right:auto':(align==='center'?'margin:0 auto':'margin-left:auto');
-
-    let allMenus = [];
-
-    async function loadHF(){
-      const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
-        sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
-        sb.from("hf_settings").select("*").eq("area","header").single(),
-        sb.from("hf_settings").select("*").eq("area","footer").single()
-      ]);
-      allMenus = menus||[];
-
-      renderHeader(hdr||{}, allMenus);
-      renderFooter(ftr||{}, allMenus);
-      buildDrawer(allMenus);
-      adjustOffsets(hdr||{}, ftr||{});
-      addResizeObserver(hdr||{}, ftr||{});
-    }
-
-    function linkOf(m){ return (m.url ?? m.href ?? '#'); }
-
-    function renderHeader(d, menus){
-      const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
-        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
-      const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
-      const paddingY = d.padding || "8px 0";
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      $("#site-header").innerHTML = `
-        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
-              <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
-                <div class="hf-brand">
-                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||60,60)}px">`:""}
-                  <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
-                </div>
-              </div>
-              <div class="slot nav">
-                <nav class="hf-nav" id="desktop-nav" style="justify-content:${toJustify(d.nav_alignment)};color:${d.nav_color};font-weight:${d.nav_weight};font-size:${num(d.header_nav_size,14)}px">${items}</nav>
-              </div>
-              <button id="hamburger" class="hamburger" aria-controls="mobile-drawer" aria-expanded="false" aria-label="メニューを開く">
-                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-              </button>
-            </div>
-          </div>
-        </div>`;
-      const bg = $("#hf-header-bg");
-      if(d.header_fixed && bg){
-        Object.assign(bg.style,{position:"fixed",top:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
-      }
-      $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
-    }
-
-    function renderFooter(d, menus){
-      const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
-        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
-      const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
-      const paddingY = d.padding || "8px 0";
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      const inner = d.layout_mode==="nav-top"
-        ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
-           <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
-        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
-      $("#site-footer").innerHTML = `
-        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
-              ${inner}
-            </div>
-          </div>
-        </div>`;
-      const bg = $("#hf-footer-bg");
-      if(d.footer_fixed && bg){
-        Object.assign(bg.style,{position:"fixed",bottom:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
-      }
-    }
-
-    function buildDrawer(menus){
-      const items = menus.filter(m=>m.is_active).map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      $("#drawer-nav").innerHTML = items;
-    }
-
-    function openDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","false");$("#hamburger").setAttribute("aria-expanded","true");}
-    function closeDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","true");$("#hamburger").setAttribute("aria-expanded","false");}
-    $("#drawer-close")?.addEventListener("click", closeDrawer);
-    $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
-
-    function adjustOffsets(h,f){
-      const headerEl=$("#hf-header-bg");
-      const body=document.body;
-      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
-      body.style.paddingBottom="0";
-    }
-
-    function addResizeObserver(h,f){
-      const ro=new ResizeObserver(()=>adjustOffsets(h,f));
-      const headerEl=$("#hf-header-bg");const footerEl=$("#hf-footer-bg");
-      if(headerEl) ro.observe(headerEl); if(footerEl) ro.observe(footerEl);
-    }
-
-    loadHF();
   </script>
 </body>
 </html>
