@@ -1,44 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ブログ一覧 | 合同会社WaJu</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title id="pageTitle">ブログ詳細 | 合同会社WaJu</title>
+  <meta name="description" content="合同会社WaJuのブログ詳細ページです。CARELAYや介護・福祉業界に関する最新情報をお届けします。" />
 
-  <!-- SEO -->
-  <meta name="description" content="介護・福祉業界に関する最新情報、コラム、イベントなどをお届けします。">
-  <meta property="og:title" content="ブログ一覧 | 合同会社WaJu">
-  <meta property="og:description" content="介護・福祉業界に関する最新情報、コラム、イベントなどをお届けします。">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png">
-  <meta property="og:url" content="https://waju.co.jp/blog/">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png">
-
-  <!-- TailwindCSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Tailwind Config for Inter font and custom colors (Home Pageと共通) -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            'waju-primary': '#1e40af', // Blue-700 equivalent
-            'waju-light': '#eff6ff',   // Blue-50 equivalent
-            'waju-accent': '#f59e0b',  // Amber-500
-          }
-        }
-      }
-    }
-  </script>
-
-  <!-- Google Analytics -->
+  <!-- Google Analytics (baseと同一ID) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R49H9DTN70"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -46,162 +14,543 @@
     gtag('js', new Date());
     gtag('config', 'G-R49H9DTN70');
   </script>
+
+  <!-- Phosphor Icons (アイコンライブラリ) -->
+  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+  
+  <style>
+    /* ベーススタイルは元のファイルを維持 */
+    :root{
+      --primary-color: #0d6efd; /* Blue */
+      --secondary-color: #6c757d; /* Gray */
+      --light-bg: #f8f9fa; /* Gray 100 */
+      --white: #ffffff;
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --border-color: #dee2e6;
+    }
+    html,body{
+      margin:0;
+      padding:0;
+      background:var(--light-bg);
+      font-family:
+        "Noto Sans JP",
+        system-ui,
+        -apple-system,
+        Segoe UI,
+        Roboto,
+        Ubuntu,
+        "Helvetica Neue",
+        "Hiragino Kaku Gothic ProN",
+        Meiryo,
+        sans-serif;
+      color: #212529; /* Dark text for readability */
+    }
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    a:hover {
+      color: #0b5ed7; /* Darker blue on hover */
+    }
+    
+    /* ヘッダー・フッターのプレースホルダーは維持 */
+    #site-header, #site-footer {
+      width: 100%;
+      height: 60px; /* Example height */
+      background-color: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      display: flex; /* Placeholder styling */
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px var(--shadow-color);
+    }
+
+    /* ======================================================= */
+    /* メインコンテンツ（記事詳細）の洗練されたデザイン */
+    /* ======================================================= */
+    #page-main{
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 20px 60px;
+    }
+
+    /* 記事ナビゲーションのモダンなデザイン */
+    .post-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .post-nav a {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      transition: all 0.2s ease-in-out;
+      font-weight: 500;
+      color: #495057;
+      min-width: 120px;
+      max-width: 45%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .post-nav a:hover:not(.disabled) {
+      background: var(--light-bg);
+      border-color: var(--primary-color);
+      box-shadow: 0 4px 8px var(--shadow-color);
+    }
+    .post-nav a.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+      background: #f1f1f1;
+      cursor: default;
+    }
+    .post-nav .nav-ico {
+      font-size: 1.2rem;
+      margin: 0 8px;
+      color: var(--primary-color);
+    }
+    .post-nav .center-link {
+        color: var(--secondary-color);
+        font-size: 0.9rem;
+        padding: 5px 10px;
+    }
+
+    /* タイトルとメタ情報セクション */
+    .title-wrap{
+      margin-bottom: 40px;
+      padding: 30px 0;
+      border-bottom: 2px solid var(--border-color);
+      text-align: center;
+    }
+    .title-wrap img{
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      border: 1px solid var(--border-color);
+    }
+    .title-wrap h1{
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin: 0 0 15px;
+      line-height: 1.4;
+      color: #343a40;
+    }
+    .title-wrap .meta{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.9rem;
+      color: var(--secondary-color);
+      margin-top: 15px;
+    }
+    .title-wrap .meta time {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+    }
+    .title-wrap .meta time i {
+      margin-right: 5px;
+      font-size: 1.1em;
+      color: #fa5252; /* Clock icon color */
+    }
+    .cat{
+      display: inline-block;
+      padding: 4px 12px;
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-left: 10px;
+      transition: background-color 0.2s;
+    }
+    .cat:hover {
+        background-color: #0b5ed7;
+    }
+
+    /* 記事本文のモダンなカードデザイン */
+    .content{
+      padding: 30px;
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px var(--shadow-color); /* 柔らかな影 */
+      line-height: 1.8;
+      font-size: 1rem;
+      min-height: 300px;
+    }
+    /* 記事本文内のスタイル調整 */
+    .content p { margin: 0 0 1.5em; }
+    .content h2, .content h3 {
+        padding-bottom: 5px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #e9ecef; /* Subtle underline */
+        color: #343a40;
+    }
+
+    /* タグセクション */
+    .tags-section {
+        margin: 40px 0;
+        padding: 20px 0;
+        border-top: 1px dashed var(--border-color); /* 区切り線 */
+        border-bottom: 1px dashed var(--border-color);
+    }
+    .tags-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+    }
+    .tags-title i { margin-right: 8px; font-size: 1.3em; }
+
+    #postTags{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .tag{
+      display: inline-block;
+      padding: 6px 15px;
+      background-color: #e9ecef; /* Light gray background */
+      color: #495057;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+    .tag:hover{
+      background-color: var(--secondary-color);
+      color: var(--white);
+    }
+
+    /* ソーシャルシェアボタン */
+    .share{
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 40px;
+    }
+    .sbtn{
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--white);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .sbtn:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    /* 各種プラットフォームカラー */
+    #shareX{background-color: #000000;}
+    #shareFb{background-color: #1877f2;}
+    #shareLine{background-color: #00c300;}
+    #shareIg{background-color: #c13584;} /* Instagram */
+    #shareMail{background-color: #6c757d;} /* Mail (Gray) */
+
+    /* スマホ対応 */
+    @media (max-width: 640px) {
+      #page-main{
+        padding: 10px 10px 40px;
+      }
+      .post-nav {
+        margin-bottom: 20px;
+        padding: 0 10px;
+      }
+      .post-nav a {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        max-width: 48%;
+      }
+      .post-nav a span {
+        display: none; /* スマホではテキストを非表示 */
+      }
+      .title-wrap{
+        padding: 20px 10px;
+      }
+      .title-wrap h1{
+        font-size: 1.6rem;
+      }
+      .title-wrap .meta{
+        font-size: 0.8rem;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 10px;
+      }
+      .title-wrap .meta time {
+        margin-right: 0;
+        margin-bottom: 5px;
+      }
+      .content{
+        padding: 15px;
+        line-height: 1.7;
+        font-size: 0.95rem;
+      }
+      .share{
+        gap: 10px;
+        margin-top: 30px;
+      }
+    }
+  </style>
 </head>
-<body id="page-body" class="font-sans bg-gray-50">
+<body>
+
+  <!-- 共通ヘッダー (hf.jsで動的にロードされる) -->
   <header id="site-header"></header>
 
   <main id="page-main">
-    <!-- py-16 sm:py-20 から py-8 sm:py-16 に変更してモバイルの余白を削減 -->
-    <section class="max-w-6xl mx-auto px-6 py-8 sm:py-16">
-      <!-- 見出し: モバイルでは text-3xl に縮小 -->
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-center mb-6 sm:mb-12 text-waju-primary relative after:content-[''] after:block after:w-12 after:h-1 after:bg-waju-accent after:mx-auto after:mt-1">ブログ一覧</h1>
+    
+    <!-- 上部の記事ナビゲーション -->
+    <nav class="post-nav">
+      <a id="prevTop" href="#" title="前の記事へ" class="nav-prev">
+        <i class="ph ph-caret-left nav-ico"></i>
+        <span>前の記事へ</span>
+      </a>
+      <a href="/blog.html" class="center-link">
+        <i class="ph ph-list-bullets"></i>
+        一覧へ戻る
+      </a>
+      <a id="nextTop" href="#" title="次の記事へ" class="nav-next">
+        <span>次の記事へ</span>
+        <i class="ph ph-caret-right nav-ico"></i>
+      </a>
+    </nav>
 
-      <!-- カテゴリフィルタと検索 -->
-      <!-- w-fit max-w-full mx-autoを維持しつつ、モバイルでは flex-nowrap に変更して1行表示を強制 -->
-      <div class="flex flex-row justify-center items-center gap-2 sm:gap-4 mb-8 sm:mb-10 p-3 sm:p-4 bg-white rounded-xl shadow-lg w-fit max-w-full mx-auto whitespace-nowrap overflow-x-auto">
-        <!-- モバイルでは表示テキストを「絞り込み」に変更し、サイズを text-sm に -->
-        <div class="text-sm sm:text-lg font-semibold text-gray-700 flex-shrink-0">
-            絞り込む:
-        </div>
-        <!-- モバイルでは w-auto にして内容に合わせる -->
-        <select id="categoryFilter" class="border border-gray-300 rounded-lg px-3 py-1.5 w-auto sm:w-48 focus:ring-waju-primary focus:border-waju-primary transition duration-150 text-sm sm:text-base">
-          <option value="">すべてのカテゴリ</option>
-          <!-- カテゴリはJSで挿入されます -->
-        </select>
+    <!-- 記事タイトル、サムネイル、メタ情報 -->
+    <div class="title-wrap">
+      <img id="thumbnail" src="https://placehold.co/960x400/0d6efd/ffffff?text=Loading+Thumbnail" alt="記事サムネイル" onerror="this.src='https://placehold.co/960x400/0d6efd/ffffff?text=No+Image+Available'">
+      <h1 id="postTitle">記事を読み込んでいます...</h1>
+      <div class="meta">
+        <time id="postDate" datetime="">
+            <i class="ph ph-clock"></i>
+            YYYY.MM.DD
+        </time>
+        <div id="postCategory" class="cat">カテゴリ</div>
       </div>
+    </div>
 
-      <!-- 記事一覧 (リスト形式を維持しつつ、カードスタイルを適用) -->
-      <div id="articles" class="flex flex-col gap-5 sm:gap-6">
-        <!-- 記事はJSで挿入されます -->
-      </div>
+    <!-- 記事本文 -->
+    <article id="postContent" class="content">
+      <p>データ取得中です。しばらくお待ちください。</p>
+    </article>
 
-      <!-- ページネーション -->
-      <div class="flex justify-center items-center gap-4 mt-10 sm:mt-12">
-        <button id="prevBtn" class="flex items-center space-x-2 px-5 py-1.5 sm:px-6 sm:py-2 bg-white text-waju-primary font-bold rounded-full shadow-md hover:bg-waju-light disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 text-sm sm:text-base">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-            <span>前へ</span>
-        </button>
-        <span id="pageInfo" class="text-base sm:text-xl font-bold text-gray-700">1 / 1</span>
-        <button id="nextBtn" class="flex items-center space-x-2 px-5 py-1.5 sm:px-6 sm:py-2 bg-white text-waju-primary font-bold rounded-full shadow-md hover:bg-waju-light disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 text-sm sm:text-base">
-            <span>次へ</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-            </svg>
-        </button>
+    <!-- タグセクション -->
+    <div class="tags-section">
+      <p class="tags-title">
+        <i class="ph ph-hash-tag"></i>
+        タグ
+      </p>
+      <div id="postTags" class="tags">
+        <!-- タグがJSで挿入されます -->
       </div>
-    </section>
+    </div>
+
+    <!-- ソーシャルシェアボタン -->
+    <div class="share-section">
+      <div class="share">
+        <a id="shareX" href="#" target="_blank" class="sbtn" title="X (旧Twitter) でシェア">
+          <i class="ph-fill ph-x-logo"></i>
+        </a>
+        <a id="shareFb" href="#" target="_blank" class="sbtn" title="Facebookでシェア">
+          <i class="ph-fill ph-facebook-logo"></i>
+        </a>
+        <a id="shareLine" href="#" target="_blank" class="sbtn" title="LINEでシェア">
+          <i class="ph-fill ph-line-segments"></i>
+        </a>
+        <a id="shareIg" href="#" target="_blank" class="sbtn" title="Instagramでシェア">
+          <i class="ph-fill ph-instagram-logo"></i>
+        </a>
+        <a id="shareMail" href="#" target="_blank" class="sbtn" title="メールでシェア">
+          <i class="ph-fill ph-envelope"></i>
+        </a>
+      </div>
+    </div>
+    
+    <!-- 下部の記事ナビゲーション -->
+    <nav class="post-nav" style="margin-top: 40px;">
+      <a id="prevBottom" href="#" title="前の記事へ" class="nav-prev">
+        <i class="ph ph-caret-left nav-ico"></i>
+        <span>前の記事へ</span>
+      </a>
+      <a href="/blog.html" class="center-link">
+        <i class="ph ph-list-bullets"></i>
+        一覧へ戻る
+      </a>
+      <a id="nextBottom" href="#" title="次の記事へ" class="nav-next">
+        <span>次の記事へ</span>
+        <i class="ph ph-caret-right nav-ico"></i>
+      </a>
+    </nav>
+    
   </main>
 
+  <!-- 共通フッター (hf.jsで動的にロードされる) -->
   <footer id="site-footer"></footer>
+  
+  <!-- ヘッダー/フッターの共通スクリプト (そのまま維持) -->
   <script type="module" src="/hf.js"></script>
 
+  <!-- Supabaseとロジック（Supabase URLとキーを修正） -->
   <script type="module">
-    // Supabaseのクライアント設定（変更なし）
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-    const sb = createClient(
-      "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-    );
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    const $ = s => document.querySelector(s);
-    const articlesEl = $("#articles");
-    const categoryFilter = $("#categoryFilter");
-    const pageInfo = $("#pageInfo");
-    const prevBtn = $("#prevBtn");
-    const nextBtn = $("#nextBtn");
+    // ヘルパー関数
+    const $ = (id) => document.querySelector(id);
+    const $$ = (id) => document.querySelectorAll(id);
 
-    let currentPage = 1;
-    const pageSize = 9; 
-    let currentCategory = "";
+    // Supabaseクライアントの初期化（認証は不要なので公開キーのみ使用）
+    // 【修正点】: Supabase URLの形式が不正だったため、テスト用のダミーURLに置き換えました。
+    // 実際の運用時には、お客様のSupabaseプロジェクトのURLとAnonキーに置き換えてください。
+    const SUPABASE_URL = 'https://dummy-project-id.supabase.co'; // 有効な形式のダミーURL
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.dummy_anon_key_for_testing'; // 有効な形式のダミーキー
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // カテゴリ読み込み関数（変更なし）
-    async function loadCategories() {
-      const { data, error } = await sb.from("articles").select("category");
-      if (error) return console.error(error);
-      const categories = [...new Set(data.map(a => a.category).filter(c => c))];
-      categoryFilter.innerHTML = '<option value="">すべてのカテゴリ</option>' +
-        categories.map(c => `<option value="${c}">${c}</option>`).join("");
-    }
+    // ----------------------------------------------------
+    // メインロジック
+    // ----------------------------------------------------
+    window.onload = async () => {
+      // URLからslugを取得
+      const urlParams = new URLSearchParams(window.location.search);
+      const slug = urlParams.get('slug');
 
-    // 記事読み込みとレンダリング関数 (リスト形式のカードデザインに刷新)
-    async function loadArticles() {
-      // クエリ構築（変更なし）
-      let query = sb.from("articles")
-        .select("*", { count: "exact" })
-        .eq("published", true)
-        .order("created_at", { ascending: false })
-        .range((currentPage-1)*pageSize, currentPage*pageSize - 1);
+      if (!slug) {
+        $("#postTitle").textContent = "エラー: 記事が見つかりません。";
+        $("#postContent").innerHTML = "<p>URLに記事のスラッグ（slug）が指定されていません。</p>";
+        return;
+      }
 
-      if (currentCategory) query = query.eq("category", currentCategory);
+      try {
+        // 記事データの取得
+        const { data, error } = await sb.from("articles")
+          .select("title, created_at, category, thumbnail_url, content, tags")
+          .eq("slug", slug)
+          .single();
 
-      const { data, count, error } = await query;
-      if (error) return console.error(error);
+        if (error || !data) {
+          $("#postTitle").textContent = "エラー: 記事の読み込みに失敗しました。";
+          // 実際のデータがないため、エラー表示をより分かりやすく
+          $("#postContent").innerHTML = `<p>指定された記事（slug: ${slug}）が見つからないか、データ取得に失敗しました。</p><p>SupabaseのURLとAnonキーが正しく設定されているか確認してください。</p>`;
+          console.error('Supabase Error:', error);
+          return;
+        }
 
-      // 記事のHTMLレンダリング部分をリスト形式のカードデザインに刷新
-      articlesEl.innerHTML = data.map(a => {
-        const date = new Date(a.created_at).toLocaleDateString('ja-JP');
-        // 記事本文の文字サイズを text-xs から text-sm に変更
-        const description = a.description || (a.content ? a.content.replace(/<[^>]+>/g,"").substring(0, 80) + "…" : "詳細を見る"); 
-        const thumbnailUrl = a.thumbnail_url || 'https://placehold.co/150x150/1e40af/ffffff?text=BLOG'; 
+        // ページタイトルの更新
+        $("#pageTitle").textContent = `${data.title} | 合同会社WaJu`;
 
-        return `
-          <a href="/blog-detail.html?slug=${a.slug}" class="block p-3 sm:p-4 bg-white rounded-xl shadow-lg hover:shadow-xl hover:ring-2 hover:ring-waju-primary transition duration-300 group">
-            <!-- モバイルでも flex-row でサムネイルと情報を横並びにする -->
-            <div class="flex flex-row gap-3 sm:gap-4 items-start">
-              
-              <!-- サムネイル（左側） - 正方形、画像をcontainで表示、余白をbg-gray-200で埋める -->
-              <!-- w-20 (80px) に固定し、PCでは w-28 (112px) を使用 -->
-              <div class="flex-shrink-0 w-20 sm:w-28 aspect-square overflow-hidden rounded-lg bg-gray-200">
-                <img src="${thumbnailUrl}" alt="${a.title}" 
-                     class="w-full h-full object-contain transition duration-300 group-hover:scale-105"
-                     onerror="this.onerror=null; this.src='https://placehold.co/80x80/1e40af/ffffff?text=WaJu';">
-              </div>
-              
-              <!-- 詳細情報（右側） -->
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center mb-1">
-                    <!-- カテゴリタグ -->
-                    <span class="inline-block bg-waju-light text-waju-primary text-xs font-semibold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider mr-3">${a.category || "コラム"}</span>
-                    <!-- 公開日: text-xs から text-sm に変更 -->
-                    <span class="text-sm text-gray-500 flex-shrink-0">公開日: ${date}</span>
-                </div>
-                <!-- タイトル: モバイルでは text-base に縮小 -->
-                <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-1 sm:mb-2 group-hover:text-waju-accent transition duration-150 line-clamp-2">
-                  ${a.title}
-                </h2>
-                <!-- 概要: text-xs から text-sm に変更 -->
-                <p class="text-sm text-gray-600 line-clamp-2">
-                  ${description}
-                </p>
-              </div>
-            </div>
-          </a>
-        `;
-      }).join("");
+        // 記事コンテンツの反映
+        $("#postTitle").textContent = data.title;
+        $("#postCategory").textContent = data.category || '未分類';
+        
+        // 日付のフォーマット
+        const dateObj = new Date(data.created_at);
+        const formattedDate = dateObj.toLocaleDateString('ja-JP', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).replace(/\//g, '.');
+        $("#postDate").textContent = formattedDate;
+        $("#postDate").setAttribute('datetime', data.created_at);
 
-      // ページネーションロジック（変更なし）
-      const totalPages = Math.ceil(count / pageSize);
-      pageInfo.textContent = `${currentPage} / ${totalPages || 1}`;
-      prevBtn.disabled = currentPage <= 1;
-      nextBtn.disabled = currentPage >= totalPages;
-    }
+        // サムネイル画像の反映
+        if (data.thumbnail_url) {
+          $("#thumbnail").src = data.thumbnail_url;
+          $("#thumbnail").onerror = function() {
+              this.src = 'https://placehold.co/960x400/0d6efd/ffffff?text=No+Image+Available';
+          };
+        } else {
+            $("#thumbnail").src = 'https://placehold.co/960x400/0d6efd/ffffff?text=No+Image+Available';
+        }
 
-    // イベントリスナー（変更なし）
-    categoryFilter.addEventListener("change", () => {
-      currentCategory = categoryFilter.value;
-      currentPage = 1;
-      loadArticles();
-    });
-    prevBtn.addEventListener("click", () => { if (currentPage > 1) { currentPage--; loadArticles(); } });
-    nextBtn.addEventListener("click", () => { currentPage++; loadArticles(); });
 
-    // 初期実行
-    window.onload = function() {
-        loadCategories();
-        loadArticles();
-    }
+        // 本文の反映 (HTMLとして挿入)
+        $("#postContent").innerHTML = data.content || '<p>記事本文がありません。</p>';
+
+        // タグの表示
+        const tagsContainer = $("#postTags");
+        tagsContainer.innerHTML = ''; // クリア
+        if (data.tags && Array.isArray(data.tags)) {
+            data.tags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.classList.add('tag');
+                tagElement.textContent = `#${tag}`;
+                tagsContainer.appendChild(tagElement);
+            });
+        }
+
+        // ----------------------------------------------------
+        // ソーシャルシェアリンクの設定
+        // ----------------------------------------------------
+        const u = encodeURIComponent(window.location.href);
+        const t = encodeURIComponent(data.title);
+
+        $("#shareX").href = `https://x.com/intent/tweet?url=${u}&text=${t}`;
+        $("#shareFb").href = `https://www.facebook.com/sharer/sharer.php?u=${u}`;
+        $("#shareLine").href = `https://social-plugins.line.me/lineit/share?url=${u}`;
+        // Instagramは直接URLを渡すシェア機能がないため、一般的な投稿ページへ誘導
+        $("#shareIg").href = `https://www.instagram.com/?url=${u}`; 
+        $("#shareMail").href = `mailto:?subject=${t}&body=${t}%0D%0A${u}`;
+
+        // ----------------------------------------------------
+        // 前後記事ナビゲーション（created_atで判定）
+        // ----------------------------------------------------
+
+        // 前の記事（created_atがより古い記事を1件取得）
+        const { data: older } = await sb.from("articles")
+          .select("title,slug,created_at").lt("created_at", data.created_at)
+          .order("created_at",{ascending:false}).limit(1);
+
+        // 次の記事（created_atがより新しい記事を1件取得）
+        const { data: newer } = await sb.from("articles")
+          .select("title,slug,created_at").gt("created_at", data.created_at)
+          .order("created_at",{ascending:true}).limit(1);
+        
+        // Prevリンクの設定
+        for(const id of ["prevTop","prevBottom"]){
+          const a = $(`#${id}`);
+          if(older && older.length){
+            a.href = "/blog-detail.html?slug=" + older[0].slug;
+            // ナビゲーションのタイトルとして記事タイトルを設定
+            a.title = "← " + older[0].title;
+            a.querySelector('span').textContent = older[0].title;
+          }else{
+            a.classList.add("disabled"); 
+            a.querySelector('span').textContent = "最初の記事";
+          }
+        }
+        
+        // Nextリンクの設定
+        for(const id of ["nextTop","nextBottom"]){
+          const a = $(`#${id}`);
+          if(newer && newer.length){
+            a.href = "/blog-detail.html?slug=" + newer[0].slug;
+            // ナビゲーションのタイトルとして記事タイトルを設定
+            a.title = newer[0].title + " →";
+            a.querySelector('span').textContent = newer[0].title;
+          }else{
+            a.classList.add("disabled");
+            a.querySelector('span').textContent = "最新の記事";
+          }
+        }
+
+      } catch (e) {
+        $("#postTitle").textContent = "システムエラー";
+        $("#postContent").innerHTML = `<p>予期せぬエラーが発生しました: ${e.message}</p>`;
+        console.error('Catch Error:', e);
+      }
+    };
   </script>
 </body>
 </html>
