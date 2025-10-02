@@ -1,240 +1,143 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ブログ記事 | 合同会社WaJu</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ブログ詳細 | 合同会社WaJu</title>
 
-  <!-- Favicon / PWA -->
-  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
-  <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
-  <meta name="theme-color" content="#0f172a">
-
-  <!-- OGP用（記事読み込み後にJSで書き換え） -->
+  <!-- SEO -->
+  <meta name="description" content="CARELAYや介護・福祉業界に関する最新情報、コラム、イベントなどの詳細ページです。">
+  <meta property="og:title" content="ブログ詳細 | 合同会社WaJu">
+  <meta property="og:description" content="CARELAYや介護・福祉業界に関する最新情報、コラム、イベントなどの詳細ページです。">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="">
-  <meta property="og:description" content="">
-  <meta property="og:image" content="">
+  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png">
+  <meta property="og:url" content="https://waju.co.jp/blog-detail.html">
 
-  <style>
-    :root{--container:1120px; --gap:16px; --shadow:0 10px 25px rgba(0,0,0,.18)}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans JP','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;color:#0f172a;background:#fff;line-height:1.7}
-    a{color:inherit;text-decoration:none}
-    main{min-height:40vh}
-    .container{max-width:var(--container);margin:0 auto;padding:0 16px}
-    .hf-wrap{width:100%}
-    .hfbar{display:flex;align-items:center;gap:var(--gap);width:100%;padding:8px 0}
-    .hfbar.hf-row{justify-content:flex-start}
-    .hfbar.hf-column{flex-direction:column;align-items:stretch}
-    .hf-brand{display:flex;align-items:center;gap:8px}
-    .hf-nav{display:flex;gap:var(--gap);flex-wrap:wrap;width:100%}
-    .slot{display:flex;align-items:center}
-    .slot.brand{flex:0 0 auto}
-    .slot.nav{flex:1 1 auto}
-    .hf-copy{display:flex;width:100%}
-    .hamburger{display:none;appearance:none;border:1px solid #111;background:#fff;color:#111;cursor:pointer;padding:8px;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
-    .hamburger .bar{display:block;width:22px;height:2px;background:currentColor;margin:4px 0;border-radius:2px}
-    .drawer{position:fixed;inset:0;pointer-events:none}
-    .drawer .overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .24s ease}
-    .drawer .panel{position:absolute;top:0;right:0;height:100%;width:min(86vw,380px);background:#fff;transform:translateX(100%);transition:transform .24s ease;box-shadow:var(--shadow);display:flex;flex-direction:column}
-    .drawer[aria-hidden="false"]{pointer-events:auto}
-    .drawer[aria-hidden="false"] .overlay{opacity:1}
-    .drawer[aria-hidden="false"] .panel{transform:none}
-    .drawer .panel header{padding:14px 16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
-    .drawer .panel nav{padding:10px 8px;display:flex;flex-direction:column;gap:8px;overflow:auto}
-    .drawer .panel nav a{padding:12px 10px;border-radius:10px}
-    .drawer .panel nav a:hover{background:#f1f5f9}
-    @media (max-width:768px){
-      .container{padding:0 12px}
-      :root{--container:100%}
-      .slot.nav{display:none}
-      .hamburger{display:block;margin-left:auto}
-      #site-footer .hf-nav{display:none !important}
-    }
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png">
 
-    /* 記事表示専用 */
-    .post-title{font-size:28px;font-weight:700;margin:24px 0 12px;color:#111827}
-    .post-date{font-size:14px;color:#6b7280;margin-bottom:24px}
-    .post-thumbnail{width:100%;height:auto;margin-bottom:24px;border-radius:12px;background:#f3f4f6}
-    .post-content{font-size:16px;color:#374151}
-  </style>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R49H9DTN70"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R49H9DTN70');
+  </script>
+
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <header id="site-header" class="hf-wrap"></header>
+<body id="page-body">
+  <header id="site-header"></header>
 
-  <main class="container">
-    <h1 id="post-title" class="post-title"></h1>
-    <div id="post-date" class="post-date"></div>
-    <img id="post-thumbnail" class="post-thumbnail" alt="">
-    <div id="post-content" class="post-content"></div>
+  <main id="page-main">
+    <section class="max-w-3xl mx-auto px-6 py-12">
+      <!-- タイトル & サムネイル -->
+      <div class="flex items-start gap-4 mb-6">
+        <img id="post-thumbnail" src="" alt="" 
+             class="w-24 h-24 object-contain rounded bg-gray-50 border">
+        <div>
+          <h1 id="post-title" class="text-2xl font-bold mb-2"></h1>
+          <p id="post-date" class="text-gray-500 text-sm"></p>
+          <span id="post-category" class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mt-1"></span>
+        </div>
+      </div>
+
+      <!-- タグ -->
+      <div id="post-tags" class="flex flex-wrap gap-2 mb-4"></div>
+
+      <!-- 本文（枠付きカード風） -->
+      <div id="post-content" class="prose max-w-none border rounded p-6 bg-white shadow-sm"></div>
+
+      <!-- シェアボタン -->
+      <div class="mt-8 flex gap-4 items-center flex-wrap">
+        <span class="text-gray-600 text-sm">シェアする：</span>
+
+        <!-- X -->
+        <a id="share-x" target="_blank" rel="noopener" 
+           class="w-10 h-10 flex items-center justify-center rounded-full bg-black text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.36 2H21l-7.5 9.5L21.5 22H18.5l-6-7.5L6 22H3l7.5-10L2.5 2H5.5l6 7.5L18.36 2Z"/></svg>
+        </a>
+
+        <!-- Facebook -->
+        <a id="share-fb" target="_blank" rel="noopener"
+           class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.2l-.4 3h-1.8v7A10 10 0 0 0 22 12"/></svg>
+        </a>
+
+        <!-- LINE -->
+        <a id="share-line" target="_blank" rel="noopener"
+           class="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.7 4.3C18.1 2.7 15.6 2 12 2S5.9 2.7 4.3 4.3 2 8.4 2 12c0 3.6.7 6.1 2.3 7.7S8.4 22 12 22c3.6 0 6.1-.7 7.7-2.3S22 15.6 22 12c0-3.6-.7-6.1-2.3-7.7ZM8.8 7.5h1.5v5h-1.5v-5Zm2.5 0h1.5v5h-1.5v-5Zm2.5 0h1.5v5h-1.5v-5Zm2.5 0h1.5v5h-1.5v-5Z"/></svg>
+        </a>
+
+        <!-- Instagram -->
+        <a id="share-ig" target="_blank" rel="noopener"
+           class="w-10 h-10 flex items-center justify-center rounded-full bg-pink-500 text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7Zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10Zm-5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm4.8-.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0Z"/></svg>
+        </a>
+
+        <!-- メール -->
+        <a id="share-mail" target="_blank" rel="noopener"
+           class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-600 text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2Zm0 2v.01L12 13 20 6.01V6H4Zm0 12h16V8l-8 7-8-7v10Z"/></svg>
+        </a>
+      </div>
+    </section>
   </main>
 
-  <footer id="site-footer" class="hf-wrap"></footer>
-
-  <!-- Mobile drawer -->
-  <div id="mobile-drawer" class="drawer" aria-hidden="true">
-    <div class="overlay" data-close></div>
-    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
-      <header>
-        <div class="title" id="drawer-title">メニュー</div>
-        <button class="hamburger" id="drawer-close" aria-label="閉じる">
-          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-        </button>
-      </header>
-      <nav id="drawer-nav" aria-label="モバイルメニュー"></nav>
-    </div>
-  </div>
+  <footer id="site-footer"></footer>
+  <script type="module" src="/hf.js"></script>
 
   <script type="module">
-    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
     const sb = createClient(
       "https://htnmjsqgoapvuanrsuma.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
     );
 
     const $ = s => document.querySelector(s);
-    const slug = location.pathname.split("/").pop();
 
-    async function loadArticle(){
+    async function loadArticle() {
+      const params = new URLSearchParams(location.search);
+      const slug = params.get("slug");
+      if (!slug) return;
+
       const { data, error } = await sb.from("articles").select("*").eq("slug", slug).single();
-      if(error || !data){ 
-        $("#post-title").textContent = "記事が見つかりません";
-        return; 
-      }
+      if (error || !data) return console.error(error);
+
       $("#post-title").textContent = data.title;
       $("#post-date").textContent = new Date(data.created_at).toLocaleDateString();
-      $("#post-thumbnail").src = data.thumbnail_url || "/images/noimage.png";
-      $("#post-thumbnail").alt = data.title;
-      $("#post-content").innerHTML = data.content;
+      $("#post-thumbnail").src = data.thumbnail_url || "";
+      $("#post-category").textContent = data.category || "";
+      $("#post-content").innerHTML = data.content || "";
 
-      // SEO用meta書き換え
-      document.title = data.title + " | 合同会社WaJu";
-      document.querySelector('meta[property="og:title"]').setAttribute("content", data.title);
-      document.querySelector('meta[property="og:description"]').setAttribute("content", data.description || "");
-      document.querySelector('meta[property="og:image"]').setAttribute("content", data.thumbnail_url || "/images/noimage.png");
+      // タグ表示
+      const tagsEl = $("#post-tags");
+      tagsEl.innerHTML = "";
+      if (Array.isArray(data.tags)) {
+        data.tags.forEach(tag => {
+          const span = document.createElement("span");
+          span.textContent = "#" + tag;
+          span.className = "text-sm text-gray-600 bg-gray-100 rounded px-2 py-1";
+          tagsEl.appendChild(span);
+        });
+      }
+
+      // シェアリンク設定
+      const url = encodeURIComponent(location.href);
+      const title = encodeURIComponent(data.title || document.title);
+      $("#share-x").href = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+      $("#share-fb").href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+      $("#share-line").href = `https://social-plugins.line.me/lineit/share?url=${url}`;
+      $("#share-ig").href = `https://www.instagram.com/?url=${url}`;
+      $("#share-mail").href = `mailto:?subject=${title}&body=${title}%0D%0A${url}`;
     }
 
     loadArticle();
-
-    // ===== index_part3 のヘッダー・フッター処理を流用 =====
-    const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
-    const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
-    const withFallback = s => !s ? "" : (/(sans-serif|serif|monospace)/i.test(s) ? s : `${s}, sans-serif`);
-    const stripQuotes = s => s ? s.replace(/^['"]+|['"]+$/g,'') : '';
-    const bgParts = (row, def) => {
-      const grad = stripQuotes(row?.bg_gradient||"").trim();
-      if (grad){ return {bgColor:def, bgImage:grad}; }
-      const col = (row?.bg_color && row.bg_color.trim()) ? row.bg_color : def;
-      return {bgColor:col, bgImage:"none"};
-    };
-    const brandJustifyMargins = (align)=> align==='left'?'margin-right:auto':(align==='center'?'margin:0 auto':'margin-left:auto');
-
-    let allMenus = [];
-
-    async function loadHF(){
-      const [{data:menus},{data:hdr},{data:ftr}] = await Promise.all([
-        sb.from("public_menus").select("*").order("sort_order",{ascending:true}),
-        sb.from("hf_settings").select("*").eq("area","header").single(),
-        sb.from("hf_settings").select("*").eq("area","footer").single()
-      ]);
-      allMenus = menus||[];
-      renderHeader(hdr||{}, allMenus);
-      renderFooter(ftr||{}, allMenus);
-      buildDrawer(allMenus);
-      adjustOffsets(hdr||{}, ftr||{});
-      addResizeObserver(hdr||{}, ftr||{});
-    }
-
-    function linkOf(m){ return (m.url ?? m.href ?? '#'); }
-
-    function renderHeader(d, menus){
-      const items = (menus||[]).filter(m=>m.is_active && m.show_in_header)
-        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.header_font_family ? `font-family:${withFallback(d.header_font_family)};` : "";
-      const cls = d.layout_mode==="column" ? "hfbar hf-column" : "hfbar hf-row";
-      const paddingY = d.padding || "8px 0";
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      $("#site-header").innerHTML = `
-        <div class="hf-bg" id="hf-header-bg" style="background:${backgroundShorthand};">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
-              <div class="slot brand" style="${brandJustifyMargins(d.company_alignment)}">
-                <div class="hf-brand">
-                  ${d.logo_url?`<img src="${d.logo_url}" alt="logo" style="max-height:${num(d.logo_height||60,60)}px">`:""}
-                  <span style="color:${d.company_color};font-weight:${d.company_weight};font-size:${num(d.header_company_size,18)}px">${d.company_name||""}</span>
-                </div>
-              </div>
-              <div class="slot nav">
-                <nav class="hf-nav" id="desktop-nav" style="justify-content:${toJustify(d.nav_alignment)};color:${d.nav_color};font-weight:${d.nav_weight};font-size:${num(d.header_nav_size,14)}px">${items}</nav>
-              </div>
-              <button id="hamburger" class="hamburger" aria-controls="mobile-drawer" aria-expanded="false" aria-label="メニューを開く">
-                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-              </button>
-            </div>
-          </div>
-        </div>`;
-      const bg = $("#hf-header-bg");
-      if(d.header_fixed && bg){
-        Object.assign(bg.style,{position:"fixed",top:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
-      }
-      $("#hamburger")?.addEventListener("click",()=>{const open=$("#mobile-drawer").getAttribute("aria-hidden")==="false";open?closeDrawer():openDrawer();});
-    }
-
-    function renderFooter(d, menus){
-      const items = (menus||[]).filter(m=>m.is_active && m.show_in_footer)
-        .map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      const {bgColor,bgImage} = bgParts(d, "#0f172a");
-      const ff = d.footer_font_family ? `font-family:${withFallback(d.footer_font_family)};` : "";
-      const cls = d.layout_mode==="row" ? "hfbar hf-row" : "hfbar hf-column";
-      const paddingY = d.padding || "8px 0";
-      const backgroundShorthand = (bgImage==='none') ? bgColor : `${bgImage}, ${bgColor}`;
-      const inner = d.layout_mode==="nav-top"
-        ? `<nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>
-           <div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>`
-        : `<div class="hf-copy" style="color:${d.footer_color};font-weight:${d.footer_weight};justify-content:${toJustify(d.footer_alignment)};font-size:${num(d.footer_copy_size,14)}px">${d.footer_text||""}</div>
-           <nav class="hf-nav" style="justify-content:${toJustify(d.nav_alignment_footer)};color:${d.nav_color_footer};font-weight:${d.nav_weight_footer};font-size:${num(d.footer_nav_size,14)}px">${items}</nav>`;
-      $("#site-footer").innerHTML = `
-        <div class="hf-bg" id="hf-footer-bg" style="background:${backgroundShorthand};">
-          <div class="container">
-            <div class="${cls}" style="${ff};--gap:${num(d.link_spacing,16)}px; padding:${paddingY};">
-              ${inner}
-            </div>
-          </div>
-        </div>`;
-      const bg = $("#hf-footer-bg");
-      if(d.footer_fixed && bg){
-        Object.assign(bg.style,{position:"fixed",bottom:"0",left:"0",right:"0",zIndex:"1000",width:"100%"});
-      }
-    }
-
-    function buildDrawer(menus){
-      const items = menus.filter(m=>m.is_active).map(m=>`<a href="${linkOf(m)}">${m.title}</a>`).join("");
-      $("#drawer-nav").innerHTML = items;
-    }
-
-    function openDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","false");$("#hamburger").setAttribute("aria-expanded","true");}
-    function closeDrawer(){const d=$("#mobile-drawer");d.setAttribute("aria-hidden","true");$("#hamburger").setAttribute("aria-expanded","false");}
-    $("#drawer-close")?.addEventListener("click", closeDrawer);
-    $("#mobile-drawer .overlay")?.addEventListener("click", closeDrawer);
-
-    function adjustOffsets(h,f){
-      const headerEl=$("#hf-header-bg");
-      const body=document.body;
-      body.style.paddingTop=headerEl?`${headerEl.offsetHeight}px`:"0";
-      body.style.paddingBottom="0";
-    }
-
-    function addResizeObserver(h,f){
-      const ro=new ResizeObserver(()=>adjustOffsets(h,f));
-      const headerEl=$("#hf-header-bg");const footerEl=$("#hf-footer-bg");
-      if(headerEl) ro.observe(headerEl); if(footerEl) ro.observe(footerEl);
-    }
-
-    loadHF();
   </script>
 </body>
 </html>
