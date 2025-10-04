@@ -87,6 +87,9 @@
       window.env.NEXT_PUBLIC_SUPABASE_URL,
       window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     );
+
+    // ★ 子ページから参照できるようにグローバル公開
+    window.supabase = supabase;
     
     // ===== セッション確認 =====
     const { data: { session } } = await supabase.auth.getSession();
@@ -98,7 +101,7 @@
     function executeScripts(container) {
       const scripts = container.querySelectorAll("script");
       scripts.forEach(oldScript => {
-        // ★ type="module" の場合は再実行しない
+        // type="module" は再実行しない
         if (oldScript.type === "module") return;
 
         const newScript = document.createElement("script");
@@ -116,7 +119,7 @@
       const res = await fetch(page);
       const html = await res.text();
       const container = document.getElementById("main-content");
-      container.innerHTML = `<div class="subpage">${html}</div>`; // ラップして読み込む
+      container.innerHTML = `<div class="subpage">${html}</div>`;
       executeScripts(container);
     };
 
