@@ -117,7 +117,13 @@
 </style>
 
 <script type="module">
-  
+  // --- 直アクセス防止（admin-top.htmlから読み込まれた場合のみ許可）---
+  if (
+    window.top === window.self || 
+    !document.referrer.includes("admin-top.html")
+  ) {
+    window.location.href = "/admin-top.html";
+  }
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
   // ===== Supabase接続（env.js対応） =====
