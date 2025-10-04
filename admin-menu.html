@@ -110,10 +110,16 @@
     90% { opacity: 1; }
     100% { opacity: 0; transform: translateY(-10px); }
   }
+  /* 横スクロール防止 */
+  html, body {
+    overflow-x: hidden;
+  }
 </style>
 
 <script type="module">
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+  // ===== Supabase接続（env.js対応） =====
   const supabase = createClient(
     window.env.NEXT_PUBLIC_SUPABASE_URL,
     window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -150,7 +156,7 @@
     data.forEach(row => {
       const tr = document.createElement("tr");
       tr.draggable = true;
-      tr.dataset.id = String(row.id); // 明示的に文字列化
+      tr.dataset.id = String(row.id);
       tr.innerHTML = `
         <td>${row.id}</td>
         <td>${row.title}</td>
@@ -246,7 +252,6 @@
     document.getElementById("cancelBtn").style.display = "none";
   }
 
-  // 並べ替え機能（差分更新＆エラーハンドリング強化）
   function enableDragAndDrop() {
     const tbody = document.querySelector("#menuTable tbody");
     let dragEl = null;
@@ -277,10 +282,8 @@
         tr.style.borderTop = "";
         tr.style.borderBottom = "";
         if (dragEl && dragEl !== tr) {
-          // DOM順を入れ替え
           const afterHalf = e.clientY > tr.getBoundingClientRect().top + tr.offsetHeight/2;
           tbody.insertBefore(dragEl, afterHalf ? tr.nextSibling : tr);
-          // 保存
           await saveNewOrder();
         }
         dragEl = null;
@@ -296,7 +299,7 @@
       const id = Number(rows[i].dataset.id);
       const newOrder = i + 1;
       const currentOrder = Number(rows[i].children[3].textContent);
-      if (currentOrder === newOrder) continue; // 差分のみ更新
+      if (currentOrder === newOrder) continue;
       const { error } = await supabase
         .from("admin_menus")
         .update({ sort_order: newOrder })
@@ -305,7 +308,6 @@
         console.error("sort update error:", {id, error});
         errors.push(error);
       } else {
-        // テーブル表示の順番セルも即時更新
         rows[i].children[3].textContent = String(newOrder);
       }
     }
@@ -314,7 +316,6 @@
     } else {
       showToast("順番を更新しました","success");
     }
-    // DBの確定順を反映
     fetchMenus();
   }
 
