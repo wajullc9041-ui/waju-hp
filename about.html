@@ -531,7 +531,11 @@
   <footer id="site-footer"></footer>
 
   <!-- ヘッダー／フッター反映 -->
+  <!-- Supabase環境変数を先に読み込む -->
+  <script src="env.js"></script>
+  <!-- そのあとにヘッダー／フッターを読み込む -->
   <script type="module" src="hf.js"></script>
+
 
   <!-- フッター高さに応じて余白を自動調整 -->
   <script>
