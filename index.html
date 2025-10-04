@@ -73,32 +73,7 @@
     <section id="news" class="py-16 bg-white border-b border-gray-100 shadow-inner">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">NEWS</h2>
-        <div class="space-y-4 max-w-3xl mx-auto">
-          <a href="#" class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300 mr-4">2024.09.27</span>
-              <p class="text-gray-800 font-semibold group-hover:text-white transition duration-300">【重要】ホームページをリニューアルしました</p>
-            </div>
-          </a>
-          <a href="#" class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300 mr-4">2024.09.01</span>
-              <p class="text-gray-800 font-semibold group-hover:text-white transition duration-300">新サービス「CARELAY」の提供を開始しました。</p>
-            </div>
-          </a>
-          <a href="#" class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300 mr-4">2024.08.15</span>
-              <p class="text-gray-800 font-semibold group-hover:text-white transition duration-300">夏季休業のお知らせとご協力のお願い</p>
-            </div>
-          </a>
-          <a href="#" class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300 mr-4">2023.04.01</span>
-              <p class="text-gray-800 font-semibold group-hover:text-white transition duration-300">合同会社WaJuを設立しました。</p>
-            </div>
-          </a>
-        </div>
+        <div id="news-list" class="space-y-4 max-w-3xl mx-auto"></div>
       </div>
     </section>
 
@@ -256,5 +231,59 @@
   <!-- そのあとにヘッダー／フッターを読み込む -->
   <script type="module" src="hf.js"></script>
 
+
+  <!-- NEWS Supabase fetch -->
+  <script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+  const sb = createClient(
+    window.env.NEXT_PUBLIC_SUPABASE_URL,
+    window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+
+  const newsList = document.getElementById("news-list");
+  function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+  }
+
+  async function loadNews() {
+    const { data, error } = await sb
+      .from("articles")
+      .select("title, category, created_at, slug")
+      .order("created_at", { ascending: false })
+      .limit(3);
+
+    if (error) {
+      console.error("NEWS取得エラー:", error);
+      newsList.innerHTML = "<p class='text-center text-gray-500'>記事を取得できませんでした。</p>";
+      return;
+    }
+
+    if (!data || !data.length) {
+      newsList.innerHTML = "<p class='text-center text-gray-500'>まだお知らせはありません。</p>";
+      return;
+    }
+
+    newsList.innerHTML = data.map(a => `
+      <a href="/blog-detail.html?slug=${a.slug}" 
+         class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+          <div class="flex items-center space-x-3">
+            <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300">
+              ${formatDate(a.created_at)}
+            </span>
+            <span class="text-xs bg-waju-accent text-white px-2 py-1 rounded">
+              ${a.category || "お知らせ"}
+            </span>
+          </div>
+          <p class="text-gray-800 font-semibold group-hover:text-white transition duration-300 mt-1 sm:mt-0">
+            ${a.title}
+          </p>
+        </div>
+      </a>
+    `).join("");
+  }
+  loadNews();
+  </script>
 </body>
 </html>
