@@ -36,16 +36,12 @@
 <style>
   #menu-admin-root * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
   #menu-admin-root h2 { margin: 12px 0 16px; font-size: 22px; font-weight:600; color:#1f2937; }
-
   .card { background:#fff; border-radius:12px; padding:16px; margin-bottom:20px;
           box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-
   .form-card .form-grid { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:12px; }
   .form-card label { font-size:14px; font-weight:500; color:#374151; margin-bottom:4px; display:block; }
   .form-card input[type="text"] { width:100%; padding:8px 10px; border:1px solid #d1d5db; border-radius:6px; }
-
   .checks { display:flex; gap:16px; margin-bottom:12px; font-size:14px; color:#374151; }
-
   .btns { display:flex; gap:8px; }
   .btn { padding:8px 14px; border:none; border-radius:6px; font-size:14px; font-weight:500; cursor:pointer;
          transition:background 0.2s, transform 0.1s; }
@@ -54,13 +50,11 @@
   .btn.success { background:#10b981; color:#fff; }
   .btn.muted { background:#6b7280; color:#fff; }
   .btn.warn { background:#ef4444; color:#fff; }
-
   table { width:100%; border-collapse:separate; border-spacing:0; border-radius:8px; overflow:hidden; }
   th, td { padding:10px; border-bottom:1px solid #e5e7eb; text-align:center; font-size:14px; }
   thead th { background:#f9fafb; font-weight:600; color:#374151; }
   tbody tr:hover { background:#f3f4f6; }
   tbody tr:last-child td { border-bottom:none; }
-
   #toast-container { position:fixed; top:1rem; right:1rem; z-index:9999; }
   .toast { margin-bottom:10px; padding:12px 18px; border-radius:8px; color:#fff; font-weight:500; 
            box-shadow:0 3px 6px rgba(0,0,0,.2); animation: fadeInOut 3s forwards; }
@@ -69,11 +63,12 @@
 </style>
 
 <script>
-  const sb = window.supabase;
+  var sb = window.supabase;
   if (!sb) {
     alert("Supabaseが初期化されていません。トップページを再読込してください。");
   }
 
+  var editingId = null;
   const $ = (q)=>document.querySelector(q);
   const $$ = (q)=>document.querySelectorAll(q);
   const toast = (m,t="success")=>{
@@ -92,8 +87,6 @@
     if(s==="") s="index";
     return s;
   }
-
-  var editingId = null;
 
   async function fetchMenus(){
     const { data, error } = await sb.from("public_menus").select("*").order("sort_order",{ascending:true});
@@ -178,7 +171,6 @@
 
   async function deleteMenu(id){
     if(!confirm("削除してよろしいですか？")) return;
-
     const { data: menuRow, error: fetchErr } = await sb.from("public_menus").select("*").eq("id", id).single();
     if(fetchErr){ console.error(fetchErr); toast("削除失敗","error"); return; }
 
@@ -197,7 +189,7 @@
 
   function enableDnD(){
     const tbody=$("#menuTable tbody");
-    let dragEl=null;
+    var dragEl=null;
     tbody.querySelectorAll("tr").forEach(tr=>{
       tr.ondragstart=e=>{dragEl=tr; e.dataTransfer.effectAllowed="move";};
       tr.ondragover=e=>{e.preventDefault(); const rect=tr.getBoundingClientRect(); const after=(e.clientY-rect.top)>rect.height/2;
@@ -217,7 +209,7 @@
 
   async function saveOrder(){
     const rows=[...$("#menuTable tbody").querySelectorAll("tr")];
-    for(let i=0;i<rows.length;i++){
+    for(var i=0;i<rows.length;i++){
       const id=Number(rows[i].dataset.id), newOrder=i+1;
       const cur=Number(rows[i].children[4].textContent||"0");
       if(cur===newOrder) continue;
