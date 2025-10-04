@@ -133,11 +133,11 @@
 
     <!-- SNS Section -->
     <section id="sns" class="py-20 bg-waju-light">
-      <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
         <h2 class="text-4xl font-extrabold text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SNS</h2>
     
         <!-- Instagramカード -->
-        <div class="bg-white p-6 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500 w-full sm:w-auto mx-0 sm:mx-6 mb-8 sm:mb-10">
+        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500 w-full sm:w-auto mx-0 sm:mx-6 mb-8 sm:mb-10">
           <p class="text-3xl mb-2">📸</p>
           <h3 class="text-xl font-bold text-gray-800 mb-4">
             Instagram <span class="text-pink-500">@waju.llc</span>
@@ -151,7 +151,6 @@
               allowtransparency="true"
               frameborder="0"
               scrolling="no"
-              style="border:none; width:100%; max-width:600px; height:auto; min-height:180px; display:block; margin:auto;"
               title="Posts from Instagram">
             </iframe>
           </div>
@@ -164,7 +163,7 @@
         </div>
     
         <!-- その他のSNS -->
-        <div class="bg-white p-6 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500 w-full sm:w-auto mx-0 sm:mx-6">
+        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500 w-full sm:w-auto mx-0 sm:mx-6">
           <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3">その他のSNS</h3>
           <div class="flex flex-wrap justify-center gap-6 sm:gap-8">
     
@@ -209,32 +208,33 @@
     
       <!-- レスポンシブ調整 -->
       <style>
-        /* InstagramのSnapWidget高さ調整 */
+        /* SnapWidget 高さと幅を柔軟に調整 */
         .snapwidget-widget {
-          display: block;
-          height: auto !important;
+          width: 100% !important;
+          max-width: 600px;
+          height: 220px; /* 画像比に合わせて調整 */
         }
     
-        /* スマホ時の余白・角丸・幅調整 */
+        /* スマホ時はフル幅化・余白削除・高さも可変 */
         @media (max-width: 640px) {
           #sns .bg-white {
             margin-left: 0 !important;
             margin-right: 0 !important;
             border-radius: 0 !important;
-            padding: 0.75rem !important;
+            width: 100vw !important;
+            padding: 1rem !important;
           }
-          #sns .max-w-4xl {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-          }
+    
           #sns iframe.snapwidget-widget {
-            width: 100% !important;
-            height: auto !important;
+            width: 100vw !important;
+            height: 160px !important;
             display: block;
+            margin: 0 auto;
           }
         }
       </style>
     </section>
+
 
 
     <!-- COMPANY Section -->
