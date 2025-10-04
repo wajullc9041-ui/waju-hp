@@ -76,6 +76,70 @@
         <div id="news-list" class="space-y-4 max-w-3xl mx-auto"></div>
       </div>
     </section>
+    
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+      const sb = createClient(
+        window.env.NEXT_PUBLIC_SUPABASE_URL,
+        window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      );
+    
+      const newsList = document.getElementById("news-list");
+    
+      console.log("NEWSセクション読込開始");
+    
+      async function loadNews() {
+        try {
+          const { data, error } = await sb
+            .from("articles")
+            .select("title, category, created_at, slug")
+            .order("created_at", { ascending: false })
+            .limit(3);
+    
+          if (error) throw error;
+    
+          if (!data || data.length === 0) {
+            console.log("記事データなし");
+            newsList.innerHTML = `<p class="text-center text-gray-500">まだお知らせはありません。</p>`;
+            return;
+          }
+    
+          // カテゴリ色分け
+          const categoryColor = {
+            "お知らせ": "bg-blue-500",
+            "プレスリリース": "bg-green-500",
+            "イベント": "bg-orange-500",
+            "採用情報": "bg-pink-500",
+            "コラム": "bg-indigo-500",
+            "制度・法改正": "bg-red-500",
+            "サービス更新": "bg-yellow-500",
+            "導入事例": "bg-teal-500",
+            "メディア掲載": "bg-purple-500",
+            "地域連携": "bg-sky-500"
+          };
+    
+          newsList.innerHTML = data.map(a => {
+            const color = categoryColor[a.category] || "bg-gray-400";
+            return `
+              <a href="/blog-detail.html?slug=${a.slug}" class="block p-4 border-b border-gray-200 hover:bg-gray-50 transition">
+                <div class="flex items-center gap-3">
+                  <span class="text-sm text-gray-500">${new Date(a.created_at).toLocaleDateString("ja-JP")}</span>
+                  <span class="text-xs ${color} text-white px-2 py-1 rounded">${a.category || "お知らせ"}</span>
+                </div>
+                <p class="mt-1 text-left font-medium text-gray-800">${a.title}</p>
+              </a>
+            `;
+          }).join("");
+    
+        } catch (err) {
+          console.error("NEWS読み込みエラー:", err);
+          newsList.innerHTML = `<p class="text-center text-red-500">読み込みエラーが発生しました。</p>`;
+        }
+      }
+    
+      loadNews();
+    </script>
+
 
     <!-- ABOUT Section -->
     <section id="about" class="py-20 bg-gray-50">
