@@ -70,77 +70,12 @@
     </section>
 
     <!-- NEWS Section -->
-    <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-    const sb = createClient(
-      window.env.NEXT_PUBLIC_SUPABASE_URL,
-      window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    );
-    
-    const newsList = document.getElementById("news-list");
-    
-    function formatDate(dateStr) {
-      const d = new Date(dateStr);
-      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
-    }
-    
-    // カテゴリ別カラー（なければオレンジの既定色）
-    const catColors = {
-      "お知らせ": "bg-blue-500",
-      "プレスリリース": "bg-orange-500",
-      "採用情報": "bg-green-500",
-      "イベント": "bg-purple-500",
-      "制度・法改正": "bg-pink-500",
-      "サービス更新": "bg-indigo-500",
-      "導入事例": "bg-emerald-500",
-      "メディア掲載": "bg-rose-500",
-      "地域連携": "bg-teal-500"
-    };
-    const colorFor = c => catColors[c] || "bg-waju-accent";
-    
-    async function loadNews() {
-      const { data, error } = await sb
-        .from("articles")
-        .select("title, category, created_at, slug")
-        .order("created_at", { ascending: false })
-        .limit(3);
-    
-      if (error) {
-        console.error("NEWS取得エラー:", error);
-        newsList.innerHTML = "<p class='text-center text-gray-500'>記事を取得できませんでした。</p>";
-        return;
-      }
-    
-      if (!data || !data.length) {
-        newsList.innerHTML = "<p class='text-center text-gray-500'>まだお知らせはありません。</p>";
-        return;
-      }
-    
-      newsList.innerHTML = data.map(a => `
-        <a href="/blog-detail.html?slug=${a.slug}" 
-           class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
-          <!-- 右寄せにならないように justify-between をやめて左寄せ -->
-          <div class="flex flex-col sm:flex-row items-start sm:items-center">
-            <div class="flex items-center space-x-3">
-              <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300">
-                ${formatDate(a.created_at)}
-              </span>
-              <span class="text-xs ${colorFor(a.category)} text-white px-2 py-1 rounded">
-                ${a.category || "お知らせ"}
-              </span>
-            </div>
-            <!-- タイトルは常に左寄せ、PCでは左ブロックの横に並ぶ -->
-            <p class="mt-1 sm:mt-0 sm:ml-6 text-gray-800 font-semibold group-hover:text-white transition duration-300 text-left">
-              ${a.title}
-            </p>
-          </div>
-        </a>
-      `).join("");
-    }
-    
-    loadNews();
-    </script>
-
+    <section id="news" class="py-16 bg-white border-b border-gray-100 shadow-inner">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">NEWS</h2>
+        <div id="news-list" class="space-y-4 max-w-3xl mx-auto"></div>
+      </div>
+    </section>
 
     <!-- ABOUT Section -->
     <section id="about" class="py-20 bg-gray-50">
