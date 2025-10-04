@@ -70,126 +70,164 @@
   </div>
 </section>
 
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-  const supabase = createClient(
-    window.env.NEXT_PUBLIC_SUPABASE_URL,
-    window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
-
-  // ===== 認証チェック =====
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) window.location.href = "/admin-index.html";
-  const statusMap={unread:"未読",in_progress:"対応中",done:"対応済"};
-  const reverseStatusMap={"未読":"unread","対応中":"in_progress","対応済":"done"};
-
-  let rows=[],filtered=[],page=1,size=20;
-  const tbody=document.querySelector("#ac-tbody"),count=document.querySelector("#ac-count"),pageinfo=document.querySelector("#ac-pageinfo");
-
-  async function fetchRows(){
-    const { data,error }=await supabase.from("contact_messages").select("*").order("created_at",{ascending:false});
-    if(error){console.error(error);return;}
-    rows=data||[];applyFilter();
+<script>
+  // --- Supabase再利用・再初期化 ---
+  if (!window.supabase) {
+    try {
+      window.supabase = window.supabase || createClient(
+        window.env.NEXT_PUBLIC_SUPABASE_URL,
+        window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      );
+    } catch (e) {
+      console.error("Supabase再初期化エラー:", e);
+    }
   }
 
-  function applyFilter(){
-    const st=document.querySelector("#filter-status").value;
-    const cat=document.querySelector("#filter-category").value;
-    const imp=document.querySelector("#filter-important").checked;
-    const kw=document.querySelector("#filter-search").value.trim();
-    filtered=rows.filter(r=>
-      (!st||r.status===st)&&
-      (!cat||r.category===cat)&&
-      (!imp||r.is_important)&&
-      (!kw||[r.name,r.organization,r.subject,r.message].join(" ").includes(kw))
+  var sb = window.supabase;
+  if (!sb) {
+    alert("Supabaseが初期化されていません。トップページを再読み込みしてください。");
+  }
+
+  const statusMap = { unread: "未読", in_progress: "対応中", done: "対応済" };
+  const reverseStatusMap = { "未読": "unread", "対応中": "in_progress", "対応済": "done" };
+
+  var rows = [], filtered = [], page = 1, size = 20;
+  var tbody = document.querySelector("#ac-tbody"),
+      count = document.querySelector("#ac-count"),
+      pageinfo = document.querySelector("#ac-pageinfo");
+
+  async function fetchRows() {
+    if (!sb) return;
+    const { data, error } = await sb.from("contact_messages").select("*").order("created_at", { ascending: false });
+    if (error) { console.error(error); return; }
+    rows = data || [];
+    applyFilter();
+  }
+
+  function applyFilter() {
+    const st = document.querySelector("#filter-status").value;
+    const cat = document.querySelector("#filter-category").value;
+    const imp = document.querySelector("#filter-important").checked;
+    const kw = document.querySelector("#filter-search").value.trim();
+
+    filtered = rows.filter(r =>
+      (!st || r.status === st) &&
+      (!cat || r.category === cat) &&
+      (!imp || r.is_important) &&
+      (!kw || [r.name, r.organization, r.subject, r.message].join(" ").includes(kw))
     );
-    page=1;renderList();
+    page = 1;
+    renderList();
   }
 
-  function paginate(list){const start=(page-1)*size;return list.slice(start,start+size);}
-  function badge(st){if(st==="unread")return'<span class="status s-unread">未読</span>';if(st==="in_progress")return'<span class="status s-working">対応中</span>';return'<span class="status s-done">対応済</span>';}
+  function paginate(list) {
+    const start = (page - 1) * size;
+    return list.slice(start, start + size);
+  }
 
-  function renderList(){
-    const pageRows=paginate(filtered);
-    count.textContent=`${filtered.length}件`;
-    pageinfo.textContent=`${filtered.length===0?0:((page-1)*size+1)}-${Math.min(page*size,filtered.length)} / ${filtered.length}`;
-    if(pageRows.length===0){tbody.innerHTML='<tr><td colspan="6">データなし</td></tr>';return;}
-    tbody.innerHTML=pageRows.map(r=>`
+  function badge(st) {
+    if (st === "unread") return '<span class="status s-unread">未読</span>';
+    if (st === "in_progress") return '<span class="status s-working">対応中</span>';
+    return '<span class="status s-done">対応済</span>';
+  }
+
+  function renderList() {
+    const pageRows = paginate(filtered);
+    count.textContent = `${filtered.length}件`;
+    pageinfo.textContent = `${filtered.length === 0 ? 0 : ((page - 1) * size + 1)}-${Math.min(page * size, filtered.length)} / ${filtered.length}`;
+
+    if (pageRows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6">データなし</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = pageRows.map(r => `
       <tr class="row" data-id="${r.id}">
         <td>${new Date(r.created_at).toLocaleString("ja-JP")}</td>
-        <td><div>${r.name||"-"}</div><div class="muted">${r.organization||""}</div></td>
-        <td><div>${r.subject||"-"}</div><div class="muted">${r.category||""}</div></td>
-        <td>${r.email||"-"}</td>
+        <td><div>${r.name || "-"}</div><div class="muted">${r.organization || ""}</div></td>
+        <td><div>${r.subject || "-"}</div><div class="muted">${r.category || ""}</div></td>
+        <td>${r.email || "-"}</td>
         <td>${badge(r.status)}</td>
-        <td>${r.is_important?"⭐":""}</td>
+        <td>${r.is_important ? "⭐" : ""}</td>
       </tr>
       <tr class="accordion-row" id="acc-${r.id}" style="display:none;">
         <td colspan="6">
           <div class="accordion">
             <div class="controls">
               <select class="status-select">
-                <option ${r.status==="unread"?"selected":""}>未読</option>
-                <option ${r.status==="in_progress"?"selected":""}>対応中</option>
-                <option ${r.status==="done"?"selected":""}>対応済</option>
+                <option ${r.status === "unread" ? "selected" : ""}>未読</option>
+                <option ${r.status === "in_progress" ? "selected" : ""}>対応中</option>
+                <option ${r.status === "done" ? "selected" : ""}>対応済</option>
               </select>
-              <label><input type="checkbox" class="important-check" ${r.is_important?"checked":""}/> ⭐重要</label>
+              <label><input type="checkbox" class="important-check" ${r.is_important ? "checked" : ""}/> ⭐重要</label>
               <button class="btn danger delete-btn">削除</button>
             </div>
             <dl>
-              <dt>氏名</dt><dd>${r.name||"-"}</dd>
-              <dt>会社・所属</dt><dd>${r.organization||"-"}</dd>
-              <dt>メール</dt><dd>${r.email||"-"}</dd>
-              <dt>電話</dt><dd>${r.phone||"-"}</dd>
-              <dt>種別</dt><dd>${r.category||"-"}</dd>
-              <dt>件名</dt><dd>${r.subject||"-"}</dd>
-              <dt class="full">本文</dt><dd class="full">${r.message||""}</dd>
-              <dt>UA</dt><dd>${r.meta_user_agent||""}</dd>
-              <dt>Path</dt><dd>${r.meta_path||""}</dd>
+              <dt>氏名</dt><dd>${r.name || "-"}</dd>
+              <dt>会社・所属</dt><dd>${r.organization || "-"}</dd>
+              <dt>メール</dt><dd>${r.email || "-"}</dd>
+              <dt>電話</dt><dd>${r.phone || "-"}</dd>
+              <dt>種別</dt><dd>${r.category || "-"}</dd>
+              <dt>件名</dt><dd>${r.subject || "-"}</dd>
+              <dt class="full">本文</dt><dd class="full">${r.message || ""}</dd>
+              <dt>UA</dt><dd>${r.meta_user_agent || ""}</dd>
+              <dt>Path</dt><dd>${r.meta_path || ""}</dd>
               <dt>ID</dt><dd>${r.id}</dd>
             </dl>
           </div>
         </td>
       </tr>`).join("");
 
-    tbody.querySelectorAll(".row").forEach(tr=>{
-      tr.addEventListener("click",()=>{
-        const acc=document.querySelector(`#acc-${tr.dataset.id}`);
-        acc.style.display=acc.style.display==="none"?"table-row":"none";
+    tbody.querySelectorAll(".row").forEach(tr => {
+      tr.addEventListener("click", () => {
+        const acc = document.querySelector(`#acc-${tr.dataset.id}`);
+        acc.style.display = acc.style.display === "none" ? "table-row" : "none";
       });
     });
 
-    tbody.querySelectorAll(".status-select").forEach(sel=>{
-      sel.addEventListener("change",async e=>{
-        const tr=e.target.closest(".accordion-row");const id=tr.id.replace("acc-","");
-        const newStatus=reverseStatusMap[e.target.value];
-        await supabase.from("contact_messages").update({status:newStatus}).eq("id",id);
-        const rec=rows.find(r=>r.id===id);if(rec)rec.status=newStatus;renderList();
+    tbody.querySelectorAll(".status-select").forEach(sel => {
+      sel.addEventListener("change", async e => {
+        const tr = e.target.closest(".accordion-row");
+        const id = tr.id.replace("acc-", "");
+        const newStatus = reverseStatusMap[e.target.value];
+        await sb.from("contact_messages").update({ status: newStatus }).eq("id", id);
+        const rec = rows.find(r => r.id === id);
+        if (rec) rec.status = newStatus;
+        renderList();
       });
     });
-    tbody.querySelectorAll(".important-check").forEach(chk=>{
-      chk.addEventListener("change",async e=>{
-        const tr=e.target.closest(".accordion-row");const id=tr.id.replace("acc-","");
-        await supabase.from("contact_messages").update({is_important:e.target.checked}).eq("id",id);
-        const rec=rows.find(r=>r.id===id);if(rec)rec.is_important=e.target.checked;renderList();
+
+    tbody.querySelectorAll(".important-check").forEach(chk => {
+      chk.addEventListener("change", async e => {
+        const tr = e.target.closest(".accordion-row");
+        const id = tr.id.replace("acc-", "");
+        await sb.from("contact_messages").update({ is_important: e.target.checked }).eq("id", id);
+        const rec = rows.find(r => r.id === id);
+        if (rec) rec.is_important = e.target.checked;
+        renderList();
       });
     });
-    tbody.querySelectorAll(".delete-btn").forEach(btn=>{
-      btn.addEventListener("click",async e=>{
-        if(!confirm("削除しますか？"))return;
-        const tr=e.target.closest(".accordion-row");const id=tr.id.replace("acc-","");
-        await supabase.from("contact_messages").delete().eq("id",id);
-        rows=rows.filter(r=>r.id!==id);applyFilter();
+
+    tbody.querySelectorAll(".delete-btn").forEach(btn => {
+      btn.addEventListener("click", async e => {
+        if (!confirm("削除しますか？")) return;
+        const tr = e.target.closest(".accordion-row");
+        const id = tr.id.replace("acc-", "");
+        await sb.from("contact_messages").delete().eq("id", id);
+        rows = rows.filter(r => r.id !== id);
+        applyFilter();
       });
     });
   }
 
-  document.querySelector("#ac-size").addEventListener("change",e=>{size=parseInt(e.target.value,10)||20;page=1;renderList();});
-  document.querySelector("#ac-prev").addEventListener("click",()=>{if(page>1){page--;renderList();}});
-  document.querySelector("#ac-next").addEventListener("click",()=>{if(page*size<filtered.length){page++;renderList();}});
-  ["#filter-status","#filter-category","#filter-important","#filter-search"].forEach(sel=>{
-    document.querySelector(sel).addEventListener("input",applyFilter);
-    document.querySelector(sel).addEventListener("change",applyFilter);
+  document.querySelector("#ac-size").addEventListener("change", e => { size = parseInt(e.target.value, 10) || 20; page = 1; renderList(); });
+  document.querySelector("#ac-prev").addEventListener("click", () => { if (page > 1) { page--; renderList(); } });
+  document.querySelector("#ac-next").addEventListener("click", () => { if (page * size < filtered.length) { page++; renderList(); } });
+  ["#filter-status", "#filter-category", "#filter-important", "#filter-search"].forEach(sel => {
+    document.querySelector(sel).addEventListener("input", applyFilter);
+    document.querySelector(sel).addEventListener("change", applyFilter);
   });
 
   fetchRows();
 </script>
+
