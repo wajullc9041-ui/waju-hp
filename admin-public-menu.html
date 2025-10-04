@@ -1,4 +1,4 @@
-<!-- ===== 管理：公開メニュー管理 ===== -->
+<!-- ===== 管理：公開メニュー管理（再宣言対応・安定版） ===== -->
 <div id="menu-admin-root">
   <h2>メニュー管理</h2>
 
@@ -69,31 +69,31 @@
   }
 
   var editingId = null;
-  const $ = (q)=>document.querySelector(q);
-  const $$ = (q)=>document.querySelectorAll(q);
-  const toast = (m,t="success")=>{
-    const n=document.createElement("div");
+  var $ = window.$ || function(q){ return document.querySelector(q); };
+  var $$ = window.$$ || function(q){ return document.querySelectorAll(q); };
+  var toast = window.toast || function(m,t="success"){
+    var n=document.createElement("div");
     n.className="toast "+t;
     n.textContent=m;
     $("#toast-container").appendChild(n);
     setTimeout(()=>n.remove(),3000);
   };
 
-  function toSlug(url){
+  var toSlug = function(url){
     if(!url) return "";
-    let s = url.trim();
-    try { const u = new URL(s, location.origin); s = u.pathname; } catch(e){}
+    var s = url.trim();
+    try { var u = new URL(s, location.origin); s = u.pathname; } catch(e){}
     s = s.replace(/^\//,"").replace(/\.html?$/,"").replace(/\/$/,"");
     if(s==="") s="index";
     return s;
-  }
+  };
 
-  async function fetchMenus(){
+  var fetchMenus = async function(){
     const { data, error } = await sb.from("public_menus").select("*").order("sort_order",{ascending:true});
     if(error){ console.error(error); toast("メニュー読み込み失敗","error"); return; }
-    const tbody=$("#menuTable tbody"); tbody.innerHTML="";
+    var tbody=$("#menuTable tbody"); tbody.innerHTML="";
     (data||[]).forEach(row=>{
-      const tr=document.createElement("tr"); tr.draggable=true; tr.dataset.id=row.id;
+      var tr=document.createElement("tr"); tr.draggable=true; tr.dataset.id=row.id;
       tr.innerHTML=`
         <td>${row.id}</td>
         <td>${row.title||""}</td>
@@ -112,9 +112,9 @@
     $$("#menuTable .btn.edit").forEach(b=>b.onclick=()=>startEdit(Number(b.dataset.id)));
     $$("#menuTable .btn.warn").forEach(b=>b.onclick=()=>deleteMenu(Number(b.dataset.id)));
     enableDnD();
-  }
+  };
 
-  function readMenuForm(){
+  var readMenuForm = function(){
     return {
       title: $("#menu_title").value.trim(),
       url: $("#menu_url").value.trim(),
@@ -123,16 +123,16 @@
       show_in_header: $("#menu_show_header").checked,
       show_in_footer: $("#menu_show_footer").checked
     };
-  }
+  };
 
-  function resetMenuForm(){
+  var resetMenuForm = function(){
     editingId=null;
     $("#menu_title").value=""; $("#menu_url").value=""; $("#menu_icon").value="";
     $("#menu_active").checked=false; $("#menu_show_header").checked=false; $("#menu_show_footer").checked=false;
     $("#addBtn").style.display="inline-block"; $("#updateBtn").style.display="none"; $("#cancelBtn").style.display="none";
-  }
+  };
 
-  async function addMenu(){
+  var addMenu = async function(){
     const rec=readMenuForm();
     if(!rec.title || !rec.url){ toast("表示名とURLは必須です","error"); return; }
     const { data: inserted, error } = await sb.from("public_menus").insert([rec]).select().single();
@@ -150,26 +150,26 @@
     resetMenuForm();
     await fetchMenus();
     toast("追加しました");
-  }
+  };
 
-  async function startEdit(id){
+  var startEdit = async function(id){
     editingId=id;
     $("#addBtn").style.display="none"; $("#updateBtn").style.display="inline-block"; $("#cancelBtn").style.display="inline-block";
     const { data, error } = await sb.from("public_menus").select("*").eq("id", id).single();
     if(error){ console.error(error); toast("読込失敗","error"); return; }
     $("#menu_title").value=data.title||""; $("#menu_url").value=data.url||""; $("#menu_icon").value=data.icon_class||"";
     $("#menu_active").checked=!!data.is_active; $("#menu_show_header").checked=!!data.show_in_header; $("#menu_show_footer").checked=!!data.show_in_footer;
-  }
+  };
 
-  async function updateMenu(){
+  var updateMenu = async function(){
     if(!editingId) return;
     const rec=readMenuForm();
     const { error } = await sb.from("public_menus").update(rec).eq("id", editingId);
     if(error){ console.error(error); toast("更新失敗","error"); return; }
     resetMenuForm(); await fetchMenus(); toast("更新しました");
-  }
+  };
 
-  async function deleteMenu(id){
+  var deleteMenu = async function(id){
     if(!confirm("削除してよろしいですか？")) return;
     const { data: menuRow, error: fetchErr } = await sb.from("public_menus").select("*").eq("id", id).single();
     if(fetchErr){ console.error(fetchErr); toast("削除失敗","error"); return; }
@@ -185,39 +185,39 @@
 
     await fetchMenus();
     toast("削除しました");
-  }
+  };
 
-  function enableDnD(){
-    const tbody=$("#menuTable tbody");
+  var enableDnD = function(){
+    var tbody=$("#menuTable tbody");
     var dragEl=null;
     tbody.querySelectorAll("tr").forEach(tr=>{
       tr.ondragstart=e=>{dragEl=tr; e.dataTransfer.effectAllowed="move";};
-      tr.ondragover=e=>{e.preventDefault(); const rect=tr.getBoundingClientRect(); const after=(e.clientY-rect.top)>rect.height/2;
+      tr.ondragover=e=>{e.preventDefault(); var rect=tr.getBoundingClientRect(); var after=(e.clientY-rect.top)>rect.height/2;
         tr.style.borderTop=after?"":"2px solid #3b82f6"; tr.style.borderBottom=after?"2px solid #3b82f6":"";};
       tr.ondragleave=()=>{tr.style.borderTop=""; tr.style.borderBottom="";};
       tr.ondrop=async e=>{
         e.preventDefault(); tr.style.borderTop=""; tr.style.borderBottom="";
         if(dragEl && dragEl!==tr){
-          const after=e.clientY>tr.getBoundingClientRect().top+tr.offsetHeight/2;
+          var after=e.clientY>tr.getBoundingClientRect().top+tr.offsetHeight/2;
           tbody.insertBefore(dragEl, after? tr.nextSibling: tr);
           await saveOrder();
         }
         dragEl=null;
       };
     });
-  }
+  };
 
-  async function saveOrder(){
-    const rows=[...$("#menuTable tbody").querySelectorAll("tr")];
+  var saveOrder = async function(){
+    var rows=[...$("#menuTable tbody").querySelectorAll("tr")];
     for(var i=0;i<rows.length;i++){
-      const id=Number(rows[i].dataset.id), newOrder=i+1;
-      const cur=Number(rows[i].children[4].textContent||"0");
+      var id=Number(rows[i].dataset.id), newOrder=i+1;
+      var cur=Number(rows[i].children[4].textContent||"0");
       if(cur===newOrder) continue;
-      const { error } = await sb.from("public_menus").update({sort_order:newOrder}).eq("id", id);
+      var { error } = await sb.from("public_menus").update({sort_order:newOrder}).eq("id", id);
       if(!error) rows[i].children[4].textContent=String(newOrder);
     }
     toast("順番を更新しました");
-  }
+  };
 
   $("#addBtn").onclick=addMenu;
   $("#updateBtn").onclick=updateMenu;
