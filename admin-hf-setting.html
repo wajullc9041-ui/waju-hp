@@ -169,15 +169,25 @@
 </div>
 
 <script type="module">
-  let supabase;
-  if (!window.__supabase) {
-    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
-    window.__supabase = createClient(
-      "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
-    );
+  /* ===== ここだけ差し替え：Supabase接続をenv.js化＋認証チェック追加 ===== */
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+  const supabase = (() => {
+    if (!window.__supabase) {
+      window.__supabase = createClient(
+        window.env.NEXT_PUBLIC_SUPABASE_URL,
+        window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      );
+    }
+    return window.__supabase;
+  })();
+
+  // 認証チェック
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    window.location.href = "/admin-index.html";
   }
-  supabase = window.__supabase;
+  /* ===== ここまで差し替え。以降は元ロジックをそのまま ===== */
 
   const $ = (q, r=document)=> r.querySelector(q);
   const $$ = (q, r=document)=> Array.from(r.querySelectorAll(q));
@@ -236,7 +246,7 @@
     nav.style.color = d.nav_color || "";
     nav.style.fontWeight = d.nav_weight || "normal";
     nav.style.fontSize = (num(d.header_nav_size,14)) + "px";
-    nav.style.justifyContent = toJustify(d.nav_alignment); // ← nav 内で揃える
+    nav.style.justifyContent = toJustify(d.nav_alignment);
     (menus||[]).filter(m=>m.is_active && m.show_in_header).forEach(m=>{
       const a = document.createElement("a"); a.textContent = m.title; a.href = m.url || "#"; nav.appendChild(a);
     });
@@ -275,9 +285,6 @@
     if(d.layout_mode==="row"){ bar.appendChild(copy); bar.appendChild(nav); }
     else if(d.layout_mode==="nav-top"){ bar.appendChild(nav); bar.appendChild(copy); }
     else { bar.appendChild(copy); bar.appendChild(nav); }
-
-    // PREVIEWでは固定にしない（画面全体に効かないように）
-    // if(d.footer_fixed){ ... } ← 無効化
 
     return bar;
   }
@@ -409,27 +416,22 @@
     $("#grad_reset_footer").addEventListener("click", function(){ $("#bg_gradient_footer").value = ""; renderFooterPreview(getFooter(), menus); });
 
     $("#saveHeader").addEventListener("click", async function(){ 
-  const d = getHeader(); 
-  renderHeaderPreview(d, menus); 
+      const d = getHeader(); 
+      renderHeaderPreview(d, menus); 
+      const dom = buildHeaderDOM(d, menus);
+      d.headerHtml = dom.outerHTML;
+      d.headerCss = buildHeaderCss(d);
+      await saveRow("header", d); 
+    });
 
-  // 完成したDOMを生成
-  const dom = buildHeaderDOM(d, menus);
-  d.headerHtml = dom.outerHTML;
-  d.headerCss = buildHeaderCss(d);
-
-  await saveRow("header", d); 
-});
     $("#saveFooter").addEventListener("click", async function(){ 
-  const d = getFooter(); 
-  renderFooterPreview(d, menus); 
-
-  // 完成したDOMを生成
-  const dom = buildFooterDOM(d, menus);
-  d.footerHtml = dom.outerHTML;
-  d.footerCss = buildFooterCss(d);
-
-  await saveRow("footer", d); 
-});
+      const d = getFooter(); 
+      renderFooterPreview(d, menus); 
+      const dom = buildFooterDOM(d, menus);
+      d.footerHtml = dom.outerHTML;
+      d.footerCss = buildFooterCss(d);
+      await saveRow("footer", d); 
+    });
   })();
 </script>
 
