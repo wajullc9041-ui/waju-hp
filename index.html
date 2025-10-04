@@ -84,13 +84,19 @@
       return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
     }
     
-    // カテゴリ別カラー設定
+    // カテゴリ別カラー（なければオレンジの既定色）
     const catColors = {
       "お知らせ": "bg-blue-500",
       "プレスリリース": "bg-orange-500",
       "採用情報": "bg-green-500",
-      "イベント": "bg-purple-500"
+      "イベント": "bg-purple-500",
+      "制度・法改正": "bg-pink-500",
+      "サービス更新": "bg-indigo-500",
+      "導入事例": "bg-emerald-500",
+      "メディア掲載": "bg-rose-500",
+      "地域連携": "bg-teal-500"
     };
+    const colorFor = c => catColors[c] || "bg-waju-accent";
     
     async function loadNews() {
       const { data, error } = await sb
@@ -110,27 +116,26 @@
         return;
       }
     
-      newsList.innerHTML = data.map(a => {
-        const color = catColors[a.category] || "bg-waju-accent";
-        return `
-          <a href="/blog-detail.html?slug=${a.slug}" 
-             class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <div class="flex items-center space-x-3">
-                <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300">
-                  ${formatDate(a.created_at)}
-                </span>
-                <span class="text-xs ${color} text-white px-2 py-1 rounded">
-                  ${a.category || "お知らせ"}
-                </span>
-              </div>
-              <p class="text-gray-800 font-semibold group-hover:text-white transition duration-300 mt-1 sm:mt-0 text-left">
-                ${a.title}
-              </p>
+      newsList.innerHTML = data.map(a => `
+        <a href="/blog-detail.html?slug=${a.slug}" 
+           class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
+          <!-- 右寄せにならないように justify-between をやめて左寄せ -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center">
+            <div class="flex items-center space-x-3">
+              <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300">
+                ${formatDate(a.created_at)}
+              </span>
+              <span class="text-xs ${colorFor(a.category)} text-white px-2 py-1 rounded">
+                ${a.category || "お知らせ"}
+              </span>
             </div>
-          </a>
-        `;
-      }).join("");
+            <!-- タイトルは常に左寄せ、PCでは左ブロックの横に並ぶ -->
+            <p class="mt-1 sm:mt-0 sm:ml-6 text-gray-800 font-semibold group-hover:text-white transition duration-300 text-left">
+              ${a.title}
+            </p>
+          </div>
+        </a>
+      `).join("");
     }
     
     loadNews();
