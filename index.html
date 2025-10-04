@@ -136,21 +136,55 @@
       <div class="max-w-6xl mx-auto px-6 text-center">
         <h2 class="text-4xl font-extrabold text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SNS</h2>
         <div class="grid md:grid-cols-2 gap-8">
+    
+          <!-- Instagram -->
           <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500">
             <p class="text-3xl mb-2">📸</p>
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Instagram <span class="text-pink-500">@waju_official</span></h3>
-            <p class="text-gray-600">最新投稿の埋め込みエリア</p>
-            <a href="#" class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold">Instagramを見る &rarr;</a>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">
+              Instagram <span class="text-pink-500">@waju.llc</span>
+            </h3>
+            <!-- 自動で最新投稿を読み込む埋め込み -->
+            <div class="rounded-xl overflow-hidden shadow-inner">
+              <iframe 
+                src="https://www.instagram.com/waju.llc/embed"
+                width="100%" height="480" 
+                frameborder="0" scrolling="no" allowtransparency="true">
+              </iframe>
+            </div>
+            <a href="https://www.instagram.com/waju.llc/" 
+               target="_blank" rel="noopener"
+               class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold">
+              Instagramを見る →
+            </a>
           </div>
+    
+          <!-- X（旧Twitter） -->
           <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500">
             <p class="text-3xl mb-2">🐦</p>
-            <h3 class="text-xl font-bold text-gray-800 mb-4">X（旧Twitter） <span class="text-blue-500">@waju_corp</span></h3>
-            <p class="text-gray-600">最新投稿の埋め込みエリア</p>
-            <a href="#" class="mt-4 inline-block text-blue-600 hover:text-blue-700 font-semibold">X（Twitter）を見る &rarr;</a>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">
+              X（旧Twitter） <span class="text-blue-500">@waJu_llc</span>
+            </h3>
+            <!-- 最新ツイートを自動表示 -->
+            <div class="rounded-xl overflow-hidden shadow-inner">
+              <a class="twitter-timeline"
+                 data-theme="light"
+                 data-chrome="noheader nofooter noborders transparent"
+                 href="https://twitter.com/waJu_llc?ref_src=twsrc%5Etfw">
+                 Tweets by waJu_llc
+              </a>
+              <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+            <a href="https://twitter.com/waJu_llc"
+               target="_blank" rel="noopener"
+               class="mt-4 inline-block text-blue-600 hover:text-blue-700 font-semibold">
+              X（Twitter）を見る →
+            </a>
           </div>
+    
         </div>
       </div>
     </section>
+
 
     <!-- COMPANY Section -->
     <section id="company" class="py-20 bg-white">
