@@ -1,556 +1,92 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title id="pageTitle">ブログ詳細 | 合同会社WaJu</title>
-  <meta name="description" content="合同会社WaJuのブログ詳細ページです。CARELAYや介護・福祉業界に関する最新情報をお届けします。" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>合同会社WaJu | 公式ホームページ</title>
 
-  <!-- Google Analytics (baseと同一ID) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R49H9DTN70"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-R49H9DTN70');
-  </script>
-
-  <!-- Phosphor Icons (アイコンライブラリ) -->
-  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
-  
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* ベーススタイルは元のファイルを維持 */
-    :root{
-      --primary-color: #0d6efd; /* Blue */
-      --secondary-color: #6c757d; /* Gray */
-      --light-bg: #f8f9fa; /* Gray 100 */
-      --white: #ffffff;
-      --shadow-color: rgba(0, 0, 0, 0.05);
-      --border-color: #dee2e6;
-    }
-    html,body{
-      margin:0;
-      padding:0;
-      background:var(--light-bg);
-      font-family:
-        "Noto Sans JP",
-        system-ui,
-        -apple-system,
-        Segoe UI,
-        Roboto,
-        Ubuntu,
-        "Helvetica Neue",
-        "Hiragino Kaku Gothic ProN",
-        Meiryo,
-        sans-serif;
-      color: #212529; /* Dark text for readability */
-    }
-    a {
-      color: var(--primary-color);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    a:hover {
-      color: #0b5ed7; /* Darker blue on hover */
-    }
-    
-    /* ヘッダー・フッターのプレースホルダーは維持 */
-    #site-header, #site-footer {
-      width: 100%;
-      height: 60px; /* Example height */
-      background-color: var(--white);
-      border-bottom: 1px solid var(--border-color);
-      display: flex; /* Placeholder styling */
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 4px var(--shadow-color);
-    }
-
-    /* ======================================================= */
-    /* メインコンテンツ（記事詳細）の洗練されたデザイン */
-    /* ======================================================= */
-    #page-main{
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 20px 20px 60px;
-    }
-
-    /* 記事ナビゲーションのモダンなデザイン */
-    .post-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-    }
-    .post-nav a {
-      display: flex;
-      align-items: center;
-      padding: 10px 15px;
-      background: var(--white);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      transition: all 0.2s ease-in-out;
-      font-weight: 500;
-      color: #495057;
-      min-width: 120px;
-      max-width: 45%;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    /* --- Hero Slider Core --- */
+    #hero {
       overflow: hidden;
+      position: relative;
     }
-    .post-nav a:hover:not(.disabled) {
-      background: var(--light-bg);
-      border-color: var(--primary-color);
-      box-shadow: 0 4px 8px var(--shadow-color);
+    #hero-slider {
+      display: flex;
+      width: 300%; /* 3枚分 */
+      transition: transform 0.8s ease-in-out;
     }
-    .post-nav a.disabled {
-      opacity: 0.5;
-      pointer-events: none;
-      background: #f1f1f1;
-      cursor: default;
-    }
-    .post-nav .nav-ico {
-      font-size: 1.2rem;
-      margin: 0 8px;
-      color: var(--primary-color);
-    }
-    .post-nav .center-link {
-        color: var(--secondary-color);
-        font-size: 0.9rem;
-        padding: 5px 10px;
-    }
-
-    /* タイトルとメタ情報セクション */
-    .title-wrap{
-      margin-bottom: 40px;
-      padding: 30px 0;
-      border-bottom: 2px solid var(--border-color);
-      text-align: center;
-    }
-    .title-wrap img{
+    #hero-slider img {
       width: 100%;
-      max-height: 400px;
+      flex-shrink: 0;
       object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 25px;
-      border: 1px solid var(--border-color);
-    }
-    .title-wrap h1{
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin: 0 0 15px;
-      line-height: 1.4;
-      color: #343a40;
-    }
-    .title-wrap .meta{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 0.9rem;
-      color: var(--secondary-color);
-      margin-top: 15px;
-    }
-    .title-wrap .meta time {
-      display: flex;
-      align-items: center;
-      margin-right: 20px;
-    }
-    .title-wrap .meta time i {
-      margin-right: 5px;
-      font-size: 1.1em;
-      color: #fa5252; /* Clock icon color */
-    }
-    .cat{
-      display: inline-block;
-      padding: 4px 12px;
-      background-color: var(--primary-color);
-      color: var(--white);
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      margin-left: 10px;
-      transition: background-color 0.2s;
-    }
-    .cat:hover {
-        background-color: #0b5ed7;
     }
 
-    /* 記事本文のモダンなカードデザイン */
-    .content{
-      padding: 30px;
-      background: var(--white);
-      border-radius: 12px;
-      box-shadow: 0 10px 30px var(--shadow-color); /* 柔らかな影 */
-      line-height: 1.8;
-      font-size: 1rem;
-      min-height: 300px;
-    }
-    /* 記事本文内のスタイル調整 */
-    .content p { margin: 0 0 1.5em; }
-    .content h2, .content h3 {
-        padding-bottom: 5px;
-        margin-top: 30px;
-        margin-bottom: 15px;
-        border-bottom: 2px solid #e9ecef; /* Subtle underline */
-        color: #343a40;
-    }
-
-    /* タグセクション */
-    .tags-section {
-        margin: 40px 0;
-        padding: 20px 0;
-        border-top: 1px dashed var(--border-color); /* 区切り線 */
-        border-bottom: 1px dashed var(--border-color);
-    }
-    .tags-title {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 15px;
-        color: var(--primary-color);
-        display: flex;
-        align-items: center;
-    }
-    .tags-title i { margin-right: 8px; font-size: 1.3em; }
-
-    #postTags{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .tag{
-      display: inline-block;
-      padding: 6px 15px;
-      background-color: #e9ecef; /* Light gray background */
-      color: #495057;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      transition: background-color 0.2s;
-    }
-    .tag:hover{
-      background-color: var(--secondary-color);
-      color: var(--white);
-    }
-
-    /* ソーシャルシェアボタン */
-    .share{
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 40px;
-    }
-    .sbtn{
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      color: var(--white);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .sbtn:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
-    /* 各種プラットフォームカラー */
-    #shareX{background-color: #000000;}
-    #shareFb{background-color: #1877f2;}
-    #shareLine{background-color: #00c300;}
-    #shareIg{background-color: #c13584;} /* Instagram */
-    #shareMail{background-color: #6c757d;} /* Mail (Gray) */
-
-    /* スマホ対応 */
+    /* --- SNSスマホ幅調整 --- */
     @media (max-width: 640px) {
-      #page-main{
-        padding: 10px 10px 40px;
+      html, body, main, #sns {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
       }
-      .post-nav {
-        margin-bottom: 20px;
-        padding: 0 10px;
+      #sns .bg-white {
+        width: 100vw !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        padding: 0.5rem !important;
       }
-      .post-nav a {
-        padding: 8px 10px;
-        font-size: 0.85rem;
-        max-width: 48%;
-      }
-      .post-nav a span {
-        display: none; /* スマホではテキストを非表示 */
-      }
-      .title-wrap{
-        padding: 20px 10px;
-      }
-      .title-wrap h1{
-        font-size: 1.6rem;
-      }
-      .title-wrap .meta{
-        font-size: 0.8rem;
-        flex-direction: column;
-        align-items: flex-start;
-        padding-left: 10px;
-      }
-      .title-wrap .meta time {
-        margin-right: 0;
-        margin-bottom: 5px;
-      }
-      .content{
-        padding: 15px;
-        line-height: 1.7;
-        font-size: 0.95rem;
-      }
-      .share{
-        gap: 10px;
-        margin-top: 30px;
+      #sns iframe.snapwidget-widget {
+        width: 100% !important;
+        height: 160px !important;
       }
     }
   </style>
 </head>
-<body>
+<body class="bg-gray-50">
 
-  <!-- 共通ヘッダー (hf.jsで動的にロードされる) -->
-  <header id="site-header"></header>
+  <!-- Hero Section -->
+  <section id="hero" class="bg-gradient-to-b from-blue-100 to-white">
+    <div id="hero-slider">
+      <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" alt="Hero1">
+      <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" alt="Hero2">
+      <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="Hero3">
+    </div>
+  </section>
 
-  <main id="page-main">
-    
-    <!-- 上部の記事ナビゲーション -->
-    <nav class="post-nav">
-      <a id="prevTop" href="#" title="前の記事へ" class="nav-prev">
-        <i class="ph ph-caret-left nav-ico"></i>
-        <span>前の記事へ</span>
-      </a>
-      <a href="/blog.html" class="center-link">
-        <i class="ph ph-list-bullets"></i>
-        一覧へ戻る
-      </a>
-      <a id="nextTop" href="#" title="次の記事へ" class="nav-next">
-        <span>次の記事へ</span>
-        <i class="ph ph-caret-right nav-ico"></i>
-      </a>
-    </nav>
+  <!-- SNS Section -->
+  <section id="sns" class="py-20 bg-waju-light">
+    <h2 class="text-3xl font-bold text-center mb-6">SNS</h2>
 
-    <!-- 記事タイトル、サムネイル、メタ情報 -->
-    <div class="title-wrap">
-      <img id="thumbnail" src="https://placehold.co/960x400/0d6efd/ffffff?text=Loading+Thumbnail" alt="記事サムネイル" onerror="this.src='https://placehold.co/960x400/0d6efd/ffffff?text=No+Image+Available'">
-      <h1 id="postTitle">記事を読み込んでいます...</h1>
-      <div class="meta">
-        <time id="postDate" datetime="">
-            <i class="ph ph-clock"></i>
-            YYYY.MM.DD
-        </time>
-        <div id="postCategory" class="cat">カテゴリ</div>
+    <div class="bg-white p-0 sm:p-6 border-t-4 border-pink-500 text-center mb-8">
+      <p class="text-3xl mb-2">📸</p>
+      <h3 class="text-xl font-bold mb-4">Instagram <span class="text-pink-500">@waju.llc</span></h3>
+      <div class="flex justify-center">
+        <iframe src="https://snapwidget.com/embed/1109476" 
+                class="snapwidget-widget"
+                frameborder="0"
+                scrolling="no"
+                title="Posts from Instagram"></iframe>
       </div>
     </div>
+  </section>
 
-    <!-- 記事本文 -->
-    <article id="postContent" class="content">
-      <p>データ取得中です。しばらくお待ちください。</p>
-    </article>
+  <script>
+    // Hero Slider JS
+    const slider = document.getElementById("hero-slider");
+    let index = 0;
 
-    <!-- タグセクション -->
-    <div class="tags-section">
-      <p class="tags-title">
-        <i class="ph ph-hash-tag"></i>
-        タグ
-      </p>
-      <div id="postTags" class="tags">
-        <!-- タグがJSで挿入されます -->
-      </div>
-    </div>
+    function nextSlide() {
+      index = (index + 1) % 3;
+      slider.style.transform = `translateX(-${index * 100}%)`;
+      console.log("スライド: ", index);
+    }
 
-    <!-- ソーシャルシェアボタン -->
-    <div class="share-section">
-      <div class="share">
-        <a id="shareX" href="#" target="_blank" class="sbtn" title="X (旧Twitter) でシェア">
-          <i class="ph-fill ph-x-logo"></i>
-        </a>
-        <a id="shareFb" href="#" target="_blank" class="sbtn" title="Facebookでシェア">
-          <i class="ph-fill ph-facebook-logo"></i>
-        </a>
-        <a id="shareLine" href="#" target="_blank" class="sbtn" title="LINEでシェア">
-          <i class="ph-fill ph-line-segments"></i>
-        </a>
-        <a id="shareIg" href="#" target="_blank" class="sbtn" title="Instagramでシェア">
-          <i class="ph-fill ph-instagram-logo"></i>
-        </a>
-        <a id="shareMail" href="#" target="_blank" class="sbtn" title="メールでシェア">
-          <i class="ph-fill ph-envelope"></i>
-        </a>
-      </div>
-    </div>
-    
-    <!-- 下部の記事ナビゲーション -->
-    <nav class="post-nav" style="margin-top: 40px;">
-      <a id="prevBottom" href="#" title="前の記事へ" class="nav-prev">
-        <i class="ph ph-caret-left nav-ico"></i>
-        <span>前の記事へ</span>
-      </a>
-      <a href="/blog.html" class="center-link">
-        <i class="ph ph-list-bullets"></i>
-        一覧へ戻る
-      </a>
-      <a id="nextBottom" href="#" title="次の記事へ" class="nav-next">
-        <span>次の記事へ</span>
-        <i class="ph ph-caret-right nav-ico"></i>
-      </a>
-    </nav>
-    
-  </main>
-
-  <!-- 共通フッター (hf.jsで動的にロードされる) -->
-  <footer id="site-footer"></footer>
-  
-  <!-- ヘッダー/フッターの共通スクリプト (そのまま維持) -->
-  <script type="module" src="/hf.js"></script>
-
-  <!-- Supabaseとロジック（Supabase URLとキーを修正） -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-    // ヘルパー関数
-    const $ = (id) => document.querySelector(id);
-    const $$ = (id) => document.querySelectorAll(id);
-
-    // Supabaseクライアントの初期化（認証は不要なので公開キーのみ使用）
-    // 【修正点】: Supabase URLの形式が不正だったため、テスト用のダミーURLに置き換えました。
-    // 実際の運用時には、お客様のSupabaseプロジェクトのURLとAnonキーに置き換えてください。
-    const SUPABASE_URL = 'https://dummy-project-id.supabase.co'; // 有効な形式のダミーURL
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.dummy_anon_key_for_testing'; // 有効な形式のダミーキー
-    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // ----------------------------------------------------
-    // メインロジック
-    // ----------------------------------------------------
-    window.onload = async () => {
-      // URLからslugを取得
-      const urlParams = new URLSearchParams(window.location.search);
-      const slug = urlParams.get('slug');
-
-      if (!slug) {
-        $("#postTitle").textContent = "エラー: 記事が見つかりません。";
-        $("#postContent").innerHTML = "<p>URLに記事のスラッグ（slug）が指定されていません。</p>";
-        return;
-      }
-
-      try {
-        // 記事データの取得
-        const { data, error } = await sb.from("articles")
-          .select("title, created_at, category, thumbnail_url, content, tags")
-          .eq("slug", slug)
-          .single();
-
-        if (error || !data) {
-          $("#postTitle").textContent = "エラー: 記事の読み込みに失敗しました。";
-          // 実際のデータがないため、エラー表示をより分かりやすく
-          $("#postContent").innerHTML = `<p>指定された記事（slug: ${slug}）が見つからないか、データ取得に失敗しました。</p><p>SupabaseのURLとAnonキーが正しく設定されているか確認してください。</p>`;
-          console.error('Supabase Error:', error);
-          return;
-        }
-
-        // ページタイトルの更新
-        $("#pageTitle").textContent = `${data.title} | 合同会社WaJu`;
-
-        // 記事コンテンツの反映
-        $("#postTitle").textContent = data.title;
-        $("#postCategory").textContent = data.category || '未分類';
-        
-        // 日付のフォーマット
-        const dateObj = new Date(data.created_at);
-        const formattedDate = dateObj.toLocaleDateString('ja-JP', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        }).replace(/\//g, '.');
-        $("#postDate").textContent = formattedDate;
-        $("#postDate").setAttribute('datetime', data.created_at);
-
-        // サムネイル画像の反映
-        if (data.thumbnail_url) {
-          $("#thumbnail").src = data.thumbnail_url;
-          $("#thumbnail").onerror = function() {
-              this.src = 'https://placehold.co/960x400/0d6efd/ffffff?text=No+Image+Available';
-          };
-        } else {
-            $("#thumbnail").src = 'https://placehold.co/960x400/0d6efd/ffffff?text=No+Image+Available';
-        }
-
-
-        // 本文の反映 (HTMLとして挿入)
-        $("#postContent").innerHTML = data.content || '<p>記事本文がありません。</p>';
-
-        // タグの表示
-        const tagsContainer = $("#postTags");
-        tagsContainer.innerHTML = ''; // クリア
-        if (data.tags && Array.isArray(data.tags)) {
-            data.tags.forEach(tag => {
-                const tagElement = document.createElement('span');
-                tagElement.classList.add('tag');
-                tagElement.textContent = `#${tag}`;
-                tagsContainer.appendChild(tagElement);
-            });
-        }
-
-        // ----------------------------------------------------
-        // ソーシャルシェアリンクの設定
-        // ----------------------------------------------------
-        const u = encodeURIComponent(window.location.href);
-        const t = encodeURIComponent(data.title);
-
-        $("#shareX").href = `https://x.com/intent/tweet?url=${u}&text=${t}`;
-        $("#shareFb").href = `https://www.facebook.com/sharer/sharer.php?u=${u}`;
-        $("#shareLine").href = `https://social-plugins.line.me/lineit/share?url=${u}`;
-        // Instagramは直接URLを渡すシェア機能がないため、一般的な投稿ページへ誘導
-        $("#shareIg").href = `https://www.instagram.com/?url=${u}`; 
-        $("#shareMail").href = `mailto:?subject=${t}&body=${t}%0D%0A${u}`;
-
-        // ----------------------------------------------------
-        // 前後記事ナビゲーション（created_atで判定）
-        // ----------------------------------------------------
-
-        // 前の記事（created_atがより古い記事を1件取得）
-        const { data: older } = await sb.from("articles")
-          .select("title,slug,created_at").lt("created_at", data.created_at)
-          .order("created_at",{ascending:false}).limit(1);
-
-        // 次の記事（created_atがより新しい記事を1件取得）
-        const { data: newer } = await sb.from("articles")
-          .select("title,slug,created_at").gt("created_at", data.created_at)
-          .order("created_at",{ascending:true}).limit(1);
-        
-        // Prevリンクの設定
-        for(const id of ["prevTop","prevBottom"]){
-          const a = $(`#${id}`);
-          if(older && older.length){
-            a.href = "/blog-detail.html?slug=" + older[0].slug;
-            // ナビゲーションのタイトルとして記事タイトルを設定
-            a.title = "← " + older[0].title;
-            a.querySelector('span').textContent = older[0].title;
-          }else{
-            a.classList.add("disabled"); 
-            a.querySelector('span').textContent = "最初の記事";
-          }
-        }
-        
-        // Nextリンクの設定
-        for(const id of ["nextTop","nextBottom"]){
-          const a = $(`#${id}`);
-          if(newer && newer.length){
-            a.href = "/blog-detail.html?slug=" + newer[0].slug;
-            // ナビゲーションのタイトルとして記事タイトルを設定
-            a.title = newer[0].title + " →";
-            a.querySelector('span').textContent = newer[0].title;
-          }else{
-            a.classList.add("disabled");
-            a.querySelector('span').textContent = "最新の記事";
-          }
-        }
-
-      } catch (e) {
-        $("#postTitle").textContent = "システムエラー";
-        $("#postContent").innerHTML = `<p>予期せぬエラーが発生しました: ${e.message}</p>`;
-        console.error('Catch Error:', e);
-      }
-    };
+    setInterval(nextSlide, 4000);
   </script>
+
 </body>
 </html>
