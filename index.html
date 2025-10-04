@@ -136,27 +136,33 @@
       <div class="max-w-4xl mx-auto px-6 text-center">
         <h2 class="text-4xl font-extrabold text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SNS</h2>
     
-        <!-- Instagram -->
-        <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500 mb-8">
+        <!-- Instagramカード（修正版） -->
+        <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500">
           <p class="text-3xl mb-2">📸</p>
           <h3 class="text-xl font-bold text-gray-800 mb-4">
             Instagram <span class="text-pink-500">@waju.llc</span>
           </h3>
-          <div class="overflow-hidden rounded-xl shadow-inner mx-auto" style="max-width: 480px;">
+        
+          <!-- LightWidget埋め込み（最新投稿スライダー） -->
+          <div class="rounded-xl overflow-hidden shadow-inner">
+            <!-- LightWidget WIDGET -->
+            <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
             <iframe 
-              src="https://snapwidget.com/embed/1077642"
-              class="w-full"
-              style="border:none; overflow:hidden; height: auto; aspect-ratio: 1/1;"
+              src="//lightwidget.com/widgets/1538f8cc01085fb6975eb598cd58ebef.html"
+              scrolling="no"
               allowtransparency="true"
-              scrolling="no">
+              class="lightwidget-widget"
+              style="width:100%;border:0;overflow:hidden;">
             </iframe>
           </div>
+        
           <a href="https://www.instagram.com/waju.llc/"
              target="_blank" rel="noopener"
-             class="mt-2 inline-block text-pink-600 hover:text-pink-700 font-semibold">
-             Instagramを見る →
+             class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold transition">
+            Instagramを見る →
           </a>
         </div>
+
     
         <!-- その他のSNS -->
         <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500">
