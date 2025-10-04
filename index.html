@@ -164,16 +164,18 @@
             <h3 class="text-xl font-bold text-gray-800 mb-4">
               X（旧Twitter） <span class="text-blue-500">@waJu_llc</span>
             </h3>
-            <!-- 最新ツイートを自動表示 -->
-            <div class="rounded-xl overflow-hidden shadow-inner">
+          
+            <!-- 最新ツイートの埋め込み -->
+            <div class="rounded-xl overflow-hidden shadow-inner" style="max-height:500px;">
               <a class="twitter-timeline"
                  data-theme="light"
-                 data-chrome="noheader nofooter noborders transparent"
+                 data-tweet-limit="3"
                  href="https://twitter.com/waJu_llc?ref_src=twsrc%5Etfw">
                  Tweets by waJu_llc
               </a>
               <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div>
+          
             <a href="https://twitter.com/waJu_llc"
                target="_blank" rel="noopener"
                class="mt-4 inline-block text-blue-600 hover:text-blue-700 font-semibold">
