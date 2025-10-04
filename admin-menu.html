@@ -21,7 +21,14 @@
 
   <table id="menuTable">
     <thead>
-      <tr><th style="width:60px;">ID</th><th>表示名</th><th>HTML</th><th style="width:80px;">順番</th><th style="width:80px;">公開</th><th style="width:140px;">操作</th></tr>
+      <tr>
+        <th style="width:60px;">ID</th>
+        <th>表示名</th>
+        <th>HTML</th>
+        <th style="width:80px;">順番</th>
+        <th style="width:80px;">公開</th>
+        <th style="width:140px;">操作</th>
+      </tr>
     </thead>
     <tbody></tbody>
   </table>
@@ -84,7 +91,7 @@
 </style>
 
 <script>
-  const sb = window.supabase;
+  var sb = window.supabase;
   if (!sb) {
     alert("Supabaseが初期化されていません。トップページを再読込してください。");
   }
