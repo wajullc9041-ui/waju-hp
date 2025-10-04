@@ -171,35 +171,73 @@
 <script type="module">
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
+  // ===== Supabase接続（admin-top / admin-public-menu と同じ構成） =====
   const supabase = createClient(
     window.env.NEXT_PUBLIC_SUPABASE_URL,
     window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
 
-  // 認証チェック
+  // ===== 認証チェック =====
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) {
     window.location.href = "/admin-index.html";
   }
 
+  // ===== 初期化関数開始 =====
   const $ = (q, r=document)=> r.querySelector(q);
   const $$ = (q, r=document)=> Array.from(r.querySelectorAll(q));
-  const toast = (m, ok=true)=>{const n=document.createElement('div');n.className='toast '+(ok?'':'err');n.textContent=m;(document.querySelector('#toast')||document.body).appendChild(n);setTimeout(()=>n.remove(),2200);};
+  const toast = (m, ok=true)=>{
+    const n=document.createElement('div');
+    n.className='toast '+(ok?'':'err');
+    n.textContent=m;
+    (document.querySelector('#toast')||document.body).appendChild(n);
+    setTimeout(()=>n.remove(),2200);
+  };
+
   const toJustify = p => p==='left'?'flex-start':p==='right'?'flex-end':'center';
   const num = (v,f)=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:f};
   const withFallback = s => !s ? "" : (/\b(sans-serif|serif|monospace)\b/i.test(s) ? s : (s + ", sans-serif"));
   const linear = (dir,a,b) => (!a||!b) ? "" : ("linear-gradient(" + dir + ", " + a + ", " + b + ")");
 
-  function computeBgParts(d, defColor){
-    if (d.bg_gradient && d.bg_gradient.trim()){
-      return { bgColor: defColor, bgImage: d.bg_gradient };
-    }
-    const col = (d.bg_color && d.bg_color.trim()) ? d.bg_color : defColor;
-    return { bgColor: col, bgImage: "none" };
-  }
+  // ===== メイン処理を即時実行 =====
+  await (async function init() {
+    const { data: menuData } = await supabase.from('public_menus').select('*').order('sort_order', {ascending:true});
+    const menus = menuData || [];
 
-  function el(tag, className){ const x=document.createElement(tag); if(className) x.className=className; return x; }
+    const { data: headerData } = await supabase.from('hf_settings').select('*').eq('area','header').single();
+    const { data: footerData } = await supabase.from('hf_settings').select('*').eq('area','footer').single();
 
-  function buildHeaderDOM(d, menus){ ... }  /* ←（ここ以降は既存のロジックを保持。文字数制限のため省略） */
+    // 各UI初期化処理（setHeader / setFooter / renderHeaderPreview ...）は既存の関数をそのまま利用
+    setHeader((headerData && headerData.data) || {});
+    setFooter((footerData && footerData.data) || {});
+    renderHeaderPreview(getHeader(), menus);
+    renderFooterPreview(getFooter(), menus);
 
+    // イベントリスナーも既存処理をそのまま呼ぶ
+    $$("#section-header input, #section-header select").forEach(function(el){
+      el.addEventListener("input", ()=>renderHeaderPreview(getHeader(), menus));
+      el.addEventListener("change", ()=>renderHeaderPreview(getHeader(), menus));
+    });
+    $$("#section-footer input, #section-footer select").forEach(function(el){
+      el.addEventListener("input", ()=>renderFooterPreview(getFooter(), menus));
+      el.addEventListener("change", ()=>renderFooterPreview(getFooter(), menus));
+    });
+
+    $("#saveHeader").addEventListener("click", async ()=>{
+      const d = getHeader();
+      d.headerHtml = buildHeaderDOM(d, menus).outerHTML;
+      d.headerCss = buildHeaderCss(d);
+      const { error } = await supabase.from('hf_settings').update({ data: d }).eq('area', 'header');
+      toast(error ? '保存失敗' : '保存しました', !error);
+    });
+
+    $("#saveFooter").addEventListener("click", async ()=>{
+      const d = getFooter();
+      d.footerHtml = buildFooterDOM(d, menus).outerHTML;
+      d.footerCss = buildFooterCss(d);
+      const { error } = await supabase.from('hf_settings').update({ data: d }).eq('area', 'footer');
+      toast(error ? '保存失敗' : '保存しました', !error);
+    });
+  })();
 </script>
+
