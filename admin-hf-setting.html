@@ -1,29 +1,66 @@
-<!-- ===== 管理：ヘッダー・フッター編集 ===== -->
-<div id="hf-settings-root">
-  <h2>ヘッダー・フッター設定</h2>
+<!-- ===== 管理：ヘッダー・フッター編集（env.js対応・認証統一版） ===== -->
 
-  <div class="hf-section">
+<div id="hf-setting-root">
+  <h2>ヘッダー・フッター編集</h2>
+
+  <div class="hf-edit-section">
     <h3>ヘッダー設定</h3>
-    <div class="form-group">
-      <label for="headerHtml">HTML</label>
-      <textarea id="headerHtml" rows="8" placeholder="ここにヘッダーHTMLを入力"></textarea>
+    <div class="field">
+      <label>背景色：</label>
+      <input type="color" id="headerBg" />
     </div>
-    <div class="form-group">
-      <label for="headerCss">CSS</label>
-      <textarea id="headerCss" rows="6" placeholder="ここにヘッダーCSSを入力"></textarea>
+    <div class="field">
+      <label>背景グラデーション：</label>
+      <input type="text" id="headerGradient" placeholder="例: linear-gradient(to right, #153865, #06ccfe)" />
+    </div>
+    <div class="field">
+      <label>高さ：</label>
+      <input type="text" id="headerHeight" placeholder="例: 60px" />
+    </div>
+    <div class="field">
+      <label>余白（padding）：</label>
+      <input type="text" id="headerPadding" placeholder="例: 8px 12px" />
+    </div>
+    <div class="field">
+      <label>ロゴURL：</label>
+      <input type="text" id="logoUrl" placeholder="画像URLを入力" />
+    </div>
+    <div class="field">
+      <label>背景画像：</label>
+      <input type="text" id="headerBgImage" placeholder="例: url(...)" />
+    </div>
+    <div class="field">
+      <label>CSS（追加）</label>
+      <textarea id="headerCss" rows="6"></textarea>
     </div>
     <button id="saveHeaderBtn" class="btn primary">ヘッダーを保存</button>
   </div>
 
-  <div class="hf-section">
+  <div class="hf-edit-section">
     <h3>フッター設定</h3>
-    <div class="form-group">
-      <label for="footerHtml">HTML</label>
-      <textarea id="footerHtml" rows="8" placeholder="ここにフッターHTMLを入力"></textarea>
+    <div class="field">
+      <label>背景色：</label>
+      <input type="color" id="footerBg" />
     </div>
-    <div class="form-group">
-      <label for="footerCss">CSS</label>
-      <textarea id="footerCss" rows="6" placeholder="ここにフッターCSSを入力"></textarea>
+    <div class="field">
+      <label>文字色：</label>
+      <input type="color" id="footerTextColor" />
+    </div>
+    <div class="field">
+      <label>高さ：</label>
+      <input type="text" id="footerHeight" placeholder="例: 60px" />
+    </div>
+    <div class="field">
+      <label>余白（padding）：</label>
+      <input type="text" id="footerPadding" placeholder="例: 8px 12px" />
+    </div>
+    <div class="field">
+      <label>背景画像：</label>
+      <input type="text" id="footerBgImage" placeholder="例: url(...)" />
+    </div>
+    <div class="field">
+      <label>CSS（追加）</label>
+      <textarea id="footerCss" rows="6"></textarea>
     </div>
     <button id="saveFooterBtn" class="btn success">フッターを保存</button>
   </div>
@@ -32,56 +69,39 @@
 </div>
 
 <style>
-  #hf-settings-root {
-    padding: 20px;
+  #hf-setting-root {
     font-family: "Segoe UI", sans-serif;
+    padding: 20px;
     color: #1f2937;
   }
-  h2 {
-    margin-top: 0;
-    font-size: 22px;
-    color: #111827;
-  }
-  h3 {
-    font-size: 18px;
-    color: #374151;
-    margin-bottom: 0.5rem;
-  }
-  .hf-section {
+  h2 { margin-bottom: 1rem; font-size: 22px; }
+  h3 { font-size: 18px; margin-top: 1.5rem; margin-bottom: 0.5rem; color: #374151; }
+  .hf-edit-section {
     background: #fff;
-    border-radius: 8px;
     padding: 16px;
-    margin-bottom: 20px;
+    border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    margin-bottom: 24px;
   }
-  .form-group {
-    margin-bottom: 12px;
-  }
-  label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-  textarea {
+  .field { margin-bottom: 12px; }
+  label { display: block; font-weight: 600; margin-bottom: 4px; }
+  input[type="text"], textarea {
     width: 100%;
     border: 1px solid #d1d5db;
     border-radius: 6px;
     padding: 8px;
-    font-family: monospace;
-    resize: vertical;
   }
+  input[type="color"] { height: 36px; width: 80px; cursor: pointer; }
   .btn {
     border: none;
     border-radius: 6px;
     padding: 8px 16px;
     font-size: 14px;
-    cursor: pointer;
     color: white;
-    transition: background 0.2s, transform 0.1s;
+    cursor: pointer;
   }
-  .btn.primary { background-color: #2563eb; }
-  .btn.success { background-color: #10b981; }
-  .btn:hover { transform: translateY(-1px); }
+  .btn.primary { background: #2563eb; }
+  .btn.success { background: #10b981; }
   #toast-container {
     position: fixed;
     top: 1rem;
@@ -122,6 +142,7 @@
     window.location.href = "/admin-index.html";
   }
 
+  // ===== トースト通知 =====
   const toast = (msg, type="success") => {
     const t = document.createElement("div");
     t.className = "toast " + type;
@@ -130,6 +151,7 @@
     setTimeout(() => t.remove(), 3000);
   };
 
+  // ===== データ読込 =====
   async function loadHF() {
     const { data, error } = await supabase.from("hf_settings").select("*");
     if (error) { console.error(error); toast("読み込み失敗","error"); return; }
@@ -138,37 +160,63 @@
     const footer = data.find(r => r.area === "footer");
 
     if (header) {
-      document.getElementById("headerHtml").value = header.headerHtml || "";
+      document.getElementById("headerBg").value = header.bg_color || "#191c70";
+      document.getElementById("headerGradient").value = header.bg_gradient || "";
+      document.getElementById("headerHeight").value = header.height || "";
+      document.getElementById("headerPadding").value = header.padding || "";
+      document.getElementById("logoUrl").value = header.logo_url || "";
+      document.getElementById("headerBgImage").value = header.bg_image || "";
       document.getElementById("headerCss").value = header.headerCss || "";
     }
+
     if (footer) {
-      document.getElementById("footerHtml").value = footer.footerHtml || "";
+      document.getElementById("footerBg").value = footer.bg_color || "#191c70";
+      document.getElementById("footerTextColor").value = footer.text_color || "#ffffff";
+      document.getElementById("footerHeight").value = footer.height || "";
+      document.getElementById("footerPadding").value = footer.padding || "";
+      document.getElementById("footerBgImage").value = footer.bg_image || "";
       document.getElementById("footerCss").value = footer.footerCss || "";
     }
   }
 
-  async function save(area) {
-    const htmlVal = document.getElementById(`${area}Html`).value.trim();
-    const cssVal  = document.getElementById(`${area}Css`).value.trim();
+  // ===== 保存処理 =====
+  async function saveHeader() {
+    const data = {
+      area: "header",
+      bg_color: document.getElementById("headerBg").value,
+      bg_gradient: document.getElementById("headerGradient").value,
+      height: document.getElementById("headerHeight").value,
+      padding: document.getElementById("headerPadding").value,
+      logo_url: document.getElementById("logoUrl").value,
+      bg_image: document.getElementById("headerBgImage").value,
+      headerCss: document.getElementById("headerCss").value,
+      updated_at: new Date().toISOString()
+    };
 
-    const { error } = await supabase.from("hf_settings").upsert([
-      {
-        area,
-        [`${area}Html`]: htmlVal,
-        [`${area}Css`]: cssVal,
-        updated_at: new Date().toISOString()
-      }
-    ]);
-    if (error) {
-      console.error(error);
-      toast(`${area === "header" ? "ヘッダー" : "フッター"}保存失敗`, "error");
-    } else {
-      toast(`${area === "header" ? "ヘッダー" : "フッター"}を保存しました`);
-    }
+    const { error } = await supabase.from("hf_settings").upsert([data], { onConflict: "area" });
+    if (error) { console.error(error); toast("ヘッダー保存失敗","error"); }
+    else toast("ヘッダーを保存しました");
   }
 
-  document.getElementById("saveHeaderBtn").addEventListener("click", () => save("header"));
-  document.getElementById("saveFooterBtn").addEventListener("click", () => save("footer"));
+  async function saveFooter() {
+    const data = {
+      area: "footer",
+      bg_color: document.getElementById("footerBg").value,
+      text_color: document.getElementById("footerTextColor").value,
+      height: document.getElementById("footerHeight").value,
+      padding: document.getElementById("footerPadding").value,
+      bg_image: document.getElementById("footerBgImage").value,
+      footerCss: document.getElementById("footerCss").value,
+      updated_at: new Date().toISOString()
+    };
+
+    const { error } = await supabase.from("hf_settings").upsert([data], { onConflict: "area" });
+    if (error) { console.error(error); toast("フッター保存失敗","error"); }
+    else toast("フッターを保存しました");
+  }
+
+  document.getElementById("saveHeaderBtn").addEventListener("click", saveHeader);
+  document.getElementById("saveFooterBtn").addEventListener("click", saveFooter);
 
   loadHF();
 </script>
