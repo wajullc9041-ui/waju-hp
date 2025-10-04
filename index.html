@@ -136,53 +136,35 @@
       <div class="max-w-4xl mx-auto px-6 text-center">
         <h2 class="text-4xl font-extrabold text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SNS</h2>
     
-        <!-- Instagramカード（余白・高さ調整版） -->
-        <div class="bg-white p-6 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500 mx-0 sm:mx-6">
+        <!-- Instagramカード -->
+        <div class="bg-white p-6 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500 w-full sm:w-auto mx-0 sm:mx-6 mb-8 sm:mb-10">
           <p class="text-3xl mb-2">📸</p>
           <h3 class="text-xl font-bold text-gray-800 mb-4">
             Instagram <span class="text-pink-500">@waju.llc</span>
           </h3>
-        
-          <!-- SnapWidget埋め込み：高さ自動調整・中央寄せ -->
-          <div class="rounded-xl overflow-hidden shadow-inner flex items-center justify-center">
+    
+          <!-- SnapWidget埋め込み -->
+          <div class="rounded-xl overflow-hidden shadow-inner flex justify-center">
             <iframe 
               src="https://snapwidget.com/embed/1109476"
               class="snapwidget-widget"
               allowtransparency="true"
               frameborder="0"
               scrolling="no"
-              style="border:none; overflow:hidden; width:100%; aspect-ratio:3/1;"
+              style="border:none; width:100%; max-width:600px; height:auto; min-height:180px; display:block; margin:auto;"
               title="Posts from Instagram">
             </iframe>
           </div>
-        
+    
           <a href="https://www.instagram.com/waju.llc/"
              target="_blank" rel="noopener"
              class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold transition">
             Instagramを見る →
           </a>
         </div>
-        
-        <!-- スマホ用レスポンシブ調整 -->
-        <style>
-          /* カードの高さはiframeに合わせて自動にする */
-          .snapwidget-widget {
-            display: block;
-            height: auto !important;
-          }
-        
-          /* スマホ時は外側余白をゼロ（幅いっぱい表示） */
-          @media (max-width: 640px) {
-            .mx-0 {
-              margin-left: 0 !important;
-              margin-right: 0 !important;
-              border-radius: 0.75rem !important;
-            }
-          }
-        </style>
-
+    
         <!-- その他のSNS -->
-        <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500">
+        <div class="bg-white p-6 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500 w-full sm:w-auto mx-0 sm:mx-6">
           <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3">その他のSNS</h3>
           <div class="flex flex-wrap justify-center gap-6 sm:gap-8">
     
@@ -223,9 +205,37 @@
     
           </div>
         </div>
-    
       </div>
+    
+      <!-- レスポンシブ調整 -->
+      <style>
+        /* InstagramのSnapWidget高さ調整 */
+        .snapwidget-widget {
+          display: block;
+          height: auto !important;
+        }
+    
+        /* スマホ時の余白・角丸・幅調整 */
+        @media (max-width: 640px) {
+          #sns .bg-white {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            border-radius: 0 !important;
+            padding: 0.75rem !important;
+          }
+          #sns .max-w-4xl {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+          }
+          #sns iframe.snapwidget-widget {
+            width: 100% !important;
+            height: auto !important;
+            display: block;
+          }
+        }
+      </style>
     </section>
+
 
     <!-- COMPANY Section -->
     <section id="company" class="py-20 bg-white">
