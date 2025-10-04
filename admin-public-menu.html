@@ -68,19 +68,10 @@
   @keyframes fadeInOut { 0%{opacity:0;transform:translateY(-8px)} 10%{opacity:1;transform:none} 90%{opacity:1} 100%{opacity:0;transform:translateY(-8px)} }
 </style>
 
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-  // ===== Supabase接続（env.js対応） =====
-  const supabase = createClient(
-    window.env.NEXT_PUBLIC_SUPABASE_URL,
-    window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
-
-  // ===== セッションチェック =====
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
-    window.location.href = "/admin-index.html";
+<script>
+  const sb = window.supabase;
+  if (!sb) {
+    alert("Supabaseが初期化されていません。トップページを再読込してください。");
   }
 
   const $ = (q)=>document.querySelector(q);
@@ -102,10 +93,10 @@
     return s;
   }
 
-  let editingId = null;
+  var editingId = null;
 
   async function fetchMenus(){
-    const { data, error } = await supabase.from("public_menus").select("*").order("sort_order",{ascending:true});
+    const { data, error } = await sb.from("public_menus").select("*").order("sort_order",{ascending:true});
     if(error){ console.error(error); toast("メニュー読み込み失敗","error"); return; }
     const tbody=$("#menuTable tbody"); tbody.innerHTML="";
     (data||[]).forEach(row=>{
@@ -151,11 +142,11 @@
   async function addMenu(){
     const rec=readMenuForm();
     if(!rec.title || !rec.url){ toast("表示名とURLは必須です","error"); return; }
-    const { data: inserted, error } = await supabase.from("public_menus").insert([rec]).select().single();
+    const { data: inserted, error } = await sb.from("public_menus").insert([rec]).select().single();
     if(error){ console.error(error); toast("追加失敗","error"); return; }
 
     const slug = toSlug(rec.url) || ("page-"+inserted.id);
-    const { error: pageErr } = await supabase.from("pages").upsert([{
+    const { error: pageErr } = await sb.from("pages").upsert([{
       slug,
       title: rec.title,
       content: `<h1>${rec.title}</h1><p>ここに本文を入力してください。</p>`,
@@ -171,7 +162,7 @@
   async function startEdit(id){
     editingId=id;
     $("#addBtn").style.display="none"; $("#updateBtn").style.display="inline-block"; $("#cancelBtn").style.display="inline-block";
-    const { data, error } = await supabase.from("public_menus").select("*").eq("id", id).single();
+    const { data, error } = await sb.from("public_menus").select("*").eq("id", id).single();
     if(error){ console.error(error); toast("読込失敗","error"); return; }
     $("#menu_title").value=data.title||""; $("#menu_url").value=data.url||""; $("#menu_icon").value=data.icon_class||"";
     $("#menu_active").checked=!!data.is_active; $("#menu_show_header").checked=!!data.show_in_header; $("#menu_show_footer").checked=!!data.show_in_footer;
@@ -180,7 +171,7 @@
   async function updateMenu(){
     if(!editingId) return;
     const rec=readMenuForm();
-    const { error } = await supabase.from("public_menus").update(rec).eq("id", editingId);
+    const { error } = await sb.from("public_menus").update(rec).eq("id", editingId);
     if(error){ console.error(error); toast("更新失敗","error"); return; }
     resetMenuForm(); await fetchMenus(); toast("更新しました");
   }
@@ -188,15 +179,15 @@
   async function deleteMenu(id){
     if(!confirm("削除してよろしいですか？")) return;
 
-    const { data: menuRow, error: fetchErr } = await supabase.from("public_menus").select("*").eq("id", id).single();
+    const { data: menuRow, error: fetchErr } = await sb.from("public_menus").select("*").eq("id", id).single();
     if(fetchErr){ console.error(fetchErr); toast("削除失敗","error"); return; }
 
-    const { error } = await supabase.from("public_menus").delete().eq("id", id);
+    const { error } = await sb.from("public_menus").delete().eq("id", id);
     if(error){ console.error(error); toast("削除失敗","error"); return; }
 
     if(menuRow && menuRow.url){
       const slug = toSlug(menuRow.url);
-      const { error: pageErr } = await supabase.from("pages").delete().eq("slug", slug);
+      const { error: pageErr } = await sb.from("pages").delete().eq("slug", slug);
       if(pageErr){ console.error(pageErr); toast("ページ削除失敗","error"); }
     }
 
@@ -230,7 +221,7 @@
       const id=Number(rows[i].dataset.id), newOrder=i+1;
       const cur=Number(rows[i].children[4].textContent||"0");
       if(cur===newOrder) continue;
-      const { error } = await supabase.from("public_menus").update({sort_order:newOrder}).eq("id", id);
+      const { error } = await sb.from("public_menus").update({sort_order:newOrder}).eq("id", id);
       if(!error) rows[i].children[4].textContent=String(newOrder);
     }
     toast("順番を更新しました");
@@ -240,5 +231,5 @@
   $("#updateBtn").onclick=updateMenu;
   $("#cancelBtn").onclick=resetMenuForm;
 
-  await fetchMenus();
+  fetchMenus();
 </script>
