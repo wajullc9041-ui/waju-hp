@@ -92,9 +92,21 @@
   let currentMonth = "";
   let editor;
 
-  ClassicEditor.create(document.querySelector('#content'))
-    .then(newEditor => { editor = newEditor; })
-    .catch(error => console.error(error));
+  window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const contentEl = document.querySelector('#content');
+    if (!contentEl) {
+      console.warn('エディタ領域 (#content) が見つかりません');
+      return;
+    }
+    ClassicEditor.create(contentEl)
+      .then(newEditor => {
+        editor = newEditor;
+        console.log('CKEditor 初期化完了');
+      })
+      .catch(error => console.error('CKEditor初期化エラー:', error));
+  }, 300);
+});
 
   async function loadMonths(){
     const { data, error } = await sb.from("articles").select("created_at");
