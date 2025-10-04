@@ -2,146 +2,173 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>管理者ダッシュボード</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>管理ダッシュボード</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+      overflow: hidden; /* 全体のスクロールは無効化 */
       display: flex;
+      flex-direction: column;
       height: 100vh;
-      background-color: #f9fafb;
+      background-color: #f3f4f6;
+    }
+
+    header {
+      height: 50px;
+      background: linear-gradient(90deg, #153865, #06ccfe);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-shrink: 0;
+    }
+
+    header h1 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 50px);
       overflow: hidden;
     }
-    header {
-      background: linear-gradient(90deg, #1f2937, #374151);
+
+    nav {
+      width: 220px;
+      background-color: #1f2937;
       color: white;
-      padding: 0.75rem 1rem;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: bold;
       flex-shrink: 0;
-      width: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      overflow-y: auto; /* メニューが増えた場合に縦スクロール */
+      overflow-x: hidden;
     }
-    aside {
-      background: #1f2937;
-      flex: 0 0 240px; /* 幅固定・縮まない */
-      padding-top: 3.5rem;
-      border-right: 1px solid #111827;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.2);
-      color: #fff;
-      overflow-y: auto;
+
+    nav h2 {
+      font-size: 14px;
+      margin: 10px 0 4px 10px;
+      font-weight: normal;
+      color: #9ca3af;
     }
-    aside button {
-      display: block;
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav li {
+      margin: 0;
+    }
+
+    nav button {
       width: 100%;
-      padding: 1rem;
+      text-align: left;
+      padding: 10px 14px;
       border: none;
       background: none;
-      text-align: left;
+      color: white;
       cursor: pointer;
-      font-size: 1rem;
-      color: #fff;
-      border-bottom: 1px solid #374151;
-      transition: background-color 0.2s;
+      font-size: 14px;
+      transition: background 0.2s;
     }
-    aside button:hover {
-      background-color: #4b5563;
+
+    nav button:hover {
+      background-color: #374151;
     }
+
     main {
-      flex: 1 1 auto;
-      min-width: 0; /* 中身が広がってもasideに干渉しない */
-      padding: 4.5rem 2rem 2rem 2rem;
-      overflow-y: auto;
+      flex: 1;
+      padding: 20px;
+      background-color: #f9fafb;
+      overflow-x: auto;  /* 横スクロール許可 */
+      overflow-y: auto;  /* 縦スクロール許可 */
     }
-    .card {
-      background: #fff;
-      border-radius: 0.5rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      padding: 1.5rem;
+
+    footer {
+      height: 40px;
+      background-color: #153865;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
     }
   </style>
 </head>
+
 <body>
-  <header>管理者ダッシュボード</header>
-  <aside id="menu-area">
-    <!-- メニューが動的に挿入される -->
-  </aside>
-  <main id="main-content">
-    <div class="card">左のメニューから操作を選択してください。</div>
-  </main>
+  <header>
+    <h1>管理ダッシュボード</h1>
+    <div>
+      <button id="logoutBtn" style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;">ログアウト</button>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <nav id="adminMenu">
+      <h2>メニュー</h2>
+      <ul>
+        <li><button data-page="admin-account.html">アカウント管理</button></li>
+        <li><button data-page="admin-menu.html">管理メニュー管理</button></li>
+        <li><button data-page="admin-apps.html">アプリ管理</button></li>
+      </ul>
+    </nav>
+
+    <main id="mainContent">
+      <h2>管理トップページ</h2>
+      <p>左のメニューから編集したいページを選択してください。</p>
+    </main>
+  </div>
+
+  <footer>
+    &copy; 2025 WaJu LLC
+  </footer>
 
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-    
+
+    // env.jsからキーを読み込み
     const supabase = createClient(
       window.env.NEXT_PUBLIC_SUPABASE_URL,
       window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     );
-    
-　　// ===== セッション確認 =====
+
+    // 認証チェック
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
       window.location.href = "/admin-index.html";
     }
-    
-    // innerHTML後にscriptを再実行させる関数
-    function executeScripts(container) {
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.type) newScript.type = oldScript.type;
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        oldScript.parentNode.replaceChild(newScript, oldScript);
+
+    // ログアウト処理
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      localStorage.removeItem("carelay_admin_auth");
+      window.location.href = "/admin-index.html";
+    });
+
+    // ページ切り替え
+    const menuButtons = document.querySelectorAll("nav button[data-page]");
+    const mainContent = document.getElementById("mainContent");
+
+    menuButtons.forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const page = btn.dataset.page;
+        const res = await fetch(page);
+        const html = await res.text();
+        mainContent.innerHTML = html;
+        window.scrollTo(0, 0);
       });
-    }
-
-    const loadContent = async (page) => {
-      const res = await fetch(page);
-      const html = await res.text();
-      const container = document.getElementById("main-content");
-      container.innerHTML = `<div class="subpage">${html}</div>`; // ラップして読み込む
-      executeScripts(container);
-    };
-
-    async function init() {
-      const { data, error } = await supabase
-        .from("admin_menus")
-        .select("*")
-        .eq("is_active", true)
-        .order("sort_order", { ascending: true });
-
-      const menuArea = document.getElementById("menu-area");
-      if (error || !data) {
-        menuArea.innerHTML = "<p style='padding:1rem;color:red;'>メニューの読み込みに失敗しました</p>";
-        return;
-      }
-      menuArea.innerHTML = "";
-
-      data.forEach(item => {
-        const btn = document.createElement("button");
-        btn.textContent = item.title;
-        btn.onclick = () => loadContent(item.filename);
-        menuArea.appendChild(btn);
-      });
-
-      if (data.length > 0) {
-        loadContent(data[0].filename);
-      }
-    }
-
-    init();
+    });
   </script>
-  <script src="/env.js"></script>
 </body>
 </html>
