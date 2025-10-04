@@ -1,11 +1,8 @@
-<!-- Admin Contact with Filters, Accordion, Two-column layout -->
 <section id="admin-contact" aria-label="お問い合わせ管理">
   <style>
     #admin-contact { font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif; color:#0f172a; }
     #admin-contact * { box-sizing:border-box; }
-    #admin-contact .card { background:#fff; border:1px solid #e2e8f0; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,.08); width: 90%;
-  max-width: 1000px;
-  margin: 0 auto;}
+    #admin-contact .card { background:#fff; border:1px solid #e2e8f0; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,.08); width:90%; max-width:1000px; margin:0 auto; }
     #admin-contact .head { padding:10px 14px; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
     #admin-contact .filters { display:flex; flex-wrap:wrap; gap:8px; margin:6px 0; }
     #admin-contact .filters select, #admin-contact .filters input { padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; }
@@ -71,33 +68,36 @@
 </section>
 
 <script>
-  // --- Supabase再利用・再初期化 ---
-  if (!window.supabase) {
-    try {
-      window.supabase = window.supabase || createClient(
-        window.env.NEXT_PUBLIC_SUPABASE_URL,
-        window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-      );
-    } catch (e) {
-      console.error("Supabase再初期化エラー:", e);
-    }
+async function initContactAdmin() {
+  // --- Supabase 初期化（共通利用） ---
+  if (!window.supabase && window.createClient) {
+    window.supabase = createClient(
+      window.env.NEXT_PUBLIC_SUPABASE_URL,
+      window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
   }
-
-  var sb = window.supabase;
+  const sb = window.supabase;
   if (!sb) {
     alert("Supabaseが初期化されていません。トップページを再読み込みしてください。");
+    return;
+  }
+
+  // --- 認証チェック ---
+  const { data, error: authErr } = await sb.auth.getSession();
+  if (!data.session) {
+    window.location.href = "/admin-index.html";
+    return;
   }
 
   const statusMap = { unread: "未読", in_progress: "対応中", done: "対応済" };
   const reverseStatusMap = { "未読": "unread", "対応中": "in_progress", "対応済": "done" };
 
-  var rows = [], filtered = [], page = 1, size = 20;
-  var tbody = document.querySelector("#ac-tbody"),
-      count = document.querySelector("#ac-count"),
-      pageinfo = document.querySelector("#ac-pageinfo");
+  let rows = [], filtered = [], page = 1, size = 20;
+  const tbody = document.querySelector("#ac-tbody"),
+        count = document.querySelector("#ac-count"),
+        pageinfo = document.querySelector("#ac-pageinfo");
 
   async function fetchRows() {
-    if (!sb) return;
     const { data, error } = await sb.from("contact_messages").select("*").order("created_at", { ascending: false });
     if (error) { console.error(error); return; }
     rows = data || [];
@@ -109,7 +109,6 @@
     const cat = document.querySelector("#filter-category").value;
     const imp = document.querySelector("#filter-important").checked;
     const kw = document.querySelector("#filter-search").value.trim();
-
     filtered = rows.filter(r =>
       (!st || r.status === st) &&
       (!cat || r.category === cat) &&
@@ -135,7 +134,6 @@
     const pageRows = paginate(filtered);
     count.textContent = `${filtered.length}件`;
     pageinfo.textContent = `${filtered.length === 0 ? 0 : ((page - 1) * size + 1)}-${Math.min(page * size, filtered.length)} / ${filtered.length}`;
-
     if (pageRows.length === 0) {
       tbody.innerHTML = '<tr><td colspan="6">データなし</td></tr>';
       return;
@@ -176,7 +174,8 @@
             </dl>
           </div>
         </td>
-      </tr>`).join("");
+      </tr>
+    `).join("");
 
     tbody.querySelectorAll(".row").forEach(tr => {
       tr.addEventListener("click", () => {
@@ -228,6 +227,9 @@
     document.querySelector(sel).addEventListener("change", applyFilter);
   });
 
-  fetchRows();
-</script>
+  await fetchRows();
+}
 
+// --- ページ切替時も安全に再実行 ---
+setTimeout(initContactAdmin, 100);
+</script>
