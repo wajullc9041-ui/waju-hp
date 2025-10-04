@@ -117,10 +117,6 @@
 </style>
 
 <script type="module">
-  // index.html じゃない状態で直接開かれた場合はトップへ
-  if (window.top === window.self) {
-    window.location.href = "/admin-top.html";
-  }
   
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
