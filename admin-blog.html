@@ -71,15 +71,12 @@
   </div>
 </div>
 
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-  const sb = createClient(
-    window.env.NEXT_PUBLIC_SUPABASE_URL,
-    window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
-
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session) window.location.href = "/admin-index.html";
+<script>
+  // --- Supabaseを共通参照 ---
+  var sb = window.supabase;
+  if (!sb) {
+    alert("Supabaseが初期化されていません。トップページを再読み込みしてください。");
+  }
 
   const $ = s => document.querySelector(s);
   const tbody = $("#articlesTable tbody");
@@ -89,80 +86,87 @@
   let currentMonth = "";
   let editor;
 
-  ClassicEditor.create(document.querySelector('#content'))
-    .then(newEditor => { editor = newEditor; })
-    .catch(error => console.error(error));
+  // --- CKEditor 二重読み込み防止 ---
+  if (!window._ckeditorLoaded) {
+    window._ckeditorLoaded = true;
+    ClassicEditor.create(document.querySelector('#content'))
+      .then(newEditor => { editor = newEditor; })
+      .catch(error => console.error(error));
+  } else {
+    const editorContainer = document.querySelector('#content');
+    if (editorContainer && editorContainer.ckeditorInstance) {
+      editor = editorContainer.ckeditorInstance;
+    }
+  }
 
-  async function loadMonths(){
+  async function loadMonths() {
     const { data, error } = await sb.from("articles").select("created_at");
-    if(error) return;
+    if (error) return;
     const months = [...new Set(data.map(r => {
       const d = new Date(r.created_at);
-      return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+      return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
     }))].sort().reverse();
-    $("#monthFilter").innerHTML = '<option value="">すべての年月</option>' + months.map(m=>`<option value="${m}">${m}</option>`).join("");
+    $("#monthFilter").innerHTML = '<option value="">すべての年月</option>' +
+      months.map(m => `<option value="${m}">${m}</option>`).join("");
   }
 
-  async function loadArticles(){
-    let query = sb.from("articles").select("*", { count: "exact" }).order("created_at",{ascending:false}).range((currentPage-1)*pageSize, currentPage*pageSize-1);
-    if(currentSearch){
+  async function loadArticles() {
+    let query = sb.from("articles")
+      .select("*", { count: "exact" })
+      .order("created_at", { ascending: false })
+      .range((currentPage - 1) * pageSize, currentPage * pageSize - 1);
+
+    if (currentSearch) {
       query = query.or(`title.ilike.%${currentSearch}%,slug.ilike.%${currentSearch}%`);
     }
-    if(currentMonth){
-      const [y,m] = currentMonth.split("-");
-      const start = new Date(y,m-1,1).toISOString();
-      const end = new Date(y,m,0,23,59,59).toISOString();
-      query = query.gte("created_at",start).lte("created_at",end);
+    if (currentMonth) {
+      const [y, m] = currentMonth.split("-");
+      const start = new Date(y, m - 1, 1).toISOString();
+      const end = new Date(y, m, 0, 23, 59, 59).toISOString();
+      query = query.gte("created_at", start).lte("created_at", end);
     }
+
     const { data, count, error } = await query;
-    if(error){console.error(error);return;}
-    tbody.innerHTML = data.map(a => `
+    if (error) { console.error(error); return; }
+
+    tbody.innerHTML = (data || []).map(a => `
       <tr onclick="editArticle('${a.id}')">
-        <td>${a.title||""}</td>
-        <td>${a.slug||""}</td>
-        <td>${a.category||""}</td>
+        <td>${a.title || ""}</td>
+        <td>${a.slug || ""}</td>
+        <td>${a.category || ""}</td>
         <td>${Array.isArray(a.tags) ? a.tags.join(",") : ""}</td>
-        <td>${a.published?"公開":"非公開"}</td>
+        <td>${a.published ? "公開" : "非公開"}</td>
         <td>${new Date(a.created_at).toLocaleDateString()}</td>
       </tr>`).join("");
-    const totalPages = Math.ceil(count/pageSize);
-    $("#pageInfo").textContent = currentPage+" / "+(totalPages||1);
+
+    const totalPages = Math.ceil((count || 1) / pageSize);
+    $("#pageInfo").textContent = `${currentPage} / ${totalPages}`;
   }
 
-  async function editArticle(id){
-    const { data, error } = await sb.from("articles").select("*").eq("id",id).single();
-    if(error){console.error(error);return;}
+  async function editArticle(id) {
+    const { data, error } = await sb.from("articles").select("*").eq("id", id).single();
+    if (error) { console.error(error); return; }
+
     $("#articleId").value = data.id;
-    $("#title").value = data.title||"";
-    $("#slug").value = data.slug||"";
-    $("#description").value = data.description||"";
-    if(editor){ editor.setData(data.content || ""); }
-    $("#thumbnail").value = data.thumbnail_url||"";
-    $("#category").value = data.category||"";
-    $("#tags").value = data.tags || "";
-    $("#published").checked = data.published;
-} = await sb.from("articles").select("*").eq("id",id).single();
-    if(error){console.error(error);return;}
-    $("#articleId").value = data.id;
-    $("#title").value = data.title||"";
-    $("#slug").value = data.slug||"";
-    $("#description").value = data.description||"";
-    editor.setData(data.content || "");
-    $("#thumbnail").value = data.thumbnail_url||"";
-    $("#category").value = data.category||"";
+    $("#title").value = data.title || "";
+    $("#slug").value = data.slug || "";
+    $("#description").value = data.description || "";
+    if (editor) editor.setData(data.content || "");
+    $("#thumbnail").value = data.thumbnail_url || "";
+    $("#category").value = data.category || "";
     $("#tags").value = Array.isArray(data.tags) ? data.tags.join(",") : "";
     $("#published").checked = data.published;
   }
 
-  function newArticle(){
-    $("#articleId").value="";
+  function newArticle() {
+    $("#articleId").value = "";
     $("#articleForm").reset();
-    if(editor){ editor.setData(""); }
+    if (editor) editor.setData("");
   }
 
-  async function saveArticle(){
+  async function saveArticle() {
     const id = $("#articleId").value;
-    const tags = $("#tags").value.trim();
+    const tagsValue = $("#tags").value.trim();
     const tags = tagsValue === "" ? [] : tagsValue.split(",").map(t => t.trim()).filter(t => t);
 
     const row = {
@@ -175,34 +179,57 @@
       tags: tags,
       published: $("#published").checked
     };
+
     let res;
-    if(id){
-      res = await sb.from("articles").update(row).eq("id",id).select();
-    }else{
+    if (id) {
+      res = await sb.from("articles").update(row).eq("id", id).select();
+    } else {
       res = await sb.from("articles").insert(row).select();
     }
-    if(res.error){alert("保存エラー:"+res.error.message);}else{alert("保存しました");loadArticles();loadMonths();}
+    if (res.error) {
+      alert("保存エラー:" + res.error.message);
+    } else {
+      alert("保存しました");
+      loadArticles();
+      loadMonths();
+    }
   }
 
-  async function deleteArticle(){
+  async function deleteArticle() {
     const id = $("#articleId").value;
-    if(!id){alert("記事を選択してください");return;}
-    if(!confirm("削除しますか？")) return;
-    const { error } = await sb.from("articles").delete().eq("id",id);
-    if(error){alert("削除エラー:"+error.message);}else{alert("削除しました");loadArticles();newArticle();loadMonths();}
+    if (!id) { alert("記事を選択してください"); return; }
+    if (!confirm("削除しますか？")) return;
+    const { error } = await sb.from("articles").delete().eq("id", id);
+    if (error) {
+      alert("削除エラー:" + error.message);
+    } else {
+      alert("削除しました");
+      loadArticles();
+      newArticle();
+      loadMonths();
+    }
   }
 
-  function applyFilters(){
+  function applyFilters() {
     currentSearch = $("#searchBox").value.trim();
     currentMonth = $("#monthFilter").value;
     currentPage = 1;
     loadArticles();
   }
-  function prevPage(){ if(currentPage>1){ currentPage--; loadArticles(); } }
-  function nextPage(){ currentPage++; loadArticles(); }
 
+  function prevPage() {
+    if (currentPage > 1) { currentPage--; loadArticles(); }
+  }
+
+  function nextPage() {
+    currentPage++; loadArticles();
+  }
+
+  // --- 初期化 ---
   loadArticles();
   loadMonths();
+
+  // --- 関数をwindowに登録（ページ切替対応） ---
   window.editArticle = editArticle;
   window.newArticle = newArticle;
   window.saveArticle = saveArticle;
