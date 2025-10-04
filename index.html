@@ -209,37 +209,39 @@
           max-width: 600px;
           height: 220px; /* 画像比に合わせて調整 */
         }
-    
+      
         /* スマホ時はフル幅化・余白削除・高さも可変 */
         @media (max-width: 640px) {
-          /* 1. セクション全体に左右のパディング/マージンを適用しないことを保証 */
-          #sns {
+          /* 1. ページ全体の左右余白を完全リセット */
+          body, main#page-main, #sns {
             padding-left: 0 !important;
             padding-right: 0 !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
           }
-          
-          /* 2. カード（.bg-white）を画面幅いっぱいに広げ、内側にパディングを設定 */
+      
+          /* 2. SNSカードを画面幅いっぱいに */
           #sns .bg-white {
+            width: 100% !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
             border-radius: 0 !important;
-            width: 100vw !important; /* 画面幅を強制 */
-            
-            /* 内側の余白を上下左右 0.5rem (約8px) に設定 */
-            padding: 0.5rem !important; 
+            padding: 0.75rem !important; /* 内側に少し余白を残す */
+            box-shadow: none !important; /* はみ出し防止のため影を簡略 */
           }
-    
-          /* 3. SnapWidgetをカードのパディング内に収まるように調整 */
+      
+          /* 3. SnapWidgetをカード幅にフィットさせる */
           #sns iframe.snapwidget-widget {
-            width: 100% !important; 
+            width: 100% !important;
             height: 160px !important;
             display: block;
             margin: 0 auto;
           }
         }
       </style>
+
     </section>
 
 
