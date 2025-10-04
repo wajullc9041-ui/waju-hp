@@ -1,3 +1,4 @@
+console.log('環境変数:', import.meta.env);
 // hf.js（完全版：ヘッダー高さを確実に反映して本文を直下から開始）
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
