@@ -95,15 +95,23 @@
   </main>
 
   <footer id="site-footer"></footer>
+
+  <!-- Supabase環境変数を先に読み込む -->
+  <script src="/env.js"></script>
+  <!-- ヘッダー・フッター -->
   <script type="module" src="/hf.js"></script>
+
 
   <script type="module">
     // Supabaseのクライアント設定（変更なし）
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    
+    // env.js に書いた環境変数を参照
     const sb = createClient(
-      "https://htnmjsqgoapvuanrsuma.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+      window.env.NEXT_PUBLIC_SUPABASE_URL,
+      window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     );
+
 
     const $ = s => document.querySelector(s);
     const articlesEl = $("#articles");
