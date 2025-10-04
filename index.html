@@ -201,7 +201,7 @@
     async function loadNews(){
       const{data,error}=await sb.from("articles").select("title,category,created_at,slug").order("created_at",{ascending:false}).limit(3);
       if(error||!data){newsList.innerHTML="<p class='text-center text-gray-500'>取得できませんでした。</p>";return;}
-      newsList.innerHTML=data.map(a=>`<a href="/blog-detail.html?slug=${a.slug}"class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white rounded-lg shadow-md transition"><div class="flex flex-col sm:flex-row justify-start items-start sm:items-center"><div class="flex items-center space-x-3"><span class="text-sm text-gray-500">${formatDate(a.created_at)}</span><span class="text-xs ${catColors[a.category]||"bg-gray-400"} text-white px-2 py-1 rounded">${a.category||"お知らせ"}</span></div><p class="text-left text-gray-800 font-semibold mt-1 sm:mt-0">${a.title}</p></div></a>`).join("");
+      newsList.innerHTML=data.map(a=>`<a href="/blog-detail.html?slug=${a.slug}"class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white rounded-lg shadow-md transition"><div class="flex flex-col sm:flex-row justify-start items-start sm:items-center"><div class="flex items-center space-x-3"><span class="text-sm text-gray-500">${formatDate(a.created_at)}</span><span class="text-xs ${catColors[a.category]||"bg-gray-400"} text-white px-2 py-1 rounded inline-block w-24 text-center">${a.category||"お知らせ"}</span></div><p class="text-left text-gray-800 font-semibold mt-1 sm:mt-0">${a.title}</p></div></a>`).join("");
     }
     loadNews();
   </script>
