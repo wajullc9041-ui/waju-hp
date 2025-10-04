@@ -37,25 +37,15 @@
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
-  h2 {
-    margin-bottom: 1rem;
-    color: #1f2937;
-  }
-  .form-group {
-    margin-bottom: 10px;
-  }
+  h2 { margin-bottom: 1rem; color: #1f2937; }
+  .form-group { margin-bottom: 10px; }
   input[type=text], input[type=number] {
-    padding: 6px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 6px; width: 100%;
+    border: 1px solid #ccc; border-radius: 4px;
   }
   button {
-    margin-right: 5px;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    margin-right: 5px; padding: 6px 12px;
+    border: none; border-radius: 4px; cursor: pointer;
   }
   #addBtn { background-color: #2563eb; color: white; }
   #updateBtn { background-color: #10b981; color: white; }
@@ -63,42 +53,23 @@
   .deleteBtn { background-color: #ef4444; color: white; }
   .editBtn { background-color: #3b82f6; color: white; margin-right: 4px; }
   table {
-    margin-top: 20px;
-    border-collapse: collapse;
-    width: 100%;
-    background: #fff;
-    border-radius: 0.5rem;
-    overflow: hidden;
+    margin-top: 20px; border-collapse: collapse;
+    width: 100%; background: #fff;
+    border-radius: 0.5rem; overflow: hidden;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
   th, td {
-    border: 1px solid #e5e7eb;
-    padding: 8px;
-    text-align: center;
-    user-select: none;
+    border: 1px solid #e5e7eb; padding: 8px; text-align: center;
   }
-  th {
-    background-color: #f9fafb;
-  }
-  tr:hover {
-    background-color: #f3f4f6;
-  }
-  tbody tr {
-    cursor: move;
-  }
-  /* トースト通知 */
+  th { background-color: #f9fafb; }
+  tr:hover { background-color: #f3f4f6; }
+  tbody tr { cursor: move; }
   #toast-container {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 9999;
+    position: fixed; top: 1rem; right: 1rem; z-index: 9999;
   }
   .toast {
-    margin-bottom: 10px;
-    padding: 10px 16px;
-    border-radius: 4px;
-    color: white;
-    font-weight: 500;
+    margin-bottom: 10px; padding: 10px 16px;
+    border-radius: 4px; color: white; font-weight: 500;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     animation: fadeInOut 3s forwards;
   }
@@ -110,26 +81,12 @@
     90% { opacity: 1; }
     100% { opacity: 0; transform: translateY(-10px); }
   }
-  /* 横スクロール防止 */
-  html, body {
-    overflow-x: hidden;
-  }
 </style>
 
-<script type="module">
-
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-  // ===== Supabase接続（env.js対応） =====
-  const supabase = createClient(
-    window.env.NEXT_PUBLIC_SUPABASE_URL,
-    window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
-
-  // ===== 認証チェック =====
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
-    window.location.href = "/admin-index.html";
+<script>
+  const sb = window.supabase;
+  if (!sb) {
+    alert("Supabaseが初期化されていません。トップページを再読込してください。");
   }
 
   let editingId = null;
@@ -143,15 +100,12 @@
   }
 
   async function fetchMenus() {
-    const { data, error } = await supabase
+    const { data, error } = await sb
       .from('admin_menus')
       .select('*')
       .order('sort_order', { ascending: true });
-    if (error) {
-      console.error(error);
-      showToast("読み込みに失敗しました","error");
-      return;
-    }
+    if (error) { console.error(error); showToast("読み込みに失敗しました","error"); return; }
+
     const tbody = document.querySelector("#menuTable tbody");
     tbody.innerHTML = "";
     data.forEach(row => {
@@ -190,13 +144,11 @@
       showToast("必須項目を入力してください","error");
       return;
     }
-    const { error } = await supabase.from("admin_menus").insert([
+    const { error } = await sb.from("admin_menus").insert([
       { title, filename, sort_order: order, is_active: active }
     ]);
     if (error) { console.error(error); showToast("追加に失敗しました","error"); return; }
-    resetForm();
-    fetchMenus();
-    showToast("追加しました","success");
+    resetForm(); fetchMenus(); showToast("追加しました","success");
   }
 
   function startEdit(id) {
@@ -208,7 +160,7 @@
   }
 
   async function fillForm(id) {
-    const { data, error } = await supabase.from("admin_menus").select("*").eq("id", id).single();
+    const { data, error } = await sb.from("admin_menus").select("*").eq("id", id).single();
     if (error) { console.error(error); showToast("読込に失敗しました","error"); return; }
     if (data) {
       document.getElementById("menu_title").value = data.title;
@@ -224,22 +176,19 @@
     const filename = document.getElementById("menu_filename").value.trim();
     const order = parseInt(document.getElementById("menu_order").value.trim(), 10);
     const active = document.getElementById("menu_active").checked;
-    const { error } = await supabase
+    const { error } = await sb
       .from("admin_menus")
       .update({ title, filename, sort_order: order, is_active: active })
       .eq("id", Number(editingId));
     if (error) { console.error(error); showToast("更新に失敗しました","error"); return; }
-    resetForm();
-    fetchMenus();
-    showToast("更新しました","success");
+    resetForm(); fetchMenus(); showToast("更新しました","success");
   }
 
   async function deleteMenu(id) {
     if (!confirm("削除してよろしいですか？")) return;
-    const { error } = await supabase.from("admin_menus").delete().eq("id", Number(id));
+    const { error } = await sb.from("admin_menus").delete().eq("id", Number(id));
     if (error) { console.error(error); showToast("削除に失敗しました","error"); return; }
-    fetchMenus();
-    showToast("削除しました","success");
+    fetchMenus(); showToast("削除しました","success");
   }
 
   function resetForm() {
@@ -301,22 +250,12 @@
       const newOrder = i + 1;
       const currentOrder = Number(rows[i].children[3].textContent);
       if (currentOrder === newOrder) continue;
-      const { error } = await supabase
-        .from("admin_menus")
-        .update({ sort_order: newOrder })
-        .eq("id", id);
-      if (error) {
-        console.error("sort update error:", {id, error});
-        errors.push(error);
-      } else {
-        rows[i].children[3].textContent = String(newOrder);
-      }
+      const { error } = await sb.from("admin_menus").update({ sort_order: newOrder }).eq("id", id);
+      if (error) { console.error("sort update error:", {id, error}); errors.push(error); }
+      else { rows[i].children[3].textContent = String(newOrder); }
     }
-    if (errors.length) {
-      showToast("順番の保存でエラーが発生しました","error");
-    } else {
-      showToast("順番を更新しました","success");
-    }
+    if (errors.length) showToast("順番の保存でエラーが発生しました","error");
+    else showToast("順番を更新しました","success");
     fetchMenus();
   }
 
