@@ -4,10 +4,10 @@ console.log('環境変数:', import.meta.env);
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 // ===== Supabase =====
-const supabaseUrl = import.meta.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient(
+  window.env.NEXT_PUBLIC_SUPABASE_URL,
+  window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 
 // ===== Utils =====
