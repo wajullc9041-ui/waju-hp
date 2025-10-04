@@ -318,5 +318,19 @@
     }
     loadNews();
   </script>
+  <script>
+  const slider = document.getElementById("hero-slider");
+  if (slider) {
+    let index = 0;
+    const slides = slider.children;
+    const total = slides.length;
+
+    setInterval(() => {
+      index = (index + 1) % total;
+      slider.style.transform = `translateX(-${index * 100}%)`;
+    }, 5000); // 5秒ごとに切り替え
+  }
+</script>
+
 </body>
 </html>
