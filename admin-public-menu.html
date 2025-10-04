@@ -1,4 +1,4 @@
-<!-- ===== 管理：公開メニュー管理 (完全修正版) ===== -->
+<!-- ===== 管理：公開メニュー管理 (env.js＋認証チェック対応) ===== -->
 <div id="menu-admin-root">
   <h2>メニュー管理</h2>
 
@@ -70,16 +70,29 @@
 
 <script type="module">
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+  // ===== Supabase接続（env.js対応） =====
   const supabase = createClient(
-    "https://htnmjsqgoapvuanrsuma.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0bm1qc3Fnb2FwdnVhbnJzdW1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMzI3MDEsImV4cCI6MjA3MDkwODcwMX0.1AACTWZmChfmIIfBad0sf-hLV2bnaUt7bVURXnd0uKA"
+    window.env.NEXT_PUBLIC_SUPABASE_URL,
+    window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   );
+
+  // ===== セッションチェック =====
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    window.location.href = "/admin-index.html";
+  }
 
   const $ = (q)=>document.querySelector(q);
   const $$ = (q)=>document.querySelectorAll(q);
-  const toast = (m,t="success")=>{ const n=document.createElement("div"); n.className="toast "+t; n.textContent=m; $("#toast-container").appendChild(n); setTimeout(()=>n.remove(),3000); };
+  const toast = (m,t="success")=>{
+    const n=document.createElement("div");
+    n.className="toast "+t;
+    n.textContent=m;
+    $("#toast-container").appendChild(n);
+    setTimeout(()=>n.remove(),3000);
+  };
 
-  // URL から slug を生成（/about.html → about ／ / → index）
   function toSlug(url){
     if(!url) return "";
     let s = url.trim();
@@ -141,7 +154,6 @@
     const { data: inserted, error } = await supabase.from("public_menus").insert([rec]).select().single();
     if(error){ console.error(error); toast("追加失敗","error"); return; }
 
-    // pages にも初期レコードを upsert
     const slug = toSlug(rec.url) || ("page-"+inserted.id);
     const { error: pageErr } = await supabase.from("pages").upsert([{
       slug,
