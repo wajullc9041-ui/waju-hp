@@ -78,8 +78,10 @@
     alert("Supabaseが初期化されていません。トップページを再読み込みしてください。");
   }
 
-  const $ = s => document.querySelector(s);
-  const tbody = $("#articlesTable tbody");
+  // このページ専用のユーティリティ
+  var $b = s => document.querySelector(s);
+
+  const tbody = $b("#articlesTable tbody");
   let currentPage = 1;
   const pageSize = 10;
   let currentSearch = "";
@@ -87,8 +89,8 @@
   let editor;
 
   // --- CKEditor 二重読み込み防止 ---
-  if (!window._ckeditorLoaded) {
-    window._ckeditorLoaded = true;
+  if (!window._ckeditorLoadedBlog) {
+    window._ckeditorLoadedBlog = true;
     ClassicEditor.create(document.querySelector('#content'))
       .then(newEditor => { editor = newEditor; })
       .catch(error => console.error(error));
@@ -106,7 +108,7 @@
       const d = new Date(r.created_at);
       return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
     }))].sort().reverse();
-    $("#monthFilter").innerHTML = '<option value="">すべての年月</option>' +
+    $b("#monthFilter").innerHTML = '<option value="">すべての年月</option>' +
       months.map(m => `<option value="${m}">${m}</option>`).join("");
   }
 
@@ -140,44 +142,44 @@
       </tr>`).join("");
 
     const totalPages = Math.ceil((count || 1) / pageSize);
-    $("#pageInfo").textContent = `${currentPage} / ${totalPages}`;
+    $b("#pageInfo").textContent = `${currentPage} / ${totalPages}`;
   }
 
   async function editArticle(id) {
     const { data, error } = await sb.from("articles").select("*").eq("id", id).single();
     if (error) { console.error(error); return; }
 
-    $("#articleId").value = data.id;
-    $("#title").value = data.title || "";
-    $("#slug").value = data.slug || "";
-    $("#description").value = data.description || "";
+    $b("#articleId").value = data.id;
+    $b("#title").value = data.title || "";
+    $b("#slug").value = data.slug || "";
+    $b("#description").value = data.description || "";
     if (editor) editor.setData(data.content || "");
-    $("#thumbnail").value = data.thumbnail_url || "";
-    $("#category").value = data.category || "";
-    $("#tags").value = Array.isArray(data.tags) ? data.tags.join(",") : "";
-    $("#published").checked = data.published;
+    $b("#thumbnail").value = data.thumbnail_url || "";
+    $b("#category").value = data.category || "";
+    $b("#tags").value = Array.isArray(data.tags) ? data.tags.join(",") : "";
+    $b("#published").checked = data.published;
   }
 
   function newArticle() {
-    $("#articleId").value = "";
-    $("#articleForm").reset();
+    $b("#articleId").value = "";
+    $b("#articleForm").reset();
     if (editor) editor.setData("");
   }
 
   async function saveArticle() {
-    const id = $("#articleId").value;
-    const tagsValue = $("#tags").value.trim();
+    const id = $b("#articleId").value;
+    const tagsValue = $b("#tags").value.trim();
     const tags = tagsValue === "" ? [] : tagsValue.split(",").map(t => t.trim()).filter(t => t);
 
     const row = {
-      title: $("#title").value,
-      slug: $("#slug").value,
-      description: $("#description").value,
+      title: $b("#title").value,
+      slug: $b("#slug").value,
+      description: $b("#description").value,
       content: editor ? editor.getData() : "",
-      thumbnail_url: $("#thumbnail").value,
-      category: $("#category").value,
+      thumbnail_url: $b("#thumbnail").value,
+      category: $b("#category").value,
       tags: tags,
-      published: $("#published").checked
+      published: $b("#published").checked
     };
 
     let res;
@@ -196,7 +198,7 @@
   }
 
   async function deleteArticle() {
-    const id = $("#articleId").value;
+    const id = $b("#articleId").value;
     if (!id) { alert("記事を選択してください"); return; }
     if (!confirm("削除しますか？")) return;
     const { error } = await sb.from("articles").delete().eq("id", id);
@@ -211,8 +213,8 @@
   }
 
   function applyFilters() {
-    currentSearch = $("#searchBox").value.trim();
-    currentMonth = $("#monthFilter").value;
+    currentSearch = $b("#searchBox").value.trim();
+    currentMonth = $b("#monthFilter").value;
     currentPage = 1;
     loadArticles();
   }
