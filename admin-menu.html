@@ -117,16 +117,6 @@
 </style>
 
 <script type="module">
-  // --- 直アクセス防止 ---
-  try {
-    if (window.self === window.top && !window.opener) {
-      // 自分が最上位ウィンドウ（iframeやfetch内ではない）ならリダイレクト
-      window.location.href = "/admin-top.html";
-    }
-  } catch (e) {
-    // cross-origin対策（トップが別オリジンの場合でも安全）
-    window.location.href = "/admin-top.html";
-  }
 
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
