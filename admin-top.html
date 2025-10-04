@@ -84,7 +84,13 @@
       window.env.NEXT_PUBLIC_SUPABASE_URL,
       window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     );
-
+    
+　　// ===== セッション確認 =====
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.href = "/admin-index.html";
+    }
+    
     // innerHTML後にscriptを再実行させる関数
     function executeScripts(container) {
       const scripts = container.querySelectorAll("script");
