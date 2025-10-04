@@ -92,7 +92,9 @@
   let currentMonth = "";
   let editor;
 
-  
+  ClassicEditor.create(document.querySelector('#content'))
+    .then(newEditor => { editor = newEditor; })
+    .catch(error => console.error(error));
 
   async function loadMonths(){
     const { data, error } = await sb.from("articles").select("created_at");
@@ -137,6 +139,17 @@
     $("#title").value = data.title||"";
     $("#slug").value = data.slug||"";
     $("#description").value = data.description||"";
+    if(editor){ editor.setData(data.content || ""); }
+    $("#thumbnail").value = data.thumbnail_url||"";
+    $("#category").value = data.category||"";
+    $("#tags").value = data.tags || "";
+    $("#published").checked = data.published;
+} = await sb.from("articles").select("*").eq("id",id).single();
+    if(error){console.error(error);return;}
+    $("#articleId").value = data.id;
+    $("#title").value = data.title||"";
+    $("#slug").value = data.slug||"";
+    $("#description").value = data.description||"";
     editor.setData(data.content || "");
     $("#thumbnail").value = data.thumbnail_url||"";
     $("#category").value = data.category||"";
@@ -152,7 +165,7 @@
 
   async function saveArticle(){
     const id = $("#articleId").value;
-    const tagsValue = $("#tags").value.trim();
+    const tags = $("#tags").value.trim();
     const tags = tagsValue === "" ? [] : tagsValue.split(",").map(t => t.trim()).filter(t => t);
 
     const row = {
