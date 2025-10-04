@@ -52,8 +52,8 @@
 
     /* ---------- ナビゲーション ---------- */
     .post-nav {
-      max-width: 720px;       /* 幅を狭める */
-      margin: 18px auto;      /* 中央寄せ */
+      max-width: 720px;
+      margin: 18px auto;
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -68,24 +68,44 @@
     .nav-ico{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:#e7f1ff}
 
     /* ---------- 本文 ---------- */
-    .content{background:#fff;border:1px solid var(--gray-300);border-radius:12px;padding:20px;min-height:48px;}
+    .content{
+      background:#fff;
+      border-radius:12px;
+      box-shadow:0 2px 6px rgba(0,0,0,.05);
+      padding:20px;
+      min-height:48px;
+    }
 
     /* ---------- タグ ---------- */
-    .tags{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0;border-top:1px solid var(--gray-300);border-bottom:1px solid var(--gray-300);padding:8px 0;}
-    .tag{background:#f1f3f5;color:#333;border-radius:999px;padding:4px 10px;font-size:.8rem;}
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:18px 0;
+      border-top:1px solid var(--gray-300);
+      border-bottom:1px solid var(--gray-300);
+      padding:8px 0;
+    }
+    .tag{
+      background:#f1f3f5;
+      color:#333;
+      border-radius:999px;
+      padding:4px 10px;
+      font-size:.8rem;
+    }
 
     /* ---------- シェアボタン（右寄せ） ---------- */
-    .share {
+    .share{
       display:flex;
-      justify-content:flex-end;  /* 全体を右寄せ */
+      justify-content:flex-end;
       align-items:center;
       gap:12px;
       margin:12px 0 20px;
     }
-    .share .label {
+    .share .label{
       color:#555;
       font-size:.9rem;
-      margin-right:0;  /* ← auto を削除 */
+      margin-right:0;
     }
     .sbtn{width:40px;height:40px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none}
     .sbtn svg{width:20px;height:20px;display:block}
@@ -97,7 +117,8 @@
 
     /* ---------- スマホ対応 ---------- */
     @media (max-width:640px){
-      .title-wrap{align-items:center}
+      .title-wrap{align-items:center;margin-left:0;margin-right:0;}
+      .content,.tags,.share,.post-nav{margin-left:0;margin-right:0;}
       .thumb{width:84px;height:84px}
       h1{font-size:1.5rem}
     }
@@ -177,7 +198,6 @@
   <script src="/env.js"></script>
   <script type="module" src="/hf.js"></script>
 
-  <!-- Supabase 読み込み -->
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
     const sb = createClient(
