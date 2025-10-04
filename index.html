@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="./">
   <title>合同会社WaJu | 公式ホームページ</title>
 
   <!-- SEO / OGP -->
@@ -15,7 +16,6 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png">
   <link rel="apple-touch-icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png">
 
   <!-- TailwindCSS -->
@@ -44,41 +44,26 @@
     gtag('config', 'G-ZHLJ5K19ZE');
   </script>
 
-  <!-- スライダーとSNS調整 -->
+  <!-- Hero/SNS Style -->
   <style>
     html, body { margin: 0; padding: 0; }
-
-    /* Hero スライダー基礎 */
     #hero-slider {
       display: flex;
       transition: transform 0.8s ease-in-out;
     }
     #hero-slider img {
       flex: 0 0 100%;
-      display: block;
+      width: 100%;
       object-fit: cover;
+      display: block;
     }
-
-    /* SNS セクション調整 */
     .snapwidget-widget {
       width: 100% !important;
       max-width: 600px;
       height: 220px;
     }
-
-    /* スマホ時のみ全幅化 */
     @media (max-width: 640px) {
-      #sns .bg-white {
-        width: 100vw !important;
-        margin-left: -50vw !important;
-        left: 50%;
-        position: relative;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        padding: 0.75rem !important;
-      }
       #sns iframe.snapwidget-widget {
-        width: 100% !important;
         height: 160px !important;
       }
     }
@@ -89,36 +74,31 @@
   <header id="site-header"></header>
 
   <main id="page-main">
-
-    <!-- Hero Section -->
-    <section id="hero" class="relative w-full py-0 bg-gradient-to-b from-waju-light to-blue-100">
+    <!-- Hero -->
+    <section id="hero" class="bg-gradient-to-b from-waju-light to-blue-100 py-0">
       <div class="max-w-6xl mx-auto overflow-hidden shadow-2xl rounded-b-xl">
         <div id="hero-slider">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" alt="Hero1">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" alt="Hero2">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="Hero3">
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" alt="">
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" alt="">
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="">
         </div>
       </div>
     </section>
 
-    <!-- SNS Section -->
+    <!-- SNS -->
     <section id="sns" class="py-20 bg-waju-light">
-      <h2 class="text-4xl font-extrabold text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2 text-center">SNS</h2>
+      <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SNS</h2>
 
-      <!-- Instagram -->
-      <div class="bg-white p-0 sm:p-6 rounded-none sm:rounded-2xl shadow-none sm:shadow-2xl border-t-4 border-pink-500 text-center mb-8 sm:mb-10">
-        <p class="text-3xl mb-2 pt-4">📸</p>
+      <div class="w-screen mx-0 sm:w-auto sm:mx-auto bg-white border-t-4 border-pink-500 rounded-none sm:rounded-2xl shadow-none sm:shadow-2xl text-center mb-8 sm:mb-10 p-2 sm:p-6">
+        <p class="text-3xl mb-2 pt-2">📸</p>
         <h3 class="text-xl font-bold text-gray-800 mb-4">Instagram <span class="text-pink-500">@waju.llc</span></h3>
-        <div class="rounded-xl overflow-hidden shadow-inner flex justify-center">
-          <iframe src="https://snapwidget.com/embed/1109476" class="snapwidget-widget"
-                  allowtransparency="true" frameborder="0" scrolling="no" title="Posts from Instagram"></iframe>
+        <div class="flex justify-center">
+          <iframe src="https://snapwidget.com/embed/1109476" class="snapwidget-widget" frameborder="0" scrolling="no"></iframe>
         </div>
-        <a href="https://www.instagram.com/waju.llc/" target="_blank" rel="noopener"
-           class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold transition pb-4">Instagramを見る →</a>
+        <a href="https://www.instagram.com/waju.llc/" target="_blank" class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold pb-4">Instagramを見る →</a>
       </div>
 
-      <!-- Other SNS -->
-      <div class="bg-white p-0 sm:p-6 rounded-none sm:rounded-2xl shadow-none sm:shadow-2xl border-t-4 border-blue-500 text-center">
+      <div class="w-screen mx-0 sm:w-auto sm:mx-auto bg-white border-t-4 border-blue-500 rounded-none sm:rounded-2xl shadow-none sm:shadow-2xl text-center p-2 sm:p-6">
         <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3 pt-4">その他のSNS</h3>
         <div class="flex flex-wrap justify-center gap-6 sm:gap-8 pb-4">
           <a href="https://www.youtube.com/@WaJuLLC" target="_blank" class="flex flex-col items-center group">
@@ -127,40 +107,29 @@
             </div>
             <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-red-600">YouTube</span>
           </a>
-          <a href="https://www.tiktok.com/@waju.llc" target="_blank" class="flex flex-col items-center group">
-            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-gray-300">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-tiktok-50.png" class="w-10 h-10" alt="TikTok">
-            </div>
-            <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">TikTok</span>
-          </a>
           <a href="https://x.com/waJu_llc" target="_blank" class="flex flex-col items-center group">
             <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-gray-500">
               <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-x-50.png" class="w-10 h-10" alt="X">
             </div>
             <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">X</span>
           </a>
-          <a href="https://www.facebook.com/wajullc" target="_blank" class="flex flex-col items-center group">
-            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-300">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-Facebook-50.png" class="w-10 h-10" alt="Facebook">
-            </div>
-            <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-blue-600">Facebook</span>
-          </a>
         </div>
       </div>
     </section>
-
   </main>
 
   <footer id="site-footer"></footer>
 
-  <!-- HERO SLIDER SCRIPT -->
+  <script defer src="env.js"></script>
+  <script defer src="hf.js" type="module"></script>
+
+  <!-- Hero Slider -->
   <script>
-    window.addEventListener('load', () => {
+    document.addEventListener('DOMContentLoaded', () => {
       const track = document.getElementById('hero-slider');
       if (!track) return;
-      const slides = Array.from(track.children);
+      const slides = track.children;
       let index = 0;
-
       setInterval(() => {
         index = (index + 1) % slides.length;
         track.style.transform = `translateX(-${index * 100}%)`;
