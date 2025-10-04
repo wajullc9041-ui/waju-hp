@@ -20,18 +20,15 @@
 
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Tailwind Config for Inter font and custom colors -->
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
           colors: {
-            'waju-primary': '#1e40af', // Blue-700 equivalent
-            'waju-light': '#eff6ff',   // Blue-50 equivalent
-            'waju-accent': '#f59e0b',  // Amber-500
+            'waju-primary': '#1e40af',
+            'waju-light': '#eff6ff',
+            'waju-accent': '#f59e0b'
           }
         }
       }
@@ -52,21 +49,14 @@
 
   <main id="page-main">
     <!-- Hero Section -->
-    <!-- 背景をグラデーションにし、中央のコンテンツエリアを max-w-6xl に設定 -->
     <section id="hero" class="relative w-full py-0 bg-gradient-to-b from-waju-light to-blue-100">
       <div class="max-w-6xl mx-auto overflow-hidden shadow-2xl rounded-b-xl">
-        <!-- h-[500px] を削除し、画像のアスペクト比に高さを依存させる (h-auto) -->
         <div id="hero-slider" class="relative flex transition-transform duration-700 ease-in-out h-auto">
-          <!-- 画像はコンテナ内でアスペクト比を維持しつつ幅100%で表示 (object-contain は object-cover に変更) -->
-          <!-- object-coverでアスペクト比を維持しつつ要素を埋め、h-fullで高さを維持します。 -->
-          <!-- 画像はもともと100%幅で設定されており、高さ指定がなくなったため、アスペクト比が維持されます -->
           <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" alt="Hero1" class="w-full h-auto object-cover flex-shrink-0"/>
           <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" alt="Hero2" class="w-full h-auto object-cover flex-shrink-0"/>
           <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="Hero3" class="w-full h-auto object-cover flex-shrink-0"/>
         </div>
       </div>
-      <!-- テキストオーバーレイを削除 -->
-      <!-- Slider dots will be dynamically added here -->
     </section>
 
     <!-- NEWS Section -->
@@ -76,77 +66,13 @@
         <div id="news-list" class="space-y-4 max-w-3xl mx-auto"></div>
       </div>
     </section>
-    
-    <script type="module">
-      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-      const sb = createClient(
-        window.env.NEXT_PUBLIC_SUPABASE_URL,
-        window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-      );
-    
-      const newsList = document.getElementById("news-list");
-    
-      console.log("NEWSセクション読込開始");
-    
-      async function loadNews() {
-        try {
-          const { data, error } = await sb
-            .from("articles")
-            .select("title, category, created_at, slug")
-            .order("created_at", { ascending: false })
-            .limit(3);
-    
-          if (error) throw error;
-    
-          if (!data || data.length === 0) {
-            console.log("記事データなし");
-            newsList.innerHTML = `<p class="text-center text-gray-500">まだお知らせはありません。</p>`;
-            return;
-          }
-    
-          // カテゴリ色分け
-          const categoryColor = {
-            "お知らせ": "bg-blue-500",
-            "プレスリリース": "bg-green-500",
-            "イベント": "bg-orange-500",
-            "採用情報": "bg-pink-500",
-            "コラム": "bg-indigo-500",
-            "制度・法改正": "bg-red-500",
-            "サービス更新": "bg-yellow-500",
-            "導入事例": "bg-teal-500",
-            "メディア掲載": "bg-purple-500",
-            "地域連携": "bg-sky-500"
-          };
-    
-          newsList.innerHTML = data.map(a => {
-            const color = categoryColor[a.category] || "bg-gray-400";
-            return `
-              <a href="/blog-detail.html?slug=${a.slug}" class="block p-4 border-b border-gray-200 hover:bg-gray-50 transition">
-                <div class="flex items-center gap-3">
-                  <span class="text-sm text-gray-500">${new Date(a.created_at).toLocaleDateString("ja-JP")}</span>
-                  <span class="text-xs ${color} text-white px-2 py-1 rounded">${a.category || "お知らせ"}</span>
-                </div>
-                <p class="mt-1 text-left font-medium text-gray-800">${a.title}</p>
-              </a>
-            `;
-          }).join("");
-    
-        } catch (err) {
-          console.error("NEWS読み込みエラー:", err);
-          newsList.innerHTML = `<p class="text-center text-red-500">読み込みエラーが発生しました。</p>`;
-        }
-      }
-    
-      loadNews();
-    </script>
-
 
     <!-- ABOUT Section -->
     <section id="about" class="py-20 bg-gray-50">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">ABOUT US</h2>
         <div class="grid md:grid-cols-2 gap-12 items-center bg-white p-8 md:p-12 rounded-2xl shadow-2xl">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="About" class="rounded-xl shadow-lg transform hover:scale-[1.01] transition duration-500"/>
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="About" class="rounded-xl shadow-lg"/>
           <div>
             <h3 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-waju-accent pl-3">社会に貢献する、新たな価値創造へ</h3>
             <p class="text-lg text-gray-700 leading-relaxed mb-6">
@@ -155,9 +81,7 @@
             <p class="text-lg text-gray-700 leading-relaxed mb-8 italic">
               絶えず前進するための <strong>Walk</strong>、そして躍進するための <strong>Jump</strong> を心掛け、社会に貢献していきます。
             </p>
-            <a href="/about.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transform hover:translate-y-[-2px] transition duration-300 ease-in-out">
-              企業理念を詳しく見る
-            </a>
+            <a href="/about.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition">企業理念を詳しく見る</a>
           </div>
         </div>
       </div>
@@ -169,7 +93,7 @@
         <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SERVICE</h2>
         <div class="grid md:grid-cols-2 gap-12 items-center bg-white p-8 md:p-12 rounded-2xl shadow-2xl border-4 border-waju-primary">
           <div class="md:order-2">
-            <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png" alt="Service" class="rounded-xl shadow-lg transform hover:scale-[1.01] transition duration-500"/>
+            <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png" alt="Service" class="rounded-xl shadow-lg"/>
           </div>
           <div class="md:order-1">
             <h3 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-waju-accent pl-3">介護・福祉業界の課題をオンラインで解決「CARELAY（ケアレイ）」</h3>
@@ -179,10 +103,10 @@
             <p class="text-lg text-gray-700 leading-relaxed mb-6">
               このサービスは、業界の持続可能な発展をサポートするため、他にはない圧倒的な低コストでご提供しています。
             </p>
-            <div class="bg-waju-accent text-white p-4 rounded-lg inline-block shadow-lg mb-8 transform rotate-[-2deg] hover:rotate-0 transition duration-300">
+            <div class="bg-waju-accent text-white p-4 rounded-lg inline-block shadow-lg mb-8 transform rotate-[-2deg] hover:rotate-0 transition">
               <p class="text-2xl font-black">圧倒的な低コスト <span class="text-4xl">5,500円</span>/月</p>
             </div>
-            <a href="/service.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transform hover:translate-y-[-2px] transition duration-300 ease-in-out">
+            <a href="/service.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition">
               サービス詳細を見る
             </a>
           </div>
@@ -212,17 +136,17 @@
       <div class="max-w-6xl mx-auto px-6 text-center">
         <h2 class="text-4xl font-extrabold text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SNS</h2>
         <div class="grid md:grid-cols-2 gap-8">
-          <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500 hover:shadow-3xl transition duration-300">
+          <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500">
             <p class="text-3xl mb-2">📸</p>
             <h3 class="text-xl font-bold text-gray-800 mb-4">Instagram <span class="text-pink-500">@waju_official</span></h3>
             <p class="text-gray-600">最新投稿の埋め込みエリア</p>
-            <a href="#" class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold transition duration-300">Instagramを見る &rarr;</a>
+            <a href="#" class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold">Instagramを見る &rarr;</a>
           </div>
-          <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500 hover:shadow-3xl transition duration-300">
+          <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500">
             <p class="text-3xl mb-2">🐦</p>
             <h3 class="text-xl font-bold text-gray-800 mb-4">X（旧Twitter） <span class="text-blue-500">@waju_corp</span></h3>
             <p class="text-gray-600">最新投稿の埋め込みエリア</p>
-            <a href="#" class="mt-4 inline-block text-blue-600 hover:text-blue-700 font-semibold transition duration-300">X（Twitter）を見る &rarr;</a>
+            <a href="#" class="mt-4 inline-block text-blue-600 hover:text-blue-700 font-semibold">X（Twitter）を見る &rarr;</a>
           </div>
         </div>
       </div>
@@ -263,91 +187,23 @@
   </main>
 
   <footer id="site-footer"></footer>
-  <script>
-    // Hero Slider Script
-    const slider = document.getElementById('hero-slider');
-    const slides = slider.children;
-    let currentIndex = 0;
-    const totalSlides = slides.length;
 
-    const updateSlider = () => {
-      // 100% / totalSlides は CSS で各スライドに適用されているため、ここでは 100% 単位で移動
-      slider.style.transform = `translateX(-${currentIndex * 100 / totalSlides}%)`;
-    };
-
-    const nextSlide = () => {
-      currentIndex = (currentIndex + 1) % totalSlides;
-      updateSlider();
-    };
-
-    // Initialize layout for smooth transition calculation (each slide is 100% / totalSlides)
-    slider.style.width = `${totalSlides * 100}%`;
-    for(let i = 0; i < totalSlides; i++) {
-        // 画像は w-full h-auto object-cover flex-shrink-0 でアスペクト比を維持しつつ幅に合わせる
-        slides[i].style.width = `${100 / totalSlides}%`;
-    }
-
-    setInterval(nextSlide, 5000); // Change image every 5 seconds
-    updateSlider(); // Initial display setup
-  </script>
-  <!-- Supabase環境変数を先に読み込む -->
   <script src="env.js"></script>
-  <!-- そのあとにヘッダー／フッターを読み込む -->
   <script type="module" src="hf.js"></script>
 
-
-  <!-- NEWS Supabase fetch -->
+  <!-- NEWS SCRIPT -->
   <script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-  const sb = createClient(
-    window.env.NEXT_PUBLIC_SUPABASE_URL,
-    window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
-
-  const newsList = document.getElementById("news-list");
-  function formatDate(dateStr) {
-    const d = new Date(dateStr);
-    return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
-  }
-
-  async function loadNews() {
-    const { data, error } = await sb
-      .from("articles")
-      .select("title, category, created_at, slug")
-      .order("created_at", { ascending: false })
-      .limit(3);
-
-    if (error) {
-      console.error("NEWS取得エラー:", error);
-      newsList.innerHTML = "<p class='text-center text-gray-500'>記事を取得できませんでした。</p>";
-      return;
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    const sb = createClient(window.env.NEXT_PUBLIC_SUPABASE_URL, window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+    const newsList = document.getElementById("news-list");
+    function formatDate(d){const x=new Date(d);return`${x.getFullYear()}.${String(x.getMonth()+1).padStart(2,"0")}.${String(x.getDate()).padStart(2,"0")}`;}
+    const catColors={お知らせ:"bg-blue-500",プレスリリース:"bg-green-500",イベント:"bg-orange-500",採用情報:"bg-pink-500",コラム:"bg-indigo-500","制度・法改正":"bg-red-500",サービス更新:"bg-yellow-500",導入事例:"bg-teal-500",メディア掲載:"bg-purple-500",地域連携:"bg-sky-500"};
+    async function loadNews(){
+      const{data,error}=await sb.from("articles").select("title,category,created_at,slug").order("created_at",{ascending:false}).limit(3);
+      if(error||!data){newsList.innerHTML="<p class='text-center text-gray-500'>取得できませんでした。</p>";return;}
+      newsList.innerHTML=data.map(a=>`<a href="/blog-detail.html?slug=${a.slug}"class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white rounded-lg shadow-md transition"><div class="flex flex-col sm:flex-row justify-between items-start sm:items-center"><div class="flex items-center space-x-3"><span class="text-sm text-gray-500">${formatDate(a.created_at)}</span><span class="text-xs ${catColors[a.category]||"bg-gray-400"} text-white px-2 py-1 rounded">${a.category||"お知らせ"}</span></div><p class="text-left text-gray-800 font-semibold mt-1 sm:mt-0">${a.title}</p></div></a>`).join("");
     }
-
-    if (!data || !data.length) {
-      newsList.innerHTML = "<p class='text-center text-gray-500'>まだお知らせはありません。</p>";
-      return;
-    }
-
-    newsList.innerHTML = data.map(a => `
-      <a href="/blog-detail.html?slug=${a.slug}" 
-         class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white transition duration-300 rounded-lg shadow-md hover:shadow-xl group">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-          <div class="flex items-center space-x-3">
-            <span class="text-sm font-medium text-gray-500 group-hover:text-waju-light transition duration-300">
-              ${formatDate(a.created_at)}
-            </span>
-            <span class="text-xs bg-waju-accent text-white px-2 py-1 rounded">
-              ${a.category || "お知らせ"}
-            </span>
-          </div>
-          <p class="text-gray-800 font-semibold group-hover:text-white transition duration-300 mt-1 sm:mt-0">
-            ${a.title}
-          </p>
-        </div>
-      </a>
-    `).join("");
-  }
-  loadNews();
+    loadNews();
   </script>
 </body>
 </html>
