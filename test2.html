@@ -1,24 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>合同会社WaJu | 公式ホームページ</title>
 
-  <!-- 0) どの環境でも相対パスが破綻しないように base を動的に注入 -->
-  <script>
-    (function () {
-      // github.io なら /<repo>/ をベースに、それ以外（Vercel/独自ドメイン/ローカル）は /
-      var isGitHub = location.hostname.endsWith('github.io');
-      var repo = location.pathname.split('/')[1] || '';
-      var baseHref = isGitHub && repo ? '/' + repo + '/' : '/';
-      // 早い段階で base を挿入（以降の相対URL解決を安定化）
-      document.write('<base href="' + baseHref + '">');
-      window.__BASE_HREF__ = baseHref;
-    })();
-  </script>
-
-  <!-- SEO / OGP -->
   <meta name="description" content="合同会社WaJuの公式ホームページです。介護・福祉業界のICT活用を推進し、CARELAYを中心としたサービスを提供しています。">
   <meta property="og:title" content="合同会社WaJu | 公式ホームページ">
   <meta property="og:description" content="合同会社WaJuの公式ホームページです。介護・福祉業界のICT活用を推進し、CARELAYを中心としたサービスを提供しています。">
@@ -26,12 +12,10 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://waju.co.jp/index.html">
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png">
   <link rel="apple-touch-icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png">
 
-  <!-- TailwindCSS（CDN） -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -48,296 +32,302 @@
     }
   </script>
 
-  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-ZHLJ5K19ZE');
   </script>
 
-  <!-- スタイル（Hero と SNS） -->
   <style>
-    html, body { margin: 0; padding: 0; }
-
-    /* Hero スライダー基礎 */
-    #hero-slider {
-      display: flex;
-      transition: transform 0.8s ease-in-out;
-    }
-    #hero-slider img {
-      flex: 0 0 100%;
-      width: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* SnapWidget の基本サイズ */
-    .snapwidget-widget {
-      width: 100% !important;
-      max-width: 600px;
-      height: 220px;
-    }
-
-    /* スマホだけ full-bleed にするクラス（PCは通常の中央寄せのまま） */
-    @media (max-width: 640px) {
-      #sns .fullbleed {
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        width: 100vw;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        padding: 0.75rem !important;
-      }
-      #sns iframe.snapwidget-widget {
-        height: 160px !important;
-      }
+    html, body {
+        padding: 0;
+        margin: 0;
+        border: 0;
+        width: 100%;
+        /* 100vwで要素がはみ出した際に横スクロールバーが表示されるのを防ぐ */
+        overflow-x: hidden; 
     }
   </style>
-</head>
 
-<body class="font-sans bg-gray-50">
+</head>
+<body id="page-body" class="font-sans bg-gray-50">
   <header id="site-header"></header>
 
   <main id="page-main">
-    <!-- Hero Section -->
     <section id="hero" class="relative w-full py-0 bg-gradient-to-b from-waju-light to-blue-100">
       <div class="max-w-6xl mx-auto overflow-hidden shadow-2xl rounded-b-xl">
-        <div id="hero-slider">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" alt="Hero1">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" alt="Hero2">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="Hero3">
+        <div id="hero-slider" class="relative flex transition-transform duration-700 ease-in-out h-auto">
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" alt="Hero1" class="w-full h-auto object-cover flex-shrink-0"/>
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" alt="Hero2" class="w-full h-auto object-cover flex-shrink-0"/>
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="Hero3" class="w-full h-auto object-cover flex-shrink-0"/>
         </div>
       </div>
     </section>
 
-    <!-- NEWS Section -->
     <section id="news" class="py-16 bg-white border-b border-gray-100 shadow-inner">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">NEWS</h2>
-        <div id="news-list" class="space-y-4 max-w-3xl mx-auto"></div>
-      </div>
+      <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">NEWS</h2>
+      <div id="news-list" class="space-y-4 max-w-3xl mx-auto"></div>
     </section>
 
-    <!-- ABOUT Section -->
     <section id="about" class="py-20 bg-gray-50">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">ABOUT US</h2>
+      <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">ABOUT US</h2>
       <div class="grid md:grid-cols-2 gap-12 items-center bg-white p-8 md:p-12 rounded-2xl shadow-2xl">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="About" class="rounded-xl shadow-lg"/>
-          <div>
-            <h3 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-waju-accent pl-3">社会に貢献する、新たな価値創造へ</h3>
-            <p class="text-lg text-gray-700 leading-relaxed mb-6">
-              社会福祉の一環として、介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い社会的支援ができる企業を目指しています。
-            </p>
-            <p class="text-lg text-gray-700 leading-relaxed mb-8 italic">
-              絶えず前進するための <strong>Walk</strong>、そして躍進するための <strong>Jump</strong> を心掛け、社会に貢献していきます。
-            </p>
-            <a href="about.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition">企業理念を詳しく見る</a>
-          </div>
+        <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" alt="About" class="rounded-xl shadow-lg"/>
+        <div>
+          <h3 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-waju-accent pl-3">社会に貢献する、新たな価値創造へ</h3>
+          <p class="text-lg text-gray-700 leading-relaxed mb-6">
+            社会福祉の一環として、介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い社会的支援ができる企業を目指しています。
+          </p>
+          <p class="text-lg text-gray-700 leading-relaxed mb-8 italic">
+            絶えず前進するための <strong>Walk</strong>、そして躍進するための <strong>Jump</strong> を心掛け、社会に貢献していきます。
+          </p>
+          <a href="/about.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition">企業理念を詳しく見る</a>
         </div>
       </div>
     </section>
 
-    <!-- SERVICE Section -->
     <section id="service" class="py-20 bg-waju-light">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SERVICE</h2>
-        <div class="grid md:grid-cols-2 gap-12 items-center bg-white p-8 md:p-12 rounded-2xl shadow-2xl border-4 border-waju-primary">
-          <div class="md:order-2">
-            <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png" alt="Service" class="rounded-xl shadow-lg"/>
+      <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SERVICE</h2>
+      <div class="grid md:grid-cols-2 gap-12 items-center bg-white p-8 md:p-12 rounded-2xl shadow-2xl border-4 border-waju-primary">
+        <div class="md:order-2">
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png" alt="Service" class="rounded-xl shadow-lg"/>
+        </div>
+        <div class="md:order-1">
+          <h3 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-waju-accent pl-3">介護・福祉業界の課題をオンラインで解決「CARELAY（ケアレイ）」</h3>
+          <p class="text-lg text-gray-700 leading-relaxed mb-6">
+            高齢者介護サービス事業者や障害福祉サービス事業者の求人・営業・連携の問題をオンラインで解決するプラットフォームです。
+          </p>
+          <p class="text-lg text-gray-700 leading-relaxed mb-6">
+            このサービスは、業界の持続可能な発展をサポートするため、他にはない圧倒的な低コストでご提供しています。
+          </p>
+          <div class="bg-waju-accent text-white p-4 rounded-lg inline-block shadow-lg mb-8 transform rotate-[-2deg] hover:rotate-0 transition">
+            <p class="text-2xl font-black">圧倒的な低コスト <span class="text-4xl">5,500円</span>/月</p>
           </div>
-          <div class="md:order-1">
-            <h3 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-waju-accent pl-3">介護・福祉業界の課題をオンラインで解決「CARELAY（ケアレイ）」</h3>
-            <p class="text-lg text-gray-700 leading-relaxed mb-6">
-              高齢者介護サービス事業者や障害福祉サービス事業者の求人・営業・連携の問題をオンラインで解決するプラットフォームです。
-            </p>
-            <p class="text-lg text-gray-700 leading-relaxed mb-6">
-              このサービスは、業界の持続可能な発展をサポートするため、他にはない圧倒的な低コストでご提供しています。
-            </p>
-            <div class="bg-waju-accent text-white p-4 rounded-lg inline-block shadow-lg mb-8 transform rotate-[-2deg] hover:rotate-0 transition">
-              <p class="text-2xl font-black">圧倒的な低コスト <span class="text-4xl">5,500円</span>/月</p>
-            </div>
-            <a href="service.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition">
-              サービス詳細を見る
-            </a>
-          </div>
+          <a href="/service.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition">
+            サービス詳細を見る
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- VIDEO Section -->
     <section id="video" class="py-20 bg-gray-50">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">YouTube</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="bg-white rounded-xl shadow-2xl overflow-hidden p-4">
-            <p class="text-lg font-semibold text-gray-800 mb-3 text-center">会社概要動画</p>
-            <iframe class="w-full h-[300px] rounded-lg shadow-inner" src="https://www.youtube.com/embed/CjgbFC64qOk" title="会社概要動画" frameborder="0" allowfullscreen></iframe>
-          </div>
-          <div class="bg-white rounded-xl shadow-2xl overflow-hidden p-4">
-            <p class="text-lg font-semibold text-gray-800 mb-3 text-center">サービス概要動画</p>
-            <iframe class="w-full h-[300px] rounded-lg shadow-inner" src="https://www.youtube.com/embed/WqQh-Ok9kjo" title="サービス概要動画" frameborder="0" allowfullscreen></iframe>
-          </div>
+      <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">YouTube</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden p-4">
+          <p class="text-lg font-semibold text-gray-800 mb-3 text-center">会社概要動画</p>
+          <iframe class="w-full h-[300px] rounded-lg shadow-inner" src="https://www.youtube.com/embed/CjgbFC64qOk" title="会社概要動画" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden p-4">
+          <p class="text-lg font-semibold text-gray-800 mb-3 text-center">サービス概要動画</p>
+          <iframe class="w-full h-[300px] rounded-lg shadow-inner" src="https://www.youtube.com/embed/WqQh-Ok9kjo" title="サービス概要動画" frameborder="0" allowfullscreen></iframe>
         </div>
       </div>
     </section>
 
-    <!-- SNS Section -->
     <section id="sns" class="py-20 bg-waju-light">
       <h2 class="text-4xl font-extrabold text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2 text-center">SNS</h2>
-
-      <!-- Instagram（スマホのみ full-bleed: .fullbleed） -->
-      <div class="bg-white p-0 sm:p-6 rounded-2xl sm:rounded-2xl shadow-2xl border-t-4 border-pink-500 text-center mb-8 sm:mb-10 fullbleed">
+    
+      <div class="bg-white p-0 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500 w-full sm:w-auto mb-8 sm:mb-10 text-center">
         <p class="text-3xl mb-2 pt-4">📸</p>
         <h3 class="text-xl font-bold text-gray-800 mb-4">
           Instagram <span class="text-pink-500">@waju.llc</span>
         </h3>
+    
         <div class="rounded-xl overflow-hidden shadow-inner flex justify-center">
-          <iframe src="https://snapwidget.com/embed/1109476" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Posts from Instagram"></iframe>
+          <iframe 
+            src="https://snapwidget.com/embed/1109476"
+            class="snapwidget-widget"
+            allowtransparency="true"
+            frameborder="0"
+            scrolling="no"
+            title="Posts from Instagram">
+          </iframe>
         </div>
-        <a href="https://www.instagram.com/waju.llc/" target="_blank" rel="noopener" class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold transition pb-4">
+    
+        <a href="https://www.instagram.com/waju.llc/"
+           target="_blank" rel="noopener"
+           class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold transition pb-4">
           Instagramを見る →
         </a>
       </div>
-
-      <!-- その他のSNS（スマホのみ full-bleed） -->
-      <div class="bg-white p-0 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500 text-center fullbleed">
+    
+      <div class="bg-white p-0 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500 w-full sm:w-auto text-center">
         <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3 pt-4">その他のSNS</h3>
         <div class="flex flex-wrap justify-center gap-6 sm:gap-8 pb-4">
+    
           <a href="https://www.youtube.com/@WaJuLLC" target="_blank" class="flex flex-col items-center group">
             <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-red-300">
               <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-Youtube-50.png" class="w-10 h-10" alt="YouTube">
             </div>
             <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-red-600">YouTube</span>
           </a>
+    
           <a href="https://www.tiktok.com/@waju.llc" target="_blank" class="flex flex-col items-center group">
             <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-gray-300">
               <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-tiktok-50.png" class="w-10 h-10" alt="TikTok">
             </div>
             <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">TikTok</span>
           </a>
+    
           <a href="https://x.com/waJu_llc" target="_blank" class="flex flex-col items-center group">
             <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-gray-500">
               <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-x-50.png" class="w-10 h-10" alt="X">
             </div>
             <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">X</span>
           </a>
+    
           <a href="https://www.facebook.com/wajullc" target="_blank" class="flex flex-col items-center group">
             <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-300">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-Facebook-50.png" class="w-10 h-10" alt="Facebook">
+              <img src="https://htnmjsqgoapvuanrsuma.co/storage/v1/object/public/assets/icons8-Facebook-50.png" class="w-10 h-10" alt="Facebook">
             </div>
             <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-blue-600">Facebook</span>
           </a>
+    
+          <a href="https://www.linkedin.com/in/waju-%E5%90%88%E5%90%8C%E4%BC%9A%E7%A4%BE-a49a69339/" target="_blank" class="flex flex-col items-center group">
+            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-500">
+              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-linkedin-50.png" class="w-10 h-10" alt="LinkedIn">
+            </div>
+            <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-blue-700">LinkedIn</span>
+          </a>
+    
         </div>
       </div>
     </section>
 
-    <!-- COMPANY Section -->
     <section id="company" class="py-20 bg-white">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">COMPANY</h2>
-        <div class="w-full max-w-4xl mx-auto p-6 bg-gray-50 rounded-2xl shadow-2xl">
-          <table class="w-full text-lg">
-            <tbody>
-              <tr class="border-b border-gray-200">
-                <th class="text-left p-4 bg-waju-light font-bold w-1/4 rounded-tl-xl">会社名</th>
-                <td class="p-4 bg-white rounded-tr-xl">合同会社WaJu</td>
-              </tr>
-              <tr class="border-b border-gray-200">
-                <th class="text-left p-4 bg-waju-light font-bold">代表社員</th>
-                <td class="p-4 bg-white">大野 洋</td>
-              </tr>
-              <tr class="border-b border-gray-200">
-                <th class="text-left p-4 bg-waju-light font-bold">所在地</th>
-                <td class="p-4 bg-white">〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td>
-              </tr>
-              <tr class="border-b border-gray-200">
-                <th class="text-left p-4 bg-waju-light font-bold">連絡先</th>
-                <td class="p-4 bg-white"><a href="mailto:info@waju.co.jp" class="text-waju-primary hover:underline font-semibold">info@waju.co.jp</a></td>
-              </tr>
-              <tr>
-                <th class="text-left p-4 bg-waju-light font-bold rounded-bl-xl">設立</th>
-                <td class="p-4 bg-white rounded-br-xl">2023年4月</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">COMPANY</h2>
+      <div class="w-full max-w-4xl mx-auto p-6 bg-gray-50 rounded-2xl shadow-2xl">
+        <table class="w-full text-lg">
+          <tbody>
+            <tr class="border-b border-gray-200">
+              <th class="text-left p-4 bg-waju-light font-bold w-1/4 rounded-tl-xl">会社名</th>
+              <td class="p-4 bg-white rounded-tr-xl">合同会社WaJu</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="text-left p-4 bg-waju-light font-bold">代表社員</th>
+              <td class="p-4 bg-white">大野 洋</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="text-left p-4 bg-waju-light font-bold">所在地</th>
+              <td class="p-4 bg-white">〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <th class="text-left p-4 bg-waju-light font-bold">連絡先</th>
+              <td class="p-4 bg-white"><a href="mailto:info@waju.co.jp" class="text-waju-primary hover:underline font-semibold">info@waju.co.jp</a></td>
+            </tr>
+            <tr>
+              <th class="text-left p-4 bg-waju-light font-bold rounded-bl-xl">設立</th>
+              <td class="p-4 bg-white rounded-br-xl">2023年4月</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
   </main>
 
   <footer id="site-footer"></footer>
 
-  <!-- 外部スクリプト（エラーで他が止まらないよう defer） -->
-  <script defer src="env.js"></script>
-  <script defer type="module" src="hf.js"></script>
+  <style>
+    /* SnapWidget 高さと幅を柔軟に調整 */
+    .snapwidget-widget {
+      width: 100% !important;
+      max-width: 600px;
+      height: 220px; /* 画像比に合わせて調整 */
+    }
 
-  <!-- NEWS SCRIPT（Supabase） -->
+    /* スマホ時はフル幅化・余白削除・高さも可変 */
+    @media (max-width: 640px) {
+      
+      /* 汎用: 余白制限divを削除したセクションにスマホ用パディング(1rem)を追加 */
+      #news, #about, #service, #video, #company {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+      }
+      
+      /* NEWSセクション内のリストの左右マージンを解除 */
+      #news-list {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+      
+      /* ABOUT, SERVICEセクション内のカードの左右マージン・角丸を解除 */
+      #about .grid, #service .grid {
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          border-radius: 0 !important;
+      }
+      
+      /* COMPANYセクション内のテーブルコンテナの左右マージン・角丸を解除 */
+      #company .w-full.max-w-4xl.mx-auto {
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          border-radius: 0 !important;
+      }
+
+      /* ★SNSセクションの個別調整（画面いっぱい + 内側0.5remパディング） */
+      #sns {
+        /* セクション自体は左右のパディングをゼロにして、カードを画面端まで広げる */
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+      
+      #sns .bg-white {
+        /* カードを画面幅いっぱいに広げ、内側に0.5remのパディングを維持 */
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        border-radius: 0 !important;
+        width: 100vw !important; /* 画面幅を強制 */
+        padding: 0.5rem !important; 
+      }
+      
+      /* SnapWidgetをカードのパディング内に収まるように調整 */
+      #sns iframe.snapwidget-widget {
+        width: 100% !important; 
+        height: 160px !important;
+        display: block;
+        margin: 0 auto;
+      }
+    }
+  </style>
+
+  <script src="env.js"></script>
+  <script type="module" src="hf.js"></script>
+
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-    const sb = createClient(window.env?.NEXT_PUBLIC_SUPABASE_URL, window.env?.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+    const sb = createClient(window.env.NEXT_PUBLIC_SUPABASE_URL, window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
     const newsList = document.getElementById("news-list");
     function formatDate(d){const x=new Date(d);return`${x.getFullYear()}.${String(x.getMonth()+1).padStart(2,"0")}.${String(x.getDate()).padStart(2,"0")}`;}
     const catColors={お知らせ:"bg-blue-500",プレスリリース:"bg-green-500",イベント:"bg-orange-500",採用情報:"bg-pink-500",コラム:"bg-indigo-500","制度・法改正":"bg-red-500",サービス更新:"bg-yellow-500",導入事例:"bg-teal-500",メディア掲載:"bg-purple-500",地域連携:"bg-sky-500"};
     async function loadNews(){
-      if(!sb){ newsList.innerHTML="<p class='text-center text-gray-500'>取得できませんでした。</p>"; return; }
-      const {data,error}=await sb.from("articles").select("title,category,created_at,slug").order("created_at",{ascending:false}).limit(3);
+      const{data,error}=await sb.from("articles").select("title,category,created_at,slug").order("created_at",{ascending:false}).limit(3);
       if(error||!data){newsList.innerHTML="<p class='text-center text-gray-500'>取得できませんでした。</p>";return;}
       newsList.innerHTML=data.map(a=>`
-        <a href="blog-detail.html?slug=${a.slug}" class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white rounded-lg shadow-md transition">
-          <div class="flex flex-col sm:flex-row justify-start items-start sm:items-center">
-            <div class="flex items-center space-x-3">
-              <span class="text-sm text-gray-500">${formatDate(a.created_at)}</span>
-              <span class="text-xs ${catColors[a.category]||"bg-gray-400"} text-white px-2 py-1 rounded inline-block w-24 text-center whitespace-nowrap">${a.category || "お知らせ"}</span>
-            </div>
-            <p class="text-left text-gray-800 font-semibold mt-1 sm:mt-0 sm:ml-3">${a.title}</p>
+      <a href="/blog-detail.html?slug=${a.slug}" 
+         class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white rounded-lg shadow-md transition">
+        <div class="flex flex-col sm:flex-row justify-start items-start sm:items-center">
+          <div class="flex items-center space-x-3">
+            <span class="text-sm text-gray-500">
+              ${formatDate(a.created_at)}
+            </span>
+            <span class="text-xs ${catColors[a.category]||"bg-gray-400"} text-white px-2 py-1 rounded inline-block w-24 text-center whitespace-nowrap">
+              ${a.category || "お知らせ"}
+            </span>
           </div>
-        </a>`).join("");
+          <p class="text-left text-gray-800 font-semibold mt-1 sm:mt-0 sm:ml-3">
+            ${a.title}
+          </p>
+        </div>
+      </a>
+
+      
+`).join("");
     }
     loadNews();
   </script>
-
-  <!-- 1) Hero スライダー：DOMContentLoaded + px基準 -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const track = document.getElementById('hero-slider');
-      if (!track) return;
-      const viewport = track.parentElement; // overflow-hidden の直上
-      const slides = Array.from(track.children);
-      let index = 0;
-
-      function go(i){
-        index = (i + slides.length) % slides.length;
-        const w = viewport.clientWidth; // 1枚分の幅(px)
-        track.style.transform = 'translateX(' + (-index * w) + 'px)';
-      }
-      go(0);
-      let timer = setInterval(()=>go(index+1), 5000);
-      window.addEventListener('resize', ()=>go(index));
-      track.addEventListener('mouseenter', ()=>clearInterval(timer));
-      track.addEventListener('mouseleave', ()=>{ clearInterval(timer); timer=setInterval(()=>go(index+1),5000); });
-    });
-  </script>
-
-  <!-- 2) GitHub Pages だと「/xxx.html」リンクが 404 になる問題を自動補正 -->
-  <script>
-    // hf.js が header/footer を差し込んだあとでも効くよう、load 後に走らせる
-    window.addEventListener('load', () => {
-      const base = window.__BASE_HREF__ || '/';
-      if (!location.hostname.endsWith('github.io')) return; // Vercel 等では不要
-      const sel = '#site-header a[href^="/"], #site-footer a[href^="/"]';
-      document.querySelectorAll(sel).forEach(a => {
-        const href = a.getAttribute('href');        // 例: "/about.html"
-        if (!href || href === '/') return;
-        a.setAttribute('href', base + href.replace(/^\//,''));
-      });
-    });
-  </script>
-
 </body>
 </html>
