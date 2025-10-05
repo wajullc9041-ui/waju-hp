@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>合同会社WaJu | 公式ホームページ</title>
 
-  <!-- SEO / OGP -->
   <meta name="description" content="合同会社WaJuの公式ホームページです。介護・福祉業界のICT活用を推進し、CARELAYを中心としたサービスを提供しています。">
   <meta property="og:title" content="合同会社WaJu | 公式ホームページ">
   <meta property="og:description" content="合同会社WaJuの公式ホームページです。介護・福祉業界のICT活用を推進し、CARELAYを中心としたサービスを提供しています。">
@@ -13,12 +12,10 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://waju.co.jp/index.html">
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png">
   <link rel="apple-touch-icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png">
 
-  <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -35,7 +32,6 @@
     }
   </script>
 
-  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHLJ5K19ZE"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -44,53 +40,88 @@
     gtag('config', 'G-ZHLJ5K19ZE');
   </script>
 
-  <!-- 基本スタイル補正（スライダー） -->
   <style>
-    html, body { margin: 0; padding: 0; }
-    #hero-slider { display: flex; transition: transform 0.8s ease-in-out; }
-    #hero-slider > img { flex: 0 0 100%; width: 100%; display: block; object-fit: cover; }
+    /* 1. 根元の余白を強制解除し、横スクロールを抑制 */
+    html, body {
+        padding: 0;
+        margin: 0;
+        border: 0;
+        width: 100%;
+        overflow-x: hidden; 
+    }
+    
     /* SnapWidget 基本サイズ */
-    .snapwidget-widget { width: 100% !important; max-width: 600px; height: 220px; }
-    /* スマホ時のみ SNS カードをフル幅＆フラット化 */
+    .snapwidget-widget { 
+        width: 100% !important; 
+        max-width: 600px; 
+        height: 220px; 
+    }
+
+    /* 2. スマホ時 (max-width: 640px) の個別調整 */
     @media (max-width: 640px) {
-      #sns .bg-white {
-        width: 100% !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        padding-left: 0.75rem !important;
-        padding-right: 0.75rem !important;
+      
+      /* ① VIDEOセクションの調整：カードを画面いっぱいにする */
+      /* 親コンテナのパディング(px-6)をゼロにする */
+      #video .max-w-6xl {
+          padding-left: 0 !important;
+          padding-right: 0 !important;
       }
-      #sns iframe.snapwidget-widget { height: 160px !important; }
+      /* カードの角丸も消して端に張り付かせる */
+      #video .grid > div {
+          border-radius: 0 !important; 
+      }
+    
+      /* ② SNSセクションの調整：カードを画面いっぱいにする */
+      /* 最も外側の親コンテナのパディング(px-6)をゼロにする */
+      #sns .max-w-6xl { 
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+      }
+      /* 次のコンテナのパディング(sm:px-6)をゼロにする */
+      #sns .w-full.px-0 { 
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+      }
+      
+      /* SNSカード自体 (bg-white) の内側パディングを小さくし、角丸を解除 */
+      #sns .bg-white {
+          border-radius: 0 !important;
+          /* p-0 sm:p-6を上書きし、画面端での余白を小さくする */
+          padding-top: 0.5rem !important; 
+          padding-bottom: 0.5rem !important; 
+          padding-left: 0.5rem !important; 
+          padding-right: 0.5rem !important;
+      }
+      
+      /* SnapWidgetのスマホ高さ調整 */
+      #sns iframe.snapwidget-widget {
+        height: 160px !important;
+      }
     }
   </style>
-</head>
 
+</head>
 <body id="page-body" class="font-sans bg-gray-50">
   <header id="site-header"></header>
 
   <main id="page-main">
-    <!-- Hero Section -->
     <section id="hero" class="relative w-full py-0 bg-gradient-to-b from-waju-light to-blue-100">
       <div class="max-w-6xl mx-auto overflow-hidden shadow-2xl rounded-b-xl">
-        <div id="hero-slider">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" alt="Hero1">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" alt="Hero2">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="Hero3">
+        <div id="hero-slider" class="relative flex transition-transform duration-700 ease-in-out h-auto">
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" alt="Hero1" class="w-full h-auto object-cover flex-shrink-0"/>
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" alt="Hero2" class="w-full h-auto object-cover flex-shrink-0"/>
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="Hero3" class="w-full h-auto object-cover flex-shrink-0"/>
         </div>
       </div>
     </section>
 
-    <!-- NEWS Section -->
     <section id="news" class="py-16 bg-white border-b border-gray-100 shadow-inner">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">NEWS</h2>
-        <div id="news-list" class="space-y-4 max-w-3xl mx-auto"></div>
+        <div id="news-list" class="space-y-4"></div>
       </div>
     </section>
 
-    <!-- ABOUT Section -->
     <section id="about" class="py-20 bg-gray-50">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">ABOUT US</h2>
@@ -104,13 +135,12 @@
             <p class="text-lg text-gray-700 leading-relaxed mb-8 italic">
               絶えず前進するための <strong>Walk</strong>、そして躍進するための <strong>Jump</strong> を心掛け、社会に貢献していきます。
             </p>
-            <a href="about.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition">企業理念を詳しく見る</a>
+            <a href="/about.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition">企業理念を詳しく見る</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SERVICE Section -->
     <section id="service" class="py-20 bg-waju-light">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SERVICE</h2>
@@ -129,7 +159,7 @@
             <div class="bg-waju-accent text-white p-4 rounded-lg inline-block shadow-lg mb-8 transform rotate-[-2deg] hover:rotate-0 transition">
               <p class="text-2xl font-black">圧倒的な低コスト <span class="text-4xl">5,500円</span>/月</p>
             </div>
-            <a href="service.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition">
+            <a href="/service.html" class="inline-block px-8 py-3 bg-waju-primary text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition">
               サービス詳細を見る
             </a>
           </div>
@@ -137,7 +167,6 @@
       </div>
     </section>
 
-    <!-- VIDEO Section -->
     <section id="video" class="py-20 bg-gray-50">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">YouTube</h2>
@@ -154,61 +183,79 @@
       </div>
     </section>
 
-    <!-- SNS Section -->
     <section id="sns" class="py-20 bg-waju-light">
-      <h2 class="text-4xl font-extrabold text-waju-primary mb-12 text-center relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SNS</h2>
-
-      <!-- Instagram -->
-      <div class="bg-white p-0 sm:p-6 rounded-none sm:rounded-2xl shadow-none sm:shadow-2xl border-t-4 border-pink-500 w-full sm:w-auto mx-0 sm:mx-auto mb-8 sm:mb-10 text-center">
-        <p class="text-3xl mb-2 pt-4">📸</p>
-        <h3 class="text-xl font-bold text-gray-800 mb-4">
-          Instagram <span class="text-pink-500">@waju.llc</span>
-        </h3>
-        <div class="rounded-xl overflow-hidden shadow-inner flex justify-center">
-          <iframe src="https://snapwidget.com/embed/1109476" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Posts from Instagram"></iframe>
-        </div>
-        <a href="https://www.instagram.com/waju.llc/" target="_blank" rel="noopener" class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold transition pb-4">Instagramを見る →</a>
-      </div>
-
-      <!-- その他のSNS -->
-      <div class="bg-white p-0 sm:p-6 rounded-none sm:rounded-2xl shadow-none sm:shadow-2xl border-t-4 border-blue-500 w-full sm:w-auto mx-0 sm:mx-auto text-center">
-        <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3 pt-4">その他のSNS</h3>
-        <div class="flex flex-wrap justify-center gap-6 sm:gap-8 pb-4">
-          <a href="https://www.youtube.com/@WaJuLLC" target="_blank" class="flex flex-col items-center group">
-            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-red-300">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-Youtube-50.png" class="w-10 h-10" alt="YouTube">
+      <h2 class="text-4xl font-extrabold text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2 text-center">SNS</h2>
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="w-full px-0 sm:px-6 text-center">
+          
+          <div class="bg-white p-0 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500 w-full mb-8 sm:mb-10 text-center">
+            <p class="text-3xl mb-2 pt-4">📸</p>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">
+              Instagram <span class="text-pink-500">@waju.llc</span>
+            </h3>
+        
+            <div class="rounded-xl overflow-hidden shadow-inner flex justify-center">
+              <iframe 
+                src="https://snapwidget.com/embed/1109476"
+                class="snapwidget-widget"
+                allowtransparency="true"
+                frameborder="0"
+                scrolling="no"
+                title="Posts from Instagram">
+              </iframe>
             </div>
-            <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-red-600">YouTube</span>
-          </a>
-          <a href="https://www.tiktok.com/@waju.llc" target="_blank" class="flex flex-col items-center group">
-            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-gray-300">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-tiktok-50.png" class="w-10 h-10" alt="TikTok">
+        
+            <a href="https://www.instagram.com/waju.llc/"
+              target="_blank" rel="noopener"
+              class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold transition pb-4">
+              Instagramを見る →
+            </a>
+          </div>
+        
+          <div class="bg-white p-0 sm:p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500 w-full text-center">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3 pt-4">その他のSNS</h3>
+            <div class="flex flex-wrap justify-center gap-6 sm:gap-8 pb-4">
+        
+              <a href="https://www.youtube.com/@WaJuLLC" target="_blank" class="flex flex-col items-center group">
+                <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-red-300">
+                  <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-Youtube-50.png" class="w-10 h-10" alt="YouTube">
+                </div>
+                <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-red-600">YouTube</span>
+              </a>
+        
+              <a href="https://www.tiktok.com/@waju.llc" target="_blank" class="flex flex-col items-center group">
+                <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-gray-300">
+                  <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-tiktok-50.png" class="w-10 h-10" alt="TikTok">
+                </div>
+                <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">TikTok</span>
+              </a>
+        
+              <a href="https://x.com/waJu_llc" target="_blank" class="flex flex-col items-center group">
+                <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-gray-500">
+                  <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-x-50.png" class="w-10 h-10" alt="X">
+                </div>
+                <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">X</span>
+              </a>
+        
+              <a href="https://www.facebook.com/wajullc" target="_blank" class="flex flex-col items-center group">
+                <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-300">
+                  <img src="https://htnmjsqgoapvuanrsuma.co/storage/v1/object/public/assets/icons8-Facebook-50.png" class="w-10 h-10" alt="Facebook">
+                </div>
+                <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-blue-600">Facebook</span>
+              </a>
+        
+              <a href="https://www.linkedin.com/in/waju-%E5%90%88%E5%90%8C%E4%BC%9A%E7%A4%BE-a49a69339/" target="_blank" class="flex flex-col items-center group">
+                <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-500">
+                  <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-linkedin-50.png" class="w-10 h-10" alt="LinkedIn">
+                </div>
+                <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-blue-700">LinkedIn</span>
+              </a>
             </div>
-            <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">TikTok</span>
-          </a>
-          <a href="https://x.com/waJu_llc" target="_blank" class="flex flex-col items-center group">
-            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-gray-500">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-x-50.png" class="w-10 h-10" alt="X">
-            </div>
-            <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">X</span>
-          </a>
-          <a href="https://www.facebook.com/wajullc" target="_blank" class="flex flex-col items-center group">
-            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-300">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-Facebook-50.png" class="w-10 h-10" alt="Facebook">
-            </div>
-            <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-blue-600">Facebook</span>
-          </a>
-          <a href="https://www.linkedin.com/in/waju-%E5%90%88%E5%90%8C%E4%BC%9A%E7%A4%BE-a49a69339/" target="_blank" class="flex flex-col items-center group">
-            <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-500">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-linkedin-50.png" class="w-10 h-10" alt="LinkedIn">
-            </div>
-            <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-blue-700">LinkedIn</span>
-          </a>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- COMPANY Section -->
     <section id="company" class="py-20 bg-white">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">COMPANY</h2>
@@ -244,32 +291,37 @@
 
   <footer id="site-footer"></footer>
 
-  <!-- 外部スクリプト（失敗しても他が止まらないように onerror で警告のみ） -->
-  <script defer src="env.js" onerror="console.warn('env.js failed to load')"></script>
-  <script defer type="module" src="hf.js" onerror="console.warn('hf.js failed to load')"></script>
+  <script src="env.js"></script>
+  <script type="module" src="hf.js"></script>
 
-  <!-- NEWS SCRIPT -->
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-    const sb = createClient(window.env?.NEXT_PUBLIC_SUPABASE_URL, window.env?.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+    const sb = createClient(window.env.NEXT_PUBLIC_SUPABASE_URL, window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
     const newsList = document.getElementById("news-list");
     function formatDate(d){const x=new Date(d);return`${x.getFullYear()}.${String(x.getMonth()+1).padStart(2,"0")}.${String(x.getDate()).padStart(2,"0")}`;}
     const catColors={お知らせ:"bg-blue-500",プレスリリース:"bg-green-500",イベント:"bg-orange-500",採用情報:"bg-pink-500",コラム:"bg-indigo-500","制度・法改正":"bg-red-500",サービス更新:"bg-yellow-500",導入事例:"bg-teal-500",メディア掲載:"bg-purple-500",地域連携:"bg-sky-500"};
     async function loadNews(){
       try{
-        if(!sb){ newsList.innerHTML="<p class='text-center text-gray-500'>取得できませんでした。</p>"; return; }
-        const {data,error}=await sb.from("articles").select("title,category,created_at,slug").order("created_at",{ascending:false}).limit(3);
+        const{data,error}=await sb.from("articles").select("title,category,created_at,slug").order("created_at",{ascending:false}).limit(3);
         if(error||!data){newsList.innerHTML="<p class='text-center text-gray-500'>取得できませんでした。</p>";return;}
         newsList.innerHTML=data.map(a=>`
-          <a href="blog-detail.html?slug=${a.slug}" class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white rounded-lg shadow-md transition">
-            <div class="flex flex-col sm:flex-row justify-start items-start sm:items-center">
-              <div class="flex items-center space-x-3">
-                <span class="text-sm text-gray-500">${formatDate(a.created_at)}</span>
-                <span class="text-xs ${catColors[a.category]||"bg-gray-400"} text-white px-2 py-1 rounded inline-block w-24 text-center whitespace-nowrap">${a.category || "お知らせ"}</span>
-              </div>
-              <p class="text-left text-gray-800 font-semibold mt-1 sm:mt-0 sm:ml-3">${a.title}</p>
+        <a href="/blog-detail.html?slug=${a.slug}" 
+           class="block p-4 bg-waju-light hover:bg-waju-primary hover:text-white rounded-lg shadow-md transition">
+          <div class="flex flex-col sm:flex-row justify-start items-start sm:items-center">
+            <div class="flex items-center space-x-3">
+              <span class="text-sm text-gray-500">
+                ${formatDate(a.created_at)}
+              </span>
+              <span class="text-xs ${catColors[a.category]||"bg-gray-400"} text-white px-2 py-1 rounded inline-block w-24 text-center whitespace-nowrap">
+                ${a.category || "お知らせ"}
+              </span>
             </div>
-          </a>`).join("");
+            <p class="text-left text-gray-800 font-semibold mt-1 sm:mt-0 sm:ml-3">
+              ${a.title}
+            </p>
+          </div>
+        </a>
+`).join("");
       }catch(e){
         newsList.innerHTML="<p class='text-center text-gray-500'>取得できませんでした。</p>";
         console.warn(e);
@@ -277,8 +329,7 @@
     }
     loadNews();
   </script>
-
-  <!-- HERO SLIDER（DOMContentLoaded + px基準 + リサイズ追従 + ホバー停止） -->
+  
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const track = document.getElementById('hero-slider');
@@ -296,9 +347,15 @@
       go(0);
       let timer = setInterval(()=>go(index+1), 5000);
 
-      window.addEventListener('resize', ()=>go(index));
-      track.addEventListener('mouseenter', ()=>clearInterval(timer));
-      track.addEventListener('mouseleave', ()=>{ clearInterval(timer); timer=setInterval(()=>go(index+1),5000); });
+      // ホバーで停止
+      viewport.addEventListener('mouseenter', () => clearInterval(timer));
+      viewport.addEventListener('mouseleave', () => {
+        clearInterval(timer);
+        timer = setInterval(()=>go(index+1), 5000);
+      });
+
+      // リサイズ対応
+      window.addEventListener('resize', () => go(index));
     });
   </script>
 </body>
