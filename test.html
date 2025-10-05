@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>合同会社WaJu | 公式ホームページ</title>
+
+  <!-- SEO / OGP -->
   <meta name="description" content="合同会社WaJuの公式ホームページです。介護・福祉業界のICT活用を推進し、CARELAYを中心としたサービスを提供しています。">
   <meta property="og:title" content="合同会社WaJu | 公式ホームページ">
   <meta property="og:description" content="合同会社WaJuの公式ホームページです。介護・福祉業界のICT活用を推進し、CARELAYを中心としたサービスを提供しています。">
@@ -11,14 +13,18 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://waju-hp.vercel.app/">
 
+  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png">
   <link rel="apple-touch-icon" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png">
 
+  <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
           colors: {
             'waju-primary': '#1e40af',
             'waju-light': '#eff6ff',
@@ -30,41 +36,114 @@
   </script>
 
   <style>
-    html, body { margin: 0; }
-    #hero-slider > img { flex: 0 0 100%; display: block; }
+    html, body { margin: 0; padding: 0; }
+    iframe { border: none; }
+    /* YouTube比率制御 */
+    .youtube-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 */
+      height: 0;
+      overflow: hidden;
+      border-radius: 0.75rem;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+    }
+    .youtube-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    /* Instagram調整 */
+    .snapwidget-widget {
+      width: 100% !important;
+      height: 220px;
+      max-width: 800px;
+    }
+    @media (max-width: 640px) {
+      #video .max-w-6xl { max-width: 100% !important; padding: 0 !important; }
+      #video .grid > div { width: 100vw !important; border-radius: 0 !important; }
+      .youtube-wrapper { padding: 0 0 56.25% 0; margin: 0 auto; width: calc(100% - 16px); }
+      #sns .snapwidget-widget { width: 100vw !important; height: 180px !important; }
+      #sns .bg-white { width: 100vw !important; border-radius: 0 !important; margin: 0 !important; }
+    }
   </style>
 </head>
-
 <body class="font-sans bg-gray-50">
   <header id="site-header"></header>
+
   <main id="page-main">
 
     <!-- Hero Section -->
     <section id="hero" class="relative w-full py-0 bg-gradient-to-b from-waju-light to-blue-100">
       <div class="max-w-6xl mx-auto overflow-hidden shadow-2xl rounded-b-xl">
         <div id="hero-slider" class="relative flex transition-transform duration-700 ease-in-out h-auto">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" class="w-full object-cover" alt="Hero1">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" class="w-full object-cover" alt="Hero2">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" class="w-full object-cover" alt="Hero3">
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" class="w-full h-auto object-cover flex-shrink-0"/>
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" class="w-full h-auto object-cover flex-shrink-0"/>
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" class="w-full h-auto object-cover flex-shrink-0"/>
         </div>
       </div>
     </section>
 
-    <!-- YouTube Section -->
+    <!-- NEWS Section -->
+    <section id="news" class="py-16 bg-white border-b border-gray-100 shadow-inner">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12">NEWS</h2>
+        <div id="news-list" class="space-y-4 max-w-3xl mx-auto"></div>
+      </div>
+    </section>
+
+    <!-- ABOUT Section -->
+    <section id="about" class="py-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12">ABOUT US</h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center bg-white p-8 md:p-12 rounded-2xl shadow-2xl">
+          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0004.png" class="rounded-xl shadow-lg"/>
+          <div>
+            <h3 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-waju-accent pl-3">社会に貢献する、新たな価値創造へ</h3>
+            <p class="text-lg text-gray-700 mb-6">社会福祉の一環として、介護業界の時間的・金銭的負担を軽減する事業からスタートし、将来的には幅広い社会的支援ができる企業を目指しています。</p>
+            <p class="text-lg text-gray-700 mb-8 italic">絶えず前進するための <strong>Walk</strong>、そして躍進するための <strong>Jump</strong> を心掛け、社会に貢献していきます。</p>
+            <a href="/about.html" class="inline-block px-8 py-3 bg-waju-primary text-white rounded-full shadow-lg hover:bg-blue-700">企業理念を詳しく見る</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICE Section -->
+    <section id="service" class="py-20 bg-waju-light">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12">SERVICE</h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center bg-white p-8 md:p-12 rounded-2xl shadow-2xl border-4 border-waju-primary">
+          <div class="md:order-2">
+            <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png" class="rounded-xl shadow-lg"/>
+          </div>
+          <div class="md:order-1">
+            <h3 class="text-3xl font-bold text-gray-800 mb-6 border-l-4 border-waju-accent pl-3">CARELAY（ケアレイ）</h3>
+            <p class="text-lg text-gray-700 mb-6">高齢者介護サービス事業者や障害福祉サービス事業者の求人・営業・連携の問題をオンラインで解決するプラットフォームです。</p>
+            <p class="text-lg text-gray-700 mb-6">業界の持続可能な発展を支援するため、他にはない低コストでご提供しています。</p>
+            <div class="bg-waju-accent text-white p-4 rounded-lg inline-block shadow-lg mb-8 transform rotate-[-2deg]">圧倒的な低コスト <span class="text-4xl font-black">5,500円/月</span></div>
+            <a href="/service.html" class="inline-block px-8 py-3 bg-waju-primary text-white rounded-full shadow-lg hover:bg-blue-700">サービス詳細を見る</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEO Section -->
     <section id="video" class="py-20 bg-gray-50">
-      <div class="max-w-6xl mx-auto sm:px-6 px-0">
-        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">YouTube</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div class="bg-white rounded-xl shadow-2xl overflow-hidden sm:p-4 p-0 w-screen sm:w-auto mx-0 sm:mx-auto">
-            <p class="text-lg font-semibold text-gray-800 mb-3 text-center pt-4">会社概要動画</p>
-            <div class="relative w-full pb-[56.25%]">
-              <iframe class="absolute top-0 left-0 w-full h-full rounded-lg shadow-inner" src="https://www.youtube.com/embed/CjgbFC64qOk" title="会社概要動画" frameborder="0" allowfullscreen></iframe>
+      <div class="max-w-6xl mx-auto px-6 sm:px-6">
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12">YouTube</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-white rounded-xl shadow-2xl overflow-hidden p-4">
+            <p class="text-lg font-semibold text-gray-800 mb-3 text-center">会社概要動画</p>
+            <div class="youtube-wrapper">
+              <iframe src="https://www.youtube.com/embed/CjgbFC64qOk" title="会社概要動画" allowfullscreen></iframe>
             </div>
           </div>
-          <div class="bg-white rounded-xl shadow-2xl overflow-hidden sm:p-4 p-0 w-screen sm:w-auto mx-0 sm:mx-auto">
-            <p class="text-lg font-semibold text-gray-800 mb-3 text-center pt-4">サービス概要動画</p>
-            <div class="relative w-full pb-[56.25%]">
-              <iframe class="absolute top-0 left-0 w-full h-full rounded-lg shadow-inner" src="https://www.youtube.com/embed/WqQh-Ok9kjo" title="サービス概要動画" frameborder="0" allowfullscreen></iframe>
+          <div class="bg-white rounded-xl shadow-2xl overflow-hidden p-4">
+            <p class="text-lg font-semibold text-gray-800 mb-3 text-center">サービス概要動画</p>
+            <div class="youtube-wrapper">
+              <iframe src="https://www.youtube.com/embed/WqQh-Ok9kjo" title="サービス概要動画" allowfullscreen></iframe>
             </div>
           </div>
         </div>
@@ -73,59 +152,82 @@
 
     <!-- SNS Section -->
     <section id="sns" class="py-20 bg-waju-light">
-      <div class="max-w-6xl mx-auto sm:px-6 px-0 text-center">
-        <h2 class="text-4xl font-extrabold text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">SNS</h2>
-
-        <div class="bg-white p-0 sm:p-6 rounded-none sm:rounded-2xl shadow-none sm:shadow-2xl border-t-4 border-pink-500 w-screen sm:w-auto mx-0 sm:mx-auto mb-8 text-center">
-          <p class="text-3xl mb-2 pt-4">📸</p>
+      <h2 class="text-4xl font-extrabold text-waju-primary mb-12 text-center">SNS</h2>
+      <div class="max-w-6xl mx-auto px-6 text-center">
+        <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-pink-500 mb-8">
+          <p class="text-3xl mb-2">📸</p>
           <h3 class="text-xl font-bold text-gray-800 mb-4">Instagram <span class="text-pink-500">@waju.llc</span></h3>
           <div class="rounded-xl overflow-hidden shadow-inner flex justify-center">
-            <iframe src="https://snapwidget.com/embed/1109476" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Posts from Instagram"></iframe>
+            <iframe src="https://snapwidget.com/embed/1109476" class="snapwidget-widget" allowtransparency="true" scrolling="no"></iframe>
           </div>
-          <a href="https://www.instagram.com/waju.llc/" target="_blank" class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold transition pb-4">Instagramを見る →</a>
+          <a href="https://www.instagram.com/waju.llc/" target="_blank" rel="noopener" class="mt-4 inline-block text-pink-600 hover:text-pink-700 font-semibold transition">Instagramを見る →</a>
         </div>
-
-        <div class="bg-white p-0 sm:p-6 rounded-none sm:rounded-2xl shadow-none sm:shadow-2xl border-t-4 border-blue-500 w-screen sm:w-auto mx-0 sm:mx-auto text-center">
-          <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3 pt-4">その他のSNS</h3>
-          <div class="flex flex-wrap justify-center gap-6 sm:gap-8 pb-4">
+        <div class="bg-white p-6 rounded-2xl shadow-2xl border-t-4 border-blue-500">
+          <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-3">その他のSNS</h3>
+          <div class="flex flex-wrap justify-center gap-6 sm:gap-8">
             <a href="https://www.youtube.com/@WaJuLLC" target="_blank" class="flex flex-col items-center group">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-Youtube-50.png" class="w-10 h-10" alt="YouTube">
-              <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-red-600">YouTube</span>
+              <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-red-300">
+                <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-Youtube-50.png" class="w-10 h-10">
+              </div><span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-red-600">YouTube</span>
             </a>
             <a href="https://www.tiktok.com/@waju.llc" target="_blank" class="flex flex-col items-center group">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-tiktok-50.png" class="w-10 h-10" alt="TikTok">
-              <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">TikTok</span>
+              <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-gray-300">
+                <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-tiktok-50.png" class="w-10 h-10">
+              </div><span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">TikTok</span>
             </a>
             <a href="https://x.com/waJu_llc" target="_blank" class="flex flex-col items-center group">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-x-50.png" class="w-10 h-10" alt="X">
-              <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">X</span>
+              <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-gray-500">
+                <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-x-50.png" class="w-10 h-10">
+              </div><span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-black">X</span>
             </a>
             <a href="https://www.facebook.com/wajullc" target="_blank" class="flex flex-col items-center group">
-              <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-Facebook-50.png" class="w-10 h-10" alt="Facebook">
-              <span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-blue-600">Facebook</span>
+              <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-300">
+                <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-Facebook-50.png" class="w-10 h-10">
+              </div><span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-blue-600">Facebook</span>
+            </a>
+            <a href="https://www.linkedin.com/in/waju-%E5%90%88%E5%90%8C%E4%BC%9A%E7%A4%BE-a49a69339/" target="_blank" class="flex flex-col items-center group">
+              <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-lg transition group-hover:scale-110 group-hover:ring-4 group-hover:ring-blue-500">
+                <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/icons8-linkedin-50.png" class="w-10 h-10">
+              </div><span class="mt-2 text-xs font-medium text-gray-600 group-hover:text-blue-700">LinkedIn</span>
             </a>
           </div>
         </div>
       </div>
     </section>
 
-  </main>
+    <!-- COMPANY Section -->
+    <section id="company" class="py-20 bg-white">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12">COMPANY</h2>
+        <div class="w-full max-w-4xl mx-auto p-6 bg-gray-50 rounded-2xl shadow-2xl">
+          <table class="w-full text-lg">
+            <tbody>
+              <tr class="border-b border-gray-200"><th class="text-left p-4 bg-waju-light font-bold w-1/4">会社名</th><td class="p-4 bg-white">合同会社WaJu</td></tr>
+              <tr class="border-b border-gray-200"><th class="text-left p-4 bg-waju-light font-bold">代表社員</th><td class="p-4 bg-white">大野 洋</td></tr>
+              <tr class="border-b border-gray-200"><th class="text-left p-4 bg-waju-light font-bold">所在地</th><td class="p-4 bg-white">〒658-0052 兵庫県神戸市東灘区住吉東町2丁目7-20-102</td></tr>
+              <tr class="border-b border-gray-200"><th class="text-left p-4 bg-waju-light font-bold">連絡先</th><td class="p-4 bg-white"><a href="mailto:info@waju.co.jp" class="text-waju-primary hover:underline font-semibold">info@waju.co.jp</a></td></tr>
+              <tr><th class="text-left p-4 bg-waju-light font-bold">設立</th><td class="p-4 bg-white">2023年4月</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
+  </main>
   <footer id="site-footer"></footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const slider = document.getElementById('hero-slider');
-      if (!slider) return;
-      const slides = Array.from(slider.children);
+      const track = document.getElementById('hero-slider');
+      if (!track) return;
       let index = 0;
-      function go(i){
-        index = (i + slides.length) % slides.length;
-        slider.style.transform = `translateX(-${index * 100}%)`;
-      }
-      go(0);
-      setInterval(() => go(index + 1), 5000);
+      const slides = Array.from(track.children);
+      setInterval(() => {
+        index = (index + 1) % slides.length;
+        track.style.transform = `translateX(-${index * 100}%)`;
+      }, 5000);
     });
   </script>
+
 </body>
 </html>
