@@ -1,3 +1,6 @@
+<!-- super-build CDN -->
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/super-build/ckeditor.js"></script>
+
 <style>
   .list{width:45%;border-right:1px solid #ddd;overflow:auto;padding:10px;display:flex;flex-direction:column;}
   .filters{margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap;}
@@ -44,7 +47,6 @@
       <label>本文<textarea id="content"></textarea></label>
       <label>サムネイルURL<input type="text" id="thumbnail"></label>
 
-      <!-- ★ カテゴリ追加 -->
       <label>カテゴリ
         <select id="category">
           <option value="">選択してください</option>
@@ -72,151 +74,195 @@
 </div>
 
 <script>
-  async function initBlogAdmin() {
-    // --- Supabase初期化 ---
-    if (!window.supabase) {
-      window.supabase = createClient(
-        window.env.NEXT_PUBLIC_SUPABASE_URL,
-        window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-      );
-    }
-    const sb = window.supabase;
+async function initBlogAdmin() {
+  // --- Supabase初期化 ---
+  if (!window.supabase) {
+    window.supabase = createClient(
+      window.env.NEXT_PUBLIC_SUPABASE_URL,
+      window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
+  }
+  const sb = window.supabase;
 
-    // 認証確認
-    const { data, error: authErr } = await sb.auth.getSession();
-    if (!data.session) {
-      window.location.href = "/admin-index.html";
-      return;
-    }
-
-    const $ = s => document.querySelector(s);
-    const tbody = $("#articlesTable tbody");
-    let currentPage = 1;
-    const pageSize = 10;
-    let currentSearch = "";
-    let currentMonth = "";
-    let editor;
-
-    // --- CKEditor初期化 ---
-    if (!window._ckeditorInitDone) {
-      window._ckeditorInitDone = true;
-      ClassicEditor.create(document.querySelector('#content'))
-        .then(e => { editor = e; })
-        .catch(console.error);
-    } else {
-      editor = window._ckeditorInstance;
-    }
-
-    async function loadMonths() {
-      const { data, error } = await sb.from("articles").select("created_at");
-      if (error) return;
-      const months = [...new Set(data.map(r => {
-        const d = new Date(r.created_at);
-        return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
-      }))].sort().reverse();
-      $("#monthFilter").innerHTML = '<option value="">すべての年月</option>' +
-        months.map(m => `<option value="${m}">${m}</option>`).join("");
-    }
-
-    async function loadArticles() {
-      let query = sb.from("articles")
-        .select("*", { count: "exact" })
-        .order("created_at", { ascending: false })
-        .range((currentPage - 1) * pageSize, currentPage * pageSize - 1);
-      if (currentSearch) query = query.or(`title.ilike.%${currentSearch}%,slug.ilike.%${currentSearch}%`);
-      if (currentMonth) {
-        const [y, m] = currentMonth.split("-");
-        const start = new Date(y, m - 1, 1).toISOString();
-        const end = new Date(y, m, 0, 23, 59, 59).toISOString();
-        query = query.gte("created_at", start).lte("created_at", end);
-      }
-      const { data, count, error } = await query;
-      if (error) { console.error(error); return; }
-
-      tbody.innerHTML = (data || []).map(a => `
-        <tr onclick="editArticle('${a.id}')">
-          <td>${a.title || ""}</td>
-          <td>${a.slug || ""}</td>
-          <td>${a.category || ""}</td>
-          <td>${Array.isArray(a.tags) ? a.tags.join(",") : ""}</td>
-          <td>${a.published ? "公開" : "非公開"}</td>
-          <td>${new Date(a.created_at).toLocaleDateString()}</td>
-        </tr>`).join("");
-      $("#pageInfo").textContent = `${currentPage} / ${Math.ceil((count || 1) / pageSize)}`;
-    }
-
-    window.editArticle = async function(id) {
-      const { data, error } = await sb.from("articles").select("*").eq("id", id).single();
-      if (error) return console.error(error);
-      $("#articleId").value = data.id;
-      $("#title").value = data.title || "";
-      $("#slug").value = data.slug || "";
-      $("#description").value = data.description || "";
-      if (editor) editor.setData(data.content || "");
-      $("#thumbnail").value = data.thumbnail_url || "";
-      $("#category").value = data.category || "";
-      $("#tags").value = Array.isArray(data.tags) ? data.tags.join(",") : "";
-      $("#published").checked = data.published;
-    };
-
-    window.newArticle = function() {
-      $("#articleId").value = "";
-      $("#articleForm").reset();
-      if (editor) editor.setData("");
-    };
-
-    window.saveArticle = async function() {
-      const id = $("#articleId").value;
-      const tagsValue = $("#tags").value.trim();
-      const tags = tagsValue ? tagsValue.split(",").map(t => t.trim()).filter(t => t) : [];
-
-      const row = {
-        title: $("#title").value,
-        slug: $("#slug").value,
-        description: $("#description").value,
-        content: editor ? editor.getData() : "",
-        thumbnail_url: $("#thumbnail").value,
-        category: $("#category").value,
-        tags: tags,
-        published: $("#published").checked
-      };
-
-      const res = id
-        ? await sb.from("articles").update(row).eq("id", id).select()
-        : await sb.from("articles").insert(row).select();
-
-      if (res.error) alert("保存エラー:" + res.error.message);
-      else { alert("保存しました"); loadArticles(); loadMonths(); }
-    };
-
-    window.deleteArticle = async function() {
-      const id = $("#articleId").value;
-      if (!id) return alert("記事を選択してください");
-      if (!confirm("削除しますか？")) return;
-      const { error } = await sb.from("articles").delete().eq("id", id);
-      if (error) alert("削除エラー:" + error.message);
-      else { alert("削除しました"); loadArticles(); newArticle(); loadMonths(); }
-    };
-
-    window.applyFilters = function() {
-      currentSearch = $("#searchBox").value.trim();
-      currentMonth = $("#monthFilter").value;
-      currentPage = 1;
-      loadArticles();
-    };
-    window.prevPage = function() { if (currentPage > 1) { currentPage--; loadArticles(); } };
-    window.nextPage = function() { currentPage++; loadArticles(); };
-
-    await loadArticles();
-    await loadMonths();
+  // 認証確認
+  const { data, error: authErr } = await sb.auth.getSession();
+  if (!data.session) {
+    window.location.href = "/admin-index.html";
+    return;
   }
 
-  // --- ページ切替時の再実行を保証 ---
-  if (!window._blogAdminInitialized) {
-    window._blogAdminInitialized = true;
-    setTimeout(initBlogAdmin, 100);
+  const $ = s => document.querySelector(s);
+  const tbody = $("#articlesTable tbody");
+  let currentPage = 1;
+  const pageSize = 10;
+  let currentSearch = "";
+  let currentMonth = "";
+  let editor;
+
+  // --- CKEditor super-build 初期化 ---
+  if (!window._ckeditorInitDone) {
+    window._ckeditorInitDone = true;
+    CKEDITOR.ClassicEditor.create(document.querySelector('#content'), {
+      toolbar: {
+        items: [
+          'undo','redo','|',
+          'heading','|',
+          'bold','italic','underline','strikethrough','|',
+          'fontSize','fontFamily','fontColor','fontBackgroundColor','|',
+          'highlight','alignment','|',
+          'link','blockQuote','insertTable','horizontalLine','|',
+          'bulletedList','numberedList','outdent','indent','|',
+          'removeFormat','sourceEditing'
+        ],
+        shouldNotGroupWhenFull: true
+      },
+      placeholder: 'ここに本文を入力...',
+      heading: {
+        options: [
+          { model: 'paragraph', title: '段落', class: 'ck-heading_paragraph' },
+          { model: 'heading1', view: 'h1', title: '見出し1', class: 'ck-heading_heading1' },
+          { model: 'heading2', view: 'h2', title: '見出し2', class: 'ck-heading_heading2' },
+          { model: 'heading3', view: 'h3', title: '見出し3', class: 'ck-heading_heading3' }
+        ]
+      },
+      fontFamily: {
+        options: [ 'default', 'Arial, Helvetica, sans-serif', 'Courier New, Courier, monospace',
+                   'Georgia, serif', 'Lucida Sans Unicode, Lucida Grande, sans-serif', 'Tahoma, Geneva, sans-serif', 'Times New Roman, Times, serif', 'Trebuchet MS, Helvetica, sans-serif', 'Verdana, Geneva, sans-serif' ],
+        supportAllValues: true
+      },
+      fontSize: {
+        options: [10,12,14,16,18,20,24,28,32],
+        supportAllValues: true
+      },
+      highlight: {
+        options: [
+          { model: 'yellowMarker', class: 'marker-yellow', title: '黄色マーカー', color: 'var(--ck-highlight-marker-yellow)', type: 'marker' },
+          { model: 'greenMarker', class: 'marker-green', title: '緑マーカー', color: 'var(--ck-highlight-marker-green)', type: 'marker' },
+          { model: 'pinkMarker', class: 'marker-pink', title: 'ピンクマーカー', color: 'var(--ck-highlight-marker-pink)', type: 'marker' }
+        ]
+      },
+      image: { toolbar: [ 'imageTextAlternative', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side' ] },
+      table: { contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ] },
+      removePlugins: [ 'CKBox','CKFinder','EasyImage','RealTimeCollaborativeComments',
+                       'RealTimeCollaborativeTrackChanges','RealTimeCollaborativeRevisionHistory',
+                       'PresenceList','Comments','TrackChanges','TrackChangesData','Pagination',
+                       'WProofreader','SlashCommand','Template','DocumentOutline','FormatPainter' ]
+    })
+    .then(e => { editor = e; window._ckeditorInstance = e; })
+    .catch(console.error);
   } else {
-    setTimeout(initBlogAdmin, 100);
+    editor = window._ckeditorInstance;
   }
-</script>
 
+  async function loadMonths() {
+    const { data, error } = await sb.from("articles").select("created_at");
+    if (error) return;
+    const months = [...new Set(data.map(r => {
+      const d = new Date(r.created_at);
+      return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+    }))].sort().reverse();
+    $("#monthFilter").innerHTML = '<option value="">すべての年月</option>' +
+      months.map(m => `<option value="${m}">${m}</option>`).join("");
+  }
+
+  async function loadArticles() {
+    let query = sb.from("articles")
+      .select("*", { count: "exact" })
+      .order("created_at", { ascending: false })
+      .range((currentPage - 1) * pageSize, currentPage * pageSize - 1);
+    if (currentSearch) query = query.or(`title.ilike.%${currentSearch}%,slug.ilike.%${currentSearch}%`);
+    if (currentMonth) {
+      const [y, m] = currentMonth.split("-");
+      const start = new Date(y, m - 1, 1).toISOString();
+      const end = new Date(y, m, 0, 23, 59, 59).toISOString();
+      query = query.gte("created_at", start).lte("created_at", end);
+    }
+    const { data, count, error } = await query;
+    if (error) { console.error(error); return; }
+
+    tbody.innerHTML = (data || []).map(a => `
+      <tr onclick="editArticle('${a.id}')">
+        <td>${a.title || ""}</td>
+        <td>${a.slug || ""}</td>
+        <td>${a.category || ""}</td>
+        <td>${Array.isArray(a.tags) ? a.tags.join(",") : ""}</td>
+        <td>${a.published ? "公開" : "非公開"}</td>
+        <td>${new Date(a.created_at).toLocaleDateString()}</td>
+      </tr>`).join("");
+    $("#pageInfo").textContent = `${currentPage} / ${Math.ceil((count || 1) / pageSize)}`;
+  }
+
+  window.editArticle = async function(id) {
+    const { data, error } = await sb.from("articles").select("*").eq("id", id).single();
+    if (error) return console.error(error);
+    $("#articleId").value = data.id;
+    $("#title").value = data.title || "";
+    $("#slug").value = data.slug || "";
+    $("#description").value = data.description || "";
+    if (editor) editor.setData(data.content || "");
+    $("#thumbnail").value = data.thumbnail_url || "";
+    $("#category").value = data.category || "";
+    $("#tags").value = Array.isArray(data.tags) ? data.tags.join(",") : "";
+    $("#published").checked = data.published;
+  };
+
+  window.newArticle = function() {
+    $("#articleId").value = "";
+    $("#articleForm").reset();
+    if (editor) editor.setData("");
+  };
+
+  window.saveArticle = async function() {
+    const id = $("#articleId").value;
+    const tagsValue = $("#tags").value.trim();
+    const tags = tagsValue ? tagsValue.split(",").map(t => t.trim()).filter(t => t) : [];
+
+    const row = {
+      title: $("#title").value,
+      slug: $("#slug").value,
+      description: $("#description").value,
+      content: editor ? editor.getData() : "",
+      thumbnail_url: $("#thumbnail").value,
+      category: $("#category").value,
+      tags: tags,
+      published: $("#published").checked
+    };
+
+    const res = id
+      ? await sb.from("articles").update(row).eq("id", id).select()
+      : await sb.from("articles").insert(row).select();
+
+    if (res.error) alert("保存エラー:" + res.error.message);
+    else { alert("保存しました"); loadArticles(); loadMonths(); }
+  };
+
+  window.deleteArticle = async function() {
+    const id = $("#articleId").value;
+    if (!id) return alert("記事を選択してください");
+    if (!confirm("削除しますか？")) return;
+    const { error } = await sb.from("articles").delete().eq("id", id);
+    if (error) alert("削除エラー:" + error.message);
+    else { alert("削除しました"); loadArticles(); newArticle(); loadMonths(); }
+  };
+
+  window.applyFilters = function() {
+    currentSearch = $("#searchBox").value.trim();
+    currentMonth = $("#monthFilter").value;
+    currentPage = 1;
+    loadArticles();
+  };
+  window.prevPage = function() { if (currentPage > 1) { currentPage--; loadArticles(); } };
+  window.nextPage = function() { currentPage++; loadArticles(); };
+
+  await loadArticles();
+  await loadMonths();
+}
+
+// --- ページ切替時の再実行を保証 ---
+if (!window._blogAdminInitialized) {
+  window._blogAdminInitialized = true;
+  setTimeout(initBlogAdmin, 100);
+} else {
+  setTimeout(initBlogAdmin, 100);
+}
+</script>
