@@ -9,268 +9,162 @@
     gtag('js', new Date());
     gtag('config', 'G-ZHLJ5K19ZE');
   </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ブログ詳細 | 合同会社WaJu</title>
+
+  <!-- SEO / OGP -->
   <meta name="description" content="合同会社WaJuのブログ詳細ページです。CARELAYや介護・福祉業界に関する最新情報をお届けします。" />
+  <meta name="keywords" content="合同会社WaJu, CARELAY, 介護, 福祉, 求人, 業界ニュース, コラム" />
+  <meta property="og:title" content="ブログ詳細 | 合同会社WaJu" />
+  <meta property="og:description" content="CARELAYや介護・福祉業界に関する最新情報・コラムを掲載しています。" />
+  <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png" />
+  <meta property="og:url" content="https://waju.co.jp/blog-detail.html" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@waju_corp" />
+  <meta name="language" content="ja" />
+  <meta name="geo.placename" content="Kobe, Japan" />
+
+  <!-- Favicon / PWA -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-32x32.png?v=1">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/favicon-16x16.png?v=1">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/apple-touch-icon.png?v=1">
+  <link rel="manifest" href="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/site.webmanifest?v=1">
+  <meta name="theme-color" content="#0f172a">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'Noto Sans JP', 'sans-serif'] },
+          colors: {
+            'waju-primary': '#1e40af',
+            'waju-light': '#eff6ff',
+            'waju-accent': '#f59e0b'
+          }
+        }
+      }
+    }
+  </script>
 
   <style>
-    :root {
-      --blue:#0d6efd;
-      --gray-100:#eef1f5;
-      --gray-200:#eaecf0;
-      --gray-300:#d8dbe0;
-      --gray-600:#555;
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+                   "Helvetica Neue", Arial, "Noto Sans JP",
+                   "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      background: #fff;
+      color: #0f172a;
+      visibility: hidden; /* FOUC対策 */
     }
-    html,body {
-      margin:0;
-      padding:0;
-      background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%);
-      font-family:"Noto Sans JP",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue","Hiragino Kaku Gothic ProN","BIZ UDPGothic","Meiryo",sans-serif;
-      color:#222;
-    }
-    header,footer{min-height:56px}
-    main{max-width:960px;margin:0 auto;padding:24px;box-sizing:border-box;}
-
-    /* ---------- 記事ヘッダー ---------- */
-    .title-wrap{
-      display:flex;
-      gap:16px;
-      align-items:flex-start;
-      margin:16px 0 8px;
-      background: linear-gradient(135deg, #ffffff 0%, #f7f8fa 100%);
-      border:none;
-      border-radius:14px;
-      box-shadow:0 3px 10px rgba(0,0,0,.12);
-      padding:18px;
-    }
-    .thumb{width:100px;height:100px;border-radius:8px;object-fit:contain;background:#fff;}
-    h1{font-size:1.8rem;line-height:1.3;margin:0 0 6px;font-weight:700;}
-    .meta{color:var(--gray-600);font-size:.9rem;margin-bottom:8px}
-    .cat{display:inline-block;background:#e7f1ff;color:#0b5ed7;font-size:.75rem;border-radius:999px;padding:3px 8px;margin-left:4px}
-
-    /* ---------- ナビゲーション ---------- */
-    .post-nav {
-      max-width: 720px;
-      margin: 18px auto;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:16px;
-      background: linear-gradient(135deg, #f1f3f6 0%, #e9ebef 100%);
-      border:1px solid var(--gray-300);
-      border-radius:10px;
-      box-shadow:0 2px 5px rgba(0,0,0,.05);
-      padding:8px 12px;
-    }
-    .nav-link{display:flex;align-items:center;gap:8px;color:var(--blue);text-decoration:none;font-weight:600}
-    .nav-link.center{color:#111;}
-    .nav-ico{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:#e7f1ff}
-
-    /* ---------- 本文 ---------- */
-    .content{
-      background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
-      border:none;
-      border-radius:12px;
-      box-shadow:0 3px 10px rgba(0,0,0,.08);
-      padding:20px;
-      min-height:48px;
-    }
-
-    /* ---------- タグ ---------- */
-    .tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin:18px 0;
-      border-top:1px solid var(--gray-300);
-      border-bottom:1px solid var(--gray-300);
-      padding:8px 0;
-    }
-    .tag{
-      background:#f1f3f5;
-      color:#333;
-      border-radius:999px;
-      padding:4px 10px;
-      font-size:.8rem;
-    }
-
-    /* ---------- シェアボタン ---------- */
-    .share{
-      display:flex;
-      justify-content:flex-end;
-      align-items:center;
-      gap:12px;
-      margin:12px 0 20px;
-    }
-    .share .label{
-      color:#555;
-      font-size:.85rem;
-      margin-right:0;
-      opacity:0.8;
-    }
-    .sbtn{width:40px;height:40px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none}
-    .sbtn svg{width:20px;height:20px;display:block}
-    .sbtn.x{background:#000}
-    .sbtn.fb{background:#1877f2}
-    .sbtn.line{background:#06c755}
-    .sbtn.ig{background:#e1306c}
-    .sbtn.mail{background:#fbbc05;color:#000}
-
-    /* ---------- スマホ対応 ---------- */
-    @media (max-width:640px){
-      main { padding:12px 0; }
-      .title-wrap,
-      .content,
-      .tags,
-      .share,
-      .post-nav {
-        margin-left:0;
-        margin-right:0;
-        border-radius:0;
-      }
-      .thumb{width:84px;height:84px}
-      h1{font-size:1.5rem}
-    }
+    main { min-height: 60vh; }
   </style>
 </head>
-<body>
+
+<body id="page-body" class="bg-gray-50">
   <header id="site-header"></header>
 
-  <main id="page-main">
-    <!-- 上ナビ -->
-    <nav class="post-nav" aria-label="記事ナビゲーション 上">
-      <a id="prevTop" class="nav-link" href="#">
-        <span class="nav-ico" aria-hidden="true">⬅</span><span>前の記事</span>
-      </a>
-      <a class="nav-link center" href="/blog/">
-        <span class="nav-ico" aria-hidden="true">🏠</span><span>一覧に戻る</span>
-      </a>
-      <a id="nextTop" class="nav-link" href="#">
-        <span>次の記事</span><span class="nav-ico" aria-hidden="true">➡</span>
-      </a>
-    </nav>
+  <main id="page-main" class="max-w-4xl mx-auto px-6 py-12 sm:py-20 bg-white rounded-xl shadow-lg mt-8 mb-20">
+    <article id="blog-article">
+      <!-- ブログ記事のタイトルと本文はSupabaseから読み込まれます -->
+      <h1 id="post-title" class="text-3xl sm:text-4xl font-extrabold text-waju-primary mb-6 text-center"></h1>
+      <div id="post-meta" class="text-center text-gray-500 mb-10"></div>
+      <div id="post-content" class="prose prose-lg max-w-none text-gray-800 leading-relaxed"></div>
 
-    <!-- タイトル＆メタ -->
-    <div class="title-wrap">
-      <img id="postThumb" class="thumb" alt="サムネイル" />
-      <div>
-        <h1 id="postTitle"></h1>
-        <div class="meta">
-          <time id="postDate"></time>
-          <span id="postCat" class="cat"></span>
-        </div>
+      <!-- シェアボタン -->
+      <div class="mt-12 border-t pt-6 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+        <button id="share-twitter" class="flex items-center gap-2 px-4 py-2 border rounded-full hover:bg-waju-light transition">
+          <i data-lucide="twitter" class="w-5 h-5"></i> Xで共有
+        </button>
+        <button id="share-facebook" class="flex items-center gap-2 px-4 py-2 border rounded-full hover:bg-waju-light transition">
+          <i data-lucide="facebook" class="w-5 h-5"></i> Facebookで共有
+        </button>
+        <button id="share-copy" class="flex items-center gap-2 px-4 py-2 border rounded-full hover:bg-waju-light transition">
+          <i data-lucide="copy" class="w-5 h-5"></i> URLをコピー
+        </button>
       </div>
-    </div>
 
-    <!-- 本文 -->
-    <article id="postContent" class="content"></article>
-
-    <!-- タグ -->
-    <div id="postTags" class="tags"></div>
-
-    <!-- シェア -->
-    <div class="share">
-      <span class="label">シェアする：</span>
-      <a id="shareX" class="sbtn x" target="_blank" rel="noopener noreferrer" title="Xでシェア">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.36 2H21l-7.53 9.55L21.5 22h-2.95l-6.07-7.63L6.4 22H3l7.95-10.5L2.5 2h2.95l5.61 7.05L18.36 2z"/></svg>
-      </a>
-      <a id="shareFb" class="sbtn fb" target="_blank" rel="noopener noreferrer" title="Facebookでシェア">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.5 9.95v-7.04H8v-2.91h2.5V9.5c0-2.5 1.5-3.9 3.7-3.9 1.07 0 2.2.19 2.2.19v2.4h-1.24c-1.22 0-1.6.76-1.6 1.54v1.85H16l-.4 2.91h-2.5v7.04A10 10 0 0 0 22 12z"/></svg>
-      </a>
-      <a id="shareLine" class="sbtn line" target="_blank" rel="noopener noreferrer" title="LINEでシェア">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.7 4.3A10 10 0 0 0 12 2C6.5 2 2 6 2 11c0 2.6 1.2 4.9 3.2 6.5l-.6 3.9 4.1-2.2c1 .3 2 .4 3.2.4 5.5 0 10-4 10-9 0-2.4-1-4.6-2.8-6.3z"/></svg>
-      </a>
-      <a id="shareIg" class="sbtn ig" target="_blank" rel="noopener noreferrer" title="Instagramへ">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 .001 10.001A5 5 0 0 0 12 7zm0 2.2a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6zM18 6.7a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2z"/></svg>
-      </a>
-      <a id="shareMail" class="sbtn mail" target="_blank" rel="noopener noreferrer" title="メールで共有">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v.01L12 13l8-6.99V6H4z"/></svg>
-      </a>
-    </div>
-
-    <!-- 下ナビ -->
-    <nav class="post-nav" aria-label="記事ナビゲーション 下">
-      <a id="prevBottom" class="nav-link" href="#">
-        <span class="nav-ico" aria-hidden="true">⬅</span><span>前の記事</span>
-      </a>
-      <a class="nav-link center" href="/blog/">
-        <span class="nav-ico" aria-hidden="true">🏠</span><span>一覧に戻る</span>
-      </a>
-      <a id="nextBottom" class="nav-link" href="#">
-        <span>次の記事</span><span class="nav-ico" aria-hidden="true">➡</span>
-      </a>
-    </nav>
+      <!-- 前後記事リンク -->
+      <div class="mt-16 flex justify-between text-waju-primary font-semibold">
+        <a id="prev-article" href="#" class="hover:underline">← 前の記事</a>
+        <a id="next-article" href="#" class="hover:underline">次の記事 →</a>
+      </div>
+    </article>
   </main>
 
   <footer id="site-footer"></footer>
 
+  <!-- Mobile Drawer -->
+  <div id="mobile-drawer" class="drawer fixed inset-0 bg-black bg-opacity-40 hidden" aria-hidden="true">
+    <div class="absolute right-0 top-0 bg-white h-full w-4/5 shadow-lg p-6 overflow-y-auto">
+      <button id="drawer-close" class="mb-4 font-bold text-gray-700">× 閉じる</button>
+      <nav id="drawer-nav" class="flex flex-col gap-3 text-lg"></nav>
+    </div>
+  </div>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Supabase / 環境変数 -->
   <script src="/env.js"></script>
   <script type="module" src="/hf.js"></script>
 
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-    const sb = createClient(
-      window.env.NEXT_PUBLIC_SUPABASE_URL,
-      window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      { auth: { persistSession: false, autoRefreshToken: false, storageKey: "sb-waju-blog" } }
-    );
-    const $ = (s) => document.querySelector(s);
-    function fmt(d){ try{ return new Date(d).toLocaleDateString(); }catch{return ""} }
+    const sb = createClient(window.env.NEXT_PUBLIC_SUPABASE_URL, window.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
-    async function load(){
-      const params = new URLSearchParams(location.search);
+    const $ = s => document.querySelector(s);
+    const titleEl = $("#post-title");
+    const metaEl = $("#post-meta");
+    const contentEl = $("#post-content");
+
+    // 記事を取得
+    async function loadArticle() {
+      const params = new URLSearchParams(window.location.search);
       const slug = params.get("slug");
-      if(!slug){ $("#postTitle").textContent = "記事が見つかりません"; return; }
+      if (!slug) return;
 
       const { data, error } = await sb.from("articles").select("*").eq("slug", slug).single();
-      if(error){ console.error("記事取得エラー:", error); $("#postTitle").textContent="記事の取得に失敗しました"; return; }
+      if (error) return console.error(error);
+      if (!data) return;
 
-      $("#postTitle").textContent = data.title || "";
-      $("#postDate").textContent = fmt(data.created_at);
-      $("#postCat").textContent = data.category || "";
-      $("#postThumb").src = data.thumbnail_url || "";
-      $("#postThumb").alt = (data.title || "サムネイル") + "の画像";
-      $("#postContent").innerHTML = data.content || "";
+      titleEl.textContent = data.title;
+      const date = new Date(data.created_at).toLocaleDateString('ja-JP');
+      metaEl.textContent = `${date} ｜ ${data.category || "コラム"}`;
+      contentEl.innerHTML = data.content || "<p>本文がありません。</p>";
 
-      const tagWrap = $("#postTags");
-      tagWrap.innerHTML = "";
-      if(Array.isArray(data.tags)){
-        for(const t of data.tags){
-          const span = document.createElement("span");
-          span.className = "tag";
-          span.textContent = "#" + t;
-          tagWrap.appendChild(span);
-        }
+      // 前後の記事を取得
+      const { data: all, error: e2 } = await sb.from("articles").select("slug,title,created_at").order("created_at", { ascending: false });
+      if (!e2 && all) {
+        const idx = all.findIndex(a => a.slug === slug);
+        if (idx > 0) $("#next-article").href = `/blog-detail.html?slug=${all[idx - 1].slug}`;
+        if (idx < all.length - 1) $("#prev-article").href = `/blog-detail.html?slug=${all[idx + 1].slug}`;
       }
 
-      const u = encodeURIComponent(location.href);
-      const t = encodeURIComponent(data.title || document.title);
-      $("#shareX").href = `https://twitter.com/intent/tweet?url=${u}&text=${t}`;
-      $("#shareFb").href = `https://www.facebook.com/sharer/sharer.php?u=${u}`;
-      $("#shareLine").href = `https://social-plugins.line.me/lineit/share?url=${u}`;
-      $("#shareIg").href = `https://www.instagram.com/?url=${u}`;
-      $("#shareMail").href = `mailto:?subject=${t}&body=${t}%0D%0A${u}`;
-
-      const { data: newer } = await sb.from("articles").select("title,slug,created_at").gt("created_at", data.created_at).order("created_at",{ascending:true}).limit(1);
-      const { data: older } = await sb.from("articles").select("title,slug,created_at").lt("created_at", data.created_at).order("created_at",{ascending:false}).limit(1);
-
-      for(const id of ["prevTop","prevBottom"]){
-        const a=$("#"+id);
-        if(older && older.length){
-          a.href="/blog-detail.html?slug="+older[0].slug;
-          a.title="← "+older[0].title;
-        }else{ a.classList.add("disabled"); a.style.opacity=".4"; a.style.pointerEvents="none"; }
-      }
-      for(const id of ["nextTop","nextBottom"]){
-        const a=$("#"+id);
-        if(newer && newer.length){
-          a.href="/blog-detail.html?slug="+newer[0].slug;
-          a.title=newer[0].title+" →";
-        }else{ a.classList.add("disabled"); a.style.opacity=".4"; a.style.pointerEvents="none"; }
-      }
+      // lucideアイコンを再描画
+      lucide.createIcons();
+      document.body.style.visibility = "visible"; // FOUC解除
     }
-    load();
+
+    // 共有ボタン処理
+    $("#share-twitter").addEventListener("click", () => {
+      const url = encodeURIComponent(location.href);
+      window.open(`https://twitter.com/intent/tweet?url=${url}`, "_blank");
+    });
+    $("#share-facebook").addEventListener("click", () => {
+      const url = encodeURIComponent(location.href);
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, "_blank");
+    });
+    $("#share-copy").addEventListener("click", async () => {
+      await navigator.clipboard.writeText(location.href);
+      alert("URLをコピーしました");
+    });
+
+    window.addEventListener("load", loadArticle);
   </script>
 </body>
 </html>
