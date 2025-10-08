@@ -16,7 +16,7 @@
 
   <!-- SEO / OGP -->
   <meta name="description" content="合同会社WaJuのブログ詳細ページです。CARELAYや介護・福祉業界に関する最新情報をお届けします。" />
-  <meta name="keywords" content="合同会社WaJu, CARELAY, 介護, 福祉, 求人, 業界ニュース, コラム" />
+  <meta name="keywords" content="合同会社WaJu, CARELAY, 介護, 福祉, 業界ニュース, コラム, 求人, 地域連携" />
   <meta property="og:title" content="ブログ詳細 | 合同会社WaJu" />
   <meta property="og:description" content="CARELAYや介護・福祉業界に関する最新情報・コラムを掲載しています。" />
   <meta property="og:image" content="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0006.png" />
@@ -51,26 +51,15 @@
     }
   </script>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto,
-                   "Helvetica Neue", Arial, "Noto Sans JP",
-                   "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-      background: #fff;
-      color: #0f172a;
-      visibility: hidden; /* FOUC対策 */
-    }
-    main { min-height: 60vh; }
-  </style>
+  <!-- FOUC防止 -->
+  <style>body{visibility:hidden;}</style>
 </head>
 
-<body id="page-body" class="bg-gray-50">
+<body id="page-body" class="font-sans bg-gray-50" onload="document.body.style.visibility='visible'">
   <header id="site-header"></header>
 
   <main id="page-main" class="max-w-4xl mx-auto px-6 py-12 sm:py-20 bg-white rounded-xl shadow-lg mt-8 mb-20">
     <article id="blog-article">
-      <!-- ブログ記事のタイトルと本文はSupabaseから読み込まれます -->
       <h1 id="post-title" class="text-3xl sm:text-4xl font-extrabold text-waju-primary mb-6 text-center"></h1>
       <div id="post-meta" class="text-center text-gray-500 mb-10"></div>
       <div id="post-content" class="prose prose-lg max-w-none text-gray-800 leading-relaxed"></div>
@@ -98,18 +87,10 @@
 
   <footer id="site-footer"></footer>
 
-  <!-- Mobile Drawer -->
-  <div id="mobile-drawer" class="drawer fixed inset-0 bg-black bg-opacity-40 hidden" aria-hidden="true">
-    <div class="absolute right-0 top-0 bg-white h-full w-4/5 shadow-lg p-6 overflow-y-auto">
-      <button id="drawer-close" class="mb-4 font-bold text-gray-700">× 閉じる</button>
-      <nav id="drawer-nav" class="flex flex-col gap-3 text-lg"></nav>
-    </div>
-  </div>
-
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Supabase / 環境変数 -->
+  <!-- Supabase環境変数・ヘッダーフッター -->
   <script src="/env.js"></script>
   <script type="module" src="/hf.js"></script>
 
@@ -122,7 +103,6 @@
     const metaEl = $("#post-meta");
     const contentEl = $("#post-content");
 
-    // 記事を取得
     async function loadArticle() {
       const params = new URLSearchParams(window.location.search);
       const slug = params.get("slug");
@@ -137,20 +117,18 @@
       metaEl.textContent = `${date} ｜ ${data.category || "コラム"}`;
       contentEl.innerHTML = data.content || "<p>本文がありません。</p>";
 
-      // 前後の記事を取得
-      const { data: all, error: e2 } = await sb.from("articles").select("slug,title,created_at").order("created_at", { ascending: false });
-      if (!e2 && all) {
+      // 前後の記事
+      const { data: all } = await sb.from("articles").select("slug,title,created_at").order("created_at", { ascending: false });
+      if (all) {
         const idx = all.findIndex(a => a.slug === slug);
         if (idx > 0) $("#next-article").href = `/blog-detail.html?slug=${all[idx - 1].slug}`;
         if (idx < all.length - 1) $("#prev-article").href = `/blog-detail.html?slug=${all[idx + 1].slug}`;
       }
 
-      // lucideアイコンを再描画
       lucide.createIcons();
-      document.body.style.visibility = "visible"; // FOUC解除
     }
 
-    // 共有ボタン処理
+    // 共有ボタン
     $("#share-twitter").addEventListener("click", () => {
       const url = encodeURIComponent(location.href);
       window.open(`https://twitter.com/intent/tweet?url=${url}`, "_blank");
