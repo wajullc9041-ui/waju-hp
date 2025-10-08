@@ -1,4 +1,4 @@
-<!-- super-build CDN -->
+<!-- CKEditor super-build CDN -->
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/super-build/ckeditor.js"></script>
 
 <style>
@@ -99,57 +99,70 @@ async function initBlogAdmin() {
   let currentMonth = "";
   let editor;
 
-  // --- CKEditor super-build 初期化 ---
+  // --- CKEditor super-build 初期化（重複・順序対策） ---
   if (!window._ckeditorInitDone) {
     window._ckeditorInitDone = true;
-    CKEDITOR.ClassicEditor.create(document.querySelector('#content'), {
-      toolbar: {
-        items: [
-          'undo','redo','|',
-          'heading','|',
-          'bold','italic','underline','strikethrough','|',
-          'fontSize','fontFamily','fontColor','fontBackgroundColor','|',
-          'highlight','alignment','|',
-          'link','blockQuote','insertTable','horizontalLine','|',
-          'bulletedList','numberedList','outdent','indent','|',
-          'removeFormat','sourceEditing'
-        ],
-        shouldNotGroupWhenFull: true
-      },
-      placeholder: 'ここに本文を入力...',
-      heading: {
-        options: [
-          { model: 'paragraph', title: '段落', class: 'ck-heading_paragraph' },
-          { model: 'heading1', view: 'h1', title: '見出し1', class: 'ck-heading_heading1' },
-          { model: 'heading2', view: 'h2', title: '見出し2', class: 'ck-heading_heading2' },
-          { model: 'heading3', view: 'h3', title: '見出し3', class: 'ck-heading_heading3' }
-        ]
-      },
-      fontFamily: {
-        options: [ 'default', 'Arial, Helvetica, sans-serif', 'Courier New, Courier, monospace',
-                   'Georgia, serif', 'Lucida Sans Unicode, Lucida Grande, sans-serif', 'Tahoma, Geneva, sans-serif', 'Times New Roman, Times, serif', 'Trebuchet MS, Helvetica, sans-serif', 'Verdana, Geneva, sans-serif' ],
-        supportAllValues: true
-      },
-      fontSize: {
-        options: [10,12,14,16,18,20,24,28,32],
-        supportAllValues: true
-      },
-      highlight: {
-        options: [
-          { model: 'yellowMarker', class: 'marker-yellow', title: '黄色マーカー', color: 'var(--ck-highlight-marker-yellow)', type: 'marker' },
-          { model: 'greenMarker', class: 'marker-green', title: '緑マーカー', color: 'var(--ck-highlight-marker-green)', type: 'marker' },
-          { model: 'pinkMarker', class: 'marker-pink', title: 'ピンクマーカー', color: 'var(--ck-highlight-marker-pink)', type: 'marker' }
-        ]
-      },
-      image: { toolbar: [ 'imageTextAlternative', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side' ] },
-      table: { contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ] },
-      removePlugins: [ 'CKBox','CKFinder','EasyImage','RealTimeCollaborativeComments',
-                       'RealTimeCollaborativeTrackChanges','RealTimeCollaborativeRevisionHistory',
-                       'PresenceList','Comments','TrackChanges','TrackChangesData','Pagination',
-                       'WProofreader','SlashCommand','Template','DocumentOutline','FormatPainter' ]
-    })
-    .then(e => { editor = e; window._ckeditorInstance = e; })
-    .catch(console.error);
+
+    const checkReady = setInterval(() => {
+      if (window.CKEDITOR && CKEDITOR.ClassicEditor) {
+        clearInterval(checkReady);
+
+        CKEDITOR.ClassicEditor.create(document.querySelector('#content'), {
+          toolbar: {
+            items: [
+              'undo','redo','|',
+              'heading','|',
+              'bold','italic','underline','strikethrough','|',
+              'fontSize','fontFamily','fontColor','fontBackgroundColor','|',
+              'highlight','alignment','|',
+              'link','blockQuote','insertTable','horizontalLine','|',
+              'bulletedList','numberedList','outdent','indent','|',
+              'removeFormat','sourceEditing'
+            ],
+            shouldNotGroupWhenFull: true
+          },
+          placeholder: 'ここに本文を入力...',
+          heading: {
+            options: [
+              { model: 'paragraph', title: '段落', class: 'ck-heading_paragraph' },
+              { model: 'heading1', view: 'h1', title: '見出し1', class: 'ck-heading_heading1' },
+              { model: 'heading2', view: 'h2', title: '見出し2', class: 'ck-heading_heading2' },
+              { model: 'heading3', view: 'h3', title: '見出し3', class: 'ck-heading_heading3' }
+            ]
+          },
+          fontFamily: {
+            options: [
+              'default','Arial, Helvetica, sans-serif','Courier New, Courier, monospace',
+              'Georgia, serif','Lucida Sans Unicode, Lucida Grande, sans-serif',
+              'Tahoma, Geneva, sans-serif','Times New Roman, Times, serif',
+              'Trebuchet MS, Helvetica, sans-serif','Verdana, Geneva, sans-serif'
+            ],
+            supportAllValues: true
+          },
+          fontSize: {
+            options: [10,12,14,16,18,20,24,28,32],
+            supportAllValues: true
+          },
+          highlight: {
+            options: [
+              { model: 'yellowMarker', class: 'marker-yellow', title: '黄色マーカー', color: 'var(--ck-highlight-marker-yellow)', type: 'marker' },
+              { model: 'greenMarker', class: 'marker-green', title: '緑マーカー', color: 'var(--ck-highlight-marker-green)', type: 'marker' },
+              { model: 'pinkMarker', class: 'marker-pink', title: 'ピンクマーカー', color: 'var(--ck-highlight-marker-pink)', type: 'marker' }
+            ]
+          },
+          image: { toolbar: [ 'imageTextAlternative', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side' ] },
+          table: { contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ] },
+          removePlugins: [
+            'CKBox','CKFinder','EasyImage','RealTimeCollaborativeComments',
+            'RealTimeCollaborativeTrackChanges','RealTimeCollaborativeRevisionHistory',
+            'PresenceList','Comments','TrackChanges','TrackChangesData','Pagination',
+            'WProofreader','SlashCommand','Template','DocumentOutline','FormatPainter'
+          ]
+        })
+        .then(e => { editor = e; window._ckeditorInstance = e; })
+        .catch(console.error);
+      }
+    }, 300);
   } else {
     editor = window._ckeditorInstance;
   }
