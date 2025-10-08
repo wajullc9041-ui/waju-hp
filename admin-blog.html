@@ -91,7 +91,6 @@ async function initBlogAdmin() {
   }
   const sb = window.supabase;
 
-  // 認証確認
   const { data, error: authErr } = await sb.auth.getSession();
   if (!data.session) {
     window.location.href = "/admin-index.html";
@@ -106,7 +105,7 @@ async function initBlogAdmin() {
   let currentMonth = "";
   let editor;
 
-  // --- CKEditor super-build 初期化（動的ロード + 再読み込み防止） ---
+  // --- CKEditor super-build 初期化 ---
   if (window._ckeditorInstance) {
     try { window._ckeditorInstance.destroy(); } catch(e){}
     window._ckeditorInstance = null;
@@ -153,13 +152,16 @@ async function initBlogAdmin() {
           { model: 'pinkMarker', class: 'marker-pink', title: 'ピンクマーカー', color: 'var(--ck-highlight-marker-pink)', type: 'marker' }
         ]
       },
-      image: { toolbar: [ 'imageTextAlternative', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side' ] },
-      table: { contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ] },
+      image: { toolbar: [ 'imageTextAlternative','imageStyle:inline','imageStyle:block','imageStyle:side' ] },
+      table: { contentToolbar: [ 'tableColumn','tableRow','mergeTableCells' ] },
       removePlugins: [
+        // 有料／ライセンス必須系を除外
         'CKBox','CKFinder','EasyImage','RealTimeCollaborativeComments',
         'RealTimeCollaborativeTrackChanges','RealTimeCollaborativeRevisionHistory',
         'PresenceList','Comments','TrackChanges','TrackChangesData','Pagination',
-        'WProofreader','SlashCommand','Template','DocumentOutline','FormatPainter'
+        'WProofreader','SlashCommand','Template','DocumentOutline','FormatPainter',
+        'Users','RevisionHistory','TableOfContents','PasteFromOfficeEnhanced',
+        'ExportPdf','ExportWord','MathType','AIAssistant'
       ]
     })
     .then(e => { editor = e; window._ckeditorInstance = e; })
@@ -173,7 +175,7 @@ async function initBlogAdmin() {
     }
   }, 200);
 
-  // --- Supabase操作群 ---
+  // --- Supabase 操作 ---
   async function loadMonths() {
     const { data, error } = await sb.from("articles").select("created_at");
     if (error) return;
@@ -278,7 +280,6 @@ async function initBlogAdmin() {
   await loadMonths();
 }
 
-// --- ページ切替時の再実行を保証 ---
 if (!window._blogAdminInitialized) {
   window._blogAdminInitialized = true;
   setTimeout(initBlogAdmin, 100);
