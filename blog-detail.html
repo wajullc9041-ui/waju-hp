@@ -366,6 +366,13 @@
         }else{ a.classList.add("disabled"); a.style.opacity=".4"; a.style.pointerEvents="none"; }
       }
     }
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll('.content a[href^="http"]').forEach(a => {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+      });
+    });
+    
     load();
   </script>
 </body>
