@@ -280,7 +280,7 @@ setTimeout(() => {
 document.addEventListener("click", (e) => {
   const logo = e.target.closest("#site-header img");
   if (logo) {
-    location.href = "index.html";
+    location.href = "/";
   }
 });
 
