@@ -106,6 +106,44 @@
         height: 160px !important;
       }
     }
+
+    /* ▼ HEROセクション（フェード式に変更） */
+    #hero { position: relative; overflow: hidden; }
+    .hero-viewport { 
+      position: relative; 
+      width: 100%; 
+      /* 画角を安定させるための比率（必要なら調整OK） */
+      aspect-ratio: 16/9; 
+    }
+    #hero-slider { position: relative; width: 100%; height: 100%; }
+    #hero-slider img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out; /* フェード速度。あとで数値だけ変えればOK */
+      z-index: 0;
+    }
+    #hero-slider img.active { opacity: 1; z-index: 1; }
+
+    /* ▼ NEWSセクションの「もっと見る」ボタン */
+    .more-btn {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.75rem 2rem;
+      background: linear-gradient(135deg, #1e40af, #2563eb);
+      color: #fff;
+      font-weight: 600;
+      border-radius: 9999px;
+      box-shadow: 0 4px 14px rgba(30,64,175,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .more-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(30,64,175,0.4);
+    }
   </style>
 
 </head>
@@ -115,18 +153,23 @@
   <main id="page-main">
     <section id="hero" class="relative w-full py-0 bg-gradient-to-b from-waju-light to-blue-100">
       <div class="max-w-6xl mx-auto overflow-hidden shadow-2xl rounded-b-xl">
-        <div id="hero-slider" class="relative flex transition-transform duration-300 ease-in-out h-auto">
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" alt="Hero1" class="w-full h-auto object-cover flex-shrink-0"/>
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" alt="Hero2" class="w-full h-auto object-cover flex-shrink-0"/>
-          <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="Hero3" class="w-full h-auto object-cover flex-shrink-0"/>
+        <!-- ▼ フェード式のためのビューポート -->
+        <div class="hero-viewport">
+          <div id="hero-slider">
+            <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0001.png" alt="Hero1" class="active"/>
+            <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0002.png" alt="Hero2"/>
+            <img src="https://htnmjsqgoapvuanrsuma.supabase.co/storage/v1/object/public/assets/wjhp0003.png" alt="Hero3"/>
+          </div>
         </div>
       </div>
     </section>
 
     <section id="news" class="py-16 bg-white border-b border-gray-100 shadow-inner">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl font-extrabold text-center text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">NEWS</h2>
-        <div id="news-list" class="space-y-4"></div>
+      <div class="max-w-6xl mx-auto px-6 text-center">
+        <h2 class="text-4xl font-extrabold text-waju-primary mb-12 relative after:content-[''] after:block after:w-16 after:h-1 after:bg-waju-accent after:mx-auto after:mt-2">NEWS</h2>
+        <div id="news-list" class="space-y-4 text-left"></div>
+        <!-- ▼ もっと見るボタン -->
+        <a href="/blog/index.html" class="more-btn">もっと見る →</a>
       </div>
     </section>
 
@@ -338,32 +381,43 @@
     loadNews();
   </script>
   
+  <!-- ▼ HEROスライダー：フェード & 自然ループ -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const track = document.getElementById('hero-slider');
-      if (!track) return;
-      const viewport = track.parentElement; // overflow-hidden の直上
-      const slides = Array.from(track.children);
+      const slider = document.getElementById('hero-slider');
+      if (!slider) return;
+      const slides = Array.from(slider.querySelectorAll('img'));
       let index = 0;
 
-      function go(i){
-        index = (i + slides.length) % slides.length;
-        const w = viewport.clientWidth; // 現在の1枚の幅(px)
-        track.style.transform = 'translateX(' + (-index * w) + 'px)';
+      function show(i){
+        slides.forEach((img, idx) => {
+          img.classList.toggle('active', idx === i);
+        });
       }
 
-      go(0);
-      let timer = setInterval(()=>go(index+1), 5000);
+      function next(){
+        index = (index + 1) % slides.length; // 自然ループ
+        show(index);
+      }
 
-      // ホバーで停止
-      viewport.addEventListener('mouseenter', () => clearInterval(timer));
-      viewport.addEventListener('mouseleave', () => {
+      show(index);
+      let timer = setInterval(next, 5000);
+
+      // ホバーで一時停止（PC想定）
+      const hero = document.getElementById('hero');
+      hero.addEventListener('mouseenter', () => clearInterval(timer));
+      hero.addEventListener('mouseleave', () => {
         clearInterval(timer);
-        timer = setInterval(()=>go(index+1), 5000);
+        timer = setInterval(next, 5000);
       });
+    });
+  </script>
 
-      // リサイズ対応
-      window.addEventListener('resize', () => go(index));
+  <!-- ▼ ロゴクリックでトップへ戻る（ヘッダー構造を壊さず対応） -->
+  <script>
+    document.addEventListener('click', e => {
+      const logo = e.target.closest('#site-header img');
+      if (logo) location.href = 'index.html';
     });
   </script>
 </body>
