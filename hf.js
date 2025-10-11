@@ -275,3 +275,12 @@ setTimeout(() => {
     console.warn("HF timeout: forced visible.");
   }
 }, 3000);
+
+// ===== ロゴクリックでトップページへ遷移（全ページ共通） =====
+document.addEventListener("click", (e) => {
+  const logo = e.target.closest("#site-header img");
+  if (logo) {
+    location.href = "index.html";
+  }
+});
+
