@@ -11,8 +11,9 @@
         body {
             font-family: 'Inter', 'Noto Sans CJK JP', sans-serif;
         }
-        /* スライドコンテンツの高さ設定 */
+        /* スライドコンテンツの高さ設定 (画面表示用) */
         #slide-container {
+            /* ヘッダーの高さ（約8rem）を引く */
             min-height: calc(100vh - 8rem);
             max-height: calc(100vh - 8rem);
             overflow-y: auto;
@@ -47,6 +48,64 @@
             background-color: #fff7ed; /* orange-50 */
             border-radius: 0.5rem;
         }
+
+        /* ======================================================= */
+        /* PDF/印刷用スタイル設定 (@media print) */
+        /* ======================================================= */
+        @media print {
+            /* 1. ヘッダーとナビゲーションを強制的に表示する */
+            header, nav {
+                display: block !important;
+                position: static !important; /* 印刷時には固定解除 */
+                background-color: #ffffff !important;
+                box-shadow: none !important;
+            }
+
+            /* 2. スライドコンテナの最大高さを解除し、ページ全体を使用する */
+            #slide-container {
+                min-height: auto;
+                max-height: none;
+                overflow-y: visible;
+                padding: 0;
+                margin: 0 auto;
+                max-width: 100%;
+                /* ヘッダーが表示されるため、コンテンツ上部に少し余白を設ける */
+                padding-top: 1rem;
+            }
+
+            /* 3. すべてのスライドコンテンツを強制的に表示し、改ページを設定する */
+            .slide-content {
+                display: block !important;
+                /* 印刷時のページ区切りを設定 */
+                page-break-after: always;
+                /* 印刷時の見栄えを考慮した余白と背景色 */
+                padding: 30px;
+                background-color: #ffffff;
+                box-shadow: none;
+                border-radius: 0;
+                /* コンテンツの幅を制限していたTailwindクラスを上書き */
+                width: 100%;
+                margin: 0;
+            }
+
+            /* 4. 最後のスライド後の改ページを削除 */
+            .slide-content:last-child {
+                page-break-after: avoid;
+            }
+            
+            /* 5. タブボタンのスタイルを調整 (非アクティブでも文字色を濃く保つ) */
+             .tab-button {
+                color: #4b5563 !important; /* gray-600 */
+                border-bottom: 1px solid #e5e7eb !important;
+                padding: 8px 10px !important;
+                white-space: normal;
+                font-size: 10px !important;
+             }
+             .tab-active {
+                border-bottom: 2px solid #1d4ed8 !important; /* blue-700 */
+                font-weight: 700 !important;
+             }
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -73,7 +132,7 @@
                     }
                 });
 
-                // スライドコンテンツの切り替え
+                // スライドコンテンツの切り替え (画面表示時)
                 slides.forEach(slide => {
                     slide.classList.add('hidden');
                     if (parseInt(slide.getAttribute('data-slide'), 10) === slideNumber) {
@@ -334,7 +393,7 @@
             </div>
         </div>
 
-        <!-- SLIDE 8: スケジュールと実現性の証明 (レイアウト修正) -->
+        <!-- SLIDE 8: スケジュールと実現性の証明 (レイアウト修正済み) -->
         <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="8">
             <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">令和7年度 実施スケジュール（迅速な研修開始）</h1>
 
@@ -373,9 +432,8 @@
                         <li><span class="emphasis-blue">事業責任者:</span> 大野 洋（介護施設長として15年以上の実務経験）</li>
                         <li><span class="emphasis-blue">協力体制:</span> <span class="emphasis-red">必要に応じて</span>、研修内容に最適な講師の<br><span class="emphasis-red">探索・依頼を行う可能性があります</span>。（講師調整は委託業務に含まれます）</li>
                         <li><span class="emphasis-blue">研修の公平性:</span> 事例分析等に<span class="emphasis-blue">AI分析</span>を活用し、<br>偏った思想が入らないよう、<span class="emphasis-blue">客観性を重視</span>した議論を促します。</li>
+                        <li class="mt-4"><span class="emphasis-blue">費用:</span> 委託契約上限額（1,390,000円）以内の適正な費用で実施します。</li>
                     </ul>
-                    <h2 class="text-xl font-bold text-gray-700 mt-6 mb-4">費用</h2>
-                    <p class="text-2xl font-extrabold text-green-700">委託契約上限額（1,390,000円）以内の適正な費用で実施します。</p>
                 </div>
 
                 <div class="p-6 bg-indigo-50 rounded-xl border-2 border-indigo-400">
@@ -387,6 +445,9 @@
                         <li class="text-red-700">本事業は、純粋に<span class="emphasis-blue">神戸市職員と事業者を守る仕組みづくり</span>にコミットします。</li>
                     </ol>
                 </div>
+            </div>
+            <div class="text-2xl font-extrabold text-green-700 mt-6 hidden print:block">
+                費用: 委託契約上限額（1,390,000円）以内の適正な費用で実施します。
             </div>
         </div>
 
