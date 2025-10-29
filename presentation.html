@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神戸市ハラスメント対策業務 企画提案資料</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* フォント設定 */
+        body {
+            font-family: 'Inter', 'Noto Sans CJK JP', sans-serif;
+        }
+        /* スライドコンテンツの高さ設定 */
+        #slide-container {
+            min-height: calc(100vh - 8rem);
+            max-height: calc(100vh - 8rem);
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        /* アクティブなタブボタンのスタイル */
+        .tab-active {
+            border-bottom: 4px solid #1e40af; /* blue-800 */
+            color: #1e40af;
+            font-weight: 700;
+            background-color: #e0f2fe; /* sky-100 */
+        }
+        /* スクロールバー（目立たなくする） */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background-color: #94a3b8; border-radius: 4px; }
+
+        /* カスタム強調クラス (赤系) */
+        .emphasis-red {
+            font-weight: 700;
+            color: #b91c1c; /* red-700 */
+        }
+         /* カスタム強調クラス (青系) */
+        .emphasis-blue {
+            font-weight: 700;
+            color: #1d4ed8; /* blue-600 */
+        }
+
+        /* 引用・事例ボックスのスタイル */
+        .case-study {
+            border-left: 6px solid #f97316; /* orange-500 */
+            padding: 1rem;
+            background-color: #fff7ed; /* orange-50 */
+            border-radius: 0.5rem;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-button');
+            const slides = document.querySelectorAll('.slide-content');
+            const slideContainer = document.getElementById('slide-container');
+
+            // 初期表示：スライド1
+            showSlide(1);
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    const slideNumber = parseInt(e.currentTarget.getAttribute('data-slide'), 10);
+                    showSlide(slideNumber);
+                });
+            });
+
+            function showSlide(slideNumber) {
+                // タブの状態更新
+                tabs.forEach(tab => {
+                    tab.classList.remove('tab-active');
+                    if (parseInt(tab.getAttribute('data-slide'), 10) === slideNumber) {
+                        tab.classList.add('tab-active');
+                    }
+                });
+
+                // スライドコンテンツの切り替え
+                slides.forEach(slide => {
+                    slide.classList.add('hidden');
+                    if (parseInt(slide.getAttribute('data-slide'), 10) === slideNumber) {
+                        slide.classList.remove('hidden');
+                        slideContainer.scrollTo(0, 0); // スクロール位置をリセット
+                    }
+                });
+            }
+
+            // キーボード操作（左右キーでスライド移動）
+            document.addEventListener('keydown', (e) => {
+                const currentActiveTab = document.querySelector('.tab-button.tab-active');
+                if (!currentActiveTab) return;
+
+                let currentSlide = parseInt(currentActiveTab.getAttribute('data-slide'), 10);
+                let nextSlide = currentSlide;
+
+                if (e.key === 'ArrowRight' || e.key === ' ') { // 右矢印またはスペース
+                    nextSlide = Math.min(10, currentSlide + 1);
+                } else if (e.key === 'ArrowLeft') { // 左矢印
+                    nextSlide = Math.max(1, currentSlide - 1);
+                }
+
+                if (nextSlide !== currentSlide) {
+                    e.preventDefault();
+                    showSlide(nextSlide);
+                }
+            });
+        });
+    </script>
+</head>
+<body class="bg-gray-50">
+
+    <!-- ヘッダーとナビゲーション（タブ） -->
+    <header class="sticky top-0 z-10 bg-white shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-2xl font-extrabold py-3 text-gray-900 hidden sm:block">神戸市介護現場におけるハラスメント対策業務 企画提案</h1>
+            <nav class="flex overflow-x-auto whitespace-nowrap border-b border-gray-200">
+                <!-- タブボタンのループ -->
+                <button class="tab-button px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 transition duration-150" data-slide="1">1. 概要・提案者</button>
+                <button class="tab-button px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 transition duration-150" data-slide="2">2. 課題認識</button>
+                <button class="tab-button px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 transition duration-150" data-slide="3">3. 事業目的</button>
+                <button class="tab-button px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 transition duration-150" data-slide="4">4. 基本方針</button>
+                <button class="tab-button px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 transition duration-150" data-slide="5">5. 研修計画</button>
+                <button class="tab-button px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 transition duration-150" data-slide="6">6. CARELAY活用</button>
+                <button class="tab-button px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 transition duration-150" data-slide="7">7. 知見の共有</button>
+                <button class="tab-button px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 transition duration-150" data-slide="8">8. 実施スケジュール</button>
+                <button class="tab-button px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 transition duration-150" data-slide="9">9. 体制と費用</button>
+                <button class="tab-button px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 transition duration-150" data-slide="10">10. 結論</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- スライドコンテンツコンテナ -->
+    <main id="slide-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- SLIDE 1: 表紙・立場の明示 -->
+        <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="1">
+            <div class="text-center">
+                <p class="text-xl font-medium text-blue-600 mb-4">令和7年度 介護現場におけるハラスメント対策業務</p>
+                <h1 class="text-5xl font-extrabold text-gray-900 mb-8">神戸市の介護・福祉職員に「持続可能な安心」を</h1>
+                <h2 class="text-3xl font-semibold text-gray-700 mb-16">管理者と職員の双方を守る「組織対応力」強化策</h2>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-around mt-20 p-8 bg-sky-50 rounded-xl border border-sky-200">
+                <div class="text-xl font-medium text-gray-800 space-y-3">
+                    <p>【提案者】合同会社 WaJu</p>
+                    <p>【代表社員】大野 洋</p>
+                </div>
+                <div class="mt-8 md:mt-0 md:ml-10 text-center">
+                    <h3 class="text-xl font-bold text-blue-700 mb-2">当社の強み（代替実績）：</h3>
+                    <ul class="list-none space-y-2 text-2xl font-extrabold text-indigo-700 bg-indigo-100 p-4 rounded-lg shadow-md inline-block">
+                        <li>✅ 介護現場実務経験 <span class="text-3xl">15年</span></li>
+                        <li>✅ オンラインプラットフォーム <span class="text-3xl">CARELAY</span> 稼働中</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: 神戸市の課題認識 (事例の追加) -->
+        <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="2">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">現状の課題：管理者への負荷集中と知見の分散</h1>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- 左側：現場で生じているリスク -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-semibold text-blue-700 border-l-4 border-blue-400 pl-3">現場で生じているリスク</h2>
+                    <ol class="list-decimal list-inside space-y-4 text-lg p-4 bg-red-50 rounded-lg">
+                        <li class="font-bold text-red-700">職員の離職リスク増大</li>
+                        <p class="text-gray-600 ml-5 text-base">利用者・家族からのハラスメントにより、職員の安心感が損なわれ、<br>人材確保に影響。</p>
+                        <li class="font-bold text-red-700">対応の属人化と疲弊</li>
+                        <p class="text-gray-600 ml-5 text-base">苦情対応や再発防止策が管理者個人の能力に依存し、<br>管理職が精神的に疲弊。</p>
+                        <li class="font-bold text-red-700">組織知の欠如</li>
+                        <p class="text-gray-600 ml-5 text-base">各事業所の対応事例や成功ノウハウが市全体で共有されず、<br>組織的な対応力が向上しない。</p>
+                    </ol>
+                </div>
+
+                <!-- 右側：神戸市での具体的な事例 -->
+                <div class="case-study">
+                    <h2 class="text-2xl font-semibold text-red-800 border-b-2 border-orange-300 pb-2 mb-4">【神戸市での具体的事例】</h2>
+                    <h3 class="text-xl font-bold text-red-700 mb-2">反復的な苦情電話による職員退職</h3>
+                    <ul class="list-disc ml-4 space-y-2 text-lg text-gray-700">
+                        <li><strong class="text-red-600">概要:</strong> 家族からの1日10回以上の苦情電話により、職員が精神的に疲弊し、<span class="emphasis-red">退職に至った</span>。</li>
+                        <!-- 心理的ハラスメントの強調方法を修正 -->
+                        <li><strong class="text-red-600">示唆:</strong> 反復的な苦情は<span class="emphasis-red">心理的ハラスメント</span>として組織的に対処すべきであり、<br>「クレーム対応マニュアル」を<span class="emphasis-blue">個人対応から組織対応へ</span>移行することが不可欠。</li>
+                        <li><span class="text-sm text-gray-500">（出典：2021年 神戸新聞NEXT記事より）</span></li>
+                    </ul>
+                    <div class="text-center mt-4">
+                        <div class="text-3xl font-extrabold text-red-800">➡ 「守りの仕組み」の<br>早急な構築が求められる</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: 課題の本質と事業目的 -->
+        <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="3">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">本事業が目指すもの：「個人対応」から「組織的対応」への転換</h1>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="p-6 border-2 border-red-300 rounded-xl bg-red-50">
+                    <h2 class="text-2xl font-semibold text-red-800 mb-4">課題の本質</h2>
+                    <p class="text-lg mb-4">ハラスメントの根源は、サービス提供における<span class="emphasis-red">線引きの曖昧さ</span>と<span class="emphasis-red">説明責任の欠如</span>にあります。</p>
+                    <ul class="list-disc ml-6 space-y-3 text-lg">
+                        <li>無理な要求を安易に受容してしまう体質（職員の限界を招く）</li>
+                        <li>トラブル時に組織として統一した基準（マニュアル）がない</li>
+                    </ul>
+                </div>
+
+                <div class="p-6 border-2 border-blue-300 rounded-xl bg-blue-50">
+                    <h2 class="text-2xl font-semibold text-blue-800 mb-4">本事業の目的（仕様書準拠）</h2>
+                    <div class="space-y-4 text-lg font-medium">
+                        <div class="bg-blue-100 p-3 rounded-lg shadow-sm border-l-4 border-blue-600">
+                            <strong class="emphasis-blue">ゴール:</strong> 管理者に対する研修を通じた<br>ハラスメント対応に関する体制構築の支援
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-lg shadow-sm border-l-4 border-blue-600">
+                            <strong class="emphasis-blue">目標:</strong> 職員・管理者双方の<span class="emphasis-blue">説明力と対応の標準化</span>を組織全体で底上げし、<br>神戸市全体の<span class="emphasis-blue">共通基準を確立</span>する。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: WaJuの基本方針と提供価値 (研修主軸の変更) -->
+        <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="4">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">企画提案の基本方針：情報共有と現場実践の融合</h1>
+
+            <div class="grid md:grid-cols-3 gap-8 items-stretch text-center">
+                <div class="p-6 bg-sky-100 rounded-xl shadow-md border-b-4 border-sky-500">
+                    <div class="text-5xl mb-3">🤝</div>
+                    <h3 class="text-xl font-bold text-sky-800">1. 参加型・共有主軸の研修</h3>
+                    <p class="text-gray-700 mt-2">一方的な座学ではなく、<span class="emphasis-blue">事業所が抱える課題や対策事例の共有</span>を主軸とし、<br>相互に学び合う場を創出。</p>
+                </div>
+                <div class="p-6 bg-sky-100 rounded-xl shadow-md border-b-4 border-sky-500">
+                    <div class="text-5xl mb-3">💻</div>
+                    <h3 class="text-xl font-bold text-sky-800">2. デジタル基盤の活用</h3>
+                    <p class="text-gray-700 mt-2">オンラインプラットフォームCARELAYで、研修の効率化と<br>参加事業者間の知見共有を促進。</p>
+                </div>
+                <div class="p-6 bg-sky-100 rounded-xl shadow-md border-b-4 border-sky-500">
+                    <div class="text-5xl mb-3">🛡️</div>
+                    <h3 class="text-xl font-bold text-sky-800">3. 実践に基づく成果物</h3>
+                    <p class="text-gray-700 mt-2">現場経験に基づいたマニュアルひな形を作成し、<br>事業終了後の<span class="emphasis-blue">活用を支援</span>。</p>
+                </div>
+            </div>
+
+            <div class="mt-12 p-6 bg-green-50 rounded-xl shadow-lg border-l-4 border-green-600">
+                <h2 class="text-2xl font-bold text-green-800 mb-3">提供価値：現場の知恵を結集した「共通対応力」の向上</h2>
+                <ul class="list-disc ml-6 space-y-2 text-lg font-medium text-gray-700">
+                    <li>全事業所が利用できる<span class="emphasis-blue">共通対応マニュアル（ひな形）</span>の確実な策定。</li>
+                    <li>実践研修を通じて、管理者間の<span class="emphasis-blue">横の連携</span>と事例に基づく<span class="emphasis-blue">即応力の強化</span>を実現。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: 研修の全体像と仕様遵守 -->
+        <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="5">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">仕様を完全に遵守した研修計画と実施方法</h1>
+
+            <div class="flex justify-around items-stretch space-x-8">
+                <div class="w-1/2 p-6 bg-blue-50 rounded-xl border-2 border-blue-300 shadow-md">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-3">① 基礎研修（オンライン/動画）</h2>
+                    <ul class="list-disc ml-5 space-y-3 text-lg">
+                        <li><strong class="emphasis-red">回数:</strong> <span class="emphasis-red">8回以上</span>のコンテンツを配信（仕様遵守）</li>
+                        <li><strong class="emphasis-blue">対象者:</strong> 介護・障害福祉サービス事業者の管理者等</li>
+                        <li><strong class="emphasis-blue">内容:</strong> 厚生労働省のガイドラインに基づいた基礎知識、<br>法的視点、初期対応への理解促進。</li>
+                        <li><strong class="emphasis-blue">実施:</strong> CARELAYを通じてアーカイブ配信（時間・場所に制約なく受講可能）</li>
+                    </ul>
+                </div>
+
+                <div class="w-1/2 p-6 bg-green-50 rounded-xl border-2 border-green-300 shadow-md">
+                    <h2 class="text-2xl font-bold text-green-800 mb-3">② 実践研修（対面/ディスカッション）</h2>
+                    <ul class="list-disc ml-5 space-y-3 text-lg">
+                        <li><strong class="emphasis-red">回数:</strong> 介護・障害福祉サービス<span class="emphasis-blue">それぞれ3回以上</span> <span class="emphasis-red">合計6回以上</span>（仕様厳守）</li>
+                        <li><strong class="emphasis-blue">対象者:</strong> 基礎研修を受講した管理者等</li>
+                        <li><strong class="emphasis-blue">目的:</strong> <span class="emphasis-red">事業所の課題・実事例の共有</span>とマニュアルひな形等を用いた<br>ディスカッションを通じた体制構築の考え方養成。</li>
+                        <li><strong class="emphasis-blue">期限:</strong> <span class="emphasis-red">令和8年2月末までに完了</span>（仕様厳守）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 p-4 text-center bg-gray-100 rounded-lg border-l-4 border-gray-400">
+                <h3 class="text-xl font-semibold text-gray-800">研修の連動性：</h3>
+                <p class="mt-1">基礎研修の受講実績をCARELAYで管理し、実践研修へのスムーズな連動を実現します。</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: CARELAYの優位性（実行の確実性） (利用条件の追加) -->
+        <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">CARELAY：システムの即時性と効率性</h1>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="p-6 bg-blue-50 rounded-xl border shadow-inner">
+                    <h2 class="text-2xl font-semibold text-blue-800 mb-4">即時性と運営効率</h2>
+                    <ul class="list-disc ml-6 space-y-3 text-lg">
+                        <li><strong class="emphasis-blue">システム構築期間:</strong> <span class="emphasis-red">0日</span>（既稼働システムを即時利用開始）</li>
+                        <li><strong class="emphasis-blue">機能:</strong> 案内、申込、動画・資料配布、アンケート回収、進捗管理を<span class="emphasis-blue">一元化</span>。</li>
+                        <li><strong class="emphasis-blue">参加保証:</strong> 非公開・登録制のクローズド環境で、セキュリティを担保しつつ広範なアクセスを実現。</li>
+                    </ul>
+                </div>
+                <div class="p-6 bg-yellow-50 rounded-xl border-2 border-yellow-400 shadow-md">
+                    <h2 class="text-2xl font-semibold text-yellow-800 mb-4">コスト削減と予算集中</h2>
+                    <ul class="list-none space-y-3 text-lg font-extrabold ml-2">
+                        <li>💻 システム利用料: <span class="emphasis-red">委託期間中は無償提供</span></li>
+                        <li>✅ 予算を<span class="emphasis-blue">講師・会場費</span>など実務に集中投下</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 p-4 bg-red-100 rounded-lg border-l-4 border-red-500">
+                 <h3 class="text-xl font-bold text-red-800">【CARELAY利用に関する注意事項】</h3>
+                 <p class="mt-2 text-lg text-gray-700">CARELAYは研修期間中は無償でご利用いただけますが、<br>研修期間後は<strong class="emphasis-red">継続利用のために有料での登録が必要</strong>となります。</p>
+            </div>
+            <div class="mt-4 text-center text-xl font-medium text-gray-600">
+                ➡️ CARELAYの活用により、<strong class="emphasis-blue">事業を確実に実行</strong>し、<strong class="emphasis-red">最高の費用対効果</strong>を実現します。
+            </div>
+        </div>
+
+        <!-- SLIDE 7: 情報共有と事例の蓄積 (AI分析の追加) -->
+        <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="7">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">知見の共有と成果物の確実な活用</h1>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="p-6 bg-gray-50 rounded-xl shadow-md">
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-4">知見共有のプロセスと公平性</h2>
+                    <ul class="list-disc ml-6 space-y-3 text-lg">
+                        <li><span class="emphasis-blue">事例収集:</span> 研修前に、各事業所の対応事例や「困っていること」を収集。</li>
+                        <li><span class="emphasis-blue">共有・分析:</span> 収集した事例を題材として、実践研修で<span class="emphasis-red">参加者同士が対応策を議論・共有</span>。</li>
+                        <li><span class="emphasis-blue">AI分析の活用:</span> 事例や議論の分析にAIを活用し、<br>特定の思想に偏らない<span class="emphasis-blue">中立的な解決策</span>を検討する材料を提供。</li>
+                        <li><span class="emphasis-blue">目的:</span> 個別の責任追及ではなく、組織全体の<span class="emphasis-blue">学びの共有と再発防止</span>に特化。</li>
+                    </ul>
+                </div>
+                <div class="p-6 bg-indigo-50 rounded-xl border-l-4 border-indigo-400 shadow-md">
+                    <h2 class="text-2xl font-semibold text-indigo-800 mb-4">成果物の帰属と活用（重要）</h2>
+                    <ul class="list-disc ml-6 space-y-3 text-lg font-medium">
+                        <li>作成・整備したマニュアルや事例集の<span class="emphasis-red">著作権は神戸市に帰属</span>します。</li>
+                        <li>成果物（マニュアルひな形、事例集等）は、神戸市が全事業所に対し<span class="emphasis-blue">継続的に活用いただく</span>ための形態で提出します。</li>
+                        <li>事業終了後も、神戸市職員様が容易に管理・配布できるデータ形式で納品します。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: スケジュールと実現性の証明 (レイアウト修正) -->
+        <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">令和7年度 実施スケジュール（迅速な研修開始）</h1>
+
+            <div class="flex flex-col space-y-6">
+                <!-- 11月 -->
+                <div class="flex items-center space-x-4 p-3 bg-blue-100 rounded-lg shadow-sm">
+                    <span class="text-2xl font-extrabold w-48 text-center text-blue-800 flex-shrink-0">11月（契約締結後）</span>
+                    <p class="text-lg font-semibold flex-1">CARELAYへの登録開始、<span class="emphasis-blue">基礎研修動画の収録・配信開始</span>、<br>広報活動。</p>
+                </div>
+                <!-- 12月〜令和8年2月末 -->
+                <div class="flex items-center space-x-4 p-3 bg-green-100 rounded-lg shadow-sm">
+                    <span class="text-2xl font-extrabold w-48 text-center text-green-800 flex-shrink-0">12月〜令和8年2月末</span>
+                    <p class="text-lg font-bold text-green-900 flex-1"><span class="emphasis-blue">実践研修（対面6回）を集中実施</span>（期限内の確実な完了を保証）</p>
+                </div>
+                <!-- 令和8年3月 -->
+                <div class="flex items-center space-x-4 p-3 bg-gray-100 rounded-lg shadow-sm">
+                    <span class="text-2xl font-extrabold w-48 text-center text-gray-700 flex-shrink-0">令和8年3月</span>
+                    <p class="text-lg flex-1">成果物最終化（マニュアルひな形等）、事業完了報告書提出。</p>
+                </div>
+            </div>
+
+            <div class="mt-10 p-5 bg-red-50 border-l-4 border-red-400 rounded-lg text-center">
+                <h3 class="text-xl font-bold text-red-700">確実な完了へのコミットメント:</h3>
+                <p class="mt-2 text-lg">システム環境が既に整っているため、短期間でも<span class="emphasis-blue">実践研修（対面）の期限（2月末）</span>を<br>確実に遵守し、事業を完遂します。</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: 実施体制と特記事項 (講師と営業活動の修正) -->
+        <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="9">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">実施体制・費用、および神戸市への約束</h1>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4">実施体制と専門性</h2>
+                    <ul class="list-disc ml-6 space-y-3 text-lg">
+                        <li><span class="emphasis-blue">事業責任者:</span> 大野 洋（介護施設長として15年以上の実務経験）</li>
+                        <li><span class="emphasis-blue">協力体制:</span> <span class="emphasis-red">必要に応じて</span>、研修内容に最適な講師の<br><span class="emphasis-red">探索・依頼を行う可能性があります</span>。（講師調整は委託業務に含まれます）</li>
+                        <li><span class="emphasis-blue">研修の公平性:</span> 事例分析等に<span class="emphasis-blue">AI分析</span>を活用し、<br>偏った思想が入らないよう、<span class="emphasis-blue">客観性を重視</span>した議論を促します。</li>
+                    </ul>
+                    <h2 class="text-xl font-bold text-gray-700 mt-6 mb-4">費用</h2>
+                    <p class="text-2xl font-extrabold text-green-700">委託契約上限額（1,390,000円）以内の適正な費用で実施します。</p>
+                </div>
+
+                <div class="p-6 bg-indigo-50 rounded-xl border-2 border-indigo-400">
+                    <h2 class="text-xl font-bold text-indigo-800 mb-4">特記事項（公募要領Q&A⑥遵守と事業継続）</h2>
+                    <ol class="list-decimal list-inside space-y-3 text-lg font-bold">
+                        <li class="text-red-700">本事業における研修後の<span class="emphasis-red">個別営業活動は一切行いません</span>。（公募要領の回答を厳守）</li>
+                        <li class="text-blue-700">ただし、通常の事業活動としての広報や営業は行いますが、<br><span class="emphasis-blue">本業務と切り離して実施</span>し、公平性を保ちます。</li>
+                        <li class="text-blue-700">CARELAYは本事業の<span class="emphasis-blue">確実な履行と効率化</span>のために無償提供するデジタル基盤です。</li>
+                        <li class="text-red-700">本事業は、純粋に<span class="emphasis-blue">神戸市職員と事業者を守る仕組みづくり</span>にコミットします。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: まとめと結び -->
+        <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="10">
+            <h1 class="text-4xl font-extrabold text-blue-700 mb-12 border-b-4 border-blue-200 pb-3">結論：確実な実行と市全体での対応力強化へ</h1>
+
+            <div class="bg-blue-50 p-8 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold text-blue-800 mb-6">提案の３つの確実性：</h2>
+                <ol class="list-decimal list-inside space-y-5 text-xl font-medium">
+                    <li><strong class="text-gray-700">研修の確実性:</strong> <span class="emphasis-blue">現場の課題共有と実践的な議論</span>を主軸としたカリキュラム。</li>
+                    <li><strong class="text-gray-700">実行の確実性:</strong> 既存プラットフォーム<span class="emphasis-blue">CARELAYの無償提供</span>により、<br>迅速な開始と期限厳守を実現。</li>
+                    <li><strong class="text-gray-700">成果の持続性:</strong> 著作権が神戸市に帰属する成果物は、<br>市による<span class="emphasis-blue">継続的な活用</span>を可能にします。</li>
+                </ol>
+            </div>
+
+            <div class="mt-12 text-center">
+                <p class="text-3xl font-extrabold text-gray-800 leading-relaxed">
+                    私たちは、この仕組みを基盤として、<br>
+                    <strong class="text-blue-700">神戸市全体の対応力向上</strong>に貢献します。
+                </p>
+                <div class="mt-8 text-4xl font-black text-gray-500">
+                    ご清聴ありがとうございました。
+                </div>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>
