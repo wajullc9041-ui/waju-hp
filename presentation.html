@@ -477,21 +477,12 @@
 
     </main>
     <style>
-  /* 印刷時にも全ページにヘッダーを出す */
   @media print {
     header {
       position: static !important;
       display: block !important;
+      margin-bottom: 20px !important;
     }
-  }
-
-  /* タブの標準とアクティブ色 */
-  .tab-button {
-    padding: 6px 10px;
-    border-radius: 4px;
-    margin: 0 4px;
-    background: #f3f4f6;
-    color: #333;
   }
   .tab-active {
     background: #2563eb !important;
@@ -501,13 +492,14 @@
 </style>
 
 <script>
-  // 印刷前に各スライドへヘッダーを複製してアクティブタブを着色
   window.addEventListener("beforeprint", () => {
-    document.querySelectorAll(".slide-content").forEach((slide) => {
+    const slides = document.querySelectorAll(".slide-content");
+    slides.forEach((slide, index) => {
+      if (index === 0) return;
       const header = document.querySelector("header").cloneNode(true);
       const slideNum = slide.dataset.slide;
-      header.querySelectorAll(".tab-button").forEach((b) => {
-        b.classList.toggle("tab-active", b.dataset.slide === slideNum);
+      header.querySelectorAll(".tab-button").forEach((btn) => {
+        btn.classList.toggle("tab-active", btn.dataset.slide === slideNum);
       });
       slide.prepend(header);
     });
