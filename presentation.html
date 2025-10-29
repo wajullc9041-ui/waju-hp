@@ -35,7 +35,7 @@
             font-weight: 700;
             color: #b91c1c; /* red-700 */
         }
-        /* カスタム強調クラス (青系) */
+         /* カスタム強調クラス (青系) */
         .emphasis-blue {
             font-weight: 700;
             color: #1d4ed8; /* blue-600 */
@@ -53,12 +53,15 @@
         /* PDF/印刷用スタイル設定 (@media print) */
         /* ======================================================= */
         @media print {
-            /* 1. オリジナルの固定ヘッダーとナビゲーションを完全に非表示にする */
+            /* 1. ヘッダーとナビゲーションを強制的に表示する */
             header, nav {
-                display: none !important;
+                display: block !important;
+                position: static !important; /* 印刷時には固定解除 */
+                background-color: #ffffff !important;
+                box-shadow: none !important;
             }
 
-            /* 2. スライドコンテナの最大高さを解除し、ページ全体を使用する (既存の調整) */
+            /* 2. スライドコンテナの最大高さを解除し、ページ全体を使用する */
             #slide-container {
                 min-height: auto;
                 max-height: none;
@@ -66,24 +69,23 @@
                 padding: 0;
                 margin: 0 auto;
                 max-width: 100%;
-                padding-top: 0; /* 繰り返しヘッダーを各slide-content内で処理するため不要 */
+                /* ヘッダーが表示されるため、コンテンツ上部に少し余白を設ける */
+                padding-top: 1rem;
             }
 
             /* 3. すべてのスライドコンテンツを強制的に表示し、改ページを設定する */
             .slide-content {
                 display: block !important;
+                /* 印刷時のページ区切りを設定 */
                 page-break-after: always;
                 /* 印刷時の見栄えを考慮した余白と背景色 */
                 padding: 30px;
                 background-color: #ffffff;
                 box-shadow: none;
                 border-radius: 0;
+                /* コンテンツの幅を制限していたTailwindクラスを上書き */
                 width: 100%;
                 margin: 0;
-                
-                /* ページごとのヘッダーの高さの分、上部に余白を設定 */
-                padding-top: 80px; 
-                position: relative; /* 疑似要素の基準点とする */
             }
 
             /* 4. 最後のスライド後の改ページを削除 */
@@ -91,80 +93,25 @@
                 page-break-after: avoid;
             }
             
-            /* 5. ページごとのヘッダー（メインタイトルとセクション名）を疑似要素で挿入 */
-            /* 疑似要素はページ内のコンテンツとして扱われるため、ページが分かれてもスライドコンテンツと一緒に出力される */
-            .slide-content::before {
-                /* メインタイトルとページ番号・セクション名を表示 */
-                content: attr(data-main-title) " | " attr(data-slide) ". " attr(data-section-title); 
-                display: block;
-                position: absolute;
-                top: 0; /* slide-contentのpadding-topの内側（上端）に配置 */
-                left: 0;
-                right: 0;
-                padding: 15px 30px; /* slide-contentのpaddingに合わせる */
-                font-size: 13px;
-                font-weight: bold;
-                color: #1f2937; /* gray-800 */
-                background-color: #f3f4f6; /* gray-100 */
-                border-bottom: 2px solid #3b82f6; /* blue-500 */
-                z-index: 10;
-                text-align: left;
-            }
-            
-            /* 6. ページ番号を表示するためのフッターを疑似要素で挿入 (オプション: ページ番号のみ) */
-            .slide-content::after {
-                content: "Page " attr(data-slide);
-                display: block;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                padding: 5px 30px;
-                font-size: 10px;
-                color: #4b5563; /* gray-600 */
-                text-align: right;
-                background-color: #ffffff;
-                border-top: 1px solid #e5e7eb;
-                z-index: 10;
-            }
-
-            /* 7. タブボタンのスタイル調整 (画面表示用のため印刷時には影響しないが念のため削除) */
-            /* 印刷時にはタブナビゲーション全体が非表示になるため、これらのスタイルは不要 */
-            .tab-button { display: none; }
+            /* 5. タブボタンのスタイルを調整 (非アクティブでも文字色を濃く保つ) */
+             .tab-button {
+                color: #4b5563 !important; /* gray-600 */
+                border-bottom: 1px solid #e5e7eb !important;
+                padding: 8px 10px !important;
+                white-space: normal;
+                font-size: 10px !important;
+             }
+             .tab-active {
+                border-bottom: 2px solid #1d4ed8 !important; /* blue-700 */
+                font-weight: 700 !important;
+             }
         }
     </style>
     <script>
-        // タブ情報 (HTMLの data-slide 属性と一致させる)
-        const tabData = [
-            { slide: 1, title: '1. 概要・提案者' },
-            { slide: 2, title: '2. 課題認識' },
-            { slide: 3, title: '3. 事業目的' },
-            { slide: 4, title: '4. 基本方針' },
-            { slide: 5, title: '5. 研修計画' },
-            { slide: 6, title: '6. CARELAY活用' },
-            { slide: 7, title: '7. 知見の共有' },
-            { slide: 8, title: '8. 実施スケジュール' },
-            { slide: 9, title: '9. 体制と費用' },
-            { slide: 10, title: '10. 結論' },
-        ];
-        
-        // メインタイトル
-        const mainTitle = '神戸市介護現場におけるハラスメント対策業務 企画提案';
-
         document.addEventListener('DOMContentLoaded', () => {
             const tabs = document.querySelectorAll('.tab-button');
             const slides = document.querySelectorAll('.slide-content');
             const slideContainer = document.getElementById('slide-container');
-
-            // 【追加】全スライドに印刷用のタイトル属性を設定
-            slides.forEach(slide => {
-                const slideNumber = parseInt(slide.getAttribute('data-slide'), 10);
-                const data = tabData.find(d => d.slide === slideNumber);
-                if (data) {
-                    slide.setAttribute('data-main-title', mainTitle);
-                    slide.setAttribute('data-section-title', data.title.substring(data.title.indexOf('.') + 2)); // ページ番号を除いたタイトル
-                }
-            });
 
             // 初期表示：スライド1
             showSlide(1);
@@ -202,11 +149,9 @@
 
                 let currentSlide = parseInt(currentActiveTab.getAttribute('data-slide'), 10);
                 let nextSlide = currentSlide;
-                // タブデータの総数を取得
-                const maxSlide = tabData.length; 
 
                 if (e.key === 'ArrowRight' || e.key === ' ') { // 右矢印またはスペース
-                    nextSlide = Math.min(maxSlide, currentSlide + 1);
+                    nextSlide = Math.min(10, currentSlide + 1);
                 } else if (e.key === 'ArrowLeft') { // 左矢印
                     nextSlide = Math.max(1, currentSlide - 1);
                 }
@@ -221,7 +166,7 @@
 </head>
 <body class="bg-gray-50">
 
-    <!-- ヘッダーとナビゲーション（タブ）: 画面表示時のみ使用 -->
+    <!-- ヘッダーとナビゲーション（タブ） -->
     <header class="sticky top-0 z-10 bg-white shadow-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 class="text-2xl font-extrabold py-3 text-gray-900 hidden sm:block">神戸市介護現場におけるハラスメント対策業務 企画提案</h1>
@@ -244,7 +189,7 @@
     <!-- スライドコンテンツコンテナ -->
     <main id="slide-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <!-- SLIDE 1: 表紙・立場の明示 (data属性追加) -->
+        <!-- SLIDE 1: 表紙・立場の明示 -->
         <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="1">
             <div class="text-center">
                 <p class="text-xl font-medium text-blue-600 mb-4">令和7年度 介護現場におけるハラスメント対策業務</p>
@@ -267,7 +212,7 @@
             </div>
         </div>
 
-        <!-- SLIDE 2: 神戸市の課題認識 (data属性追加) -->
+        <!-- SLIDE 2: 神戸市の課題認識 (事例の追加) -->
         <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="2">
             <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">現状の課題：管理者への負荷集中と知見の分散</h1>
 
@@ -296,13 +241,13 @@
                         <li><span class="text-sm text-gray-500">（出典：2021年 神戸新聞NEXT記事より）</span></li>
                     </ul>
                     <div class="text-center mt-4">
-                        <div class="text-3xl font-extrabold text-red-800">➡️ 「守りの仕組み」の<br>早急な構築が求められる</div>
+                        <div class="text-3xl font-extrabold text-red-800">➡ 「守りの仕組み」の<br>早急な構築が求められる</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 3: 課題の本質と事業目的 (data属性追加) -->
+        <!-- SLIDE 3: 課題の本質と事業目的 -->
         <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="3">
             <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">本事業が目指すもの：「個人対応」から「組織的対応」への転換</h1>
 
@@ -330,7 +275,7 @@
             </div>
         </div>
 
-        <!-- SLIDE 4: WaJuの基本方針と提供価値 (data属性追加) -->
+        <!-- SLIDE 4: WaJuの基本方針と提供価値 (研修主軸の変更) -->
         <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="4">
             <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">企画提案の基本方針：情報共有と現場実践の融合</h1>
 
@@ -361,7 +306,7 @@
             </div>
         </div>
 
-        <!-- SLIDE 5: 研修の全体像と仕様遵守 (data属性追加) -->
+        <!-- SLIDE 5: 研修の全体像と仕様遵守 -->
         <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="5">
             <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">仕様を完全に遵守した研修計画と実施方法</h1>
 
@@ -377,7 +322,7 @@
                 </div>
 
                 <div class="w-1/2 p-6 bg-green-50 rounded-xl border-2 border-green-300 shadow-md">
-                    <h2 class="text-2xl font-bold text-green-800 mb-3">② 実践研修（対面/ディスカッション） </h2>
+                    <h2 class="text-2xl font-bold text-green-800 mb-3">② 実践研修（対面/ディスカッション）</h2>
                     <ul class="list-disc ml-5 space-y-3 text-lg">
                         <li><strong class="emphasis-red">回数:</strong> 介護・障害福祉サービス<span class="emphasis-blue">それぞれ3回以上</span> <span class="emphasis-red">合計6回以上</span>（仕様厳守）</li>
                         <li><strong class="emphasis-blue">対象者:</strong> 基礎研修を受講した管理者等</li>
@@ -393,7 +338,7 @@
             </div>
         </div>
 
-        <!-- SLIDE 6: CARELAYの優位性（実行の確実性） (data属性追加) -->
+        <!-- SLIDE 6: CARELAYの優位性（実行の確実性） (利用条件の追加) -->
         <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="6">
             <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">CARELAY：システムの即時性と効率性</h1>
 
@@ -415,15 +360,15 @@
                 </div>
             </div>
             <div class="mt-8 p-4 bg-red-100 rounded-lg border-l-4 border-red-500">
-                    <h3 class="text-xl font-bold text-red-800">【CARELAY利用に関する注意事項】</h3>
-                    <p class="mt-2 text-lg text-gray-700">CARELAYは研修期間中は無償でご利用いただけますが、<br>研修期間後は<strong class="emphasis-red">継続利用のために有料での登録が必要</strong>となります。</p>
+                 <h3 class="text-xl font-bold text-red-800">【CARELAY利用に関する注意事項】</h3>
+                 <p class="mt-2 text-lg text-gray-700">CARELAYは研修期間中は無償でご利用いただけますが、<br>研修期間後は<strong class="emphasis-red">継続利用のために有料での登録が必要</strong>となります。</p>
             </div>
             <div class="mt-4 text-center text-xl font-medium text-gray-600">
                 ➡️ CARELAYの活用により、<strong class="emphasis-blue">事業を確実に実行</strong>し、<strong class="emphasis-red">最高の費用対効果</strong>を実現します。
             </div>
         </div>
 
-        <!-- SLIDE 7: 情報共有と事例の蓄積 (data属性追加) -->
+        <!-- SLIDE 7: 情報共有と事例の蓄積 (AI分析の追加) -->
         <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="7">
             <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">知見の共有と成果物の確実な活用</h1>
 
@@ -448,7 +393,7 @@
             </div>
         </div>
 
-        <!-- SLIDE 8: スケジュールと実現性の証明 (data属性追加) -->
+        <!-- SLIDE 8: スケジュールと実現性の証明 (レイアウト修正済み) -->
         <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="8">
             <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">令和7年度 実施スケジュール（迅速な研修開始）</h1>
 
@@ -476,7 +421,7 @@
             </div>
         </div>
 
-        <!-- SLIDE 9: 実施体制と特記事項 (data属性追加) -->
+        <!-- SLIDE 9: 実施体制と特記事項 (講師と営業活動の修正) -->
         <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="9">
             <h1 class="text-3xl font-bold text-gray-800 mb-8 border-b-2 pb-2">実施体制・費用、および神戸市への約束</h1>
 
@@ -506,7 +451,7 @@
             </div>
         </div>
 
-        <!-- SLIDE 10: まとめと結び (data属性追加) -->
+        <!-- SLIDE 10: まとめと結び -->
         <div class="slide-content p-10 bg-white shadow-2xl rounded-2xl hidden" data-slide="10">
             <h1 class="text-4xl font-extrabold text-blue-700 mb-12 border-b-4 border-blue-200 pb-3">結論：確実な実行と市全体での対応力強化へ</h1>
 
